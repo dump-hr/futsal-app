@@ -5,7 +5,12 @@
   "scripts": {
     "dev": "turbo run dev",
     "build" : "turbo run build",
-    "start": "node apps/api/dist/main"
+    "start": "node apps/api/dist/main",
+    "db:generate": "yarn workspace api run db:generate",
+    "db:migrate": "yarn workspace api run db:migrate",
+    "db:studio": "yarn workspace api run db:studio",
+    "db:seed": "yarn workspace api run db:seed",
+    "prisma": "yarn workspace api run prisma"
   },
   "packageManager": "yarn@1.22.22",
   "workspaces": [
