@@ -1,18 +1,14 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { CompanyService } from './company.service';
-import { Group } from '@prisma/client';
-
-class CreateCompanyDto {
-  name: string;
-  group: Group;
-  logoUrl?: string;
-}
+import { CreateCompanyDto } from './company.dto';
 
 @Controller('company')
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
   @Post()
-  create(dto: CreateCompanyDto) {}
+  create(@Body() dto: CreateCompanyDto) {
+    return this.companyService.create(dto);
+  }
 
   @Get()
   getAll() {
