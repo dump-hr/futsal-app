@@ -1,5 +1,5 @@
 FROM node:18-alpine AS base
-LABEL org.opencontainers.image.source https://github.com/dump-hr/ddays-app
+LABEL org.opencontainers.image.source https://github.com/dump-hr/futsal-app
 
 FROM base AS builder
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
@@ -36,7 +36,6 @@ RUN addgroup --system --gid 1001 nestjs
 RUN adduser --system --uid 1001 nestjs
 USER nestjs
 COPY --from=installer --chown=nestjs:nestjs /app .
-COPY --chown=nestjs:nestjs apps/sponsor/dist ./apps/sponsor/dist
 COPY --chown=nestjs:nestjs apps/web/dist ./apps/web/dist
 
 CMD node apps/api/dist/main.js
