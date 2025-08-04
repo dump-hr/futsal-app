@@ -1,12 +1,23 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { PostgresErrorFilter } from './postgres-error.filter';
+import { PrismaClientExceptionFilter } from './prisma-client-exception.filter';
+
+const setupFilter = (app: INestApplication) => {
+  app.useGlobalFilters(new PostgresErrorFilter());
+
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
+};
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+
+  setupFilter(app);
 
   await app.listen(process.env.PORT ?? 3000);
 }
