@@ -1,5 +1,5 @@
-import { Group } from '@prisma/client';
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Group } from './enum';
 
 export class CreateCompanyDto {
   @IsString()

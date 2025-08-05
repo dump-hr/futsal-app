@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateCompanyDto } from './company.dto';
+import { CreateCompanyDto } from '@futsal-app/types';
 
 @Injectable()
 export class CompanyService {

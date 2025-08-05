@@ -15,7 +15,8 @@
   },
   "packageManager": "yarn@1.22.22",
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "packages/*"
   ],
   "license": "none",
   "private": true
