@@ -5,6 +5,5 @@ dist/
 build/
 
 .vscode/
-.env
 .env.* 
 *.log

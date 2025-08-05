@@ -1,7 +1,6 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateCompanyDto } from './company.dto';
-import { Group } from '@prisma/client';
 
 @Injectable()
 export class CompanyService {
