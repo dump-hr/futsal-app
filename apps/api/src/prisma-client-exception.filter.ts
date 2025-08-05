@@ -10,8 +10,6 @@ import { Prisma } from '@prisma/client';
 @Catch()
 export class PrismaClientExceptionFilter extends BaseExceptionFilter {
   catch(exception: Prisma.PrismaClientKnownRequestError, host: ArgumentsHost) {
-    console.log('exception message', exception.message);
-
     switch (exception.code) {
       case 'P2002':
         throw new HttpException(
