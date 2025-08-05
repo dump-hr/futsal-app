@@ -1,12 +1,9 @@
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { PostgresErrorFilter } from './postgres-error.filter';
 import { PrismaClientExceptionFilter } from './prisma-client-exception.filter';
 
 const setupFilter = (app: INestApplication) => {
-  app.useGlobalFilters(new PostgresErrorFilter());
-
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
 };
