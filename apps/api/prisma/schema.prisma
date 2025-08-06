@@ -49,11 +49,13 @@ model Tournament {
 model Team {
   id           Int         @id @default(autoincrement())
   name         String      @unique
-  logoUrl      String? //previous version did not have this, logos were stored in logos folder with code
-  group        Group? // previous version had groups as a separate table in the database
+  logoUrl      String?
+  group        Group?
   tournamentId Int?
   Tournament   Tournament? @relation(fields: [tournamentId], references: [id])
   players      Player[]
+  homeMatches  Match[]     @relation("HomeTeamMatches")
+  awayMatches  Match[]     @relation("AwayTeamMatches")
 }
 
 model Player {
@@ -73,7 +75,10 @@ model Match {
   awayTeamId  Int?
   homeGoals   Int          @default(0)
   awayGoals   Int          @default(0)
+  homeTeam    Team?        @relation("HomeTeamMatches", fields: [homeTeamId], references: [id])
+  awayTeam    Team?        @relation("AwayTeamMatches", fields: [awayTeamId], references: [id])
   events      MatchEvent[]
+  matchType   MatchType
 }
 
 model MatchEvent {
