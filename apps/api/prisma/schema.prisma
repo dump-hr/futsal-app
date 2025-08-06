@@ -20,9 +20,74 @@ enum Group {
   D
 }
 
-model Company {
-  id      Int     @id @default(autoincrement())
-  name    String  @unique
-  logoUrl String?
-  group   Group?
+enum EventType {
+  goal
+  ownGoal
+  penaltyGoal
+  penaltyMiss
+  yellowCard
+  redCard
+  injury
+  shootoutGoal
+  shootoutMiss
+}
+
+enum MatchType {
+  group
+  quarterFinal
+  semiFinal
+  final
+  thirdPlace
+}
+
+model Tournament {
+  id    Int    @id @default(autoincrement())
+  name  String
+  users Team[]
+}
+
+model Team {
+  id           Int         @id @default(autoincrement())
+  name         String      @unique
+  logoUrl      String?
+  group        Group?
+  tournamentId Int?
+  Tournament   Tournament? @relation(fields: [tournamentId], references: [id])
+  players      Player[]
+  homeMatches  Match[]     @relation("HomeTeamMatches")
+  awayMatches  Match[]     @relation("AwayTeamMatches")
+}
+
+model Player {
+  id          Int          @id @default(autoincrement())
+  firstName   String
+  lastName    String
+  dateOfBirth DateTime?
+  teamId      Int?
+  team        Team?        @relation(fields: [teamId], references: [id])
+  events      MatchEvent[]
+}
+
+model Match {
+  id          Int          @id @default(autoincrement())
+  timeOfMatch DateTime
+  homeTeamId  Int?
+  awayTeamId  Int?
+  homeGoals   Int          @default(0)
+  awayGoals   Int          @default(0)
+  homeTeam    Team?        @relation("HomeTeamMatches", fields: [homeTeamId], references: [id])
+  awayTeam    Team?        @relation("AwayTeamMatches", fields: [awayTeamId], references: [id])
+  events      MatchEvent[]
+  matchType   MatchType
+}
+
+model MatchEvent {
+  id            Int       @id @default(autoincrement())
+  minute        Int
+  match         Match     @relation(fields: [matchId], references: [id])
+  matchId       Int
+  player        Player?   @relation(fields: [playerId], references: [id])
+  playerId      Int?
+  eventType     EventType
+  isForHomeTeam Boolean
 }
