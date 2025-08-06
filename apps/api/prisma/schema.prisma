@@ -20,9 +20,69 @@ enum Group {
   D
 }
 
-model Company {
-  id      Int     @id @default(autoincrement())
-  name    String  @unique
-  logoUrl String?
-  group   Group?
+enum EventType {
+  goal
+  ownGoal
+  penaltyGoal
+  penaltyMiss
+  yellowCard
+  redCard
+  injury
+  shootoutGoal
+  shootoutMiss
+}
+
+enum MatchType {
+  group
+  quarterFinal
+  semiFinal
+  final
+  thirdPlace
+}
+
+model Tournament {
+  id    Int    @id @default(autoincrement())
+  name  String
+  users Team[]
+}
+
+model Team {
+  id           Int         @id @default(autoincrement())
+  name         String      @unique
+  logoUrl      String? //previous version did not have this, logos were stored in logos folder with code
+  group        Group? // previous version had groups as a separate table in the database
+  tournamentId Int?
+  Tournament   Tournament? @relation(fields: [tournamentId], references: [id])
+  players      Player[]
+}
+
+model Player {
+  id          Int          @id @default(autoincrement())
+  firstName   String
+  lastName    String
+  dateOfBirth DateTime?
+  teamId      Int?
+  team        Team?        @relation(fields: [teamId], references: [id])
+  events      MatchEvent[]
+}
+
+model Match {
+  id          Int          @id @default(autoincrement())
+  timeOfMatch DateTime
+  homeTeamId  Int?
+  awayTeamId  Int?
+  homeGoals   Int          @default(0)
+  awayGoals   Int          @default(0)
+  events      MatchEvent[]
+}
+
+model MatchEvent {
+  id            Int       @id @default(autoincrement())
+  minute        Int
+  match         Match     @relation(fields: [matchId], references: [id])
+  matchId       Int
+  player        Player?   @relation(fields: [playerId], references: [id])
+  playerId      Int?
+  eventType     EventType
+  isForHomeTeam Boolean
 }
