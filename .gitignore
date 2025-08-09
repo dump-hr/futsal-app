@@ -1,6 +1,5 @@
 node_modules
 .turbo
-.yarn
 
 dist/
 build/
