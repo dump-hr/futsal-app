@@ -42,7 +42,7 @@ enum MatchType {
 
 model Tournament {
   id    Int    @id @default(autoincrement())
-  name  String
+  name  String @unique
   teams Team[]
 }
 
