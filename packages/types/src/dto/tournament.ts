@@ -4,9 +4,6 @@ export class TournamentModifyDto {
   @IsNotEmpty()
   @IsString()
   name: string;
-
-  //TODO:
-  // teams: Team[];
 }
 
 export class TournamentDto {
@@ -18,5 +15,6 @@ export class TournamentDto {
   @IsString()
   name: string;
 
+  //TODO:
   // teams: Team[];
 }
