@@ -16,6 +16,11 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
           'Unique constraint violation',
           HttpStatus.CONFLICT,
         );
+      case 'P2025':
+        throw new HttpException(
+          'No record was found for an update',
+          HttpStatus.NOT_FOUND,
+        );
       default:
         super.catch(exception, host);
     }
