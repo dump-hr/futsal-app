@@ -1,0 +1,17 @@
+{
+	"data": "ENC[AES256_GCM,data:cHTsqM/6pWCwNeb7cKY/pB/UHIKcZZ4QaO0QVZMjrzAFS94i2yZvNk6nczVU09cy8fU3In9DP+RFSyF1vSg4cqvnZnNnqXKbe6GnyqoVdGv53r+3+49yvvxXhbzX/sv6173iQjVeM6n9dalaHzhn8LpC/7vnDj0mL1ucr6qUSgmKXt49D5/x0b9DrMFLkvExv5mgbudwg1OLCFdnr6UKZ8O2WyOdUucxqoiUuI9yMPRpyC3zx9HQ6WsXXbdA9kyHKqygLXMOuwc0vGsI9rFwvfXMF6HtrwMkR59h05Lhq/CR4ODvJ11o3XqcMiBDJKkFn/Moo8d1ULhIs11nq3IWVdbHre8ZrNcB+fR1uwfNxaxnWQNT+Scis2wYdXpRfWCD6YNuTXAMh6Fo6jYpOjSXcTsiDNG5TKvp4YKSpnqCraaO2UWl9PujIWi504rr6aRIF591fiOg5lqi9upM98MR+gITz7FBwt0gnJYn/Qlk9vkab/aoWuncFMhALkbTQ85PKZN2S8yYoyWWOE0KQbsBOuXZAvRAs4PgrpEZ,iv:Hka5+FMLHr2hEkz24cCPTyo01UKvZW4/q9mvwkd8rPQ=,tag:53GoTgJ60OgGS3i7Bx0C3Q==,type:str]",
+	"sops": {
+		"kms": [
+			{
+				"arn": "arn:aws:kms:us-east-1:763640948377:alias/futsal-app",
+				"created_at": "2025-10-02T20:16:07Z",
+				"enc": "AQICAHjfL0gYIjPSBmiu7e8jUQEBBvSwBJtNGyTvOsa7izox7wFF56hrj8LucayX73rspayXAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM9hgnbNhUMrwMsOYaAgEQgDuWxD/wglu+SS8KNc63W1qIjdtQkyWEBllxh5N7Fi6AvE0KW10QXKfqaBj76FQa5wfA+AqBhFZ5pLUytA==",
+				"aws_profile": "futsal-app"
+			}
+		],
+		"lastmodified": "2025-10-02T20:16:07Z",
+		"mac": "ENC[AES256_GCM,data:Rf62w7jJ0wCYyXIYqxCkr6Be0yc/NP5VpDpRW5ck5uDOcirMO4S/IMYs+/aPQMySO+JtVPSkZvpYpQeTPu3gp3uRaPgYr4X40SJLxWMDnR0gJm6hEqKDpAzZV+fenRppkshXYj70BGaGK690tol5tBHE45n5NQRtiOc6hKpLCSo=,iv:YODA02f1I7AJRoiZ44y7yacroQ+B/4ULQHpq9Jnz7bU=,tag:eB7GdgDOOyZJCl7pV45P8A==,type:str]",
+		"unencrypted_suffix": "_unencrypted",
+		"version": "3.10.2"
+	}
+}
