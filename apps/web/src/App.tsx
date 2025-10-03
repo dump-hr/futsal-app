@@ -1,21 +1,21 @@
 import { Toaster } from 'react-hot-toast';
 import './App.css';
 import { Route, Switch } from 'wouter';
-import { Controller, useForm } from 'react-hook-form';
-import { useTournamentCreate } from './api/tournament/useTournamentCreate';
+// import { Controller, useForm } from 'react-hook-form';
+// import { useTournamentCreate } from './api/tournament/useTournamentCreate';
 
-type TournamentFormData = {
-  name: string;
-};
+// type TournamentFormData = {
+//   name: string;
+// };
 
 const HomePage = () => {
-  const createTournament = useTournamentCreate();
+  // const createTournament = useTournamentCreate();
 
-  const { handleSubmit, control } = useForm<TournamentFormData>();
+  // const { handleSubmit, control } = useForm<TournamentFormData>();
 
   return (
     <div>
-      <form onSubmit={handleSubmit((data) => createTournament.mutate(data))}>
+      {/* <form onSubmit={handleSubmit((data) => createTournament.mutate(data))}>
         <Controller
           defaultValue=''
           control={control}
@@ -26,7 +26,8 @@ const HomePage = () => {
         />
 
         <button>Submit</button>
-      </form>
+      </form> */}
+      <h1>Work in progress...</h1>
     </div>
   );
 };
