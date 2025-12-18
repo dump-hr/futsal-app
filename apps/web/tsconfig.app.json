@@ -25,18 +25,13 @@
 
     "baseUrl": "./src",
     "paths": {
-      "@components/*": ["components/*"],
       "@api/*": ["api/*"],
-      "@pages/*": ["pages/*"],
-      "@routes/*": ["routes/*"],
-      "@types/*": ["types/*"],
       "@assets/*": ["assets/*"],
-      "@constants/*": ["constants/*"],
-      "@utils/*": ["utils/*"],
-      "@layouts/*": ["layouts/*"],
+      "@components/*": ["components/*"],
       "@hooks/*": ["hooks/*"],
-      "@context/*": ["context/*"],
-      "@enums/*": ["enums/*"]
+      "@layouts/*": ["layouts/*"],
+      "@pages/*": ["pages/*"],
+      "@routes/*": ["routes/*"]
     }
   },
   "include": ["src", "../../packages/types/src/ResponseTypes/ResponseTypes.ts"]
