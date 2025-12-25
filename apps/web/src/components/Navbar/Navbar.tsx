@@ -1,0 +1,43 @@
+import logo from 'assets/Logotip.png';
+import c from './navbar.module.scss';
+import { Link, useLocation } from 'wouter';
+import { routes } from '@routes/routes';
+
+export const Navbar = () => {
+  const [location] = useLocation();
+
+  return (
+    <nav className={c.navbar}>
+      <div className={c.listWrapper}>
+        <div className={c.imageWrapper}>
+          <img src={logo} alt='Logo' />
+        </div>
+
+        <ul className={c.navbarList}>
+          <Link
+            to={routes.ADMIN}
+            className={location === routes.ADMIN ? c.active : ''}>
+            Početna
+          </Link>
+          <Link
+            to={routes.TEAMS}
+            className={location === routes.TEAMS ? c.active : ''}>
+            Ekipe
+          </Link>
+          <Link
+            to={routes.GROUPS}
+            className={location === routes.GROUPS ? c.active : ''}>
+            Skupine
+          </Link>
+          <Link
+            to={routes.MATCHES}
+            className={location === routes.MATCHES ? c.active : ''}>
+            Utakmice
+          </Link>
+        </ul>
+      </div>
+
+      <button>logout</button>
+    </nav>
+  );
+};
