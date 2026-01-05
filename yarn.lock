@@ -418,6 +418,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.12.5":
+  version: 7.28.4
+  resolution: "@babel/runtime@npm:7.28.4"
+  checksum: 934b0a0460f7d06637d93fcd1a44ac49adc33518d17253b5a0b55ff4cb90a45d8fe78bf034b448911dbec7aff2a90b918697559f78d21c99ff8dbadae9565b55
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.27.2, @babel/template@npm:^7.3.3":
   version: 7.27.2
   resolution: "@babel/template@npm:7.27.2"
@@ -5490,6 +5497,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"globrex@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "globrex@npm:0.1.2"
+  checksum: adca162494a176ce9ecf4dd232f7b802956bb1966b37f60c15e49d2e7d961b66c60826366dc2649093cad5a0d69970cfa8875bd1695b5a1a2f33dcd2aa88da3c
+  languageName: node
+  linkType: hard
+
 "goober@npm:^2.1.16":
   version: 2.1.16
   resolution: "goober@npm:2.1.16"
@@ -7804,6 +7818,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-error-boundary@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "react-error-boundary@npm:6.0.0"
+  dependencies:
+    "@babel/runtime": ^7.12.5
+  peerDependencies:
+    react: ">=16.13.1"
+  checksum: d6807004d2b5c0a971b433b8698d3c95ebb43d407b304d87d59d57ba2a08d10113e481031ca778a1b8529bbddb421c96e508dbd9a5b5d6f084f1d1f653b05941
+  languageName: node
+  linkType: hard
+
 "react-hook-form@npm:^7.62.0":
   version: 7.62.0
   resolution: "react-hook-form@npm:7.62.0"
@@ -9066,6 +9091,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tsconfck@npm:^3.0.3":
+  version: 3.1.6
+  resolution: "tsconfck@npm:3.1.6"
+  peerDependencies:
+    typescript: ^5.0.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  bin:
+    tsconfck: bin/tsconfck.js
+  checksum: 9ccebfe1317e9890bd0d4743b91880c6c484d01ba16ecaa088031c3e5956591be26174b5780fba2e8328d14c8aefe097d1956ab3697157d15a4fd8eea8ac2843
+  languageName: node
+  linkType: hard
+
 "tsconfig-paths-webpack-plugin@npm:4.2.0":
   version: 4.2.0
   resolution: "tsconfig-paths-webpack-plugin@npm:4.2.0"
@@ -9498,6 +9537,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vite-tsconfig-paths@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "vite-tsconfig-paths@npm:6.0.1"
+  dependencies:
+    debug: ^4.1.1
+    globrex: ^0.1.2
+    tsconfck: ^3.0.3
+  peerDependencies:
+    vite: "*"
+  peerDependenciesMeta:
+    vite:
+      optional: true
+  checksum: 1c5268afd36a4d58edf5d2c1e586096f641629e90365db982ea99c0847adc85941c03ca1f2365e46c1e3677b03f0d8df95b3a95d714d8cb7db92e302d7580ee9
+  languageName: node
+  linkType: hard
+
 "vite@npm:^7.0.4":
   version: 7.1.1
   resolution: "vite@npm:7.1.1"
@@ -9598,11 +9653,13 @@ __metadata:
     globals: ^16.3.0
     react: ^19.1.0
     react-dom: ^19.1.0
+    react-error-boundary: ^6.0.0
     react-hook-form: ^7.62.0
     react-hot-toast: ^2.5.2
     typescript: ~5.8.3
     typescript-eslint: ^8.35.1
     vite: ^7.0.4
+    vite-tsconfig-paths: ^6.0.1
     wouter: ^3.7.1
   languageName: unknown
   linkType: soft
