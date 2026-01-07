@@ -34,5 +34,5 @@
       "@routes/*": ["routes/*"]
     }
   },
-  "include": ["src", "src/types/ResponseTypes/ResponseTypes.ts"]
+  "include": ["src", "../../packages/types/src/ResponseTypes/ResponseTypes.ts"]
 }

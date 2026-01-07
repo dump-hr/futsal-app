@@ -1,50 +1,12 @@
+import { ErrorBoundary } from 'react-error-boundary';
 import { Toaster } from 'react-hot-toast';
-import './App.css';
-import { Route, Switch } from 'wouter';
-// import { Controller, useForm } from 'react-hook-form';
-// import { useTournamentCreate } from './api/tournament/useTournamentCreate';
+import { Router } from './Router';
 
-// type TournamentFormData = {
-//   name: string;
-// };
-
-const HomePage = () => {
-  // const createTournament = useTournamentCreate();
-
-  // const { handleSubmit, control } = useForm<TournamentFormData>();
-
+export const App = () => {
   return (
-    <div>
-      {/* <form onSubmit={handleSubmit((data) => createTournament.mutate(data))}>
-        <Controller
-          defaultValue=''
-          control={control}
-          name='name'
-          render={({ field: { onChange, onBlur, value } }) => (
-            <input onChange={onChange} onBlur={onBlur} value={value} />
-          )}
-        />
-
-        <button>Submit</button>
-      </form> */}
-      <h1>Work in progress...</h1>
-    </div>
+    <ErrorBoundary fallback={<div>Something went wrong</div>}>
+      <Router />
+      <Toaster />
+    </ErrorBoundary>
   );
 };
-
-function App() {
-  return (
-    <>
-      <Switch>
-        <Route path={'/'} component={HomePage} />
-        <Route
-          path={'/some-other-page'}
-          component={() => <h1>some other page</h1>}
-        />
-      </Switch>
-      <Toaster />
-    </>
-  );
-}
-
-export default App;

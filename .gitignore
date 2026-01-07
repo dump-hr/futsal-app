@@ -7,4 +7,6 @@ build/
 .env.* 
 *.log
 
-.yarn/cache/
+.yarn
+
+.yarn
