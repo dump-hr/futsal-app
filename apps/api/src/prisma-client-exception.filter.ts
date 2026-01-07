@@ -10,7 +10,7 @@ import { Prisma } from '@prisma/client';
 @Catch()
 export class PrismaClientExceptionFilter extends BaseExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
-    if (exception instanceof Prisma.PrismaClientKnownRequestError) {
+    if (this.isPrismaKnownError(exception)) {
       switch (exception.code) {
         case 'P2002':
           throw new HttpException(
@@ -27,5 +27,16 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
     }
 
     super.catch(exception, host);
+  }
+
+  private isPrismaKnownError(
+    error: unknown,
+  ): error is Prisma.PrismaClientKnownRequestError {
+    return (
+      typeof error === 'object' &&
+      error !== null &&
+      'code' in error &&
+      typeof (error as { code: unknown }).code === 'string'
+    );
   }
 }
