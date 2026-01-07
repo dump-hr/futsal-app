@@ -5,7 +5,10 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
-import { Prisma } from '@prisma/client';
+
+type PrismaKnownErrorLike = {
+  code: string;
+};
 
 @Catch()
 export class PrismaClientExceptionFilter extends BaseExceptionFilter {
@@ -30,9 +33,7 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
     super.catch(exception, host);
   }
 
-  private isPrismaKnownError(
-    error: unknown,
-  ): error is Prisma.PrismaClientKnownRequestError {
+  private isPrismaKnownError(error: unknown): error is PrismaKnownErrorLike {
     return (
       typeof error === 'object' &&
       error !== null &&
