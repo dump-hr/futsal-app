@@ -7,6 +7,8 @@ export default defineConfig({
     path: 'prisma/migrations',
   },
   datasource: {
-    url: 'postgres://dumpovac:dump1234@localhost:3001/futsal-db',
+    url:
+      process.env.DATABASE_URL ||
+      'postgres://dumpovac:dump1234@localhost:3001/futsal-db',
   },
 });
