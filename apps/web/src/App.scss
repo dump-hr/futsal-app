@@ -1,0 +1,31 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+@font-face {
+  font-family: 'IBMPlexSans';
+  font-style: normal;
+  font-weight: 600;
+  src: url('./assets/fonts/IBMPlexSans-SemiBold.ttf') format('truetype');
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: 'IBMPlexSans';
+  font-style: normal;
+  font-weight: 500;
+  src: url('./assets/fonts/IBMPlexSans-Medium.ttf') format('truetype');
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: 'IBMPlexSans';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./assets/fonts/IBMPlexSans-Regular.ttf') format('truetype');
+  font-display: fallback;
+}
