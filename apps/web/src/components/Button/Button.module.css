@@ -6,7 +6,7 @@
   width: 155px;
   padding: 8px 13px 8px 8px;
   border-radius: 38px;
-  border: 1.5px solid transparent;
+  border: 2px solid transparent;
   cursor: pointer;
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 14px;
@@ -93,7 +93,6 @@
 
 .button.hover-bg-black:hover {
   background-color: var(--color-gray-main);
-  border-color: var(--color-gray-medium);
 }
 
 .text-white,
@@ -116,4 +115,8 @@
 .button:hover .hover-text-darkGray,
 .button:hover .hover-text-black {
   color: var(--color-white);
+}
+
+.button.borderOnHover:hover {
+  border-color: var(--color-gray-medium);
 }

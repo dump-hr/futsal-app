@@ -27,7 +27,8 @@ export const HomePage = () => {
         hoverColor={ButtonColor.BLACK}
         icon={ButtonIcon.X}
         iconColor={IconColor.BLACK}
-        hoverIconColor={IconColor.DARK_GRAY}>
+        hoverIconColor={IconColor.DARK_GRAY}
+        borderOnHover={true}>
         Cancel
       </Button>
 

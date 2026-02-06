@@ -24,6 +24,7 @@ type ButtonProps = {
   icon?: ButtonIcon;
   iconColor?: IconColor;
   hoverIconColor?: IconColor;
+  borderOnHover?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const iconMap: Record<ButtonIcon, Record<IconColor, string>> = {
@@ -71,6 +72,7 @@ const Button: React.FC<ButtonProps> = ({
   icon = ButtonIcon.PLUS,
   iconColor = IconColor.GRAY,
   hoverIconColor = IconColor.WHITE,
+  borderOnHover = false,
   className,
   ...props
 }) => {
@@ -84,6 +86,7 @@ const Button: React.FC<ButtonProps> = ({
     c.button,
     c[`bg-${color}`],
     c[`hover-bg-${effectiveHoverColor}`],
+    borderOnHover && c.borderOnHover,
     className,
   ]
     .filter(Boolean)
@@ -98,8 +101,8 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button className={buttonClasses} {...props}>
       <span className={c.iconWrapper}>
-        <img src={defaultIcon} alt='' className={c.iconDefault} />
-        <img src={hoverIcon} alt='' className={c.iconHover} />
+        <img src={defaultIcon} alt='button icon' className={c.iconDefault} />
+        <img src={hoverIcon} alt='button icon hover' className={c.iconHover} />
       </span>
       <span className={textClasses}>{children}</span>
     </button>
