@@ -1,6 +1,5 @@
 .a {
-  font-family: 'Roboto';
-  font-weight: 600;
+  @include legal-text;
   color: $blue;
 }
 
