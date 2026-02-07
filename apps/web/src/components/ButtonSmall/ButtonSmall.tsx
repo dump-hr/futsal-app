@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import c from './ButtonSmall.module.scss';
-import { BackgroundColor } from './ backgroundColor';
+import { BackgroundColor } from './backgroundColor';
 
 type ButtonSmallProps = {
   iconSrc: string;

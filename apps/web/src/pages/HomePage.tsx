@@ -1,8 +1,7 @@
 import ButtonSmall, { BackgroundColor } from '../components/ButtonSmall';
 import c from './HomePage.module.scss';
-import trashCanSvg from '../assets/icons/trash-can-gray.svg';
-import plusSvg from '../assets/icons/plus-gray.svg';
-import playSvg from '../assets/icons/play-black.svg';
+import trashCanSvg from '@assets/icons/trash-can-gray.svg';
+import plusSvg from '@assets/icons/plus-gray.svg';
 
 export const HomePage = () => {
   return (
@@ -19,11 +18,6 @@ export const HomePage = () => {
         iconSrc={plusSvg}
         width={40}
         backgroundColor={BackgroundColor.Red}
-      />
-      <ButtonSmall
-        iconSrc={playSvg}
-        width={40}
-        backgroundColor={BackgroundColor.White}
       />
     </div>
   );
