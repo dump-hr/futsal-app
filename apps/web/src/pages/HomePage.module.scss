@@ -1,0 +1,15 @@
+.a {
+  @include legal-text;
+  color: $blue;
+}
+
+.b {
+  font-family: 'Roboto';
+  font-weight: 500;
+  color: $red;
+}
+
+.c {
+  font-family: 'Roboto';
+  font-weight: 400;
+}

@@ -1,0 +1,30 @@
+.buttonContainer {
+  border-radius: 50%;
+  position: relative;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  will-change: transform;
+  transition: transform 150ms ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(1.02);
+  }
+}
+
+.buttonIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 57%;
+  height: 57%;
+}
+
+.grayMediumBorder {
+  border: 1px solid #5c5c5c;
+}
