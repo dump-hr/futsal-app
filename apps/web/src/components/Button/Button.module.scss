@@ -1,0 +1,96 @@
+.button {
+  @include body-small;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 13px 8px 8px;
+  border-radius: 38px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 155px;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.iconWrapper {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+}
+
+.label {
+  flex-shrink: 0;
+}
+
+.primary {
+  background-color: $white;
+  color: $black;
+
+  .iconWrapper {
+    background-color: $gray-light;
+  }
+
+  &:hover {
+    background-color: $gray-light;
+
+    .iconWrapper {
+      background-color: $white;
+    }
+  }
+}
+
+.secondary {
+  background-color: $gray-dark;
+  color: $white;
+
+  .iconWrapper {
+    background-color: $black;
+  }
+
+  &:hover {
+    background-color: $black;
+
+    .iconWrapper {
+      background-color: $gray-dark;
+    }
+  }
+}
+
+.green {
+  background-color: $lime;
+  color: $black;
+
+  .iconWrapper {
+    background-color: $black;
+  }
+
+  .icon {
+    filter: invert(1);
+  }
+
+  &:hover {
+    background-color: $black;
+    color: $white;
+
+    .iconWrapper {
+      background-color: $lime;
+    }
+
+    .icon {
+      filter: invert(0);
+    }
+  }
+}
