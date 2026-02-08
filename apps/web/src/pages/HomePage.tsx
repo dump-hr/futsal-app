@@ -1,53 +1,24 @@
-import { Button } from '../components';
-import { ButtonColor, ButtonIcon, IconColor } from '@futsal-app/types';
+import ButtonSmall, { BackgroundColor } from '../components/ButtonSmall';
+import c from './HomePage.module.scss';
+import trashCanSvg from '@assets/icons/trash-can-gray.svg';
+import plusSvg from '@assets/icons/plus-gray.svg';
 
 export const HomePage = () => {
   return (
-    <div
-      style={{
-        backgroundColor: '#141414',
-        padding: '20px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '16px',
-      }}>
-      <Button>Nova utakmica</Button>
-
-      <Button
-        color={ButtonColor.GREEN}
-        hoverColor={ButtonColor.BLACK}
-        icon={ButtonIcon.ARROW}
-        iconColor={IconColor.BLACK}
-        hoverIconColor={IconColor.GREEN}>
-        Login
-      </Button>
-
-      <Button
-        color={ButtonColor.DARK_GRAY}
-        hoverColor={ButtonColor.BLACK}
-        icon={ButtonIcon.X}
-        iconColor={IconColor.BLACK}
-        hoverIconColor={IconColor.DARK_GRAY}
-        borderOnHover={true}>
-        Cancel
-      </Button>
-
-      <Button
-        color={ButtonColor.GREEN}
-        hoverColor={ButtonColor.BLACK}
-        icon={ButtonIcon.PLUS}
-        iconColor={IconColor.BLACK}
-        hoverIconColor={IconColor.GREEN}>
-        Green
-      </Button>
-
-      <Button
-        color={ButtonColor.WHITE}
-        hoverColor={ButtonColor.GRAY}
-        icon={ButtonIcon.CLOCK}
-        iconColor={IconColor.GRAY}>
-        Time
-      </Button>
+    <div style={{ background: 'black' }}>
+      <h1 className={c.a}>Title 1</h1>
+      <h1 className={c.b}>Title 1</h1>
+      <h1 className={c.c}>Title 1</h1>
+      <ButtonSmall
+        iconSrc={trashCanSvg}
+        hasBorder
+        backgroundColor={BackgroundColor.Lime}
+      />
+      <ButtonSmall
+        iconSrc={plusSvg}
+        width={40}
+        backgroundColor={BackgroundColor.Red}
+      />
     </div>
   );
 };
