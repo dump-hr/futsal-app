@@ -64,6 +64,14 @@ export const HomePage = () => {
         flexDirection: 'column',
         gap: '16px',
       }}>
+    <div
+      style={{
+        background: 'black',
+        padding: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+      }}>
       <h1 className={c.a}>Title 1</h1>
       <h1 className={c.b}>Title 1</h1>
       <h1 className={c.c}>Title 1</h1>
