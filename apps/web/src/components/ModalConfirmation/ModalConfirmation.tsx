@@ -1,12 +1,11 @@
 import Button from '../Button/Button';
 import { XWhite, CheckBlack } from '@assets/icons';
-import styles from './ModalConfirmation.module.scss';
+import c from './ModalConfirmation.module.scss';
 
 type CircleVariant = 'green' | 'gray';
 
 type ModalConfirmationProps = {
-  title: string;
-  description: React.ReactNode;
+  description: string;
   icon: string;
   circleVariant: CircleVariant;
   onCancel: () => void;
@@ -14,7 +13,6 @@ type ModalConfirmationProps = {
 };
 
 const ModalConfirmation: React.FC<ModalConfirmationProps> = ({
-  title,
   description,
   icon,
   circleVariant,
@@ -24,22 +22,22 @@ const ModalConfirmation: React.FC<ModalConfirmationProps> = ({
   const iconBgClass = circleVariant === 'green' ? 'iconBgGreen' : 'iconBgGray';
 
   return (
-    <div className={styles.overlay}>
-      <div className={styles.modal}>
-        <div className={`${styles.iconWrapper} ${styles[iconBgClass]}`}>
-          <img src={icon} alt="" className={styles.icon} />
+    <div className={c.overlay}>
+      <div className={c.modal}>
+        <div className={`${c.iconWrapper} ${c[iconBgClass]}`}>
+          <img src={icon} alt='' className={c.icon} />
         </div>
 
-        <div className={styles.content}>
-          <h2 className={styles.title}>{title}</h2>
-          <div className={styles.description}>{description}</div>
+        <div className={c.content}>
+          <h2 className={c.title}>Jeste li sigurni?</h2>
+          <p className={c.description}>{description}</p>
         </div>
 
-        <div className={styles.buttons}>
-          <Button icon={XWhite} variant="secondary" onClick={onCancel}>
+        <div className={c.buttons}>
+          <Button icon={XWhite} variant='secondary' onClick={onCancel}>
             Odustani
           </Button>
-          <Button icon={CheckBlack} variant="primary" onClick={onConfirm}>
+          <Button icon={CheckBlack} variant='primary' onClick={onConfirm}>
             Potvrdi
           </Button>
         </div>

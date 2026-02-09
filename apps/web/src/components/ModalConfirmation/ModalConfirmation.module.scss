@@ -37,11 +37,7 @@
 }
 
 .iconBgGray {
-  background-color: $gray-dark;
-
-  .icon {
-    filter: invert(1);
-  }
+  background-color: $gray-light;
 }
 
 .iconBgGreen {
@@ -71,6 +67,7 @@
 
 .description {
   @include body-normal;
+  font-size: 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
