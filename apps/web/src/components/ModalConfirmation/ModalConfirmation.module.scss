@@ -1,0 +1,94 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: $black;
+  border-radius: 26px;
+  padding: 54px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  position: relative;
+  min-width: 328px;
+}
+
+.iconWrapper {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconBgGray {
+  background-color: $gray-dark;
+
+  .icon {
+    filter: invert(1);
+  }
+}
+
+.iconBgGreen {
+  background-color: $lime;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.title {
+  @include body-normal-bold;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 18px;
+  color: $white;
+  text-align: center;
+  margin: 0;
+}
+
+.description {
+  @include body-normal;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: $white;
+  width: 280px;
+}
+
+.actionText {
+  font-weight: 400;
+}
+
+.itemName {
+  font-weight: 700;
+}
+
+.buttons {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
