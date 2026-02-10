@@ -56,7 +56,8 @@ export const HomePage = () => {
 
         {showSecondaryModal && (
           <ModalConfirmation
-            description='Ovim postupkom izbrisat ćete Skupinu B'
+            description='Ovim postupkom pokrenut ćeš utakmicu '
+            boldText='Maurer Electronics vs Ericsson Nikola Tesla'
             icon={TrashCanBlack}
             circleVariant='green'
             onCancel={() => setShowSecondaryModal(false)}
@@ -66,7 +67,8 @@ export const HomePage = () => {
 
         {showModal && (
           <ModalConfirmation
-            description='Ovim postupkom izbrisat ćete Skupinu A'
+            description='Ovim postupkom izbrisat ćete'
+            boldText='Skupinu A'
             icon={TrashCanBlack}
             circleVariant='gray'
             onCancel={() => setShowModal(false)}

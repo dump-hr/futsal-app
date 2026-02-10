@@ -20,7 +20,8 @@
   align-items: center;
   gap: 40px;
   position: relative;
-  min-width: 328px;
+  max-width: 350px;
+  width: auto;
 }
 
 .iconWrapper {
@@ -36,11 +37,11 @@
   justify-content: center;
 }
 
-.iconBgGray {
+.gray {
   background-color: $gray-light;
 }
 
-.iconBgGreen {
+.green {
   background-color: $lime;
 }
 
@@ -65,23 +66,23 @@
   margin: 0;
 }
 
-.description {
-  @include body-normal;
-  font-size: 18px;
+.descriptionWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+}
+
+.description {
+  @include body-normal;
   color: $white;
-  width: 280px;
+  margin: 0;
 }
 
-.actionText {
-  font-weight: 400;
-}
-
-.itemName {
-  font-weight: 700;
+.boldText {
+  @include body-normal-bold;
+  color: $white;
+  margin: 0;
 }
 
 .buttons {

@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import Button from '../Button/Button';
 import { XWhite, CheckBlack } from '@assets/icons';
 import c from './ModalConfirmation.module.scss';
@@ -6,6 +7,7 @@ type CircleVariant = 'green' | 'gray';
 
 type ModalConfirmationProps = {
   description: string;
+  boldText: string;
   icon: string;
   circleVariant: CircleVariant;
   onCancel: () => void;
@@ -14,23 +16,25 @@ type ModalConfirmationProps = {
 
 const ModalConfirmation: React.FC<ModalConfirmationProps> = ({
   description,
+  boldText,
   icon,
   circleVariant,
   onCancel,
   onConfirm,
 }) => {
-  const iconBgClass = circleVariant === 'green' ? 'iconBgGreen' : 'iconBgGray';
-
   return (
     <div className={c.overlay}>
       <div className={c.modal}>
-        <div className={`${c.iconWrapper} ${c[iconBgClass]}`}>
+        <div className={clsx(c.iconWrapper, c[circleVariant])}>
           <img src={icon} alt='' className={c.icon} />
         </div>
 
         <div className={c.content}>
           <h2 className={c.title}>Jeste li sigurni?</h2>
-          <p className={c.description}>{description}</p>
+          <div className={c.descriptionWrapper}>
+            <p className={c.description}>{description}</p>
+            <p className={c.boldText}>{boldText}</p>
+          </div>
         </div>
 
         <div className={c.buttons}>
