@@ -1,5 +1,7 @@
 # Futsal App
 
+**Application for DUMP futsal tournament**
+
 ### Tech Stack
 
 **Backend (API):**
@@ -139,3 +141,39 @@ yarn workspace web run dev
    yarn db:migrate
    ```
 3. Enter a name for your migration when prompted
+
+## Shared Types
+
+The project uses a shared types package (`@futsal-app/types`) located in `packages/types/` that contains DTOs and enums used by both the API and Web applications.
+
+### Adding a New Shared Type
+
+1. **Create or modify type files** in `packages/types/src/`:
+
+   ```
+   packages/types/src/
+   ├── index.ts          # Main export file
+   ├── enum.ts           # Shared enums
+   └── dto/
+       └── tournament.ts # DTO definitions
+   ```
+
+2. **Export the new type** from `packages/types/src/index.ts`:
+
+   ```typescript
+   export * from './dto/tournament';
+   export * from './dto/your-new-dto'; // Add your new export
+   export * from './enum';
+   ```
+
+3. **Build the types package**:
+
+   ```bash
+   yarn workspace @futsal-app/types run build
+   ```
+
+4. **Use the types** in your API or Web app:
+
+   ```typescript
+   import { TournamentDto, Group } from '@futsal-app/types';
+   ```
