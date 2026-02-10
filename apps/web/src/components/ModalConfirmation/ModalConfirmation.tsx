@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import Button from '../Button/Button';
+import { Button } from '@components/index';
 import { XWhite, CheckBlack } from '@assets/icons';
 import c from './ModalConfirmation.module.scss';
 
