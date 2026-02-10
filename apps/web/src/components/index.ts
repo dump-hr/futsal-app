@@ -1,2 +1,1 @@
-export * from './Navbar/Navbar';
-export * from './Select/Select';
+export { default as Button } from './Button/Button';

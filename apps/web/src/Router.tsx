@@ -1,7 +1,6 @@
 import { Route, Switch } from 'wouter';
-import { HomePage } from './pages/index';
 import { routes } from './routes/index';
-import { NavbarLayout, BackgroundLayout } from '@layouts/index';
+import { HomePage } from './pages/HomePage';
 
 export const Router = () => {
   return (
