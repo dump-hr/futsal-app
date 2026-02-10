@@ -1,8 +1,8 @@
-import c from './Navbar.module.scss';
 import { Link, useLocation } from 'wouter';
 import { routes } from '@routes/routes';
 import { Logout, Logotip } from '@assets/icons';
 import ButtonSmall, { BackgroundColor } from '@components/ButtonSmall';
+import c from './Navbar.module.scss';
 
 export const Navbar = () => {
   const [location] = useLocation();
