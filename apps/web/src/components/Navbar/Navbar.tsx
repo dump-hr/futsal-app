@@ -2,6 +2,8 @@ import logo from 'assets/Logotip.png';
 import c from './navbar.module.scss';
 import { Link, useLocation } from 'wouter';
 import { routes } from '@routes/routes';
+import { Logout } from '@assets/icons';
+import ButtonSmall, { BackgroundColor } from '@components/ButtonSmall';
 
 export const Navbar = () => {
   const [location] = useLocation();
@@ -37,7 +39,7 @@ export const Navbar = () => {
         </ul>
       </div>
 
-      <button>logout</button>
+      <ButtonSmall iconSrc={Logout} backgroundColor={BackgroundColor.White} />
     </nav>
   );
 };

@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from 'react';
-import BackgroundImage from '../assets/pozadina_mlnm.png';
+import BackgroundImage from '@assets/pozadina_mlnm.png';
 
 export const BackgroundLayout = ({ children }: PropsWithChildren<{}>) => {
   return (
