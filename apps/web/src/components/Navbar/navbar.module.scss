@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
-  background-color: #313131;
+  background-color: $black;
 }
 
 .imageWrapper {
@@ -28,10 +28,9 @@
 
 .navbarList {
   padding: 6px 0;
-  font-size: 20px;
-  line-height: 32px;
   gap: 32px;
   display: flex;
+  @include body-large;
 }
 
 .navbarList a {

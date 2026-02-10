@@ -1,15 +1,13 @@
 import type { PropsWithChildren } from 'react';
-import BackgroundImage from '@assets/pozadina_mlnm.png';
+import BackgroundImage from '@assets/logo_mlnm.png';
+import c from './BackgroundLayout.module.scss';
 
 export const BackgroundLayout = ({ children }: PropsWithChildren<{}>) => {
   return (
     <div
+      className={c.layout}
       style={{
-        minHeight: '100vh',
         backgroundImage: `url(${BackgroundImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
       }}>
       {children}
     </div>

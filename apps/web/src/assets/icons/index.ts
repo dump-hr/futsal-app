@@ -24,3 +24,4 @@ export { default as TrashCanGray } from './trash-can-gray.svg';
 export { default as UploadGray } from './upload-gray.svg';
 
 export { default as Logout } from './logout.svg';
+export { default as Logotip } from './Logotip.svg';

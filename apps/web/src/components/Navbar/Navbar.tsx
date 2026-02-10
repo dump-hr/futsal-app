@@ -1,8 +1,7 @@
-import logo from 'assets/Logotip.png';
-import c from './navbar.module.scss';
+import c from './Navbar.module.scss';
 import { Link, useLocation } from 'wouter';
 import { routes } from '@routes/routes';
-import { Logout } from '@assets/icons';
+import { Logout, Logotip } from '@assets/icons';
 import ButtonSmall, { BackgroundColor } from '@components/ButtonSmall';
 
 export const Navbar = () => {
@@ -12,7 +11,7 @@ export const Navbar = () => {
     <nav className={c.navbar}>
       <div className={c.listWrapper}>
         <div className={c.imageWrapper}>
-          <img src={logo} alt='Logo' />
+          <img src={Logotip} alt='Logo' />
         </div>
 
         <ul className={c.navbarList}>
