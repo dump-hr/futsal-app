@@ -1,4 +1,5 @@
-import styles from './Button.module.scss';
+import clsx from 'clsx';
+import c from './Button.module.scss';
 
 type ButtonVariant = 'primary' | 'secondary' | 'green';
 
@@ -16,13 +17,11 @@ const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   return (
-    <button
-      className={`${styles.button} ${styles[variant]} ${className || ''}`}
-      {...props}>
-      <div className={styles.iconWrapper}>
-        <img src={icon} alt='' className={styles.icon} />
+    <button className={clsx(c.button, c[variant], className)} {...props}>
+      <div className={c.iconWrapper}>
+        <img src={icon} alt='' className={c.icon} />
       </div>
-      <span className={styles.label}>{children}</span>
+      <span className={c.label}>{children}</span>
     </button>
   );
 };
