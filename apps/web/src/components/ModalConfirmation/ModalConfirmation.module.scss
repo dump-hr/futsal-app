@@ -92,9 +92,7 @@
 }
 
 .title {
-  @include body-normal-bold;
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 18px;
+  @include body-large;
   color: $white;
   text-align: center;
   margin: 0;
