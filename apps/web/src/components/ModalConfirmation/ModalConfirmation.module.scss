@@ -11,6 +11,19 @@
   z-index: 1000;
 }
 
+.overlayAppear {
+  animation: overlay-fade 0.2s ease-out forwards;
+}
+
+@keyframes overlay-fade {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
 .modal {
   background-color: $black;
   border-radius: 26px;
@@ -20,8 +33,29 @@
   align-items: center;
   gap: 40px;
   position: relative;
-  max-width: 350px;
+  max-width: 328px;
   width: auto;
+}
+
+.appear {
+  animation: modal-pop 0.2s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+  transform-origin: 50% 50%;
+  opacity: 0;
+}
+
+@keyframes modal-pop {
+  0% {
+    transform: translateY(-6px) scale(0.98);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(2px) scale(1.02);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
 }
 
 .iconWrapper {
