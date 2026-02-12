@@ -1,6 +1,6 @@
 import clsx from 'clsx';
-import { useEffect, useRef } from 'react';
 import { Button } from '@components/index';
+import { useModalAccessibility } from '@hooks/index';
 import { XWhite, CheckBlack } from '@assets/icons';
 import c from './ModalConfirmation.module.scss';
 
@@ -23,26 +23,7 @@ const ModalConfirmation: React.FC<ModalConfirmationProps> = ({
   onCancel,
   onConfirm,
 }) => {
-  const overlayRef = useRef<HTMLDivElement | null>(null);
-  const firstRenderRef = useRef(true);
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' || e.key === 'Esc') onCancel();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [onCancel]);
-
-  useEffect(() => {
-    if (overlayRef.current && firstRenderRef.current) {
-      const dialog = overlayRef.current.querySelector(
-        '[role="dialog"]',
-      ) as HTMLElement | null;
-      if (dialog) dialog.focus();
-      firstRenderRef.current = false;
-    }
-  }, []);
+  const { overlayRef } = useModalAccessibility({ onClose: onCancel });
 
   return (
     <div
