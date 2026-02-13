@@ -21,6 +21,20 @@ export const HomePage = () => {
         flexDirection: 'column',
         gap: '16px',
       }}>
+      <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+        <EventDropdown side='left' value={eventLeft} onChange={setEventLeft} />
+        <EventDropdown
+          side='right'
+          value={eventRight}
+          onChange={setEventRight}
+        />
+        <EventDropdown
+          side='left'
+          isPenaltyShootout
+          value={penaltyEvent}
+          onChange={setPenaltyEvent}
+        />
+      </div>
       <h1 className={c.a}>Title 1</h1>
       <h1 className={c.b}>Title 1</h1>
       <h1 className={c.c}>Title 1</h1>
@@ -47,21 +61,6 @@ export const HomePage = () => {
         width={40}
         backgroundColor={BackgroundColor.Red}
       />
-
-      <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-        <EventDropdown side='left' value={eventLeft} onChange={setEventLeft} />
-        <EventDropdown
-          side='right'
-          value={eventRight}
-          onChange={setEventRight}
-        />
-        <EventDropdown
-          side='left'
-          isPenaltyShootout
-          value={penaltyEvent}
-          onChange={setPenaltyEvent}
-        />
-      </div>
     </div>
   );
 };

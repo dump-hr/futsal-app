@@ -79,7 +79,11 @@ const EventDropdown: React.FC<EventDropdownProps> = ({
         className={clsx(c.trigger, sideClass)}
         onClick={() => setIsOpen(!isOpen)}
         type='button'>
-        <img src={ArrowDownWhite} alt='arrow down' className={c.arrowIcon} />
+        <img
+          src={ArrowDownWhite}
+          alt='arrow down'
+          className={clsx(c.arrowIcon, isOpen && c.rotated)}
+        />
         <span className={c.selectedText}>
           {value ? EVENT_LABELS[value] : ''}
         </span>
