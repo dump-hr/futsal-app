@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { Button } from '@components/index';
-import { useModalAccessibility } from '@hooks/index';
+import { useCloseComponent } from '@hooks/index';
 import { XWhite, CheckBlack } from '@assets/icons';
 import c from './ModalConfirmation.module.scss';
 
@@ -23,7 +23,7 @@ const ModalConfirmation: React.FC<ModalConfirmationProps> = ({
   onCancel,
   onConfirm,
 }) => {
-  const { overlayRef } = useModalAccessibility({ onClose: onCancel });
+  const { overlayRef } = useCloseComponent({ onClose: onCancel });
 
   return (
     <div

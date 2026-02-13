@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react';
 
-type UseModalAccessibilityProps = {
+type UseCloseComponentProps = {
   onClose: () => void;
 };
 
-const useModalAccessibility = ({ onClose }: UseModalAccessibilityProps) => {
+const useCloseComponent = ({ onClose }: UseCloseComponentProps) => {
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const firstRenderRef = useRef(true);
 
@@ -29,4 +29,4 @@ const useModalAccessibility = ({ onClose }: UseModalAccessibilityProps) => {
   return { overlayRef };
 };
 
-export default useModalAccessibility;
+export default useCloseComponent;

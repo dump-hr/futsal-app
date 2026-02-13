@@ -1,1 +1,1 @@
-export { default as useModalAccessibility } from './useModalAccessibility';
+export { default as useCloseComponent } from './useCloseComponent';
