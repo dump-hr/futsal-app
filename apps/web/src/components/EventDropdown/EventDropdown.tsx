@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import clsx from 'clsx';
 import { ArrowDownWhite } from '@assets/index';
 import { EventType } from '@futsal-app/types';
+import { useCloseComponent } from '@hooks/index';
 import c from './EventDropdown.module.scss';
 
 const REGULAR_EVENTS: EventType[] = [
@@ -51,19 +52,8 @@ const EventDropdown: React.FC<EventDropdownProps> = ({
 
   const events = isPenaltyShootout ? PENALTY_SHOOTOUT_EVENTS : REGULAR_EVENTS;
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(e.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  const closeDropdown = useCallback(() => setIsOpen(false), []);
+  useCloseComponent({ onClose: closeDropdown, containerRef: wrapperRef });
 
   const handleSelect = (event: EventType) => {
     onChange(event);

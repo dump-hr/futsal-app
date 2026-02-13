@@ -1,10 +1,14 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type RefObject } from 'react';
 
 type UseCloseComponentProps = {
   onClose: () => void;
+  containerRef?: RefObject<HTMLElement | null>;
 };
 
-const useCloseComponent = ({ onClose }: UseCloseComponentProps) => {
+const useCloseComponent = ({
+  onClose,
+  containerRef,
+}: UseCloseComponentProps) => {
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const firstRenderRef = useRef(true);
 
@@ -15,6 +19,22 @@ const useCloseComponent = ({ onClose }: UseCloseComponentProps) => {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
+
+  useEffect(() => {
+    if (!containerRef?.current) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [onClose, containerRef]);
 
   useEffect(() => {
     if (overlayRef.current && firstRenderRef.current) {
