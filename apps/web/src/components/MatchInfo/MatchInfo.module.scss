@@ -1,0 +1,84 @@
+.card {
+  width: 100%;
+  background-color: $black;
+  border-radius: 20px;
+  display: flex;
+  overflow: hidden;
+  height: 76px;
+  align-items: stretch;
+}
+
+.stagePill {
+  @include legal-text;
+  background-color: $lime;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  padding: 16px 12px 16px 16px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding-right: 24px;
+}
+
+.team {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 17px;
+  padding-bottom: 17px;
+
+  &.left {
+    justify-content: flex-start;
+    padding-left: 24px;
+    padding-right: 16px;
+  }
+
+  &.right {
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+    padding-left: 16px;
+  }
+
+  &Name {
+    @include body-normal;
+    color: $white;
+  }
+
+  &Logo {
+    height: 42px;
+  }
+}
+
+.scorePill {
+  @include title-3;
+  color: $white;
+  background-color: $gray-dark;
+  width: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 29px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.matchTime {
+  @include body-large;
+  color: $white;
+  opacity: 60%;
+  margin-left: auto;
+}
+
+.matchAction {
+  &Wrapper {
+  }
+  &Icon {
+  }
+}
