@@ -17,8 +17,10 @@ export const ComponentTestPage = () => {
         teamA={{ teamName: 'Ericsson Nikola Tesla', logoUrl: otpLogo }}
         teamB={{ teamName: 'Maurer Electronics', logoUrl: infobipLogo }}
         matchTime={'21:30'}
+        teamAScore={3}
+        teamBScore={1}
         matchStage={MatchStage.QUARTER_FINALS}
-        matchStatus={MatchStatus.FINISHED}
+        matchStatus={MatchStatus.LIVE}
       />
     </div>
   );

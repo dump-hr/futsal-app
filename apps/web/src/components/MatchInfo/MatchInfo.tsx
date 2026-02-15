@@ -1,5 +1,10 @@
 import React from 'react';
 import c from './MatchInfo.module.scss';
+import playIconSvg from '../../assets/icons/play-black.svg';
+import trachCanIconSvg from '../../assets/icons/trash-can-gray.svg';
+import editIconSvg from '../../assets/icons/pencil-gray.svg';
+import doneIconSvg from '../../assets/icons/check-black.svg';
+import timerIconSvg from '../../assets/icons/timer-gray.svg';
 
 export const MatchStage = {
   GROUP_STAGE: 'Grupa',
@@ -9,9 +14,9 @@ export const MatchStage = {
 } as const;
 
 export const MatchStatus = {
-  UPCOMING: '',
-  LIVE: '',
-  FINISHED: '',
+  UPCOMING: 'UPCOMING',
+  LIVE: 'LIVE',
+  FINISHED: 'FINISHED',
 } as const;
 
 type MatchStage = (typeof MatchStage)[keyof typeof MatchStage];
@@ -107,28 +112,39 @@ type MatchActionsProps = {
 };
 
 const MatchActions: React.FC<MatchActionsProps> = ({ status }) => {
+  console.log('MatchActions render with status:', status);
   switch (status) {
     case MatchStatus.UPCOMING:
       return (
         <div className={c.matchActionWrapper}>
-          <div></div>
-          <div></div>
-          <div></div>
+          <IconButton
+            iconUrl={playIconSvg}
+            altStyle='iconButtonPlay'
+            altText='Play'
+          />
+          <IconButton iconUrl={trachCanIconSvg} altText='Delete' />
+          <IconButton iconUrl={editIconSvg} altText='Edit' />
         </div>
       );
     case MatchStatus.LIVE:
       return (
         <div className={c.matchActionWrapper}>
-          <div></div>
-          <div></div>
-          <div></div>
+          <IconButton iconUrl={timerIconSvg} altText='Stopwatch' />
+          <div className={c.redDotIndicator}>
+            <div className={c.redDotIndicatorInner} />
+          </div>
         </div>
       );
     case MatchStatus.FINISHED:
       return (
         <div className={c.matchActionWrapper}>
-          <div></div>
-          <div></div>
+          <IconButton
+            iconUrl={doneIconSvg}
+            altStyle='iconButtonDone'
+            altText='Done'
+          />
+          <IconButton iconUrl={trachCanIconSvg} altText='Delete' />
+          <IconButton iconUrl={editIconSvg} altText='Edit' />
         </div>
       );
     default:
@@ -139,17 +155,23 @@ const MatchActions: React.FC<MatchActionsProps> = ({ status }) => {
 type IconButtonProps = {
   iconUrl: string;
   altText: string;
+  altStyle?: string;
   onClick?: () => void;
 };
 
 const IconButton: React.FC<IconButtonProps> = ({
   iconUrl,
   altText,
+  altStyle = '',
   onClick,
 }) => {
   return (
     <button className={c.iconButtonWrapper} onClick={onClick}>
-      <img src={iconUrl} alt={altText} className={c.iconButton} />
+      <img
+        src={iconUrl}
+        alt={altText}
+        className={`${c.iconButtonImage} ${c[altStyle]}`}
+      />
     </button>
   );
 };
