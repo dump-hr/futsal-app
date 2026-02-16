@@ -5,8 +5,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-sizing: border-box;
   background-color: $black;
+  position: fixed;
 }
 
 .imageWrapper {
@@ -16,7 +16,7 @@
   width: 40px;
   height: 40px;
   border-radius: 8.33px;
-  background-color: #525252;
+  background-color: $background-gray;
 }
 
 .listWrapper {
@@ -38,7 +38,7 @@
   cursor: pointer;
   position: relative;
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.6);
+  color: $white-transparent;
 }
 
 .navbarList a::after {
@@ -48,7 +48,7 @@
   bottom: -6px;
   width: 0;
   height: 2px;
-  background-color: #b3ff3b;
+  background-color: $lime;
   transition: width 0.3s ease;
 }
 
@@ -57,7 +57,7 @@
 }
 
 .navbarList a.active {
-  color: #ffffff;
+  color: $white;
 }
 .navbarList a.active::after {
   width: 100%;

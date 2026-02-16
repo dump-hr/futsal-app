@@ -1,6 +1,7 @@
 import { Navbar } from '@components/index';
+import type { ReactNode } from 'react';
 
-export const NavbarLayout = ({ children }: { children: React.ReactNode }) => {
+export const NavbarLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <Navbar />

@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'wouter';
 import { routes } from '@routes/routes';
-import { Logout, Logotip } from '@assets/icons';
+import { ExitBlack, Logo } from '@assets/icons';
 import ButtonSmall, { BackgroundColor } from '@components/ButtonSmall';
 import c from './Navbar.module.scss';
 
@@ -11,7 +11,7 @@ export const Navbar = () => {
     <nav className={c.navbar}>
       <div className={c.listWrapper}>
         <div className={c.imageWrapper}>
-          <img src={Logotip} alt='Logo' />
+          <img src={Logo} alt='Logo' />
         </div>
 
         <ul className={c.navbarList}>
@@ -38,7 +38,10 @@ export const Navbar = () => {
         </ul>
       </div>
 
-      <ButtonSmall iconSrc={Logout} backgroundColor={BackgroundColor.White} />
+      <ButtonSmall
+        iconSrc={ExitBlack}
+        backgroundColor={BackgroundColor.White}
+      />
     </nav>
   );
 };
