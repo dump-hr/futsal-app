@@ -1,5 +1,5 @@
 import ButtonSmall, { BackgroundColor } from '../../components/ButtonSmall';
-import { Button, MatchInfo, MatchStage, MatchStatus } from '../../components';
+import { Button, MATCH_STAGE, MATCH_STATUS, MatchInfo } from '../../components';
 import c from './HomePage.module.scss';
 import trashCanSvg from '@assets/icons/trash-can-gray.svg';
 import plusSvg from '@assets/icons/plus-gray.svg';
@@ -51,8 +51,8 @@ export const HomePage = () => {
           matchTime={'21:30'}
           teamAScore={3}
           teamBScore={1}
-          matchStage={MatchStage.QUARTER_FINALS}
-          matchStatus={MatchStatus.LIVE}
+          matchStage={MATCH_STAGE.QUARTER_FINALS}
+          matchStatus={MATCH_STATUS.LIVE}
         />
       </div>
     </div>
