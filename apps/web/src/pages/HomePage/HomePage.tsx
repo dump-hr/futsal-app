@@ -1,9 +1,11 @@
 import ButtonSmall, { BackgroundColor } from '../../components/ButtonSmall';
-import { Button } from '../../components';
+import { Button, MatchInfo, MatchStage, MatchStatus } from '../../components';
 import c from './HomePage.module.scss';
 import trashCanSvg from '@assets/icons/trash-can-gray.svg';
 import plusSvg from '@assets/icons/plus-gray.svg';
 import { PlusBlack, XWhite, CheckBlack } from '@assets/index';
+import infobipLogo from '../../../public/test-logos/infobip.png';
+import otpLogo from '../../../public/test-logos/otp.png';
 
 export const HomePage = () => {
   return (
@@ -41,6 +43,18 @@ export const HomePage = () => {
         width={40}
         backgroundColor={BackgroundColor.Red}
       />
+
+      <div style={{ width: '1296px' }}>
+        <MatchInfo
+          teamA={{ teamName: 'Ericsson Nikola Tesla', logoUrl: otpLogo }}
+          teamB={{ teamName: 'Maurer Electronics', logoUrl: infobipLogo }}
+          matchTime={'21:30'}
+          teamAScore={3}
+          teamBScore={1}
+          matchStage={MatchStage.QUARTER_FINALS}
+          matchStatus={MatchStatus.LIVE}
+        />
+      </div>
     </div>
   );
 };
