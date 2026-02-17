@@ -1,5 +1,5 @@
 import ButtonSmall, { BackgroundColor } from '../components/ButtonSmall';
-import { Button } from '../components';
+import { Button, TeamInfo } from '../components';
 import c from './HomePage.module.scss';
 import trashCanSvg from '@assets/icons/trash-can-gray.svg';
 import plusSvg from '@assets/icons/plus-gray.svg';
@@ -41,6 +41,8 @@ export const HomePage = () => {
         width={40}
         backgroundColor={BackgroundColor.Red}
       />
+
+      <TeamInfo />
     </div>
   );
 };
