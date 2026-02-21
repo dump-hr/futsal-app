@@ -14,7 +14,6 @@ type PrismaKnownErrorLike = {
 export class PrismaClientExceptionFilter extends BaseExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     if (this.isPrismaKnownError(exception)) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       switch (exception.code) {
         case 'P2002':
           throw new HttpException(
