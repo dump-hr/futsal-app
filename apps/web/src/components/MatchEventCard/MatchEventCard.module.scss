@@ -1,0 +1,182 @@
+.card {
+  background-color: $black;
+  border: 0.5px solid $gray-dark;
+  border-radius: 16px;
+  padding: 24px;
+  width: 272px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.cardRight {
+  align-items: flex-start;
+}
+
+.editing {
+  height: 200px;
+  gap: 0;
+  justify-content: space-between;
+}
+
+.topRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+
+  .editing & {
+    align-items: center;
+  }
+}
+
+.topRowRight {
+  flex-direction: row-reverse;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  opacity: 0.6;
+
+  .editing & {
+    opacity: 1;
+  }
+}
+
+.minute {
+  @include title-2;
+  color: $white;
+  margin: 0;
+}
+
+.minuteInput {
+  @include title-3;
+  color: $white;
+  background: transparent;
+  border: 0.5px solid $white;
+  border-radius: 8px;
+  padding: 4px 8px;
+  width: 64px;
+  text-align: center;
+  outline: none;
+
+  &:focus {
+    border-color: $lime;
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.infoRight {
+  align-items: flex-start;
+}
+
+.playerName {
+  @include body-large;
+  color: $white;
+  margin: 0;
+}
+
+.eventLabel {
+  @include body-large;
+  color: $white;
+  margin: 0;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.fieldsRight {
+  align-items: flex-start;
+}
+
+.nameInputWrapper {
+  position: relative;
+}
+
+.nameInput {
+  @include body-normal;
+  color: $white;
+  background: transparent;
+  border: 0.5px solid $lime;
+  border-radius: 8px;
+  padding: 8px 12px;
+  width: 224px;
+  outline: none;
+  text-align: right;
+
+  &::placeholder {
+    color: $gray-medium;
+  }
+
+  &:focus {
+    border-color: $lime;
+  }
+}
+
+.nameInputRight {
+  text-align: left;
+}
+
+.suggestions {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  width: 100%;
+  background-color: $black;
+  border: 0.8px solid $white;
+  border-radius: 6px;
+  padding: 8px 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 16px 16px 40px 0px #00000040;
+  animation: suggestionsIn 0.2s ease forwards;
+}
+
+.suggestionsRight {
+  left: 0;
+  right: auto;
+}
+
+@keyframes suggestionsIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.suggestionItem {
+  @include body-normal;
+  color: $white;
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  text-align: right;
+  width: 100%;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.suggestionItemRight {
+  text-align: left;
+}

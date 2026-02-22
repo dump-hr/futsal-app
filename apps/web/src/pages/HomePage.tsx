@@ -3,6 +3,7 @@ import {
   ModalConfirmation,
   ButtonSmall,
   EventDropdown,
+  MatchEventCard,
 } from '@components/index';
 import { BackgroundColor } from '../types';
 import { useState } from 'react';
@@ -105,6 +106,23 @@ export const HomePage = () => {
         width={40}
         backgroundColor={BackgroundColor.Red}
       />
+
+      <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+        <MatchEventCard
+          side='left'
+          teamId={1}
+          isNew
+          onSave={(data) => console.log('save', data)}
+          onDelete={() => console.log('delete')}
+        />
+        <MatchEventCard
+          side='right'
+          teamId={1}
+          isNew
+          onSave={(data) => console.log('save', data)}
+          onDelete={() => console.log('delete')}
+        />
+      </div>
     </div>
   );
 };
