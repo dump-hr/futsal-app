@@ -4,3 +4,15 @@ export enum Group {
   C = 'C',
   D = 'D',
 }
+
+export enum EventType {
+  goal = 'goal',
+  ownGoal = 'ownGoal',
+  penaltyGoal = 'penaltyGoal',
+  penaltyMiss = 'penaltyMiss',
+  yellowCard = 'yellowCard',
+  redCard = 'redCard',
+  injury = 'injury',
+  shootoutGoal = 'shootoutGoal',
+  shootoutMiss = 'shootoutMiss',
+}
