@@ -1,3 +1,4 @@
+export { default as ArrowDownWhite } from './arrow-down-white.svg';
 export { default as ArrowLeftGray } from './arrow-left-gray.svg';
 export { default as ArrowRightBlack } from './arrow-right-black.svg';
 export { default as ArrowRightWhite } from './arrow-right-white.svg';
@@ -22,3 +23,4 @@ export { default as SettingsGray } from './settings-gray.svg';
 export { default as TrashCanBlack } from './trash-can-black.svg';
 export { default as TrashCanGray } from './trash-can-gray.svg';
 export { default as UploadGray } from './upload-gray.svg';
+export { default as Logo } from './logo.svg';
