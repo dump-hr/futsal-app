@@ -1,4 +1,13 @@
 .team {
   width: 100%;
   background-color: red;
+  display: flex;
+
+  &Info {
+  }
+
+  &Stats {
+    &Wrapper {
+    }
+  }
 }
