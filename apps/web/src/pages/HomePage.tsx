@@ -42,7 +42,14 @@ export const HomePage = () => {
         backgroundColor={BackgroundColor.Red}
       />
 
-      <TeamInfo />
+      <TeamInfo
+        teamName='Infobip'
+        teamLogoUrl='/team-logo.png'
+        teamScore={3}
+        teamGroup='A'
+        numberOfPlayers={12}
+        numberOfMatchesPlayed={4}
+      />
     </div>
   );
 };
