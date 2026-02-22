@@ -75,7 +75,7 @@ const EventDropdown: React.FC<EventDropdownProps> = ({
           className={clsx(c.arrowIcon, isOpen && c.rotated)}
         />
         <span className={c.selectedText}>
-          {value ? EVENT_LABELS[value] : ''}
+          {value ? EVENT_LABELS[value] : 'Odaberi događaj'}
         </span>
       </button>
       {isOpen && (
