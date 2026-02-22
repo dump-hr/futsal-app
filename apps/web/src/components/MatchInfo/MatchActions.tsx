@@ -1,10 +1,12 @@
 import c from './MatchInfo.module.scss';
 import playIconSvg from '../../assets/icons/play-black.svg';
-import trachCanIconSvg from '../../assets/icons/trash-can-gray.svg';
+import trashCanIconSvg from '../../assets/icons/trash-can-gray.svg';
 import editIconSvg from '../../assets/icons/pencil-gray.svg';
 import doneIconSvg from '../../assets/icons/check-black.svg';
 import timerIconSvg from '../../assets/icons/timer-gray.svg';
 import { type MatchStatus, MATCH_STATUS } from '.';
+import ButtonSmall from '@components/ButtonSmall';
+import { BackgroundColor } from '../../types';
 
 type MatchActionsProps = {
   status: MatchStatus;
@@ -16,19 +18,19 @@ export const MatchActions: React.FC<MatchActionsProps> = ({ status }) => {
     case MATCH_STATUS.UPCOMING:
       return (
         <div className={c.matchActionWrapper}>
-          <IconButton
-            iconUrl={playIconSvg}
-            altStyle='iconButtonPlay'
-            altText='Play'
+          <ButtonSmall
+            iconSrc={playIconSvg}
+            hasBorder
+            backgroundColor={BackgroundColor.White}
           />
-          <IconButton iconUrl={trachCanIconSvg} altText='Delete' />
-          <IconButton iconUrl={editIconSvg} altText='Edit' />
+          <ButtonSmall iconSrc={trashCanIconSvg} hasBorder />
+          <ButtonSmall iconSrc={editIconSvg} hasBorder />
         </div>
       );
     case MATCH_STATUS.LIVE:
       return (
         <div className={c.matchActionWrapper}>
-          <IconButton iconUrl={timerIconSvg} altText='Stopwatch' />
+          <ButtonSmall iconSrc={timerIconSvg} hasBorder />
           <div className={c.redDotIndicator}>
             <div className={c.redDotIndicatorInner} />
           </div>
@@ -37,40 +39,15 @@ export const MatchActions: React.FC<MatchActionsProps> = ({ status }) => {
     case MATCH_STATUS.FINISHED:
       return (
         <div className={c.matchActionWrapper}>
-          <IconButton
-            iconUrl={doneIconSvg}
-            altStyle='iconButtonDone'
-            altText='Done'
+          <ButtonSmall
+            iconSrc={doneIconSvg}
+            backgroundColor={BackgroundColor.Lime}
           />
-          <IconButton iconUrl={trachCanIconSvg} altText='Delete' />
-          <IconButton iconUrl={editIconSvg} altText='Edit' />
+          <ButtonSmall iconSrc={trashCanIconSvg} hasBorder />
+          <ButtonSmall iconSrc={editIconSvg} hasBorder />
         </div>
       );
     default:
       return null;
   }
-};
-
-type IconButtonProps = {
-  iconUrl: string;
-  altText: string;
-  altStyle?: string;
-  onClick?: () => void;
-};
-
-const IconButton: React.FC<IconButtonProps> = ({
-  iconUrl,
-  altText,
-  altStyle = '',
-  onClick,
-}) => {
-  return (
-    <button className={c.iconButtonWrapper} onClick={onClick}>
-      <img
-        src={iconUrl}
-        alt={altText}
-        className={`${c.iconButtonImage} ${c[altStyle]}`}
-      />
-    </button>
-  );
 };

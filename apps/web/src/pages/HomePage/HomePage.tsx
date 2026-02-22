@@ -117,7 +117,7 @@ export const HomePage = () => {
           teamAScore={3}
           teamBScore={1}
           matchStage={MATCH_STAGE.QUARTER_FINALS}
-          matchStatus={MATCH_STATUS.LIVE}
+          matchStatus={MATCH_STATUS.FINISHED}
         />
       </div>
     </div>

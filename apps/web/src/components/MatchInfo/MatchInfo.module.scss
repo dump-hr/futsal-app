@@ -86,27 +86,6 @@
   }
 }
 
-.iconButton {
-  &Wrapper {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-  }
-  &Image {
-    border: 0.685px solid rgba($gray-light, 0.6);
-    border-radius: 50%;
-    padding: 9.17px 10px;
-  }
-  &Play {
-    background-color: $gray-light;
-    border: 0.685px solid $white !important;
-  }
-  &Done {
-    background-color: $lime;
-    border: 0.685px solid $lime !important;
-  }
-}
-
 .redDotIndicator {
   display: flex;
   width: 40px;
