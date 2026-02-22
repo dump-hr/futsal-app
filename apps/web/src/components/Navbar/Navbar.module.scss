@@ -1,0 +1,64 @@
+.navbar {
+  width: 100%;
+  height: 80px;
+  padding: 16px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $black;
+  position: fixed;
+}
+
+.imageWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8.33px;
+  background-color: $background-gray;
+}
+
+.listWrapper {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbarList {
+  padding: 6px 0;
+  gap: 32px;
+  display: flex;
+  @include body-large;
+}
+
+.navbarList a {
+  list-style: none;
+  cursor: pointer;
+  position: relative;
+  text-decoration: none;
+  color: $white-transparent;
+}
+
+.navbarList a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 2px;
+  background-color: $lime;
+  transition: width 0.3s ease;
+}
+
+.navbarList a:hover::after {
+  width: 100%;
+}
+
+.navbarList a.active {
+  color: $white;
+}
+.navbarList a.active::after {
+  width: 100%;
+}
