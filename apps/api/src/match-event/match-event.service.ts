@@ -56,6 +56,9 @@ export class MatchEventService {
     return (await this.prisma.matchEvent.findMany({
       where: { matchId },
       orderBy: { minute: 'asc' },
+      include: {
+        player: { select: { id: true, firstName: true, lastName: true } },
+      },
     })) as unknown as MatchEventDto[];
   }
 

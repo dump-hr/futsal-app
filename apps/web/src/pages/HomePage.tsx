@@ -4,6 +4,7 @@ import {
   ButtonSmall,
   EventDropdown,
   MatchEventCard,
+  MatchPanel,
 } from '@components/index';
 import { BackgroundColor } from '../types';
 import { useState } from 'react';
@@ -123,6 +124,8 @@ export const HomePage = () => {
           onDelete={() => console.log('delete')}
         />
       </div>
-    </div>
+
+      <MatchPanel matchId={5} onClose={() => console.log('close')} />
+      </div>
   );
 };

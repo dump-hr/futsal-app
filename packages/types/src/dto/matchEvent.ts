@@ -43,6 +43,18 @@ export class MatchEventUpdateDto {
   eventType?: EventType;
 }
 
+export class MatchEventPlayerDto {
+  @IsInt()
+  @IsNotEmpty()
+  id: number;
+
+  @IsNotEmpty()
+  firstName: string;
+
+  @IsNotEmpty()
+  lastName: string;
+}
+
 export class MatchEventDto {
   @IsInt()
   @IsNotEmpty()
@@ -59,6 +71,9 @@ export class MatchEventDto {
   @IsInt()
   @IsOptional()
   playerId?: number;
+
+  @IsOptional()
+  player?: MatchEventPlayerDto;
 
   @IsEnum(EventType)
   @IsNotEmpty()

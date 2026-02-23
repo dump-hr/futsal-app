@@ -9,8 +9,6 @@
   align-items: center;
 }
 
-// MatchHeader
-
 .header {
   width: 100%;
   padding: 24px 24px 0;
@@ -110,8 +108,6 @@
   text-align: center;
 }
 
-// Section labels
-
 .sectionLabel {
   display: flex;
   align-items: center;
@@ -126,22 +122,11 @@
   }
 }
 
-// Add button
-
-.addButton {
-  display: flex;
-  justify-content: center;
-  padding: 8px 0;
-}
-
-// Timeline
-
-.timeline {
+.timelineWrapper {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  align-items: center;
   width: 476px;
-  padding: 0 16px;
   position: relative;
 
   &::before {
@@ -151,15 +136,29 @@
     top: 0;
     bottom: 0;
     width: 1px;
-    border-left: 2px dashed $gray-dark;
+    border-left: 2px dashed $white;
   }
+}
+
+.addButton {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+  padding: 0 16px;
 }
 
 .eventRow {
   display: flex;
   width: 100%;
-  position: relative;
-  z-index: 1;
 }
 
 .eventLeft {
@@ -169,8 +168,6 @@
 .eventRight {
   justify-content: flex-end;
 }
-
-// TeamPicker
 
 .teamPicker {
   background-color: $black;

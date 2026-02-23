@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import { ButtonSmall } from '@components/index';
 import { XBlack } from '@assets/index';
 import { BackgroundColor } from '../../types';
