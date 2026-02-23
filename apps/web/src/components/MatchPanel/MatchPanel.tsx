@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import clsx from 'clsx';
 import { EventType, MatchEventDto } from '@futsal-app/types';
+import type { MatchEventSaveData } from '../MatchEventCard/MatchEventCard';
 import {
   useMatch,
   useMatchEvents,
@@ -77,15 +78,7 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
     setShowPenaltyTeamPicker(false);
   };
 
-  const handleSave = (
-    isForHomeTeam: boolean,
-    data: {
-      minute: number;
-      playerName: string;
-      playerId?: number;
-      eventType: EventType;
-    },
-  ) => {
+  const handleSave = (isForHomeTeam: boolean, data: MatchEventSaveData) => {
     createEvent.mutate({
       minute: data.minute,
       matchId,
@@ -98,12 +91,7 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
 
   const handlePenaltySave = (
     isForHomeTeam: boolean,
-    data: {
-      minute: number;
-      playerName: string;
-      playerId?: number;
-      eventType: EventType;
-    },
+    data: MatchEventSaveData,
   ) => {
     createEvent.mutate({
       minute: 0,
@@ -115,15 +103,7 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
     setNewPenaltyEventSide(null);
   };
 
-  const handleUpdate = (
-    eventId: number,
-    data: {
-      minute: number;
-      playerName: string;
-      playerId?: number;
-      eventType: EventType;
-    },
-  ) => {
+  const handleUpdate = (eventId: number, data: MatchEventSaveData) => {
     updateEvent.mutate({
       id: eventId,
       dto: {
@@ -183,106 +163,101 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
         onClose={onClose}
       />
 
-      {showPenaltySection && (
+      {showPenaltySection ? (
         <>
           <div className={c.sectionLabel}>
             <span>IZVOĐENJE KAZNENIH UDARACA</span>
           </div>
 
-          <div className={c.timelineWrapper}>
-            <div className={c.addButton}>
-              <div onClick={() => setShowPenaltyTeamPicker(true)}>
-                <ButtonSmall
-                  iconSrc={PlusBlack}
-                  backgroundColor={BackgroundColor.White}
-                />
-              </div>
-            </div>
-
-            <div className={c.timeline}>
-              {showPenaltyTeamPicker && match.homeTeam && match.awayTeam && (
-                <div className={c.eventRow}>
-                  <TeamPicker
-                    homeTeam={match.homeTeam}
-                    awayTeam={match.awayTeam}
-                    onPick={handlePenaltyTeamPick}
-                    onClose={() => setShowPenaltyTeamPicker(false)}
-                  />
-                </div>
-              )}
-
-              {newPenaltyEventSide && (
-                <div
-                  className={clsx(
-                    c.eventRow,
-                    newPenaltyEventSide.isHome ? c.eventLeft : c.eventRight,
-                  )}>
-                  <MatchEventCard
-                    side={newPenaltyEventSide.isHome ? 'left' : 'right'}
-                    teamId={newPenaltyEventSide.teamId}
-                    isPenaltyShootout
-                    isNew
-                    onSave={(data) =>
-                      handlePenaltySave(newPenaltyEventSide.isHome, data)
-                    }
-                    onDelete={() => setNewPenaltyEventSide(null)}
-                    onCancel={() => setNewPenaltyEventSide(null)}
-                  />
-                </div>
-              )}
-
-              {penaltyEvents.map((event) => renderEvent(event, true))}
+          <div className={c.addButton}>
+            <div onClick={() => setShowPenaltyTeamPicker(true)}>
+              <ButtonSmall
+                iconSrc={PlusBlack}
+                backgroundColor={BackgroundColor.White}
+              />
             </div>
           </div>
 
-          <div className={c.sectionLabel}>
-            <span>REGULARNA IGRA</span>
+          <div className={c.timeline}>
+            {showPenaltyTeamPicker && match.homeTeam && match.awayTeam && (
+              <div className={c.eventRow}>
+                <TeamPicker
+                  homeTeam={match.homeTeam}
+                  awayTeam={match.awayTeam}
+                  onPick={handlePenaltyTeamPick}
+                  onClose={() => setShowPenaltyTeamPicker(false)}
+                />
+              </div>
+            )}
+
+            {newPenaltyEventSide && (
+              <div
+                className={clsx(
+                  c.eventRow,
+                  newPenaltyEventSide.isHome ? c.eventLeft : c.eventRight,
+                )}>
+                <MatchEventCard
+                  side={newPenaltyEventSide.isHome ? 'left' : 'right'}
+                  teamId={newPenaltyEventSide.teamId}
+                  isPenaltyShootout
+                  isNew
+                  onSave={(data) =>
+                    handlePenaltySave(newPenaltyEventSide.isHome, data)
+                  }
+                  onDelete={() => setNewPenaltyEventSide(null)}
+                  onCancel={() => setNewPenaltyEventSide(null)}
+                />
+              </div>
+            )}
+
+            {[...penaltyEvents].reverse().map((event) => renderEvent(event, true))}
+            {regularEvents.map((event) => renderEvent(event))}
+          </div>
+        </>
+      ) : (
+        <>
+          <div className={c.addButton}>
+            <div onClick={() => setShowTeamPicker(true)}>
+              <ButtonSmall
+                iconSrc={PlusBlack}
+                backgroundColor={BackgroundColor.White}
+              />
+            </div>
+          </div>
+
+          <div className={c.timeline}>
+            {showTeamPicker && match.homeTeam && match.awayTeam && (
+              <div className={c.eventRow}>
+                <TeamPicker
+                  homeTeam={match.homeTeam}
+                  awayTeam={match.awayTeam}
+                  onPick={handleTeamPick}
+                  onClose={() => setShowTeamPicker(false)}
+                />
+              </div>
+            )}
+
+            {newEventSide && (
+              <div
+                className={clsx(
+                  c.eventRow,
+                  newEventSide.isHome ? c.eventLeft : c.eventRight,
+                )}>
+                <MatchEventCard
+                  side={newEventSide.isHome ? 'left' : 'right'}
+                  teamId={newEventSide.teamId}
+                  isNew
+                  onSave={(data) => handleSave(newEventSide.isHome, data)}
+                  onDelete={() => setNewEventSide(null)}
+                  onCancel={() => setNewEventSide(null)}
+                />
+              </div>
+            )}
+
+            {regularEvents.map((event) => renderEvent(event))}
           </div>
         </>
       )}
-
-      <div className={c.timelineWrapper}>
-        <div className={c.addButton}>
-          <div onClick={() => setShowTeamPicker(true)}>
-            <ButtonSmall
-              iconSrc={PlusBlack}
-              backgroundColor={BackgroundColor.White}
-            />
-          </div>
-        </div>
-
-        <div className={c.timeline}>
-          {showTeamPicker && match.homeTeam && match.awayTeam && (
-            <div className={c.eventRow}>
-              <TeamPicker
-                homeTeam={match.homeTeam}
-                awayTeam={match.awayTeam}
-                onPick={handleTeamPick}
-                onClose={() => setShowTeamPicker(false)}
-              />
-            </div>
-          )}
-
-          {newEventSide && (
-            <div
-              className={clsx(
-                c.eventRow,
-                newEventSide.isHome ? c.eventLeft : c.eventRight,
-              )}>
-              <MatchEventCard
-                side={newEventSide.isHome ? 'left' : 'right'}
-                teamId={newEventSide.teamId}
-                isNew
-                onSave={(data) => handleSave(newEventSide.isHome, data)}
-                onDelete={() => setNewEventSide(null)}
-                onCancel={() => setNewEventSide(null)}
-              />
-            </div>
-          )}
-
-          {regularEvents.map((event) => renderEvent(event))}
-        </div>
-      </div>
     </div>
   );
 };

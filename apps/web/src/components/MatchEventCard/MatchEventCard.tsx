@@ -15,7 +15,7 @@ type EditFormState = {
   eventType: EventType | null;
 };
 
-type MatchEventSaveData = {
+export type MatchEventSaveData = {
   minute: number;
   playerName: string;
   playerId?: number;
@@ -205,7 +205,9 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
             <ButtonSmall iconSrc={PencilGray} hasBorder />
           </div>
         </div>
-        <p className={c.minute}>{isPenaltyShootout ? 'PENAL' : `${minute}'`}</p>
+        <p className={isPenaltyShootout ? c.penaltyLabel : c.minute}>
+          {isPenaltyShootout ? 'PENAL' : `${minute}'`}
+        </p>
       </div>
       <div className={clsx(c.info, !isLeft && c.infoRight)}>
         <p className={c.playerName}>{playerName}</p>

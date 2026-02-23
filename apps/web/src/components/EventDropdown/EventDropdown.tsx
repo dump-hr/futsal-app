@@ -27,7 +27,6 @@ type EventDropdownProps = {
   value: EventType | null;
   onChange: (event: EventType) => void;
   className?: string;
-  dropUp?: boolean;
 };
 
 const EventDropdown: React.FC<EventDropdownProps> = ({
@@ -36,7 +35,6 @@ const EventDropdown: React.FC<EventDropdownProps> = ({
   value,
   onChange,
   className,
-  dropUp = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -70,7 +68,7 @@ const EventDropdown: React.FC<EventDropdownProps> = ({
         </span>
       </button>
       {isOpen && (
-        <div className={clsx(c.dropdown, dropUp && c.dropUp)}>
+        <div className={c.dropdown}>
           {events.map((event) => (
             <button
               key={event}

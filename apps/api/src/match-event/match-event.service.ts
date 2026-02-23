@@ -55,7 +55,7 @@ export class MatchEventService {
   async getByMatchId(matchId: number): Promise<MatchEventDto[]> {
     return (await this.prisma.matchEvent.findMany({
       where: { matchId },
-      orderBy: { minute: 'asc' },
+      orderBy: [{ minute: 'asc' }, { id: 'asc' }],
       include: {
         player: { select: { id: true, firstName: true, lastName: true } },
       },
