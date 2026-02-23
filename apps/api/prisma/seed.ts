@@ -1,6 +1,5 @@
-import { PrismaClient, Group, MatchType, EventType } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { Group, MatchType, EventType } from '../generated/prisma/client';
+import { prisma } from '../lib/prisma';
 
 async function main() {
   await prisma.matchEvent.deleteMany();
@@ -233,11 +232,7 @@ async function main() {
   console.log(`  Matches: 6 (4 group + 1 semi + 1 final)`);
 }
 
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
