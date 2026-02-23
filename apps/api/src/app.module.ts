@@ -6,6 +6,7 @@ import { join } from 'path';
 import { PrismaModule } from './prisma/prisma.module';
 import { TournamentModule } from './tournament/tournament.module';
 import { PlayerModule } from './player/player.module';
+import { MatchEventModule } from './match-event/match-event.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { PlayerModule } from './player/player.module';
     PrismaModule,
     TournamentModule,
     PlayerModule,
+    MatchEventModule,
   ],
   controllers: [AppController],
   providers: [AppService],
