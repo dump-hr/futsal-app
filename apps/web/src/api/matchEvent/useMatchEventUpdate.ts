@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 import { api } from '../base';
 import { MatchEventUpdateDto, MatchEventDto } from '@futsal-app/types';
 
@@ -22,6 +23,9 @@ export const useMatchEventUpdate = (matchId: number) => {
       queryClient.invalidateQueries({
         queryKey: ['match', matchId],
       });
+    },
+    onError: (error) => {
+      toast.error(`Greška pri ažuriranju eventa - ${error.message}`);
     },
   });
 };

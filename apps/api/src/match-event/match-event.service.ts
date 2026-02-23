@@ -144,14 +144,18 @@ export class MatchEventService {
     }
 
     const delta = getScoreChange(existing.eventType, existing.isForHomeTeam);
+    const match = await this.prisma.match.findUnique({
+      where: { id: existing.matchId },
+    });
+
     try {
       const [deleted] = await this.prisma.$transaction([
         deleteOp,
         this.prisma.match.update({
           where: { id: existing.matchId },
           data: {
-            homeGoals: { decrement: delta.homeGoals },
-            awayGoals: { decrement: delta.awayGoals },
+            homeGoals: Math.max(0, (match?.homeGoals ?? 0) - delta.homeGoals),
+            awayGoals: Math.max(0, (match?.awayGoals ?? 0) - delta.awayGoals),
           },
         }),
       ]);

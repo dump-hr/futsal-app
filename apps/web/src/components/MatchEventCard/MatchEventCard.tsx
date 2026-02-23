@@ -124,12 +124,11 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
             <input
               className={c.minuteInput}
               value={`${editForm.minute}'`}
-              onChange={(e) =>
-                setEditForm((prev) => ({
-                  ...prev,
-                  minute: e.target.value.replace(/'/g, ''),
-                }))
-              }
+              onChange={(e) => {
+                const raw = e.target.value.replace(/'/g, '');
+                const digits = raw.replace(/\D/g, '').slice(0, 2);
+                setEditForm((prev) => ({ ...prev, minute: digits }));
+              }}
             />
           )}
         </div>
