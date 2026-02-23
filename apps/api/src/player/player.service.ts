@@ -1,13 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { prisma } from '../../lib/prisma';
 import { PlayerDto } from '@futsal-app/types';
 
 @Injectable()
 export class PlayerService {
-  constructor(private readonly prisma: PrismaService) {}
-
   async searchByTeam(teamId: number, query: string): Promise<PlayerDto[]> {
-    const players = await this.prisma.player.findMany({
+    const players = await prisma.player.findMany({
       where: {
         teamId,
         OR: [
