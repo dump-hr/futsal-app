@@ -18,7 +18,7 @@ COPY --from=builder /app/out/yarn.lock ./yarn.lock
 COPY --from=builder /app/out/full/apps/api/prisma ./apps/api/prisma
 COPY --from=builder /app/out/full/apps/api/prisma.config.ts ./apps/api/prisma.config.ts
 
-RUN yarn install --immutable && yarn cache clean
+RUN yarn install --immutable --verbose && yarn cache clean
 
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
@@ -37,4 +37,4 @@ USER nestjs
 COPY --from=installer --chown=nestjs:nestjs /app .
 COPY --chown=nestjs:nestjs apps/web/dist ./apps/web/dist
 
-CMD node apps/api/dist/main.js
+CMD node apps/api/dist/src/main.js
