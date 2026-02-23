@@ -19,6 +19,9 @@ export const useMatchEventUpdate = (matchId: number) => {
       queryClient.invalidateQueries({
         queryKey: ['matchEvents', matchId],
       });
+      queryClient.invalidateQueries({
+        queryKey: ['match', matchId],
+      });
     },
   });
 };
