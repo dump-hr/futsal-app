@@ -1,12 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { TournamentModifyDto, TournamentDto } from '@futsal-app/types';
+import { prisma } from '../../lib/prisma';
 
 @Injectable()
 export class TournamentService {
-  constructor(private readonly prisma: PrismaService) {}
   async create(dto: TournamentModifyDto): Promise<TournamentDto> {
-    const createdTournament = await this.prisma.tournament.create({
+    const createdTournament = await prisma.tournament.create({
       data: {
         ...dto,
       },
@@ -16,7 +15,7 @@ export class TournamentService {
   }
 
   async getById(id: number): Promise<TournamentDto> {
-    const tournament = await this.prisma.tournament.findFirst({
+    const tournament = await prisma.tournament.findFirst({
       where: { id },
     });
 
@@ -28,7 +27,7 @@ export class TournamentService {
   }
 
   async update(id: number, dto: TournamentModifyDto): Promise<TournamentDto> {
-    const updatedTournament = await this.prisma.tournament.update({
+    const updatedTournament = await prisma.tournament.update({
       where: { id },
       data: { ...dto },
     });
@@ -37,7 +36,7 @@ export class TournamentService {
   }
 
   async delete(id: number): Promise<TournamentDto> {
-    const deletedTournament = await this.prisma.tournament.delete({
+    const deletedTournament = await prisma.tournament.delete({
       where: { id },
     });
 

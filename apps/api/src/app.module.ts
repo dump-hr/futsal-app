@@ -3,7 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { PrismaModule } from './prisma/prisma.module';
 import { TournamentModule } from './tournament/tournament.module';
 
 @Module({
@@ -15,7 +14,6 @@ import { TournamentModule } from './tournament/tournament.module';
           }),
         ]
       : []),
-    PrismaModule,
     TournamentModule,
   ],
   controllers: [AppController],
