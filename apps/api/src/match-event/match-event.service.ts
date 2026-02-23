@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { type PrismaPromise } from '@prisma/client';
 import {
@@ -10,6 +10,8 @@ import { isGoalEvent, getScoreChange } from './match-event.helpers';
 
 @Injectable()
 export class MatchEventService {
+  private readonly logger = new Logger(MatchEventService.name);
+
   constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: MatchEventCreateDto): Promise<MatchEventDto> {
@@ -28,18 +30,26 @@ export class MatchEventService {
     }
 
     const delta = getScoreChange(dto.eventType, dto.isForHomeTeam);
-    const [created] = await this.prisma.$transaction([
-      event,
-      this.prisma.match.update({
-        where: { id: dto.matchId },
-        data: {
-          homeGoals: { increment: delta.homeGoals },
-          awayGoals: { increment: delta.awayGoals },
-        },
-      }),
-    ]);
+    try {
+      const [created] = await this.prisma.$transaction([
+        event,
+        this.prisma.match.update({
+          where: { id: dto.matchId },
+          data: {
+            homeGoals: { increment: delta.homeGoals },
+            awayGoals: { increment: delta.awayGoals },
+          },
+        }),
+      ]);
 
-    return created as unknown as MatchEventDto;
+      return created as unknown as MatchEventDto;
+    } catch (error) {
+      this.logger.error(
+        `Failed to create event and update score for match ${dto.matchId}`,
+        error,
+      );
+      throw error;
+    }
   }
 
   async getByMatchId(matchId: number): Promise<MatchEventDto[]> {
@@ -102,9 +112,17 @@ export class MatchEventService {
       );
     }
 
-    const [updated] = await this.prisma.$transaction(operations);
+    try {
+      const [updated] = await this.prisma.$transaction(operations);
 
-    return updated as MatchEventDto;
+      return updated as MatchEventDto;
+    } catch (error) {
+      this.logger.error(
+        `Failed to update event ${id} and sync score for match ${existing.matchId}`,
+        error,
+      );
+      throw error;
+    }
   }
 
   async delete(id: number): Promise<MatchEventDto> {
@@ -123,17 +141,25 @@ export class MatchEventService {
     }
 
     const delta = getScoreChange(existing.eventType, existing.isForHomeTeam);
-    const [deleted] = await this.prisma.$transaction([
-      deleteOp,
-      this.prisma.match.update({
-        where: { id: existing.matchId },
-        data: {
-          homeGoals: { decrement: delta.homeGoals },
-          awayGoals: { decrement: delta.awayGoals },
-        },
-      }),
-    ]);
+    try {
+      const [deleted] = await this.prisma.$transaction([
+        deleteOp,
+        this.prisma.match.update({
+          where: { id: existing.matchId },
+          data: {
+            homeGoals: { decrement: delta.homeGoals },
+            awayGoals: { decrement: delta.awayGoals },
+          },
+        }),
+      ]);
 
-    return deleted as unknown as MatchEventDto;
+      return deleted as unknown as MatchEventDto;
+    } catch (error) {
+      this.logger.error(
+        `Failed to delete event ${id} and sync score for match ${existing.matchId}`,
+        error,
+      );
+      throw error;
+    }
   }
 }
