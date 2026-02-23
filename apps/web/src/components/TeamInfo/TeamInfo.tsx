@@ -1,4 +1,7 @@
+import ButtonSmall from '@components/ButtonSmall';
 import c from './TeamInfo.module.scss';
+import trashIconUrl from '../../assets/icons/trash-can-gray.svg';
+import editIconUrl from '../../assets/icons/pencil-gray.svg';
 
 type TeamInfoProps = {
   teamName: string;
@@ -30,7 +33,10 @@ export const TeamInfo: React.FC<TeamInfoProps> = ({
           <span>{numberOfPlayers} igrača</span>
           <span>{numberOfMatchesPlayed} utakmice</span>
         </div>
-        <div className={c.teamActions}></div>
+        <div className={c.teamActions}>
+          <ButtonSmall iconSrc={trashIconUrl} hasBorder />
+          <ButtonSmall iconSrc={editIconUrl} hasBorder />
+        </div>
       </div>
     </div>
   );

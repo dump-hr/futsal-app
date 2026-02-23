@@ -12,6 +12,7 @@ import c from './HomePage.module.scss';
 import trashCanSvg from '@assets/icons/trash-can-gray.svg';
 import plusSvg from '@assets/icons/plus-gray.svg';
 import { PlusBlack, XWhite, CheckBlack, TrashCanBlack } from '@assets/index';
+import infobipLogo from '../assets/test-logos/infobip.png';
 
 export const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -106,15 +107,16 @@ export const HomePage = () => {
         width={40}
         backgroundColor={BackgroundColor.Red}
       />
-
-      <TeamInfo
-        teamName='Infobip'
-        teamLogoUrl='/team-logo.png'
-        teamScore={3}
-        teamGroup='A'
-        numberOfPlayers={12}
-        numberOfMatchesPlayed={4}
-      />
+      <div style={{ width: '1281px' }}>
+        <TeamInfo
+          teamName='Infobip'
+          teamLogoUrl={infobipLogo}
+          teamScore={3}
+          teamGroup='A'
+          numberOfPlayers={12}
+          numberOfMatchesPlayed={4}
+        />
+      </div>
     </div>
   );
 };
