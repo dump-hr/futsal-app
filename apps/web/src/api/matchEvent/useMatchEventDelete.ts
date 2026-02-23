@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 import { api } from '../base';
 import { MatchEventDto } from '@futsal-app/types';
 
@@ -15,6 +16,12 @@ export const useMatchEventDelete = (matchId: number) => {
       queryClient.invalidateQueries({
         queryKey: ['matchEvents', matchId],
       });
+      queryClient.invalidateQueries({
+        queryKey: ['match', matchId],
+      });
+    },
+    onError: (error) => {
+      toast.error(`Greška pri brisanju eventa - ${error.message}`);
     },
   });
 };

@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { EventType } from '@futsal-app/types';
 import { ButtonSmall, EventDropdown } from '@components/index';
 import { TrashCanGray, CheckBlack, PencilGray } from '@assets/index';
-import { BackgroundColor, EVENT_LABELS } from '../../types';
+import { BackgroundColor, EVENT_LABELS, MatchEventSaveData } from '../../types';
 import { usePlayerSearch } from '@api/index';
 import useCloseComponent from '@hooks/useCloseComponent';
 import c from './MatchEventCard.module.scss';
@@ -13,13 +13,6 @@ type EditFormState = {
   playerName: string;
   playerId?: number;
   eventType: EventType | null;
-};
-
-type MatchEventSaveData = {
-  minute: number;
-  playerName: string;
-  playerId?: number;
-  eventType: EventType;
 };
 
 type MatchEventCardProps = {
@@ -56,13 +49,12 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
   });
 
   const [showSuggestions, setShowSuggestions] = useState(false);
-
-  const nameWrapperRef = useRef<HTMLDivElement>(null);
-
   const { data: suggestions = [] } = usePlayerSearch(
     teamId,
     editForm.playerName,
   );
+
+  const nameWrapperRef = useRef<HTMLDivElement>(null);
 
   useCloseComponent({
     onClose: () => setShowSuggestions(false),
@@ -132,12 +124,11 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
             <input
               className={c.minuteInput}
               value={`${editForm.minute}'`}
-              onChange={(e) =>
-                setEditForm((prev) => ({
-                  ...prev,
-                  minute: e.target.value.replace(/'/g, ''),
-                }))
-              }
+              onChange={(e) => {
+                const raw = e.target.value.replace(/'/g, '');
+                const digits = raw.replace(/\D/g, '').slice(0, 2);
+                setEditForm((prev) => ({ ...prev, minute: digits }));
+              }}
             />
           )}
         </div>
@@ -205,7 +196,9 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
             <ButtonSmall iconSrc={PencilGray} hasBorder />
           </div>
         </div>
-        <p className={c.minute}>{isPenaltyShootout ? 'PENAL' : `${minute}'`}</p>
+        <p className={isPenaltyShootout ? c.penaltyLabel : c.minute}>
+          {isPenaltyShootout ? 'PENAL' : `${minute}'`}
+        </p>
       </div>
       <div className={clsx(c.info, !isLeft && c.infoRight)}>
         <p className={c.playerName}>{playerName}</p>
