@@ -1,15 +1,13 @@
-FROM node:20-alpine AS base
+FROM node:20.19-alpine AS base
 LABEL org.opencontainers.image.source https://github.com/dump-hr/futsal-app
 
 FROM base AS builder
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 RUN yarn global add turbo
 COPY . .
 RUN turbo prune --scope=api --docker
 
-# Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
@@ -18,6 +16,8 @@ COPY .gitignore .gitignore
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/yarn.lock ./yarn.lock
 COPY --from=builder /app/out/full/apps/api/prisma ./apps/api/prisma
+COPY --from=builder /app/out/full/apps/api/prisma.config.ts ./apps/api/prisma.config.ts
+
 RUN yarn install --immutable && yarn cache clean
 
 COPY --from=builder /app/out/full/ .
@@ -31,7 +31,6 @@ EXPOSE 3000
 HEALTHCHECK CMD curl -f http://localhost:3000/api/healthz || exit 1
 RUN apk add --no-cache curl
 
-# Don't run production as root
 RUN addgroup --system --gid 1001 nestjs
 RUN adduser --system --uid 1001 nestjs
 USER nestjs
