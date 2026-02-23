@@ -24,6 +24,7 @@ const MATCH_TYPE_LABELS: Record<string, string> = {
   thirdPlace: 'TREĆE MJESTO',
 };
 
+// vidit ocemo ovo prebacit u helper folder ili tako nesto?
 const formatMatchDate = (isoString: string): string => {
   const date = new Date(isoString);
   const days = ['NEDJELJA', 'PONEDJELJAK', 'UTORAK', 'SRIJEDA', 'ČETVRTAK', 'PETAK', 'SUBOTA'];

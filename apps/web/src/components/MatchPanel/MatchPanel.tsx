@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import clsx from 'clsx';
 import { EventType, MatchEventDto } from '@futsal-app/types';
-import type { MatchEventSaveData } from '../MatchEventCard/MatchEventCard';
 import {
   useMatch,
   useMatchEvents,
@@ -11,7 +10,7 @@ import {
 } from '@api/index';
 import { MatchEventCard, ButtonSmall } from '@components/index';
 import { PlusBlack } from '@assets/index';
-import { BackgroundColor } from '../../types';
+import { BackgroundColor, MatchEventSaveData } from '../../types';
 import MatchHeader from './MatchHeader';
 import TeamPicker from './TeamPicker';
 import c from './MatchPanel.module.scss';
@@ -48,7 +47,7 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
     isHome: boolean;
   } | null>(null);
 
-  if (!match) return null;
+  if (!match) return <p>No match found</p>;
 
   const isPlayoff = match.matchType !== 'group';
   const isDraw = match.homeGoals === match.awayGoals;
@@ -210,7 +209,9 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
               </div>
             )}
 
-            {[...penaltyEvents].reverse().map((event) => renderEvent(event, true))}
+            {[...penaltyEvents]
+              .reverse()
+              .map((event) => renderEvent(event, true))}
             {regularEvents.map((event) => renderEvent(event))}
           </div>
         </>

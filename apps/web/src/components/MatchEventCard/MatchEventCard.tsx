@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { EventType } from '@futsal-app/types';
 import { ButtonSmall, EventDropdown } from '@components/index';
 import { TrashCanGray, CheckBlack, PencilGray } from '@assets/index';
-import { BackgroundColor, EVENT_LABELS } from '../../types';
+import { BackgroundColor, EVENT_LABELS, MatchEventSaveData } from '../../types';
 import { usePlayerSearch } from '@api/index';
 import useCloseComponent from '@hooks/useCloseComponent';
 import c from './MatchEventCard.module.scss';
@@ -13,13 +13,6 @@ type EditFormState = {
   playerName: string;
   playerId?: number;
   eventType: EventType | null;
-};
-
-export type MatchEventSaveData = {
-  minute: number;
-  playerName: string;
-  playerId?: number;
-  eventType: EventType;
 };
 
 type MatchEventCardProps = {
@@ -56,13 +49,12 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
   });
 
   const [showSuggestions, setShowSuggestions] = useState(false);
-
-  const nameWrapperRef = useRef<HTMLDivElement>(null);
-
   const { data: suggestions = [] } = usePlayerSearch(
     teamId,
     editForm.playerName,
   );
+
+  const nameWrapperRef = useRef<HTMLDivElement>(null);
 
   useCloseComponent({
     onClose: () => setShowSuggestions(false),
