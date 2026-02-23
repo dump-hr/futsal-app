@@ -18,7 +18,7 @@ COPY --from=builder /app/out/yarn.lock ./yarn.lock
 COPY --from=builder /app/out/full/apps/api/prisma ./apps/api/prisma
 COPY --from=builder /app/out/full/apps/api/prisma.config.ts ./apps/api/prisma.config.ts
 
-RUN yarn install --immutable --verbose && yarn cache clean
+RUN yarn install --immutable && yarn cache clean
 
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
