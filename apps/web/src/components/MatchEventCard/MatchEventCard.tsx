@@ -1,11 +1,26 @@
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef } from 'react';
 import clsx from 'clsx';
 import { EventType } from '@futsal-app/types';
 import { ButtonSmall, EventDropdown } from '@components/index';
 import { TrashCanGray, CheckBlack, PencilGray } from '@assets/index';
 import { BackgroundColor, EVENT_LABELS } from '../../types';
 import { usePlayerSearch } from '@api/index';
+import useCloseComponent from '@hooks/useCloseComponent';
 import c from './MatchEventCard.module.scss';
+
+type EditFormState = {
+  minute: string;
+  playerName: string;
+  playerId?: number;
+  eventType: EventType | null;
+};
+
+type MatchEventSaveData = {
+  minute: number;
+  playerName: string;
+  playerId?: number;
+  eventType: EventType;
+};
 
 type MatchEventCardProps = {
   minute?: number;
@@ -15,12 +30,9 @@ type MatchEventCardProps = {
   teamId: number;
   isPenaltyShootout?: boolean;
   isNew?: boolean;
-  onSave: (data: {
-    minute: number;
-    playerName: string;
-    eventType: EventType;
-  }) => void;
+  onSave: (data: MatchEventSaveData) => void;
   onDelete: () => void;
+  onCancel?: () => void;
 };
 
 const MatchEventCard: React.FC<MatchEventCardProps> = ({
@@ -33,61 +45,69 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
   isNew = false,
   onSave,
   onDelete,
+  onCancel,
 }) => {
   const [isEditing, setIsEditing] = useState(isNew);
-  const [editMinute, setEditMinute] = useState(
-    minute != null ? String(minute) : '',
-  );
-  const [editPlayerName, setEditPlayerName] = useState(playerName ?? '');
-  const [editEventType, setEditEventType] = useState<EventType | null>(
-    eventType ?? null,
-  );
+  const [editForm, setEditForm] = useState<EditFormState>({
+    minute: minute != null ? String(minute) : '',
+    playerName: playerName ?? '',
+    playerId: undefined,
+    eventType: eventType ?? null,
+  });
+
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  const inputRef = useRef<HTMLInputElement>(null);
-  const suggestionsRef = useRef<HTMLDivElement>(null);
+  const nameWrapperRef = useRef<HTMLDivElement>(null);
 
-  const { data: suggestions } = usePlayerSearch(teamId, editPlayerName);
+  const { data: suggestions = [] } = usePlayerSearch(
+    teamId,
+    editForm.playerName,
+  );
 
-  const filteredSuggestions = useMemo(() => {
-    if (!suggestions) return [];
-    return suggestions;
-  }, [suggestions]);
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        suggestionsRef.current &&
-        !suggestionsRef.current.contains(e.target as Node) &&
-        inputRef.current &&
-        !inputRef.current.contains(e.target as Node)
-      ) {
-        setShowSuggestions(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  useCloseComponent({
+    onClose: () => setShowSuggestions(false),
+    containerRef: nameWrapperRef,
+  });
 
   const handleStartEdit = () => {
-    setEditMinute(minute != null ? String(minute) : '');
-    setEditPlayerName(playerName ?? '');
-    setEditEventType(eventType ?? null);
+    setEditForm({
+      minute: minute != null ? String(minute) : '',
+      playerName: playerName ?? '',
+      playerId: undefined,
+      eventType: eventType ?? null,
+    });
     setIsEditing(true);
   };
 
   const handleConfirm = () => {
-    if (!editEventType) return;
+    if (!editForm.eventType) return;
     onSave({
-      minute: parseInt(editMinute) || 0,
-      playerName: editPlayerName,
-      eventType: editEventType,
+      minute: isPenaltyShootout ? 0 : parseInt(editForm.minute) || 0,
+      playerName: editForm.playerName,
+      playerId: editForm.playerId,
+      eventType: editForm.eventType,
     });
     setIsEditing(false);
   };
 
-  const handleSelectSuggestion = (firstName: string, lastName: string) => {
-    setEditPlayerName(`${firstName} ${lastName}`);
+  const handleCancel = () => {
+    if (isNew && onCancel) {
+      onCancel();
+    } else {
+      setIsEditing(false);
+    }
+  };
+
+  const handleSelectSuggestion = (
+    id: number,
+    firstName: string,
+    lastName: string,
+  ) => {
+    setEditForm((prev) => ({
+      ...prev,
+      playerName: `${firstName} ${lastName}`,
+      playerId: id,
+    }));
     setShowSuggestions(false);
   };
 
@@ -98,7 +118,7 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
       <div className={clsx(c.card, c.editing, !isLeft && c.cardRight)}>
         <div className={clsx(c.topRow, !isLeft && c.topRowRight)}>
           <div className={c.actions}>
-            <div onClick={onDelete}>
+            <div onClick={isNew ? handleCancel : onDelete}>
               <ButtonSmall iconSrc={TrashCanGray} hasBorder />
             </div>
             <div onClick={handleConfirm}>
@@ -108,29 +128,39 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
               />
             </div>
           </div>
-          <input
-            className={c.minuteInput}
-            value={`${editMinute}'`}
-            onChange={(e) => setEditMinute(e.target.value.replace(/'/g, ''))}
-          />
+          {!isPenaltyShootout && (
+            <input
+              className={c.minuteInput}
+              value={`${editForm.minute}'`}
+              onChange={(e) =>
+                setEditForm((prev) => ({
+                  ...prev,
+                  minute: e.target.value.replace(/'/g, ''),
+                }))
+              }
+            />
+          )}
         </div>
         <div className={clsx(c.fields, !isLeft && c.fieldsRight)}>
-          <div className={c.nameInputWrapper}>
+          <div ref={nameWrapperRef} className={c.nameInputWrapper}>
             <input
-              ref={inputRef}
               className={clsx(c.nameInput, !isLeft && c.nameInputRight)}
-              value={editPlayerName}
+              value={editForm.playerName}
+              placeholder='Ime igrača'
               onChange={(e) => {
-                setEditPlayerName(e.target.value);
+                setEditForm((prev) => ({
+                  ...prev,
+                  playerName: e.target.value,
+                  playerId: undefined,
+                }));
                 setShowSuggestions(true);
               }}
               onFocus={() => setShowSuggestions(true)}
             />
-            {showSuggestions && filteredSuggestions.length > 0 && (
+            {showSuggestions && suggestions.length > 0 && (
               <div
-                ref={suggestionsRef}
                 className={clsx(c.suggestions, !isLeft && c.suggestionsRight)}>
-                {filteredSuggestions.map((player) => (
+                {suggestions.map((player) => (
                   <button
                     key={player.id}
                     type='button'
@@ -139,7 +169,11 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
                       !isLeft && c.suggestionItemRight,
                     )}
                     onClick={() =>
-                      handleSelectSuggestion(player.firstName, player.lastName)
+                      handleSelectSuggestion(
+                        player.id,
+                        player.firstName,
+                        player.lastName,
+                      )
                     }>
                     {player.firstName} {player.lastName}
                   </button>
@@ -150,8 +184,10 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
           <EventDropdown
             side={side}
             isPenaltyShootout={isPenaltyShootout}
-            value={editEventType}
-            onChange={setEditEventType}
+            value={editForm.eventType}
+            onChange={(val) =>
+              setEditForm((prev) => ({ ...prev, eventType: val }))
+            }
           />
         </div>
       </div>
@@ -169,7 +205,7 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
             <ButtonSmall iconSrc={PencilGray} hasBorder />
           </div>
         </div>
-        <p className={c.minute}>{minute}&apos;</p>
+        <p className={c.minute}>{isPenaltyShootout ? 'PENAL' : `${minute}'`}</p>
       </div>
       <div className={clsx(c.info, !isLeft && c.infoRight)}>
         <p className={c.playerName}>{playerName}</p>

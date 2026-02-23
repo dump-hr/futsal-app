@@ -6,10 +6,7 @@ import { PlayerDto } from '@futsal-app/types';
 export class PlayerService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async searchByTeam(
-    teamId: number,
-    query: string,
-  ): Promise<PlayerDto[]> {
+  async searchByTeam(teamId: number, query: string): Promise<PlayerDto[]> {
     const players = await this.prisma.player.findMany({
       where: {
         teamId,

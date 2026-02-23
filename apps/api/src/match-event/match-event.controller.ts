@@ -40,9 +40,7 @@ export class MatchEventController {
   }
 
   @Delete(':id')
-  async delete(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<MatchEventDto> {
+  async delete(@Param('id', ParseIntPipe) id: number): Promise<MatchEventDto> {
     return await this.matchEventService.delete(id);
   }
 }
