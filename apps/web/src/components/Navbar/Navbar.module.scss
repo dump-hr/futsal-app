@@ -7,6 +7,9 @@
   justify-content: space-between;
   background-color: $black;
   position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
 }
 
 .imageWrapper {
@@ -59,6 +62,7 @@
 .navbarList a.active {
   color: $white;
 }
+
 .navbarList a.active::after {
   width: 100%;
 }

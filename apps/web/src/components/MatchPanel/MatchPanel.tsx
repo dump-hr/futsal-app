@@ -191,7 +191,9 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
             {[...penaltyEvents]
               .reverse()
               .map((event) => renderEvent(event, true))}
-            {regularEvents.map((event) => renderEvent(event))}
+            {[...regularEvents]
+              .reverse()
+              .map((event) => renderEvent(event))}
           </div>
         </>
       ) : (
@@ -234,7 +236,9 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
               </div>
             )}
 
-            {regularEvents.map((event) => renderEvent(event))}
+            {[...regularEvents]
+              .reverse()
+              .map((event) => renderEvent(event))}
           </div>
         </>
       )}

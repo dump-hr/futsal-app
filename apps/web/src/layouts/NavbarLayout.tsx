@@ -5,7 +5,7 @@ export const NavbarLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <Navbar />
-      {children}
+      <div style={{ paddingTop: 80 }}>{children}</div>
     </>
   );
 };
