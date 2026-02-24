@@ -21,7 +21,7 @@ export const HomePage = () => {
   const [eventRight, setEventRight] = useState<EventType | null>(null);
   const [penaltyEvent, setPenaltyEvent] = useState<EventType | null>(null);
 
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState<string>('');
 
   return (
     <div

@@ -1,24 +1,25 @@
-import { searchWhite } from 'assets/icons';
+import { SearchWhite } from '@assets/icons';
 import styles from './Search.module.scss';
+import { ChangeEvent } from 'react';
 
 type SearchProps = {
   className?: string;
   value: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
-function Search({ className, value, onChange }: SearchProps) {
+const Search = ({ className, value, onChange }: SearchProps) => {
   return (
     <div className={`${styles.search} ${className}`}>
       <input
-        type="text"
-        placeholder="Pretraži"
+        type='text'
+        placeholder='Pretraži'
         value={value}
         onChange={onChange}
       />
-      <img src={searchWhite} alt="search" className={styles.search__icon} />
+      <img src={SearchWhite} alt='search' className={styles.search__icon} />
     </div>
   );
-}
+};
 
 export default Search;
