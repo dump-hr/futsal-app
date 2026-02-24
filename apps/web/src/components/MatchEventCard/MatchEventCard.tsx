@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react';
 import clsx from 'clsx';
 import { EventType } from '@futsal-app/types';
-import { ButtonSmall, EventDropdown } from '@components/index';
-import { TrashCanGray, CheckBlack, PencilGray } from '@assets/index';
+import { ButtonSmall, EventDropdown, ModalConfirmation } from '@components/index';
+import { TrashCanGray, CheckBlack, PencilGray, TrashCanBlack } from '@assets/index';
 import { BackgroundColor, EVENT_LABELS, MatchEventSaveData } from '../../types';
 import { usePlayerSearch } from '@api/index';
 import useCloseComponent from '@hooks/useCloseComponent';
@@ -41,6 +41,7 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
   onCancel,
 }) => {
   const [isEditing, setIsEditing] = useState(isNew);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [editForm, setEditForm] = useState<EditFormState>({
     minute: minute != null ? String(minute) : '',
     playerName: playerName ?? '',
@@ -82,13 +83,6 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
     setIsEditing(false);
   };
 
-  const handleCancel = () => {
-    if (isNew && onCancel) {
-      onCancel();
-    } else {
-      setIsEditing(false);
-    }
-  };
 
   const handleSelectSuggestion = (
     id: number,
@@ -105,12 +99,25 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
 
   const isLeft = side === 'left';
 
+  const handleDeleteClick = () => {
+    if (isNew) {
+      onCancel?.();
+    } else {
+      setShowDeleteModal(true);
+    }
+  };
+
+  const handleDeleteConfirm = () => {
+    setShowDeleteModal(false);
+    onDelete();
+  };
+
   if (isEditing) {
     return (
       <div className={clsx(c.card, c.editing, !isLeft && c.cardRight)}>
         <div className={clsx(c.topRow, !isLeft && c.topRowRight)}>
           <div className={c.actions}>
-            <div onClick={isNew ? handleCancel : onDelete}>
+            <div onClick={handleDeleteClick}>
               <ButtonSmall iconSrc={TrashCanGray} hasBorder />
             </div>
             <div onClick={handleConfirm}>
@@ -189,7 +196,7 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
     <div className={clsx(c.card, !isLeft && c.cardRight)}>
       <div className={clsx(c.topRow, !isLeft && c.topRowRight)}>
         <div className={c.actions}>
-          <div onClick={onDelete}>
+          <div onClick={() => setShowDeleteModal(true)}>
             <ButtonSmall iconSrc={TrashCanGray} hasBorder />
           </div>
           <div onClick={handleStartEdit}>
@@ -206,6 +213,17 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
           {eventType ? EVENT_LABELS[eventType].toUpperCase() : ''}
         </p>
       </div>
+
+      {showDeleteModal && (
+        <ModalConfirmation
+          description='Želite li obrisati'
+          boldText={eventType ? EVENT_LABELS[eventType] : 'događaj'}
+          icon={TrashCanBlack}
+          circleVariant='gray'
+          onCancel={() => setShowDeleteModal(false)}
+          onConfirm={handleDeleteConfirm}
+        />
+      )}
     </div>
   );
 };
