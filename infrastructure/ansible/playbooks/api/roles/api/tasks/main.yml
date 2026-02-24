@@ -41,7 +41,7 @@
       register: api
       until: api.exists and api.container.State.Health.Status != 'starting'
       failed_when: api.container.State.Health.Status != 'healthy'
-      retries: 5
+      retries: 20
       delay: 5
 
     - name: Remove old api docker container
