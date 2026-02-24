@@ -13,7 +13,7 @@ import { MatchEventModule } from './match-event/match-event.module';
       ? [
           ServeStaticModule.forRoot({
             rootPath: join(__dirname, '..', '..', '..', 'web', 'dist'),
-            exclude: ['/api/(.*)'],
+            exclude: ['/api/{*path}'],
           }),
         ]
       : []),
