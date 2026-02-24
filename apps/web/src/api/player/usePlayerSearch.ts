@@ -8,10 +8,14 @@ const playerSearch = (teamId: number, query: string) => {
   );
 };
 
-export const usePlayerSearch = (teamId: number, query: string) => {
+export const usePlayerSearch = (
+  teamId: number,
+  query: string,
+  enabled = true,
+) => {
   return useQuery({
     queryFn: () => playerSearch(teamId, query),
     queryKey: ['playerSearch', teamId, query],
-    enabled: query.length > 0,
+    enabled: enabled && query.length > 0,
   });
 };

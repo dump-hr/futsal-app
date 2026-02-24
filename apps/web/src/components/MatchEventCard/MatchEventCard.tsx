@@ -53,6 +53,7 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
   const { data: suggestions = [] } = usePlayerSearch(
     teamId,
     editForm.playerName,
+    isEditing,
   );
 
   const nameWrapperRef = useRef<HTMLDivElement>(null);
@@ -97,7 +98,6 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
   };
 
   const isLeft = side === 'left';
-
 
   const handleDeleteConfirm = () => {
     setShowDeleteModal(false);
