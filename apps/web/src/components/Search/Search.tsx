@@ -1,5 +1,5 @@
 import { SearchWhite } from '@assets/icons';
-import styles from './Search.module.scss';
+import c from './Search.module.scss';
 import { ChangeEvent } from 'react';
 
 type SearchProps = {
@@ -10,14 +10,14 @@ type SearchProps = {
 
 const Search = ({ className, value, onChange }: SearchProps) => {
   return (
-    <div className={`${styles.search} ${className}`}>
+    <div className={`${c.search} ${className}`}>
       <input
         type='text'
         placeholder='Pretraži'
         value={value}
         onChange={onChange}
       />
-      <img src={SearchWhite} alt='search' className={styles.search__icon} />
+      <img src={SearchWhite} alt='search' className={c.search__icon} />
     </div>
   );
 };
