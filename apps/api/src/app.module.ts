@@ -11,7 +11,7 @@ import { TournamentModule } from './tournament/tournament.module';
       ? [
           ServeStaticModule.forRoot({
             rootPath: join(__dirname, '..', '..', '..', 'web', 'dist'),
-            exclude: ['/api/(.*)'],
+            exclude: ['/api/{*path}'],
           }),
         ]
       : []),
