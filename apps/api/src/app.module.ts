@@ -10,7 +10,8 @@ import { TournamentModule } from './tournament/tournament.module';
     ...(process.env.NODE_ENV !== 'dev'
       ? [
           ServeStaticModule.forRoot({
-            rootPath: join(__dirname, '../..', 'web', 'dist'),
+            rootPath: join(__dirname, '..', '..', '..', 'web', 'dist'),
+            exclude: ['/api/(.*)'],
           }),
         ]
       : []),
