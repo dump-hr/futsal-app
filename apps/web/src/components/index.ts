@@ -3,3 +3,4 @@ export { default as ModalConfirmation } from './ModalConfirmation/ModalConfirmat
 export { default as ButtonSmall } from './ButtonSmall/ButtonSmall';
 export * from './Navbar/Navbar';
 export { default as EventDropdown } from './EventDropdown/EventDropdown';
+export { default as Search } from './Search';
