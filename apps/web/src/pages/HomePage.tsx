@@ -133,7 +133,7 @@ export const HomePage = () => {
         </div>
       </div>
 
-      <MatchPanel matchId={1} onClose={() => console.log('close')} />
+      <MatchPanel matchId={2} onClose={() => console.log('close')} />
     </div>
   );
 };

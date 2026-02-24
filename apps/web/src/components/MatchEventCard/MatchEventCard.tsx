@@ -83,7 +83,6 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
     setIsEditing(false);
   };
 
-
   const handleSelectSuggestion = (
     id: number,
     firstName: string,
@@ -99,13 +98,6 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
 
   const isLeft = side === 'left';
 
-  const handleDeleteClick = () => {
-    if (isNew) {
-      onCancel?.();
-    } else {
-      setShowDeleteModal(true);
-    }
-  };
 
   const handleDeleteConfirm = () => {
     setShowDeleteModal(false);
@@ -117,7 +109,7 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
       <div className={clsx(c.card, c.editing, !isLeft && c.cardRight)}>
         <div className={clsx(c.topRow, !isLeft && c.topRowRight)}>
           <div className={c.actions}>
-            <div onClick={handleDeleteClick}>
+            <div onClick={isNew ? () => onCancel?.() : onDelete}>
               <ButtonSmall iconSrc={TrashCanGray} hasBorder />
             </div>
             <div onClick={handleConfirm}>
