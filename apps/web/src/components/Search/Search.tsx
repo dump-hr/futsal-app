@@ -1,7 +1,8 @@
 import { SearchWhite } from '@assets/icons';
 import c from './Search.module.scss';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useRef } from 'react';
 import clsx from 'clsx';
+import { useCloseComponent } from '@hooks/index';
 
 type SearchProps = {
   className?: string;
@@ -10,6 +11,15 @@ type SearchProps = {
 };
 
 const Search: React.FC<SearchProps> = ({ className, value, onChange }) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const removeFocus = () => {
+    inputRef.current?.blur();
+  };
+
+  useCloseComponent({ onClose: removeFocus, containerRef });
+
   return (
     <div className={clsx(c.search, className)}>
       <input
@@ -17,6 +27,7 @@ const Search: React.FC<SearchProps> = ({ className, value, onChange }) => {
         placeholder='Pretraži'
         value={value}
         onChange={onChange}
+        ref={inputRef}
       />
       <img src={SearchWhite} alt='search' className={c.searchIcon} />
     </div>
