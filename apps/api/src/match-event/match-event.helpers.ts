@@ -1,3 +1,5 @@
+import { MatchEventDto } from '@futsal-app/types';
+
 const GOAL_EVENTS: string[] = ['goal', 'penaltyGoal', 'ownGoal'];
 
 export function isGoalEvent(eventType: string): boolean {
@@ -8,10 +10,14 @@ export function getScoreChange(
   eventType: string,
   isForHomeTeam: boolean,
 ): { homeGoals: number; awayGoals: number } {
-  const isOwn = eventType === 'ownGoal';
-  const scoringHome = isOwn ? !isForHomeTeam : isForHomeTeam;
+  const homeScored = eventType === 'ownGoal' ? !isForHomeTeam : isForHomeTeam;
+
   return {
-    homeGoals: scoringHome ? 1 : 0,
-    awayGoals: scoringHome ? 0 : 1,
+    homeGoals: Number(homeScored),
+    awayGoals: Number(!homeScored),
   };
+}
+
+export function toMatchEventDto(event: unknown): MatchEventDto {
+  return event as MatchEventDto;
 }

@@ -18,7 +18,6 @@ export class PlayerService {
         firstName: true,
         lastName: true,
       },
-      take: 10,
     });
 
     return players;

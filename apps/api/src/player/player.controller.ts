@@ -6,7 +6,7 @@ import { PlayerDto } from '@futsal-app/types';
 export class PlayerController {
   constructor(private readonly playerService: PlayerService) {}
 
-  @Get('search/:teamId')
+  @Get('by-team/:teamId')
   async searchByTeam(
     @Param('teamId', ParseIntPipe) teamId: number,
     @Query('q') query: string = '',

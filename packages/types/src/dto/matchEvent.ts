@@ -4,20 +4,25 @@ import {
   IsInt,
   IsNotEmpty,
   IsOptional,
+  IsPositive,
+  Min,
 } from 'class-validator';
 import { EventType } from '../enum';
 
 export class MatchEventCreateDto {
   @IsInt()
   @IsNotEmpty()
+  @Min(0)
   minute: number;
 
   @IsInt()
   @IsNotEmpty()
+  @IsPositive()
   matchId: number;
 
   @IsInt()
   @IsOptional()
+  @IsPositive()
   playerId?: number;
 
   @IsEnum(EventType)

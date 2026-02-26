@@ -4,7 +4,7 @@ import { PlayerDto } from '@futsal-app/types';
 
 const playerSearch = (teamId: number, query: string) => {
   return api.get<never, PlayerDto[]>(
-    `/player/search/${teamId}?q=${encodeURIComponent(query)}`,
+    `/player/by-team/${teamId}?q=${encodeURIComponent(query)}`,
   );
 };
 
