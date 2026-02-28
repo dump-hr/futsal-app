@@ -3,6 +3,7 @@ import {
   ModalConfirmation,
   ButtonSmall,
   EventDropdown,
+  Search,
   MatchEventCard,
 } from '@components/index';
 import { BackgroundColor } from '../types';
@@ -20,6 +21,8 @@ export const HomePage = () => {
   const [eventLeft, setEventLeft] = useState<EventType | null>(null);
   const [eventRight, setEventRight] = useState<EventType | null>(null);
   const [penaltyEvent, setPenaltyEvent] = useState<EventType | null>(null);
+
+  const [searchValue, setSearchValue] = useState<string>('');
 
   return (
     <div
@@ -106,6 +109,13 @@ export const HomePage = () => {
         width={40}
         backgroundColor={BackgroundColor.Red}
       />
+
+      <div style={{ backgroundColor: 'black', padding: '10px' }}>
+        <Search
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
+      </div>
 
       <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
         <MatchEventCard

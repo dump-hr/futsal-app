@@ -4,3 +4,4 @@ export { default as ButtonSmall } from './ButtonSmall/ButtonSmall';
 export * from './Navbar/Navbar';
 export { default as EventDropdown } from './EventDropdown/EventDropdown';
 export { default as MatchEventCard } from './MatchEventCard/MatchEventCard';
+export { default as Search } from './Search';
