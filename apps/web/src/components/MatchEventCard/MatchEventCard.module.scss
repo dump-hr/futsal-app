@@ -60,19 +60,33 @@
 }
 
 .minuteInput {
-  @include title-3;
-  color: $white;
-  background: transparent;
+  display: flex;
+  align-items: center;
   border: 0.5px solid $white;
   border-radius: 8px;
   padding: 4px 8px;
   width: 64px;
-  text-align: center;
-  outline: none;
+  box-sizing: border-box;
 
-  &:focus {
+  &:focus-within {
     border-color: $lime;
   }
+
+  span {
+    @include title-3;
+    color: $white;
+  }
+}
+
+.minuteInputField {
+  @include title-3;
+  color: $white;
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+  text-align: center;
+  padding: 0;
 }
 
 .info {

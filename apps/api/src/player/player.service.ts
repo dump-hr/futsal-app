@@ -4,15 +4,9 @@ import { PlayerDto } from '@futsal-app/types';
 
 @Injectable()
 export class PlayerService {
-  async searchByTeam(teamId: number, query: string): Promise<PlayerDto[]> {
+  async getByTeam(teamId: number): Promise<PlayerDto[]> {
     const players = await prisma.player.findMany({
-      where: {
-        teamId,
-        OR: [
-          { firstName: { contains: query, mode: 'insensitive' } },
-          { lastName: { contains: query, mode: 'insensitive' } },
-        ],
-      },
+      where: { teamId },
       select: {
         id: true,
         firstName: true,

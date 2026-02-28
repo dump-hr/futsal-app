@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { PlayerService } from './player.service';
 import { PlayerDto } from '@futsal-app/types';
 
@@ -7,10 +7,9 @@ export class PlayerController {
   constructor(private readonly playerService: PlayerService) {}
 
   @Get('by-team/:teamId')
-  async searchByTeam(
+  async getByTeam(
     @Param('teamId', ParseIntPipe) teamId: number,
-    @Query('q') query: string = '',
   ): Promise<PlayerDto[]> {
-    return await this.playerService.searchByTeam(teamId, query);
+    return await this.playerService.getByTeam(teamId);
   }
 }
