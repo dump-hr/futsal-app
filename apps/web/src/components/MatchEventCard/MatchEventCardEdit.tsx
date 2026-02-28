@@ -140,9 +140,24 @@ const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
             }}
             onFocus={() => setShowSuggestions(true)}
           />
-          {showSuggestions && suggestions.length > 0 && (
-            <div
-              className={clsx(c.suggestions, !isLeft && c.suggestionsRight)}>
+          {showSuggestions && (
+            <div className={clsx(c.suggestions, !isLeft && c.suggestionsRight)}>
+              <button
+                type='button'
+                className={clsx(
+                  c.suggestionItem,
+                  !isLeft && c.suggestionItemRight,
+                )}
+                onClick={() => {
+                  setEditForm((prev) => ({
+                    ...prev,
+                    playerName: 'Nepoznat netko',
+                    playerId: undefined,
+                  }));
+                  setShowSuggestions(false);
+                }}>
+                Nepoznat netko
+              </button>
               {suggestions.map((player) => (
                 <button
                   key={player.id}

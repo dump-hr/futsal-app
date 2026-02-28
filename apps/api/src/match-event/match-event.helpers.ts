@@ -12,10 +12,9 @@ export function getScoreChange(
 ): { homeGoals: number; awayGoals: number } {
   const homeScored = eventType === 'ownGoal' ? !isForHomeTeam : isForHomeTeam;
 
-  return {
-    homeGoals: Number(homeScored),
-    awayGoals: Number(!homeScored),
-  };
+  return homeScored
+    ? { homeGoals: 1, awayGoals: 0 }
+    : { homeGoals: 0, awayGoals: 1 };
 }
 
 export function toMatchEventDto(event: unknown): MatchEventDto {
