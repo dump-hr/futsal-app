@@ -14,7 +14,7 @@ export const usePlayerSearch = (teamId: number, query: string) => {
   });
 
   const filtered = useMemo(() => {
-    if (!query) return [];
+    if (!query) return players;
     const q = query.toLowerCase();
     return players.filter(
       (p) =>

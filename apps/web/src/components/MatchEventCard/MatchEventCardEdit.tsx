@@ -139,31 +139,31 @@ const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
               setShowSuggestions(true);
             }}
             onFocus={() => setShowSuggestions(true)}
+            onKeyDown={(e) => {
+              if (e.key !== 'Enter' || !showSuggestions) return;
+              e.preventDefault();
+              const top = suggestions[0];
+              if (top) {
+                handleSelectSuggestion(top.id, top.firstName, top.lastName);
+              } else {
+                setEditForm((prev) => ({
+                  ...prev,
+                  playerName: 'Nepoznat netko',
+                  playerId: undefined,
+                }));
+                setShowSuggestions(false);
+              }
+            }}
           />
           {showSuggestions && (
             <div className={clsx(c.suggestions, !isLeft && c.suggestionsRight)}>
-              <button
-                type='button'
-                className={clsx(
-                  c.suggestionItem,
-                  !isLeft && c.suggestionItemRight,
-                )}
-                onClick={() => {
-                  setEditForm((prev) => ({
-                    ...prev,
-                    playerName: 'Nepoznat netko',
-                    playerId: undefined,
-                  }));
-                  setShowSuggestions(false);
-                }}>
-                Nepoznat netko
-              </button>
-              {suggestions.map((player) => (
+              {suggestions.map((player, index) => (
                 <button
                   key={player.id}
                   type='button'
                   className={clsx(
                     c.suggestionItem,
+                    index === 0 && c.suggestionItemTop,
                     !isLeft && c.suggestionItemRight,
                   )}
                   onClick={() =>
@@ -176,6 +176,23 @@ const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
                   {player.firstName} {player.lastName}
                 </button>
               ))}
+              <button
+                type='button'
+                className={clsx(
+                  c.suggestionItem,
+                  suggestions.length === 0 && c.suggestionItemTop,
+                  !isLeft && c.suggestionItemRight,
+                )}
+                onClick={() => {
+                  setEditForm((prev) => ({
+                    ...prev,
+                    playerName: 'Nepoznat netko',
+                    playerId: undefined,
+                  }));
+                  setShowSuggestions(false);
+                }}>
+                Nepoznat netko
+              </button>
             </div>
           )}
         </div>
