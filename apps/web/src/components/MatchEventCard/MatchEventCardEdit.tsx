@@ -50,6 +50,7 @@ const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
   });
 
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [highlightedIndex, setHighlightedIndex] = useState(0);
   const { data: suggestions = [] } = usePlayerSearch(
     teamId,
     editForm.playerName,
@@ -137,21 +138,34 @@ const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
                 playerId: undefined,
               }));
               setShowSuggestions(true);
+              setHighlightedIndex(0);
             }}
-            onFocus={() => setShowSuggestions(true)}
+            onFocus={() => {
+              setShowSuggestions(true);
+              setHighlightedIndex(0);
+            }}
             onKeyDown={(e) => {
-              if (e.key !== 'Enter' || !showSuggestions) return;
-              e.preventDefault();
-              const top = suggestions[0];
-              if (top) {
-                handleSelectSuggestion(top.id, top.firstName, top.lastName);
-              } else {
-                setEditForm((prev) => ({
-                  ...prev,
-                  playerName: 'Nepoznat netko',
-                  playerId: undefined,
-                }));
-                setShowSuggestions(false);
+              if (!showSuggestions) return;
+              const itemCount = suggestions.length + 1;
+              if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                setHighlightedIndex((prev) => (prev + 1) % itemCount);
+              } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                setHighlightedIndex((prev) => (prev - 1 + itemCount) % itemCount);
+              } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (highlightedIndex < suggestions.length) {
+                  const player = suggestions[highlightedIndex];
+                  handleSelectSuggestion(player.id, player.firstName, player.lastName);
+                } else {
+                  setEditForm((prev) => ({
+                    ...prev,
+                    playerName: 'Nepoznat netko',
+                    playerId: undefined,
+                  }));
+                  setShowSuggestions(false);
+                }
               }
             }}
           />
@@ -163,9 +177,10 @@ const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
                   type='button'
                   className={clsx(
                     c.suggestionItem,
-                    index === 0 && c.suggestionItemTop,
+                    highlightedIndex === index && c.suggestionItemHighlighted,
                     !isLeft && c.suggestionItemRight,
                   )}
+                  onMouseEnter={() => setHighlightedIndex(index)}
                   onClick={() =>
                     handleSelectSuggestion(
                       player.id,
@@ -180,9 +195,10 @@ const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
                 type='button'
                 className={clsx(
                   c.suggestionItem,
-                  suggestions.length === 0 && c.suggestionItemTop,
+                  highlightedIndex === suggestions.length && c.suggestionItemHighlighted,
                   !isLeft && c.suggestionItemRight,
                 )}
+                onMouseEnter={() => setHighlightedIndex(suggestions.length)}
                 onClick={() => {
                   setEditForm((prev) => ({
                     ...prev,
