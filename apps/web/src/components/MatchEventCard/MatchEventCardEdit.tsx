@@ -126,6 +126,7 @@ const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
         )}
       </div>
       <div className={clsx(c.fields, !isLeft && c.fieldsRight)}>
+        {/* za ovu input komponentu cekan Andreu pa san samo ovako ostavia */}
         <div ref={nameWrapperRef} className={c.nameInputWrapper}>
           <input
             className={clsx(c.nameInput, !isLeft && c.nameInputRight)}
@@ -152,12 +153,18 @@ const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
                 setHighlightedIndex((prev) => (prev + 1) % itemCount);
               } else if (e.key === 'ArrowUp') {
                 e.preventDefault();
-                setHighlightedIndex((prev) => (prev - 1 + itemCount) % itemCount);
+                setHighlightedIndex(
+                  (prev) => (prev - 1 + itemCount) % itemCount,
+                );
               } else if (e.key === 'Enter') {
                 e.preventDefault();
                 if (highlightedIndex < suggestions.length) {
                   const player = suggestions[highlightedIndex];
-                  handleSelectSuggestion(player.id, player.firstName, player.lastName);
+                  handleSelectSuggestion(
+                    player.id,
+                    player.firstName,
+                    player.lastName,
+                  );
                 } else {
                   setEditForm((prev) => ({
                     ...prev,
@@ -195,7 +202,8 @@ const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
                 type='button'
                 className={clsx(
                   c.suggestionItem,
-                  highlightedIndex === suggestions.length && c.suggestionItemHighlighted,
+                  highlightedIndex === suggestions.length &&
+                    c.suggestionItemHighlighted,
                   !isLeft && c.suggestionItemRight,
                 )}
                 onMouseEnter={() => setHighlightedIndex(suggestions.length)}
