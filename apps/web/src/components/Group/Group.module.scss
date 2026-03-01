@@ -1,62 +1,83 @@
 .group {
-  background-color: #121212;
-  border-radius: 24px;
+  background-color: $black;
+  border: 0.5px solid $gray-dark;
+  border-radius: 20px;
   padding: 32px;
   width: 100%;
-  max-width: 420px;
+  max-width: 424px;
   display: flex;
   flex-direction: column;
-  gap: 36px;
-  color: #ffffff;
-  font-family: sans-serif;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-
-  &:last-of-type,
-  & > div:last-child {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  justify-content: space-between;
+  color: $white;
+  height: 448px;
 }
 
-.groupTitle {
+.groupTitleWrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  span {
-    font-size: 16px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
+  width: 100%;
+}
+.groupTitle {
+  color: $white;
+  @include body-normal;
+  text-transform: uppercase;
 }
 
 .groupTeams {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  flex: 1;
+  gap: 8px;
+  width: 100%;
+  overflow-y: auto;
+  margin: 24px 0;
+  padding-right: 8px;
+
+  -webkit-mask-image: linear-gradient(to bottom, $black 75%, transparent 100%);
+  mask-image: linear-gradient(to bottom, $black 75%, transparent 100%);
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $gray-dark;
+    border-radius: 15px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $gray-light;
+    border-radius: 15px;
+  }
 }
 
 .team {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 32px;
 
   & > div:first-child {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 10px;
 
     img {
-      width: 24px;
-      height: 24px;
+      width: 32px;
+      height: 14px;
       object-fit: contain;
     }
 
     span {
-      font-size: 16px;
-      font-weight: 500;
+      @include body-normal;
     }
   }
+}
+
+.groupFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }

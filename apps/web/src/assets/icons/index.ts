@@ -22,6 +22,7 @@ export { default as PlayBlack } from './play-black.svg';
 export { default as SettingsGray } from './settings-gray.svg';
 export { default as TrashCanBlack } from './trash-can-black.svg';
 export { default as TrashCanGray } from './trash-can-gray.svg';
+export { default as TrashCanWhite } from './trash-can-white.svg';
 export { default as UploadGray } from './upload-gray.svg';
 export { default as SearchWhite } from './search-white.svg';
 export { default as Logo } from './logo.svg';

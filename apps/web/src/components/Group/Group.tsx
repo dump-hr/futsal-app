@@ -1,29 +1,28 @@
 import {
   PlusBlack,
   TrashCanGray,
+  TrashCanWhite,
   LockGray,
-  EricssonLogo,
-  InfobipLogo,
-  EndavaLogo,
-  OtpBankaLogo,
 } from '@assets/index';
 import c from './Group.module.scss';
 import { Button, ButtonSmall } from '@components/index';
 
-const groupTitle = 'Skupina A';
-const teams = [
-  { name: 'Ericsson Nikola Tesla', logo: EricssonLogo },
-  { name: 'Infobip', logo: InfobipLogo },
-  { name: 'Endava', logo: EndavaLogo },
-  { name: 'OTP Banka', logo: OtpBankaLogo },
-];
+type Team = {
+  name: string;
+  logo: string;
+};
 
-export const Group = () => {
+type GroupProps = {
+  groupTitle: string;
+  teams: Team[];
+};
+
+const Group: React.FC<GroupProps> = ({ groupTitle, teams }) => {
   return (
     <section className={c.group}>
-      <div className={c.groupTitle}>
-        <span>{groupTitle}</span>
-        <ButtonSmall iconSrc={TrashCanGray} />
+      <div className={c.groupTitleWrapper}>
+        <span className={c.groupTitle}>{groupTitle}</span>
+        <ButtonSmall iconSrc={TrashCanGray} hasBorder={true} />
       </div>
 
       <div className={c.groupTeams}>
@@ -34,12 +33,12 @@ export const Group = () => {
               <span>{team.name}</span>
             </div>
 
-            <ButtonSmall iconSrc={TrashCanGray} />
+            <ButtonSmall iconSrc={TrashCanWhite} />
           </div>
         ))}
       </div>
 
-      <div>
+      <div className={c.groupFooter}>
         <Button icon={PlusBlack} variant='primary'>
           Dodaj ekipu
         </Button>
@@ -49,3 +48,5 @@ export const Group = () => {
     </section>
   );
 };
+
+export default Group;
