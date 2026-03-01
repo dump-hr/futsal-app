@@ -2,7 +2,7 @@ import { Route, Switch } from 'wouter';
 import { routes } from './routes/index';
 import { HomePage } from './pages/HomePage';
 import { BackgroundLayout } from '@layouts/BackgroundLayout/BackgroundLayout';
-import { NavbarLayout } from '@layouts/NavbarLayout';
+import { NavbarLayout } from '@layouts/NavbarLayout/NavbarLayout';
 
 export const Router = () => {
   return (
