@@ -4,8 +4,4 @@ export { default as ButtonSmall } from './ButtonSmall/ButtonSmall';
 export * from './Navbar/Navbar';
 export { default as EventDropdown } from './EventDropdown/EventDropdown';
 export { default as Search } from './Search';
-<<<<<<< Updated upstream
-=======
-export { default as Group } from './Group/Group';
-export { default as Input } from './Input';
->>>>>>> Stashed changes
+export { default as Input } from './Input/Input';
