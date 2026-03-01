@@ -4,6 +4,11 @@ import {
   ButtonSmall,
   EventDropdown,
   Search,
+<<<<<<< Updated upstream
+=======
+  Group,
+  Input,
+>>>>>>> Stashed changes
 } from '@components/index';
 import { BackgroundColor } from '../types';
 import { useState } from 'react';
@@ -11,7 +16,32 @@ import { EventType } from '@futsal-app/types';
 import c from './HomePage.module.scss';
 import trashCanSvg from '@assets/icons/trash-can-gray.svg';
 import plusSvg from '@assets/icons/plus-gray.svg';
+<<<<<<< Updated upstream
 import { PlusBlack, XWhite, CheckBlack, TrashCanBlack } from '@assets/index';
+=======
+import {
+  PlusBlack,
+  XWhite,
+  CheckBlack,
+  TrashCanBlack,
+  EricssonLogo,
+  InfobipLogo,
+  EndavaLogo,
+  OtpBankaLogo,
+} from '@assets/index';
+import { BorderColor } from 'types/borderColor';
+
+const teams = [
+  { name: 'Ericsson Nikola Tesla', logo: EricssonLogo },
+  { name: 'Infobip', logo: InfobipLogo },
+  { name: 'Endava', logo: EndavaLogo },
+  { name: 'OTP Banka', logo: OtpBankaLogo },
+  { name: 'Ericsson Nikola Tesla', logo: EricssonLogo },
+  { name: 'Ericsson Nikola Tesla', logo: EricssonLogo },
+  { name: 'Ericsson Nikola Tesla', logo: EricssonLogo },
+  { name: 'Ericsson Nikola Tesla', logo: EricssonLogo },
+];
+>>>>>>> Stashed changes
 
 export const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -115,6 +145,52 @@ export const HomePage = () => {
           onChange={(e) => setSearchValue(e.target.value)}
         />
       </div>
+<<<<<<< Updated upstream
+=======
+
+      <div
+        style={{
+          backgroundColor: 'black',
+          marginTop: '50px',
+          padding: '30px',
+          display: 'flex',
+          gap: '30px',
+        }}>
+        <Group groupTitle='Skupina A' teams={teams.slice(0, 5)} />
+        <Group groupTitle='Skupina B' teams={teams} />
+      </div>
+
+      <div
+        style={{
+          backgroundColor: 'black',
+          padding: '30px',
+          display: 'flex',
+          gap: '30px',
+          flexDirection: 'column',
+        }}>
+        <Input
+          placeholder='Ericsson Nikola Tesla Jos Nesto'
+          borderColor={BorderColor.Gray}
+        />
+
+        <Input
+          defaultValue='Ericsson Nikola Tesla Jos Nesto'
+          borderColor={BorderColor.White}
+        />
+
+        <Input
+          label='Ime ekipe'
+          placeholder='Ericsson Nikola Tesla Jos Nesto'
+          borderColor={BorderColor.Lime}
+        />
+
+        <Input
+          label='Ime ekipe'
+          placeholder='Ericsson Nikola Tesla Jos Nesto'
+          borderColor={BorderColor.Red}
+        />
+      </div>
+>>>>>>> Stashed changes
     </div>
   );
 };
