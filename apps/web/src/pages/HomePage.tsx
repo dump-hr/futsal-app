@@ -13,7 +13,7 @@ import c from './HomePage.module.scss';
 import trashCanSvg from '@assets/icons/trash-can-gray.svg';
 import plusSvg from '@assets/icons/plus-gray.svg';
 import { PlusBlack, XWhite, CheckBlack, TrashCanBlack } from '@assets/index';
-import { BorderColor } from 'types/borderColor';
+import { BorderColor } from '../types/borderColor';
 
 export const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
