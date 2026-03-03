@@ -5,6 +5,7 @@ import {
   EventDropdown,
   Search,
   MatchEventCard,
+  Input,
 } from '@components/index';
 import { BackgroundColor } from '../types';
 import { useState } from 'react';
@@ -131,6 +132,22 @@ export const HomePage = () => {
           isNew
           onSave={(data) => console.log('save', data)}
           onDelete={() => console.log('delete')}
+        />
+      </div>
+
+      <div
+        style={{
+          backgroundColor: 'black',
+          padding: '30px',
+          display: 'flex',
+          gap: '30px',
+          flexDirection: 'column',
+        }}>
+        <Input placeholder='Ericsson Nikola Tesla Jos Nesto' />
+
+        <Input
+          label='Ime ekipe'
+          placeholder='Ericsson Nikola Tesla Jos Nesto'
         />
       </div>
     </div>

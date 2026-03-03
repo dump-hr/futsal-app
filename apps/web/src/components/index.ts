@@ -5,3 +5,4 @@ export * from './Navbar/Navbar';
 export { default as EventDropdown } from './EventDropdown/EventDropdown';
 export { default as MatchEventCard } from './MatchEventCard/MatchEventCard';
 export { default as Search } from './Search';
+export { default as Input } from './Input/Input';
