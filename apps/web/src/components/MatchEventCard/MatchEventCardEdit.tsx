@@ -1,11 +1,10 @@
 import { useRef, useState } from 'react';
 import clsx from 'clsx';
-import { EventType } from '@futsal-app/types';
-import { ButtonSmall, EventDropdown } from '@components/index';
+import { EventType, PlayerDto } from '@futsal-app/types';
+import { ButtonSmall, EventDropdown, Input } from '@components/index';
 import { TrashCanGray, CheckBlack } from '@assets/index';
 import { BackgroundColor, MatchEventSaveData } from '../../types';
-import { usePlayerSearch } from '@api/index';
-import useCloseComponent from '@hooks/useCloseComponent';
+import { useCloseComponent, useSuggestions } from '@hooks/index';
 import c from './MatchEventCard.module.scss';
 
 type EditFormState = {
@@ -20,7 +19,7 @@ type MatchEventCardEditProps = {
   playerName?: string;
   eventType?: EventType;
   side: 'left' | 'right';
-  teamId: number;
+  players: PlayerDto[];
   isPenaltyShootout: boolean;
   isNew: boolean;
   onSave: (data: MatchEventSaveData) => void;
@@ -34,7 +33,7 @@ const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
   playerName,
   eventType,
   side,
-  teamId,
+  players,
   isPenaltyShootout,
   isNew,
   onSave,
@@ -49,17 +48,37 @@ const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
     eventType: eventType ?? null,
   });
 
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const [highlightedIndex, setHighlightedIndex] = useState(0);
-  const { data: suggestions = [] } = usePlayerSearch(
-    teamId,
-    editForm.playerName,
-  );
+  const {
+    suggestions,
+    showSuggestions,
+    highlightedIndex,
+    setHighlightedIndex,
+    inputProps,
+    selectItem,
+    closeSuggestions,
+  } = useSuggestions({
+    items: players,
+    initialQuery: playerName ?? '',
+    filterFn: (p, q) =>
+      p.firstName.toLowerCase().includes(q) ||
+      p.lastName.toLowerCase().includes(q),
+    getLabel: (player) =>
+      player ? `${player.firstName} ${player.lastName}` : 'Nepoznat netko',
+    onSelect: (player) => {
+      setEditForm((prev) => ({
+        ...prev,
+        playerName: player
+          ? `${player.firstName} ${player.lastName}`
+          : 'Nepoznat netko',
+        playerId: player?.id,
+      }));
+    },
+  });
 
   const nameWrapperRef = useRef<HTMLDivElement>(null);
 
   useCloseComponent({
-    onClose: () => setShowSuggestions(false),
+    onClose: closeSuggestions,
     containerRef: nameWrapperRef,
   });
 
@@ -80,19 +99,6 @@ const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
     } else {
       onStopEditing();
     }
-  };
-
-  const handleSelectSuggestion = (
-    id: number,
-    firstName: string,
-    lastName: string,
-  ) => {
-    setEditForm((prev) => ({
-      ...prev,
-      playerName: `${firstName} ${lastName}`,
-      playerId: id,
-    }));
-    setShowSuggestions(false);
   };
 
   const isLeft = side === 'left';
@@ -126,61 +132,24 @@ const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
         )}
       </div>
       <div className={clsx(c.fields, !isLeft && c.fieldsRight)}>
-        {/* za ovu input komponentu cekan Andreu pa san samo ovako ostavia */}
         <div ref={nameWrapperRef} className={c.nameInputWrapper}>
-          <input
-            className={clsx(c.nameInput, !isLeft && c.nameInputRight)}
-            value={editForm.playerName}
-            placeholder='Ime igrača'
-            onChange={(e) => {
-              setEditForm((prev) => ({
-                ...prev,
-                playerName: e.target.value,
-                playerId: undefined,
-              }));
-              setShowSuggestions(true);
-              setHighlightedIndex(0);
-            }}
-            onFocus={() => {
-              setShowSuggestions(true);
-              setHighlightedIndex(0);
-            }}
-            onKeyDown={(e) => {
-              if (!showSuggestions) return;
-              const itemCount = suggestions.length + 1;
-              if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                setHighlightedIndex((prev) => (prev + 1) % itemCount);
-              } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                setHighlightedIndex(
-                  (prev) => (prev - 1 + itemCount) % itemCount,
-                );
-              } else if (e.key === 'Enter') {
-                e.preventDefault();
-                if (highlightedIndex < suggestions.length) {
-                  const player = suggestions[highlightedIndex];
-                  handleSelectSuggestion(
-                    player.id,
-                    player.firstName,
-                    player.lastName,
-                  );
-                } else {
-                  setEditForm((prev) => ({
-                    ...prev,
-                    playerName: 'Nepoznat netko',
-                    playerId: undefined,
-                  }));
-                  setShowSuggestions(false);
-                }
-              }
-            }}
-          />
+          <Input placeholder='Ime igrača' {...inputProps} />
           {showSuggestions && (
             <div className={clsx(c.suggestions, !isLeft && c.suggestionsRight)}>
-              {suggestions.map((player, index) => (
+              {[
+                ...suggestions.map((player) => ({
+                  key: player.id,
+                  item: player as PlayerDto | null,
+                  label: `${player.firstName} ${player.lastName}`,
+                })),
+                {
+                  key: 'unknown',
+                  item: null as PlayerDto | null,
+                  label: 'Nepoznat netko',
+                },
+              ].map((option, index) => (
                 <button
-                  key={player.id}
+                  key={option.key}
                   type='button'
                   className={clsx(
                     c.suggestionItem,
@@ -188,35 +157,10 @@ const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
                     !isLeft && c.suggestionItemRight,
                   )}
                   onMouseEnter={() => setHighlightedIndex(index)}
-                  onClick={() =>
-                    handleSelectSuggestion(
-                      player.id,
-                      player.firstName,
-                      player.lastName,
-                    )
-                  }>
-                  {player.firstName} {player.lastName}
+                  onClick={() => selectItem(option.item)}>
+                  {option.label}
                 </button>
               ))}
-              <button
-                type='button'
-                className={clsx(
-                  c.suggestionItem,
-                  highlightedIndex === suggestions.length &&
-                    c.suggestionItemHighlighted,
-                  !isLeft && c.suggestionItemRight,
-                )}
-                onMouseEnter={() => setHighlightedIndex(suggestions.length)}
-                onClick={() => {
-                  setEditForm((prev) => ({
-                    ...prev,
-                    playerName: 'Nepoznat netko',
-                    playerId: undefined,
-                  }));
-                  setShowSuggestions(false);
-                }}>
-                Nepoznat netko
-              </button>
             </div>
           )}
         </div>

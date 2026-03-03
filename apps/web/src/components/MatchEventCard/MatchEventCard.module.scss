@@ -126,30 +126,6 @@
   position: relative;
 }
 
-.nameInput {
-  @include body-normal;
-  color: $white;
-  background: transparent;
-  border: 0.5px solid $lime;
-  border-radius: 8px;
-  padding: 8px 12px;
-  width: 224px;
-  outline: none;
-  text-align: right;
-
-  &::placeholder {
-    color: $gray-medium;
-  }
-
-  &:focus {
-    border-color: $lime;
-  }
-}
-
-.nameInputRight {
-  text-align: left;
-}
-
 .suggestions {
   position: absolute;
   top: calc(100% + 4px);

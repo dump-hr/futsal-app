@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { EventType } from '@futsal-app/types';
+import { EventType, PlayerDto } from '@futsal-app/types';
 import { MatchEventSaveData } from '../../types';
 import MatchEventCardEdit from './MatchEventCardEdit';
 import MatchEventCardDisplay from './MatchEventCardDisplay';
@@ -9,7 +9,7 @@ type MatchEventCardProps = {
   playerName?: string;
   eventType?: EventType;
   side: 'left' | 'right';
-  teamId: number;
+  players: PlayerDto[];
   isPenaltyShootout?: boolean;
   isNew?: boolean;
   onSave: (data: MatchEventSaveData) => void;
@@ -22,7 +22,7 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
   playerName,
   eventType,
   side,
-  teamId,
+  players,
   isPenaltyShootout = false,
   isNew = false,
   onSave,
@@ -38,7 +38,7 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
         playerName={playerName}
         eventType={eventType}
         side={side}
-        teamId={teamId}
+        players={players}
         isPenaltyShootout={isPenaltyShootout}
         isNew={isNew}
         onSave={onSave}

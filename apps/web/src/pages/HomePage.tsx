@@ -9,7 +9,15 @@ import {
 } from '@components/index';
 import { BackgroundColor } from '../types';
 import { useState } from 'react';
-import { EventType } from '@futsal-app/types';
+import { EventType, PlayerDto } from '@futsal-app/types';
+
+const MOCK_PLAYERS: PlayerDto[] = [
+  { id: 1, firstName: 'Ivan', lastName: 'Horvat' },
+  { id: 2, firstName: 'Marko', lastName: 'Kovač' },
+  { id: 3, firstName: 'Luka', lastName: 'Perić' },
+  { id: 4, firstName: 'Ante', lastName: 'Babić' },
+  { id: 5, firstName: 'Toma', lastName: 'Gej' },
+];
 import c from './HomePage.module.scss';
 import trashCanSvg from '@assets/icons/trash-can-gray.svg';
 import plusSvg from '@assets/icons/plus-gray.svg';
@@ -121,14 +129,14 @@ export const HomePage = () => {
       <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
         <MatchEventCard
           side='left'
-          teamId={1}
+          players={MOCK_PLAYERS}
           isNew
           onSave={(data) => console.log('save', data)}
           onDelete={() => console.log('delete')}
         />
         <MatchEventCard
           side='right'
-          teamId={1}
+          players={MOCK_PLAYERS}
           isNew
           onSave={(data) => console.log('save', data)}
           onDelete={() => console.log('delete')}
