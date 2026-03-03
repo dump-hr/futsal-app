@@ -15,6 +15,8 @@
   background-color: transparent;
   color: $white;
   outline: none;
+  opacity: 0.4;
+  transition: 0.2s;
 
   &::placeholder {
     color: $gray-medium;
@@ -22,5 +24,6 @@
 
   &:focus {
     border-color: $white;
+    opacity: 1;
   }
 }

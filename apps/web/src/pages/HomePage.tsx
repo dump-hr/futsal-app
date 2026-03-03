@@ -13,7 +13,6 @@ import c from './HomePage.module.scss';
 import trashCanSvg from '@assets/icons/trash-can-gray.svg';
 import plusSvg from '@assets/icons/plus-gray.svg';
 import { PlusBlack, XWhite, CheckBlack, TrashCanBlack } from '@assets/index';
-import { BorderColor } from '../types/borderColor';
 
 export const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -126,26 +125,11 @@ export const HomePage = () => {
           gap: '30px',
           flexDirection: 'column',
         }}>
-        <Input
-          placeholder='Ericsson Nikola Tesla Jos Nesto'
-          borderColor={BorderColor.Gray}
-        />
-
-        <Input
-          defaultValue='Ericsson Nikola Tesla Jos Nesto'
-          borderColor={BorderColor.White}
-        />
+        <Input placeholder='Ericsson Nikola Tesla Jos Nesto' />
 
         <Input
           label='Ime ekipe'
           placeholder='Ericsson Nikola Tesla Jos Nesto'
-          borderColor={BorderColor.Lime}
-        />
-
-        <Input
-          label='Ime ekipe'
-          placeholder='Ericsson Nikola Tesla Jos Nesto'
-          borderColor={BorderColor.Red}
         />
       </div>
     </div>

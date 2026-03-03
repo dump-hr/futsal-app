@@ -1,14 +1,20 @@
-import { useId } from 'react';
+import { useId, useRef } from 'react';
 import c from './Input.module.scss';
-import { BorderColor } from 'types/borderColor';
+import { useCloseComponent } from '@hooks/index';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
-  borderColor: BorderColor;
 }
 
-const Input: React.FC<InputProps> = ({ label, borderColor, ...props }) => {
+const Input: React.FC<InputProps> = ({ label, ...props }) => {
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const inputId = useId();
+
+  const removeFocus = () => {
+    inputRef.current?.blur();
+  };
+
+  useCloseComponent({ onClose: removeFocus });
 
   return (
     <div className={c.inputContainer}>
@@ -18,10 +24,10 @@ const Input: React.FC<InputProps> = ({ label, borderColor, ...props }) => {
         </label>
       )}
       <input
+        ref={inputRef}
         id={inputId}
         type='text'
         className={c.input}
-        style={{ border: `0.5px solid ${borderColor}` }}
         {...props}
       />
     </div>

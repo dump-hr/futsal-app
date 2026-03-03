@@ -11,14 +11,13 @@ type SearchProps = {
 };
 
 const Search: React.FC<SearchProps> = ({ className, value, onChange }) => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const removeFocus = () => {
     inputRef.current?.blur();
   };
 
-  useCloseComponent({ onClose: removeFocus, containerRef });
+  useCloseComponent({ onClose: removeFocus });
 
   return (
     <div className={clsx(c.search, className)}>
