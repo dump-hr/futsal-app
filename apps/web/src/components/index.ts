@@ -7,3 +7,4 @@ export { default as Search } from './Search';
 export * from './MatchInfo';
 export { TeamInfo } from './TeamInfo/TeamInfo';
 export { default as Input } from './Input/Input';
+export { default as Group } from './Group/Group';

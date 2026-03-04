@@ -6,6 +6,7 @@ import {
   Search,
   TeamInfo,
   Input,
+  Group,
 } from '@components/index';
 import { useState } from 'react';
 import { EventType } from '@futsal-app/types';
@@ -13,10 +14,30 @@ import { MATCH_STAGE, MATCH_STATUS, MatchInfo } from '../../components';
 import c from './HomePage.module.scss';
 import trashCanSvg from '@assets/icons/trash-can-gray.svg';
 import plusSvg from '@assets/icons/plus-gray.svg';
-import { PlusBlack, XWhite, CheckBlack, TrashCanBlack } from '@assets/index';
 import { BackgroundColor } from '../../types';
 import otpLogo from '../../../public/test-logos/otp.png';
 import infobipLogo from '../../../public/test-logos/infobip.png';
+import {
+  PlusBlack,
+  XWhite,
+  CheckBlack,
+  TrashCanBlack,
+  EricssonLogo,
+  InfobipLogo,
+  EndavaLogo,
+  OtpBankaLogo,
+} from '@assets/index';
+
+const teams = [
+  { name: 'Ericsson Nikola Tesla', logo: EricssonLogo },
+  { name: 'Infobip', logo: InfobipLogo },
+  { name: 'Endava', logo: EndavaLogo },
+  { name: 'OTP Banka', logo: OtpBankaLogo },
+  { name: 'Ericsson Nikola Tesla', logo: EricssonLogo },
+  { name: 'Ericsson Nikola Tesla', logo: EricssonLogo },
+  { name: 'Ericsson Nikola Tesla', logo: EricssonLogo },
+  { name: 'Ericsson Nikola Tesla', logo: EricssonLogo },
+];
 
 export const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -155,6 +176,18 @@ export const HomePage = () => {
             label='Ime ekipe'
             placeholder='Ericsson Nikola Tesla Jos Nesto'
           />
+        </div>
+
+        <div
+          style={{
+            backgroundColor: 'black',
+            marginTop: '50px',
+            padding: '30px',
+            display: 'flex',
+            gap: '30px',
+          }}>
+          <Group groupTitle='Skupina A' teams={teams.slice(0, 5)} />
+          <Group groupTitle='Skupina B' teams={teams} />
         </div>
       </div>
     </div>
