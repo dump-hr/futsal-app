@@ -4,6 +4,7 @@ import {
   ButtonSmall,
   EventDropdown,
   Search,
+  TeamInfo,
 } from '@components/index';
 import { useState } from 'react';
 import { EventType } from '@futsal-app/types';
@@ -128,6 +129,16 @@ export const HomePage = () => {
           matchStage={MATCH_STAGE.QUARTER_FINALS}
           matchStatus={MATCH_STATUS.FINISHED}
         />
+        <div style={{ width: '1281px' }}>
+          <TeamInfo
+            teamName='Infobip'
+            teamLogoUrl={infobipLogo}
+            teamScore={3}
+            teamGroup='A'
+            numberOfPlayers={12}
+            numberOfMatchesPlayed={4}
+          />
+        </div>
       </div>
     </div>
   );
