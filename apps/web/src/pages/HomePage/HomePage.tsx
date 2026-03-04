@@ -5,6 +5,7 @@ import {
   EventDropdown,
   Search,
   TeamInfo,
+  Input,
 } from '@components/index';
 import { useState } from 'react';
 import { EventType } from '@futsal-app/types';
@@ -137,6 +138,22 @@ export const HomePage = () => {
             teamGroup='A'
             numberOfPlayers={12}
             numberOfMatchesPlayed={4}
+          />
+        </div>
+
+        <div
+          style={{
+            backgroundColor: 'black',
+            padding: '30px',
+            display: 'flex',
+            gap: '30px',
+            flexDirection: 'column',
+          }}>
+          <Input placeholder='Ericsson Nikola Tesla Jos Nesto' />
+
+          <Input
+            label='Ime ekipe'
+            placeholder='Ericsson Nikola Tesla Jos Nesto'
           />
         </div>
       </div>

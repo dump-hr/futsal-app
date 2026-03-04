@@ -6,3 +6,4 @@ export { default as EventDropdown } from './EventDropdown/EventDropdown';
 export { default as Search } from './Search';
 export * from './MatchInfo';
 export { TeamInfo } from './TeamInfo/TeamInfo';
+export { default as Input } from './Input/Input';

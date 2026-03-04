@@ -1,0 +1,29 @@
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: $white;
+  @include body-normal;
+}
+
+.input {
+  max-width: 320px;
+  height: 40px;
+  padding: 8px 12px;
+  border: 0.5px solid $gray-medium;
+  border-radius: 8px;
+  background-color: transparent;
+  color: $white;
+  outline: none;
+  opacity: 0.4;
+  transition: 0.2s;
+
+  &::placeholder {
+    color: $gray-medium;
+  }
+
+  &:focus {
+    border-color: $white;
+    opacity: 1;
+  }
+}
