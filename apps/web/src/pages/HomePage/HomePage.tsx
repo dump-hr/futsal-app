@@ -10,9 +10,8 @@ import {
   Group,
 } from '@components/index';
 import { useState } from 'react';
-import { EventType } from '@futsal-app/types';
-import { MATCH_STAGE, MATCH_STATUS, MatchInfo } from '../../components';
 import { EventType, PlayerDto } from '@futsal-app/types';
+import { MATCH_STAGE, MATCH_STATUS, MatchInfo } from '../../components';
 
 const MOCK_PLAYERS: PlayerDto[] = [
   { id: 1, firstName: 'Ivan', lastName: 'Horvat' },
@@ -171,7 +170,6 @@ export const HomePage = () => {
             numberOfMatchesPlayed={4}
           />
         </div>
-        />
       </div>
 
       <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
@@ -191,33 +189,32 @@ export const HomePage = () => {
         />
       </div>
 
-        <div
-          style={{
-            backgroundColor: 'black',
-            padding: '30px',
-            display: 'flex',
-            gap: '30px',
-            flexDirection: 'column',
-          }}>
-          <Input placeholder='Ericsson Nikola Tesla Jos Nesto' />
+      <div
+        style={{
+          backgroundColor: 'black',
+          padding: '30px',
+          display: 'flex',
+          gap: '30px',
+          flexDirection: 'column',
+        }}>
+        <Input placeholder='Ericsson Nikola Tesla Jos Nesto' />
 
-          <Input
-            label='Ime ekipe'
-            placeholder='Ericsson Nikola Tesla Jos Nesto'
-          />
-        </div>
+        <Input
+          label='Ime ekipe'
+          placeholder='Ericsson Nikola Tesla Jos Nesto'
+        />
+      </div>
 
-        <div
-          style={{
-            backgroundColor: 'black',
-            marginTop: '50px',
-            padding: '30px',
-            display: 'flex',
-            gap: '30px',
-          }}>
-          <Group groupTitle='Skupina A' teams={teams.slice(0, 5)} />
-          <Group groupTitle='Skupina B' teams={teams} />
-        </div>
+      <div
+        style={{
+          backgroundColor: 'black',
+          marginTop: '50px',
+          padding: '30px',
+          display: 'flex',
+          gap: '30px',
+        }}>
+        <Group groupTitle='Skupina A' teams={teams.slice(0, 5)} />
+        <Group groupTitle='Skupina B' teams={teams} />
       </div>
     </div>
   );
