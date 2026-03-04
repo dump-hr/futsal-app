@@ -1,11 +1,12 @@
 import { Navbar } from '@components/index';
 import type { ReactNode } from 'react';
+import c from './NavbarLayout.module.scss';
 
 export const NavbarLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <Navbar />
-      <div style={{ paddingTop: 80 }}>{children}</div>
+      <main className={c.content}>{children}</main>
     </>
   );
 };

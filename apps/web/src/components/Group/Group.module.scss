@@ -1,0 +1,83 @@
+.group {
+  background-color: $black;
+  border: 0.5px solid $gray-dark;
+  border-radius: 20px;
+  padding: 32px;
+  width: 100%;
+  max-width: 424px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: $white;
+  height: 448px;
+}
+
+.groupTitleWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.groupTitle {
+  color: $white;
+  @include body-normal;
+  text-transform: uppercase;
+}
+
+.groupTeams {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 8px;
+  width: 100%;
+  overflow-y: auto;
+  margin: 24px 0;
+  padding-right: 8px;
+
+  -webkit-mask-image: linear-gradient(to bottom, $black 75%, transparent 100%);
+  mask-image: linear-gradient(to bottom, $black 75%, transparent 100%);
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $gray-dark;
+    border-radius: 15px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $gray-light;
+    border-radius: 15px;
+  }
+}
+
+.team {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 32px;
+
+  & > div:first-child {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    img {
+      width: 32px;
+      height: 14px;
+      object-fit: contain;
+    }
+
+    span {
+      @include body-normal;
+    }
+  }
+}
+
+.groupFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}

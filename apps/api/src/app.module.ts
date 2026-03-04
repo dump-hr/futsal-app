@@ -14,7 +14,7 @@ import { MatchModule } from './match/match.module';
       ? [
           ServeStaticModule.forRoot({
             rootPath: join(__dirname, '..', '..', '..', 'web', 'dist'),
-            exclude: ['/api/(.*)'],
+            exclude: ['/api/{*path}'],
           }),
         ]
       : []),
