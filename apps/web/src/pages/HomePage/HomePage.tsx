@@ -5,13 +5,16 @@ import {
   EventDropdown,
   Search,
 } from '@components/index';
-import { BackgroundColor } from '../types';
 import { useState } from 'react';
 import { EventType } from '@futsal-app/types';
+import { MATCH_STAGE, MATCH_STATUS, MatchInfo } from '../../components';
 import c from './HomePage.module.scss';
 import trashCanSvg from '@assets/icons/trash-can-gray.svg';
 import plusSvg from '@assets/icons/plus-gray.svg';
 import { PlusBlack, XWhite, CheckBlack, TrashCanBlack } from '@assets/index';
+import { BackgroundColor } from '../../types';
+import otpLogo from '../../../public/test-logos/otp.png';
+import infobipLogo from '../../../public/test-logos/infobip.png';
 
 export const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -113,6 +116,17 @@ export const HomePage = () => {
         <Search
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
+        />
+      </div>
+      <div style={{ width: '1296px' }}>
+        <MatchInfo
+          teamA={{ teamName: 'Ericsson Nikola Tesla', logoUrl: otpLogo }}
+          teamB={{ teamName: 'Maurer Electronics', logoUrl: infobipLogo }}
+          matchTime={'21:30'}
+          teamAScore={3}
+          teamBScore={1}
+          matchStage={MATCH_STAGE.QUARTER_FINALS}
+          matchStatus={MATCH_STATUS.FINISHED}
         />
       </div>
     </div>
