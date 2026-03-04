@@ -4,11 +4,14 @@ import {
   ButtonSmall,
   EventDropdown,
   Search,
+  TeamInfo,
   MatchEventCard,
   Input,
+  Group,
 } from '@components/index';
-import { BackgroundColor } from '../types';
 import { useState } from 'react';
+import { EventType } from '@futsal-app/types';
+import { MATCH_STAGE, MATCH_STATUS, MatchInfo } from '../../components';
 import { EventType, PlayerDto } from '@futsal-app/types';
 
 const MOCK_PLAYERS: PlayerDto[] = [
@@ -21,7 +24,30 @@ const MOCK_PLAYERS: PlayerDto[] = [
 import c from './HomePage.module.scss';
 import trashCanSvg from '@assets/icons/trash-can-gray.svg';
 import plusSvg from '@assets/icons/plus-gray.svg';
-import { PlusBlack, XWhite, CheckBlack, TrashCanBlack } from '@assets/index';
+import { BackgroundColor } from '../../types';
+import otpLogo from '../../../public/test-logos/otp.png';
+import infobipLogo from '../../../public/test-logos/infobip.png';
+import {
+  PlusBlack,
+  XWhite,
+  CheckBlack,
+  TrashCanBlack,
+  EricssonLogo,
+  InfobipLogo,
+  EndavaLogo,
+  OtpBankaLogo,
+} from '@assets/index';
+
+const teams = [
+  { name: 'Ericsson Nikola Tesla', logo: EricssonLogo },
+  { name: 'Infobip', logo: InfobipLogo },
+  { name: 'Endava', logo: EndavaLogo },
+  { name: 'OTP Banka', logo: OtpBankaLogo },
+  { name: 'Ericsson Nikola Tesla', logo: EricssonLogo },
+  { name: 'Ericsson Nikola Tesla', logo: EricssonLogo },
+  { name: 'Ericsson Nikola Tesla', logo: EricssonLogo },
+  { name: 'Ericsson Nikola Tesla', logo: EricssonLogo },
+];
 
 export const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -125,6 +151,28 @@ export const HomePage = () => {
           onChange={(e) => setSearchValue(e.target.value)}
         />
       </div>
+      <div style={{ width: '1296px' }}>
+        <MatchInfo
+          teamA={{ teamName: 'Ericsson Nikola Tesla', logoUrl: otpLogo }}
+          teamB={{ teamName: 'Maurer Electronics', logoUrl: infobipLogo }}
+          matchTime={'21:30'}
+          teamAScore={3}
+          teamBScore={1}
+          matchStage={MATCH_STAGE.QUARTER_FINALS}
+          matchStatus={MATCH_STATUS.FINISHED}
+        />
+        <div style={{ width: '1281px' }}>
+          <TeamInfo
+            teamName='Infobip'
+            teamLogoUrl={infobipLogo}
+            teamScore={3}
+            teamGroup='A'
+            numberOfPlayers={12}
+            numberOfMatchesPlayed={4}
+          />
+        </div>
+        />
+      </div>
 
       <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
         <MatchEventCard
@@ -143,20 +191,33 @@ export const HomePage = () => {
         />
       </div>
 
-      <div
-        style={{
-          backgroundColor: 'black',
-          padding: '30px',
-          display: 'flex',
-          gap: '30px',
-          flexDirection: 'column',
-        }}>
-        <Input placeholder='Ericsson Nikola Tesla Jos Nesto' />
+        <div
+          style={{
+            backgroundColor: 'black',
+            padding: '30px',
+            display: 'flex',
+            gap: '30px',
+            flexDirection: 'column',
+          }}>
+          <Input placeholder='Ericsson Nikola Tesla Jos Nesto' />
 
-        <Input
-          label='Ime ekipe'
-          placeholder='Ericsson Nikola Tesla Jos Nesto'
-        />
+          <Input
+            label='Ime ekipe'
+            placeholder='Ericsson Nikola Tesla Jos Nesto'
+          />
+        </div>
+
+        <div
+          style={{
+            backgroundColor: 'black',
+            marginTop: '50px',
+            padding: '30px',
+            display: 'flex',
+            gap: '30px',
+          }}>
+          <Group groupTitle='Skupina A' teams={teams.slice(0, 5)} />
+          <Group groupTitle='Skupina B' teams={teams} />
+        </div>
       </div>
     </div>
   );

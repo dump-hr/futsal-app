@@ -2,9 +2,9 @@ import { useId, useRef } from 'react';
 import c from './Input.module.scss';
 import { useCloseComponent } from '@hooks/index';
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
-}
+};
 
 const Input: React.FC<InputProps> = ({ label, ...props }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
