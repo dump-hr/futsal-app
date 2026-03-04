@@ -6,11 +6,7 @@ import {
   MatchEventUpdateDto,
   MatchEventDto,
 } from '@futsal-app/types';
-import {
-  isGoalEvent,
-  getScoreChange,
-  toMatchEventDto,
-} from './match-event.helpers';
+import { isGoalEvent, getScoreChange } from './match-event.helpers';
 
 @Injectable()
 export class MatchEventService {
@@ -28,7 +24,7 @@ export class MatchEventService {
     });
 
     if (!isGoalEvent(dto.eventType)) {
-      return toMatchEventDto(await event);
+      return event;
     }
 
     const delta = getScoreChange(dto.eventType, dto.isForHomeTeam);
@@ -44,7 +40,7 @@ export class MatchEventService {
         }),
       ]);
 
-      return toMatchEventDto(created);
+      return created;
     } catch (error) {
       this.logger.error(
         `Failed to create event and update score for match ${dto.matchId}`,
@@ -62,7 +58,7 @@ export class MatchEventService {
         player: { select: { id: true, firstName: true, lastName: true } },
       },
     });
-    return events.map(toMatchEventDto);
+    return events;
   }
 
   async update(id: number, dto: MatchEventUpdateDto): Promise<MatchEventDto> {
@@ -84,7 +80,7 @@ export class MatchEventService {
     });
 
     if (!eventTypeChanged) {
-      return toMatchEventDto(await updateOp);
+      return await updateOp;
     }
 
     const operations: Prisma.PrismaPromise<unknown>[] = [updateOp];
@@ -121,7 +117,7 @@ export class MatchEventService {
     try {
       const [updated] = await prisma.$transaction(operations);
 
-      return toMatchEventDto(updated);
+      return updated as MatchEventDto;
     } catch (error) {
       this.logger.error(
         `Failed to update event ${id} and sync score for match ${existing.matchId}`,
@@ -143,7 +139,7 @@ export class MatchEventService {
     const deleteOp = prisma.matchEvent.delete({ where: { id } });
 
     if (!isGoalEvent(existing.eventType)) {
-      return toMatchEventDto(await deleteOp);
+      return await deleteOp;
     }
 
     const delta = getScoreChange(existing.eventType, existing.isForHomeTeam);
@@ -163,7 +159,7 @@ export class MatchEventService {
         }),
       ]);
 
-      return toMatchEventDto(deleted);
+      return deleted;
     } catch (error) {
       this.logger.error(
         `Failed to delete event ${id} and sync score for match ${existing.matchId}`,

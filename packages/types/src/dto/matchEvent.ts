@@ -23,11 +23,11 @@ export class MatchEventCreateDto {
   @IsInt()
   @IsOptional()
   @IsPositive()
-  playerId?: number;
+  playerId: number | null;
 
   @IsEnum(EventType)
   @IsNotEmpty()
-  eventType: EventType;
+  eventType: `${EventType}`;
 
   @IsBoolean()
   @IsNotEmpty()
@@ -41,11 +41,11 @@ export class MatchEventUpdateDto {
 
   @IsInt()
   @IsOptional()
-  playerId?: number;
+  playerId?: number | null;
 
   @IsEnum(EventType)
   @IsOptional()
-  eventType?: EventType;
+  eventType?: `${EventType}`;
 }
 
 export class MatchEventDto {
@@ -63,11 +63,11 @@ export class MatchEventDto {
 
   @IsInt()
   @IsOptional()
-  playerId?: number;
+  playerId: number | null;
 
   @IsEnum(EventType)
   @IsNotEmpty()
-  eventType: EventType;
+  eventType: `${EventType}`;
 
   @IsBoolean()
   @IsNotEmpty()
