@@ -6,6 +6,7 @@ import {
   Search,
   TeamInfo,
   MatchEventCard,
+  MatchPanel,
   Input,
   Group,
 } from '@components/index';
@@ -223,6 +224,9 @@ export const HomePage = () => {
         <Group groupTitle='Skupina A' teams={teams.slice(0, 5)} />
         <Group groupTitle='Skupina B' teams={teams} />
       </div>
+    </div>
+
+      <MatchPanel matchId={1} onClose={() => console.log('close panel')} />
     </div>
   );
 };

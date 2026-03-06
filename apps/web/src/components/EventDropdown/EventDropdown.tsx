@@ -24,8 +24,8 @@ const PENALTY_SHOOTOUT_EVENTS: EventType[] = [
 type EventDropdownProps = {
   side: 'left' | 'right';
   isPenaltyShootout?: boolean;
-  value: EventType | null;
-  onChange: (event: EventType) => void;
+  value: `${EventType}` | null;
+  onChange: (event: `${EventType}`) => void;
   className?: string;
 };
 

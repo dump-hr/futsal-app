@@ -5,6 +5,22 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
+import { PlayerDto } from './player';
+
+export class MatchTeamDto {
+  @IsInt()
+  @IsNotEmpty()
+  id: number;
+
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+
+  @IsOptional()
+  logoUrl?: string;
+
+  players: PlayerDto[];
+}
 
 export class MatchDto {
   @IsInt()
@@ -28,8 +44,8 @@ export class MatchDto {
   matchType: string;
 
   @IsOptional()
-  homeTeam?: { id: number; name: string; logoUrl?: string };
+  homeTeam?: MatchTeamDto;
 
   @IsOptional()
-  awayTeam?: { id: number; name: string; logoUrl?: string };
+  awayTeam?: MatchTeamDto;
 }

@@ -3,8 +3,10 @@ import { XBlack } from '@assets/index';
 import { BackgroundColor } from '../../types';
 import c from './MatchPanel.module.scss';
 
+const HOME_LOGO_TEST = '/test-logos/infobip.png';
+const AWAY_LOGO_TEST = '/test-logos/otp.png';
+
 type Team = {
-  id: number;
   name: string;
   logoUrl?: string;
 };
@@ -12,7 +14,7 @@ type Team = {
 type TeamPickerProps = {
   homeTeam: Team;
   awayTeam: Team;
-  onPick: (teamId: number, isHome: boolean) => void;
+  onPick: (isHome: boolean) => void;
   onClose: () => void;
 };
 
@@ -34,29 +36,21 @@ const TeamPicker: React.FC<TeamPickerProps> = ({
         </div>
       </div>
       <div className={c.teamPickerTeams}>
-        <button
-          className={c.teamOption}
-          onClick={() => onPick(homeTeam.id, true)}>
-          {homeTeam.logoUrl && (
-            <img
-              src={homeTeam.logoUrl}
-              alt={homeTeam.name}
-              className={c.teamLogo}
-            />
-          )}
+        <button className={c.teamOption} onClick={() => onPick(true)}>
+          <img
+            src={homeTeam.logoUrl || HOME_LOGO_TEST}
+            alt={homeTeam.name}
+            className={c.teamLogo}
+          />
           <p className={c.teamName}>{homeTeam.name}</p>
         </button>
         <p className={c.vsLabel}>VS</p>
-        <button
-          className={c.teamOption}
-          onClick={() => onPick(awayTeam.id, false)}>
-          {awayTeam.logoUrl && (
-            <img
-              src={awayTeam.logoUrl}
-              alt={awayTeam.name}
-              className={c.teamLogo}
-            />
-          )}
+        <button className={c.teamOption} onClick={() => onPick(false)}>
+          <img
+            src={awayTeam.logoUrl || AWAY_LOGO_TEST}
+            alt={awayTeam.name}
+            className={c.teamLogo}
+          />
           <p className={c.teamName}>{awayTeam.name}</p>
         </button>
       </div>

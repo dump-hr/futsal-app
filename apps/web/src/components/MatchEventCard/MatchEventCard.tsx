@@ -7,7 +7,7 @@ import MatchEventCardDisplay from './MatchEventCardDisplay';
 type MatchEventCardProps = {
   minute?: number;
   playerName?: string;
-  eventType?: EventType;
+  eventType?: `${EventType}`;
   side: 'left' | 'right';
   players: PlayerDto[];
   isPenaltyShootout?: boolean;

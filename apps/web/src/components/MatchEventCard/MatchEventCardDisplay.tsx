@@ -8,7 +8,7 @@ import c from './MatchEventCard.module.scss';
 type MatchEventCardDisplayProps = {
   minute?: number;
   playerName?: string;
-  eventType?: EventType;
+  eventType?: `${EventType}`;
   side: 'left' | 'right';
   isPenaltyShootout: boolean;
   onEdit: () => void;

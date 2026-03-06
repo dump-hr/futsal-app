@@ -11,13 +11,13 @@ type EditFormState = {
   minute: string;
   playerName: string;
   playerId?: number;
-  eventType: EventType | null;
+  eventType: `${EventType}` | null;
 };
 
 type MatchEventCardEditProps = {
   minute?: number;
   playerName?: string;
-  eventType?: EventType;
+  eventType?: `${EventType}`;
   side: 'left' | 'right';
   players: PlayerDto[];
   isPenaltyShootout: boolean;

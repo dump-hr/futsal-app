@@ -21,17 +21,16 @@ type MatchPanelProps = {
 };
 
 type NewEventSide = {
-  teamId: number;
   isHome: boolean;
   isPenalty: boolean;
 };
 
-const SHOOTOUT_EVENTS: EventType[] = [
+const SHOOTOUT_EVENTS: `${EventType}`[] = [
   EventType.shootoutGoal,
   EventType.shootoutMiss,
 ];
 
-const isShootoutEvent = (eventType: EventType): boolean => {
+const isShootoutEvent = (eventType: `${EventType}`): boolean => {
   return SHOOTOUT_EVENTS.includes(eventType);
 };
 
@@ -68,8 +67,8 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
     (e) => !e.isForHomeTeam && e.eventType === EventType.shootoutGoal,
   ).length;
 
-  const handleTeamPick = (teamId: number, isHome: boolean) => {
-    setNewEventSide({ teamId, isHome, isPenalty: showPenaltySection });
+  const handleTeamPick = (isHome: boolean) => {
+    setNewEventSide({ isHome, isPenalty: showPenaltySection });
     setShowTeamPicker(false);
   };
 
@@ -78,7 +77,7 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
     createEvent.mutate({
       minute: isPenalty ? 0 : data.minute,
       matchId,
-      playerId: data.playerId,
+      playerId: data.playerId ?? null,
       eventType: data.eventType,
       isForHomeTeam,
     });
@@ -99,12 +98,12 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
     deleteEvent.mutate(eventId);
   };
 
+  const homePlayers = match.homeTeam?.players ?? [];
+  const awayPlayers = match.awayTeam?.players ?? [];
+
   const renderEvent = (event: MatchEventDto, isPenalty = false) => {
     const side = event.isForHomeTeam ? 'left' : 'right';
-    const teamId = event.isForHomeTeam
-      ? (match.homeTeam?.id ?? 0)
-      : (match.awayTeam?.id ?? 0);
-
+    const players = event.isForHomeTeam ? homePlayers : awayPlayers;
 
     // Time will be auto filled when we add a live timer
     return (
@@ -123,7 +122,7 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
           }
           eventType={event.eventType}
           side={side}
-          teamId={teamId}
+          players={players}
           isPenaltyShootout={isPenalty}
           onSave={(data) => handleUpdate(event.id, data)}
           onDelete={() => handleDelete(event.id)}
@@ -181,7 +180,7 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
             )}>
             <MatchEventCard
               side={newEventSide.isHome ? 'left' : 'right'}
-              teamId={newEventSide.teamId}
+              players={newEventSide.isHome ? homePlayers : awayPlayers}
               isPenaltyShootout={newEventSide.isPenalty}
               isNew
               onSave={(data) => handleSave(newEventSide.isHome, data)}

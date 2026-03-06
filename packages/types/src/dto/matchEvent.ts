@@ -78,7 +78,7 @@ export class MatchEventDto {
   playerId: number | null;
 
   @IsOptional()
-  player?: MatchEventPlayerDto;
+  player?: MatchEventPlayerDto | null;
 
   @IsEnum(EventType)
   @IsNotEmpty()
