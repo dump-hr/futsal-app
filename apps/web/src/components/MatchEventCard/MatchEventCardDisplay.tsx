@@ -38,7 +38,7 @@ const MatchEventCardDisplay: React.FC<MatchEventCardDisplayProps> = ({
           </div>
         </div>
         <p className={isPenaltyShootout ? c.penaltyLabel : c.minute}>
-          {isPenaltyShootout ? 'PENAL' : `${minute}'`}
+          {isPenaltyShootout ? 'PENAL' : `${minute ?? 0}'`}
         </p>
       </div>
       <div className={clsx(c.info, !isLeft && c.infoRight)}>

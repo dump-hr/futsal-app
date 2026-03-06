@@ -90,7 +90,9 @@ const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
       playerId: editForm.playerId,
       eventType: editForm.eventType,
     });
-    onStopEditing();
+    if (!isNew) {
+      onStopEditing();
+    }
   };
 
   const handleCancel = () => {

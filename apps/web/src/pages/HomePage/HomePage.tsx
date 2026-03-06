@@ -60,7 +60,12 @@ export const HomePage = () => {
   const [searchValue, setSearchValue] = useState<string>('');
 
   return (
-    <div style={{ display: 'flex', minHeight: 'calc(100vh - 80px)' }}>
+    <div
+      style={{
+        background: 'gray',
+        display: 'flex',
+        minHeight: 'calc(100vh - 80px)',
+      }}>
       <div
         style={{
           flex: 1,
@@ -141,90 +146,90 @@ export const HomePage = () => {
           />
         )}
 
-      <ButtonSmall
-        iconSrc={trashCanSvg}
-        hasBorder
-        backgroundColor={BackgroundColor.Lime}
-      />
-      <ButtonSmall
-        iconSrc={plusSvg}
-        width={40}
-        backgroundColor={BackgroundColor.Red}
-      />
+        <ButtonSmall
+          iconSrc={trashCanSvg}
+          hasBorder
+          backgroundColor={BackgroundColor.Lime}
+        />
+        <ButtonSmall
+          iconSrc={plusSvg}
+          width={40}
+          backgroundColor={BackgroundColor.Red}
+        />
 
-      <div style={{ backgroundColor: 'black', padding: '10px' }}>
-        <Search
-          value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
-        />
-      </div>
-      <div style={{ width: '1296px' }}>
-        <MatchInfo
-          teamA={{ teamName: 'Ericsson Nikola Tesla', logoUrl: otpLogo }}
-          teamB={{ teamName: 'Maurer Electronics', logoUrl: infobipLogo }}
-          matchTime={'21:30'}
-          teamAScore={3}
-          teamBScore={1}
-          matchStage={MATCH_STAGE.QUARTER_FINALS}
-          matchStatus={MATCH_STATUS.FINISHED}
-        />
-        <div style={{ width: '1281px' }}>
-          <TeamInfo
-            teamName='Infobip'
-            teamLogoUrl={infobipLogo}
-            teamScore={3}
-            teamGroup='A'
-            numberOfPlayers={12}
-            numberOfMatchesPlayed={4}
+        <div style={{ backgroundColor: 'black', padding: '10px' }}>
+          <Search
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
           />
         </div>
-      </div>
+        <div style={{ width: '1296px' }}>
+          <MatchInfo
+            teamA={{ teamName: 'Ericsson Nikola Tesla', logoUrl: otpLogo }}
+            teamB={{ teamName: 'Maurer Electronics', logoUrl: infobipLogo }}
+            matchTime={'21:30'}
+            teamAScore={3}
+            teamBScore={1}
+            matchStage={MATCH_STAGE.QUARTER_FINALS}
+            matchStatus={MATCH_STATUS.FINISHED}
+          />
+          <div style={{ width: '1281px' }}>
+            <TeamInfo
+              teamName='Infobip'
+              teamLogoUrl={infobipLogo}
+              teamScore={3}
+              teamGroup='A'
+              numberOfPlayers={12}
+              numberOfMatchesPlayed={4}
+            />
+          </div>
+        </div>
 
-      <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-        <MatchEventCard
-          side='left'
-          players={MOCK_PLAYERS}
-          isNew
-          onSave={(data) => console.log('save', data)}
-          onDelete={() => console.log('delete')}
-        />
-        <MatchEventCard
-          side='right'
-          players={MOCK_PLAYERS}
-          isNew
-          onSave={(data) => console.log('save', data)}
-          onDelete={() => console.log('delete')}
-        />
-      </div>
+        <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+          <MatchEventCard
+            side='left'
+            players={MOCK_PLAYERS}
+            isNew
+            onSave={(data) => console.log('save', data)}
+            onDelete={() => console.log('delete')}
+          />
+          <MatchEventCard
+            side='right'
+            players={MOCK_PLAYERS}
+            isNew
+            onSave={(data) => console.log('save', data)}
+            onDelete={() => console.log('delete')}
+          />
+        </div>
 
-      <div
-        style={{
-          backgroundColor: 'black',
-          padding: '30px',
-          display: 'flex',
-          gap: '30px',
-          flexDirection: 'column',
-        }}>
-        <Input placeholder='Ericsson Nikola Tesla Jos Nesto' />
+        <div
+          style={{
+            backgroundColor: 'black',
+            padding: '30px',
+            display: 'flex',
+            gap: '30px',
+            flexDirection: 'column',
+          }}>
+          <Input placeholder='Ericsson Nikola Tesla Jos Nesto' />
 
-        <Input
-          label='Ime ekipe'
-          placeholder='Ericsson Nikola Tesla Jos Nesto'
-        />
-      </div>
+          <Input
+            label='Ime ekipe'
+            placeholder='Ericsson Nikola Tesla Jos Nesto'
+          />
+        </div>
 
-      <div
-        style={{
-          backgroundColor: 'black',
-          marginTop: '50px',
-          padding: '30px',
-          display: 'flex',
-          gap: '30px',
-        }}>
-        <Group groupTitle='Skupina A' teams={teams.slice(0, 5)} />
-        <Group groupTitle='Skupina B' teams={teams} />
+        <div
+          style={{
+            backgroundColor: 'black',
+            marginTop: '50px',
+            padding: '30px',
+            display: 'flex',
+            gap: '30px',
+          }}>
+          <Group groupTitle='Skupina A' teams={teams.slice(0, 5)} />
+          <Group groupTitle='Skupina B' teams={teams} />
+        </div>
       </div>
-    </div>
 
       <MatchPanel matchId={1} onClose={() => console.log('close panel')} />
     </div>
