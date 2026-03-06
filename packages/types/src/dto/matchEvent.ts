@@ -4,25 +4,30 @@ import {
   IsInt,
   IsNotEmpty,
   IsOptional,
+  IsPositive,
+  Min,
 } from 'class-validator';
 import { EventType } from '../enum';
 
 export class MatchEventCreateDto {
   @IsInt()
   @IsNotEmpty()
+  @Min(0)
   minute: number;
 
   @IsInt()
   @IsNotEmpty()
+  @IsPositive()
   matchId: number;
 
   @IsInt()
   @IsOptional()
-  playerId?: number;
+  @IsPositive()
+  playerId: number | null;
 
   @IsEnum(EventType)
   @IsNotEmpty()
-  eventType: EventType;
+  eventType: `${EventType}`;
 
   @IsBoolean()
   @IsNotEmpty()
@@ -36,11 +41,11 @@ export class MatchEventUpdateDto {
 
   @IsInt()
   @IsOptional()
-  playerId?: number;
+  playerId?: number | null;
 
   @IsEnum(EventType)
   @IsOptional()
-  eventType?: EventType;
+  eventType?: `${EventType}`;
 }
 
 export class MatchEventPlayerDto {
@@ -70,14 +75,14 @@ export class MatchEventDto {
 
   @IsInt()
   @IsOptional()
-  playerId?: number;
+  playerId: number | null;
 
   @IsOptional()
   player?: MatchEventPlayerDto;
 
   @IsEnum(EventType)
   @IsNotEmpty()
-  eventType: EventType;
+  eventType: `${EventType}`;
 
   @IsBoolean()
   @IsNotEmpty()

@@ -24,7 +24,7 @@ export class MatchEventService {
     });
 
     if (!isGoalEvent(dto.eventType)) {
-      return (await event) as unknown as MatchEventDto;
+      return event;
     }
 
     const delta = getScoreChange(dto.eventType, dto.isForHomeTeam);
@@ -40,7 +40,7 @@ export class MatchEventService {
         }),
       ]);
 
-      return created as unknown as MatchEventDto;
+      return created;
     } catch (error) {
       this.logger.error(
         `Failed to create event and update score for match ${dto.matchId}`,
@@ -51,13 +51,14 @@ export class MatchEventService {
   }
 
   async getByMatchId(matchId: number): Promise<MatchEventDto[]> {
-    return (await prisma.matchEvent.findMany({
+    const events = await prisma.matchEvent.findMany({
       where: { matchId },
       orderBy: [{ minute: 'asc' }, { id: 'asc' }],
       include: {
         player: { select: { id: true, firstName: true, lastName: true } },
       },
-    })) as unknown as MatchEventDto[];
+    });
+    return events;
   }
 
   async update(id: number, dto: MatchEventUpdateDto): Promise<MatchEventDto> {
@@ -79,7 +80,7 @@ export class MatchEventService {
     });
 
     if (!eventTypeChanged) {
-      return (await updateOp) as unknown as MatchEventDto;
+      return await updateOp;
     }
 
     const operations: Prisma.PrismaPromise<unknown>[] = [updateOp];
@@ -138,7 +139,7 @@ export class MatchEventService {
     const deleteOp = prisma.matchEvent.delete({ where: { id } });
 
     if (!isGoalEvent(existing.eventType)) {
-      return (await deleteOp) as unknown as MatchEventDto;
+      return await deleteOp;
     }
 
     const delta = getScoreChange(existing.eventType, existing.isForHomeTeam);
@@ -158,7 +159,7 @@ export class MatchEventService {
         }),
       ]);
 
-      return deleted as unknown as MatchEventDto;
+      return deleted;
     } catch (error) {
       this.logger.error(
         `Failed to delete event ${id} and sync score for match ${existing.matchId}`,

@@ -5,14 +5,21 @@ import {
   EventDropdown,
   Search,
   TeamInfo,
+  MatchEventCard,
   Input,
   Group,
-  MatchEventCard,
-  MatchPanel,
 } from '@components/index';
 import { useState } from 'react';
-import { EventType } from '@futsal-app/types';
+import { EventType, PlayerDto } from '@futsal-app/types';
 import { MATCH_STAGE, MATCH_STATUS, MatchInfo } from '../../components';
+
+const MOCK_PLAYERS: PlayerDto[] = [
+  { id: 1, firstName: 'Ivan', lastName: 'Horvat' },
+  { id: 2, firstName: 'Marko', lastName: 'Kovač' },
+  { id: 3, firstName: 'Luka', lastName: 'Perić' },
+  { id: 4, firstName: 'Ante', lastName: 'Babić' },
+  { id: 5, firstName: 'Toma', lastName: 'Gej' },
+];
 import c from './HomePage.module.scss';
 import trashCanSvg from '@assets/icons/trash-can-gray.svg';
 import plusSvg from '@assets/icons/plus-gray.svg';
@@ -170,65 +177,52 @@ export const HomePage = () => {
             numberOfMatchesPlayed={4}
           />
         </div>
-
-        <div
-          style={{
-            backgroundColor: 'black',
-            padding: '30px',
-            display: 'flex',
-            gap: '30px',
-            flexDirection: 'column',
-          }}>
-          <Input placeholder='Ericsson Nikola Tesla Jos Nesto' />
-
-          <Input
-            label='Ime ekipe'
-            placeholder='Ericsson Nikola Tesla Jos Nesto'
-          />
-        </div>
-
-        <div
-          style={{
-            backgroundColor: 'black',
-            marginTop: '50px',
-            padding: '30px',
-            display: 'flex',
-            gap: '30px',
-          }}>
-          <Group groupTitle='Skupina A' teams={teams.slice(0, 5)} />
-          <Group groupTitle='Skupina B' teams={teams} />
-        </div>
-      </div>
-        <ButtonSmall
-          iconSrc={trashCanSvg}
-          hasBorder
-          backgroundColor={BackgroundColor.Lime}
-        />
-        <ButtonSmall
-          iconSrc={plusSvg}
-          width={40}
-          backgroundColor={BackgroundColor.Red}
-        />
-
-        <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-          <MatchEventCard
-            side='left'
-            teamId={1}
-            isNew
-            onSave={(data) => console.log('save', data)}
-            onDelete={() => console.log('delete')}
-          />
-          <MatchEventCard
-            side='right'
-            teamId={1}
-            isNew
-            onSave={(data) => console.log('save', data)}
-            onDelete={() => console.log('delete')}
-          />
-        </div>
       </div>
 
-      <MatchPanel matchId={2} onClose={() => console.log('close')} />
+      <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+        <MatchEventCard
+          side='left'
+          players={MOCK_PLAYERS}
+          isNew
+          onSave={(data) => console.log('save', data)}
+          onDelete={() => console.log('delete')}
+        />
+        <MatchEventCard
+          side='right'
+          players={MOCK_PLAYERS}
+          isNew
+          onSave={(data) => console.log('save', data)}
+          onDelete={() => console.log('delete')}
+        />
+      </div>
+
+      <div
+        style={{
+          backgroundColor: 'black',
+          padding: '30px',
+          display: 'flex',
+          gap: '30px',
+          flexDirection: 'column',
+        }}>
+        <Input placeholder='Ericsson Nikola Tesla Jos Nesto' />
+
+        <Input
+          label='Ime ekipe'
+          placeholder='Ericsson Nikola Tesla Jos Nesto'
+        />
+      </div>
+
+      <div
+        style={{
+          backgroundColor: 'black',
+          marginTop: '50px',
+          padding: '30px',
+          display: 'flex',
+          gap: '30px',
+        }}>
+        <Group groupTitle='Skupina A' teams={teams.slice(0, 5)} />
+        <Group groupTitle='Skupina B' teams={teams} />
+      </div>
     </div>
   );
 };

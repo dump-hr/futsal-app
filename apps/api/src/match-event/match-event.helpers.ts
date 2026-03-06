@@ -8,10 +8,9 @@ export function getScoreChange(
   eventType: string,
   isForHomeTeam: boolean,
 ): { homeGoals: number; awayGoals: number } {
-  const isOwn = eventType === 'ownGoal';
-  const scoringHome = isOwn ? !isForHomeTeam : isForHomeTeam;
-  return {
-    homeGoals: scoringHome ? 1 : 0,
-    awayGoals: scoringHome ? 0 : 1,
-  };
+  const homeScored = eventType === 'ownGoal' ? !isForHomeTeam : isForHomeTeam;
+
+  return homeScored
+    ? { homeGoals: 1, awayGoals: 0 }
+    : { homeGoals: 0, awayGoals: 1 };
 }

@@ -60,19 +60,33 @@
 }
 
 .minuteInput {
-  @include title-3;
-  color: $white;
-  background: transparent;
+  display: flex;
+  align-items: center;
   border: 0.5px solid $white;
   border-radius: 8px;
   padding: 4px 8px;
   width: 64px;
-  text-align: center;
-  outline: none;
+  box-sizing: border-box;
 
-  &:focus {
+  &:focus-within {
     border-color: $lime;
   }
+
+  span {
+    @include title-3;
+    color: $white;
+  }
+}
+
+.minuteInputField {
+  @include title-3;
+  color: $white;
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+  text-align: center;
+  padding: 0;
 }
 
 .info {
@@ -110,30 +124,6 @@
 
 .nameInputWrapper {
   position: relative;
-}
-
-.nameInput {
-  @include body-normal;
-  color: $white;
-  background: transparent;
-  border: 0.5px solid $lime;
-  border-radius: 8px;
-  padding: 8px 12px;
-  width: 224px;
-  outline: none;
-  text-align: right;
-
-  &::placeholder {
-    color: $gray-medium;
-  }
-
-  &:focus {
-    border-color: $lime;
-  }
-}
-
-.nameInputRight {
-  text-align: left;
 }
 
 .suggestions {
@@ -181,6 +171,11 @@
   &:hover {
     opacity: 0.7;
   }
+}
+
+.suggestionItemHighlighted {
+  font-weight: 700;
+  color: $lime;
 }
 
 .suggestionItemRight {
