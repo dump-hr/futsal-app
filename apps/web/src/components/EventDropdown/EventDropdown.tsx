@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { ArrowDownWhite } from '@assets/index';
 import { EventType } from '@futsal-app/types';
 import { useCloseComponent } from '@hooks/index';
+import { EVENT_LABELS } from '../../types';
 import c from './EventDropdown.module.scss';
 
 const REGULAR_EVENTS: EventType[] = [
@@ -19,18 +20,6 @@ const PENALTY_SHOOTOUT_EVENTS: EventType[] = [
   EventType.shootoutGoal,
   EventType.shootoutMiss,
 ];
-
-const EVENT_LABELS: Record<EventType, string> = {
-  [EventType.goal]: 'Gol',
-  [EventType.ownGoal]: 'Autogol',
-  [EventType.penaltyGoal]: 'Gol (penal)',
-  [EventType.penaltyMiss]: 'Promašaj (penal)',
-  [EventType.yellowCard]: 'Žuti karton',
-  [EventType.redCard]: 'Crveni karton',
-  [EventType.injury]: 'Ozljeda',
-  [EventType.shootoutGoal]: 'Gol (penali)',
-  [EventType.shootoutMiss]: 'Promašaj (penali)',
-};
 
 type EventDropdownProps = {
   side: 'left' | 'right';
