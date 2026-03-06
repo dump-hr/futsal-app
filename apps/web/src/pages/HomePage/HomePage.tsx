@@ -53,9 +53,9 @@ export const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
   const [showSecondaryModal, setShowSecondaryModal] = useState(false);
 
-  const [eventLeft, setEventLeft] = useState<EventType | null>(null);
-  const [eventRight, setEventRight] = useState<EventType | null>(null);
-  const [penaltyEvent, setPenaltyEvent] = useState<EventType | null>(null);
+  const [eventLeft, setEventLeft] = useState<`${EventType}` | null>(null);
+  const [eventRight, setEventRight] = useState<`${EventType}` | null>(null);
+  const [penaltyEvent, setPenaltyEvent] = useState<`${EventType}` | null>(null);
 
   const [searchValue, setSearchValue] = useState<string>('');
 
