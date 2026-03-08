@@ -9,6 +9,9 @@ export class TournamentService {
       data: {
         ...dto,
       },
+      include: {
+        teams: true,
+      },
     });
 
     return createdTournament;
@@ -43,6 +46,9 @@ export class TournamentService {
     const updatedTournament = await prisma.tournament.update({
       where: { id },
       data: { ...dto },
+      include: {
+        teams: true,
+      },
     });
 
     return updatedTournament;
@@ -51,6 +57,9 @@ export class TournamentService {
   async delete(id: number): Promise<TournamentDto> {
     const deletedTournament = await prisma.tournament.delete({
       where: { id },
+      include: {
+        teams: true,
+      },
     });
 
     return deletedTournament;

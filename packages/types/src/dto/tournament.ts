@@ -1,4 +1,12 @@
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsInt,
+  IsNotEmpty,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { TeamDto } from './team';
+import { Type } from 'class-transformer';
 
 export class TournamentModifyDto {
   @IsNotEmpty()
@@ -15,6 +23,8 @@ export class TournamentDto {
   @IsString()
   name: string;
 
-  //TODO:
-  // teams: Team[];
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => TeamDto)
+  teams: TeamDto[];
 }
