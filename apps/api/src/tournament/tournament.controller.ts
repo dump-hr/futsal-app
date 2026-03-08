@@ -26,6 +26,11 @@ export class TournamentController {
     return await this.tournamentService.getById(id);
   }
 
+  @Get()
+  async getAll(): Promise<TournamentDto[]> {
+    return await this.tournamentService.getAll();
+  }
+
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,

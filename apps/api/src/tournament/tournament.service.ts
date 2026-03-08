@@ -26,6 +26,12 @@ export class TournamentService {
     return tournament;
   }
 
+  async getAll(): Promise<TournamentDto[]> {
+    const tournaments = await prisma.tournament.findMany();
+
+    return tournaments;
+  }
+
   async update(id: number, dto: TournamentModifyDto): Promise<TournamentDto> {
     const updatedTournament = await prisma.tournament.update({
       where: { id },
