@@ -21,9 +21,7 @@ export class PlayerController {
   }
 
   @Get(':id')
-  async getById(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<PlayerDto> {
+  async getById(@Param('id', ParseIntPipe) id: number): Promise<PlayerDto> {
     return await this.playerService.getById(id);
   }
 
@@ -36,9 +34,7 @@ export class PlayerController {
   }
 
   @Delete(':id')
-  async delete(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<PlayerDto> {
+  async delete(@Param('id', ParseIntPipe) id: number): Promise<PlayerDto> {
     return await this.playerService.delete(id);
   }
 }
