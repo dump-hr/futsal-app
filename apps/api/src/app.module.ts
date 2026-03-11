@@ -5,6 +5,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { TournamentModule } from './tournament/tournament.module';
 import { MatchEventModule } from './match-event/match-event.module';
+import { TeamModule } from './team/team.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { MatchEventModule } from './match-event/match-event.module';
       : []),
     TournamentModule,
     MatchEventModule,
+    TeamModule,
   ],
   controllers: [AppController],
   providers: [AppService],
