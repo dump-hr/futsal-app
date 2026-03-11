@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { TeamService } from './team.service';
 import { TeamCreateDto, TeamUpdateDto, TeamDto } from '@futsal-app/types';
@@ -18,6 +19,13 @@ export class TeamController {
   @Post()
   async create(@Body() dto: TeamCreateDto): Promise<TeamDto> {
     return await this.teamService.create(dto);
+  }
+
+  @Get()
+  async getByTournamentId(
+    @Query('tournamentId', ParseIntPipe) tournamentId: number,
+  ): Promise<TeamDto[]> {
+    return await this.teamService.getByTournamentId(tournamentId);
   }
 
   @Get(':id')
