@@ -63,26 +63,14 @@
 }
 
 .teamNames {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  justify-content: center;
+  @include body-normal;
+  color: $white;
+  text-align: center;
   width: 100%;
 }
 
-.teamNameHeader {
-  @include body-normal;
-  color: $white;
-  width: 180px;
-
-  &:first-child {
-    text-align: right;
-  }
-}
-
 .dash {
-  @include body-normal;
-  color: $white;
+  margin: 0 16px;
 }
 
 .score {

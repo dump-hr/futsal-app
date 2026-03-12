@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { EventType, PlayerDto } from '@futsal-app/types';
-import { MatchEventSaveData } from '../../types';
+import { MatchEventSaveData } from '@types';
 import MatchEventCardEdit from './MatchEventCardEdit';
 import MatchEventCardDisplay from './MatchEventCardDisplay';
 

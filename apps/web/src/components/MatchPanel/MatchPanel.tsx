@@ -10,7 +10,7 @@ import {
 } from '@api/index';
 import { MatchEventCard, ButtonSmall } from '@components/index';
 import { PlusBlack } from '@assets/index';
-import { BackgroundColor, MatchEventSaveData } from '../../types';
+import { BackgroundColor, MatchEventSaveData } from '@types';
 import MatchHeader from './MatchHeader';
 import TeamPicker from './TeamPicker';
 import c from './MatchPanel.module.scss';

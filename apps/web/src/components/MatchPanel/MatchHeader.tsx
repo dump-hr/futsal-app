@@ -1,7 +1,9 @@
 import clsx from 'clsx';
 import { ButtonSmall } from '@components/index';
 import { XBlack, LinkBlack } from '@assets/index';
-import { BackgroundColor } from '../../types';
+import { BackgroundColor } from '@types';
+import { MATCH_TYPE_LABELS } from '@constants/matchTypeLabels';
+import { formatMatchDate } from '@helpers/formatMatchDate';
 import c from './MatchPanel.module.scss';
 
 type MatchHeaderProps = {
@@ -14,26 +16,6 @@ type MatchHeaderProps = {
   penaltyHomeGoals?: number;
   penaltyAwayGoals?: number;
   onClose: () => void;
-};
-
-const MATCH_TYPE_LABELS: Record<string, string> = {
-  group: 'SKUPINA',
-  quarterFinal: 'ČETVRTFINALE',
-  semiFinal: 'POLUFINALE',
-  final: 'FINALE',
-  thirdPlace: 'TREĆE MJESTO',
-};
-
-// vidit ocemo ovo prebacit u helper folder ili tako nesto?
-const formatMatchDate = (isoString: string): string => {
-  const date = new Date(isoString);
-  const days = ['NEDJELJA', 'PONEDJELJAK', 'UTORAK', 'SRIJEDA', 'ČETVRTAK', 'PETAK', 'SUBOTA'];
-  const day = days[date.getDay()];
-  const d = date.getDate();
-  const m = date.getMonth() + 1;
-  const h = String(date.getHours()).padStart(2, '0');
-  const min = String(date.getMinutes()).padStart(2, '0');
-  return `${day}, ${d}/${m} - ${h}:${min}`;
 };
 
 const MatchHeader: React.FC<MatchHeaderProps> = ({
@@ -55,7 +37,10 @@ const MatchHeader: React.FC<MatchHeaderProps> = ({
       <div className={c.headerTop}>
         <div className={c.headerTopLeft}>
           <div
-            className={clsx(c.matchTypeBadge, isGroup ? c.badgeBlue : c.badgeRed)}>
+            className={clsx(
+              c.matchTypeBadge,
+              isGroup ? c.badgeBlue : c.badgeRed,
+            )}>
             <span>{label}</span>
           </div>
           <ButtonSmall
@@ -73,16 +58,14 @@ const MatchHeader: React.FC<MatchHeaderProps> = ({
 
       <div className={c.matchInfo}>
         <p className={c.matchDate}>{formatMatchDate(timeOfMatch)}</p>
-        <div className={c.teamNames}>
-          <p className={c.teamNameHeader}>{homeTeamName}</p>
-          <p className={c.dash}>-</p>
-          <p className={c.teamNameHeader}>{awayTeamName}</p>
-        </div>
-        <div className={c.score}>
+        <p className={c.teamNames}>
+          {homeTeamName} <span className={c.dash}>-</span> {awayTeamName}
+        </p>
+        <p className={c.score}>
           <span className={c.scoreNumber}>{homeGoals}</span>
           <span className={c.scoreDash}>-</span>
           <span className={c.scoreNumber}>{awayGoals}</span>
-        </div>
+        </p>
         {penaltyHomeGoals != null && penaltyAwayGoals != null && (
           <p className={c.penaltyScore}>
             ({penaltyHomeGoals} - {penaltyAwayGoals})

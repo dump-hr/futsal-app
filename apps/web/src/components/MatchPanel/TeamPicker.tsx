@@ -1,6 +1,6 @@
 import { ButtonSmall } from '@components/index';
 import { XBlack } from '@assets/index';
-import { BackgroundColor } from '../../types';
+import { BackgroundColor } from '@types';
 import c from './MatchPanel.module.scss';
 
 const HOME_LOGO_TEST = '/test-logos/infobip.png';
@@ -8,7 +8,7 @@ const AWAY_LOGO_TEST = '/test-logos/otp.png';
 
 type Team = {
   name: string;
-  logoUrl?: string;
+  logoUrl: string | null;
 };
 
 type TeamPickerProps = {

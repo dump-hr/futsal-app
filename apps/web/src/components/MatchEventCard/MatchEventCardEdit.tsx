@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { EventType, PlayerDto } from '@futsal-app/types';
 import { ButtonSmall, EventDropdown, Input } from '@components/index';
 import { TrashCanGray, CheckBlack } from '@assets/index';
-import { BackgroundColor, MatchEventSaveData } from '../../types';
+import { BackgroundColor, MatchEventSaveData } from '@types';
 import { useCloseComponent, useSuggestions } from '@hooks/index';
 import c from './MatchEventCard.module.scss';
 

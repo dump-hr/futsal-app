@@ -8,7 +8,11 @@
       "@hooks/": ["hooks/*"],
       "@layouts/*": ["layouts/*"],
       "@pages/*": ["pages/*"],
-      "@routes/*": ["routes/*"]
+      "@routes/*": ["routes/*"],
+      "@types": ["types"],
+      "@types/*": ["types/*"],
+      "@constants/*": ["constants/*"],
+      "@helpers/*": ["helpers/*"]
     }
   },
   "files": [],

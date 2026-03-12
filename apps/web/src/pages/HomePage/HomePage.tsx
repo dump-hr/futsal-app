@@ -24,7 +24,7 @@ const MOCK_PLAYERS: PlayerDto[] = [
 import c from './HomePage.module.scss';
 import trashCanSvg from '@assets/icons/trash-can-gray.svg';
 import plusSvg from '@assets/icons/plus-gray.svg';
-import { BackgroundColor } from '../../types';
+import { BackgroundColor } from '@types';
 import otpLogo from '../../../public/test-logos/otp.png';
 import infobipLogo from '../../../public/test-logos/infobip.png';
 import {

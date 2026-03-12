@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { ArrowDownWhite } from '@assets/index';
 import { EventType } from '@futsal-app/types';
 import { useCloseComponent } from '@hooks/index';
-import { EVENT_LABELS } from '../../types';
+import { EVENT_LABELS } from '@types';
 import c from './EventDropdown.module.scss';
 
 const REGULAR_EVENTS: EventType[] = [

@@ -1,5 +1,5 @@
 import {
-  IsEnum,
+  IsArray,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -17,8 +17,9 @@ export class MatchTeamDto {
   name: string;
 
   @IsOptional()
-  logoUrl?: string;
+  logoUrl: string | null;
 
+  @IsArray()
   players: PlayerDto[];
 }
 
@@ -44,8 +45,8 @@ export class MatchDto {
   matchType: string;
 
   @IsOptional()
-  homeTeam?: MatchTeamDto;
+  homeTeam: MatchTeamDto | null;
 
   @IsOptional()
-  awayTeam?: MatchTeamDto;
+  awayTeam: MatchTeamDto | null;
 }
