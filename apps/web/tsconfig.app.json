@@ -33,7 +33,6 @@
       "@pages/*": ["pages/*"],
       "@routes/*": ["routes/*"],
       "@types": ["types"],
-      "@types/*": ["types/*"],
       "@constants/*": ["constants/*"],
       "@helpers/*": ["helpers/*"]
     }
