@@ -1,11 +1,13 @@
 import {
   IsArray,
+  IsEnum,
   IsInt,
   IsNotEmpty,
   IsOptional,
   IsString,
 } from 'class-validator';
 import { PlayerDto } from './player';
+import { MatchType } from '../enum';
 
 export class MatchTeamDto {
   @IsInt()
@@ -30,7 +32,7 @@ export class MatchDto {
 
   @IsString()
   @IsNotEmpty()
-  timeOfMatch: string;
+  timeOfMatch: Date;
 
   @IsInt()
   @IsNotEmpty()
@@ -40,9 +42,8 @@ export class MatchDto {
   @IsNotEmpty()
   awayGoals: number;
 
-  @IsString()
   @IsNotEmpty()
-  matchType: string;
+  matchType: `${MatchType}`;
 
   @IsOptional()
   homeTeam: MatchTeamDto | null;

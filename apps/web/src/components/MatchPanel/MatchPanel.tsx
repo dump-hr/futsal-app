@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import clsx from 'clsx';
-import { EventType, MatchEventDto } from '@futsal-app/types';
+import { EventType, MatchType } from '@futsal-app/types';
 import {
-  useMatch,
-  useMatchEvents,
+  useMatchGet,
+  useMatchEventsGet,
   useMatchEventCreate,
   useMatchEventDelete,
   useMatchEventUpdate,
@@ -12,6 +12,7 @@ import { MatchEventCard, ButtonSmall } from '@components/index';
 import { PlusBlack } from '@assets/index';
 import { BackgroundColor, MatchEventSaveData } from '@types';
 import MatchHeader from './MatchHeader';
+import MatchEventRow from './MatchEventRow';
 import TeamPicker from './TeamPicker';
 import c from './MatchPanel.module.scss';
 
@@ -35,8 +36,8 @@ const isShootoutEvent = (eventType: `${EventType}`): boolean => {
 };
 
 const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
-  const { data: match, isLoading } = useMatch(matchId);
-  const { data: events = [] } = useMatchEvents(matchId);
+  const { data: match, isLoading } = useMatchGet(matchId);
+  const { data: events = [] } = useMatchEventsGet(matchId);
   const [showTeamPicker, setShowTeamPicker] = useState(false);
   const [newEventSide, setNewEventSide] = useState<NewEventSide | null>(null);
 
@@ -49,14 +50,10 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
   if (isLoading) return <p>Loading...</p>;
   if (!match) return <p>No match found</p>;
 
-  const isPlayoff = match.matchType !== 'group';
+  const isPlayoff = match.matchType !== MatchType.group;
   const isDraw = match.homeGoals === match.awayGoals;
-  const regularEvents = events.filter(
-    (e) => !isShootoutEvent(e.eventType),
-  );
-  const penaltyEvents = events.filter((e) =>
-    isShootoutEvent(e.eventType),
-  );
+  const regularEvents = events.filter((e) => !isShootoutEvent(e.eventType));
+  const penaltyEvents = events.filter((e) => isShootoutEvent(e.eventType));
   // TODO: also check that the 30-minute timer has expired once timer is implemented
   const showPenaltySection = isPlayoff && isDraw;
 
@@ -100,36 +97,6 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
 
   const homePlayers = match.homeTeam?.players ?? [];
   const awayPlayers = match.awayTeam?.players ?? [];
-
-  const renderEvent = (event: MatchEventDto, isPenalty = false) => {
-    const side = event.isForHomeTeam ? 'left' : 'right';
-    const players = event.isForHomeTeam ? homePlayers : awayPlayers;
-
-    // Time will be auto filled when we add a live timer
-    return (
-      <div
-        key={event.id}
-        className={clsx(
-          c.eventRow,
-          event.isForHomeTeam ? c.eventLeft : c.eventRight,
-        )}>
-        <MatchEventCard
-          minute={event.minute}
-          playerName={
-            event.player
-              ? `${event.player.firstName} ${event.player.lastName}`
-              : ''
-          }
-          eventType={event.eventType}
-          side={side}
-          players={players}
-          isPenaltyShootout={isPenalty}
-          onSave={(data) => handleUpdate(event.id, data)}
-          onDelete={() => handleDelete(event.id)}
-        />
-      </div>
-    );
-  };
 
   return (
     <div className={c.panel}>
@@ -193,10 +160,27 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
         {showPenaltySection &&
           [...penaltyEvents]
             .reverse()
-            .map((event) => renderEvent(event, true))}
-        {[...regularEvents]
-          .reverse()
-          .map((event) => renderEvent(event))}
+            .map((event) => (
+              <MatchEventRow
+                key={event.id}
+                event={event}
+                homePlayers={homePlayers}
+                awayPlayers={awayPlayers}
+                isPenalty
+                onUpdate={handleUpdate}
+                onDelete={handleDelete}
+              />
+            ))}
+        {[...regularEvents].reverse().map((event) => (
+          <MatchEventRow
+            key={event.id}
+            event={event}
+            homePlayers={homePlayers}
+            awayPlayers={awayPlayers}
+            onUpdate={handleUpdate}
+            onDelete={handleDelete}
+          />
+        ))}
       </div>
     </div>
   );

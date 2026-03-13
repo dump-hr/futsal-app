@@ -1,6 +1,14 @@
-export const formatMatchDate = (isoString: string): string => {
-  const date = new Date(isoString);
-  const days = ['NEDJELJA', 'PONEDJELJAK', 'UTORAK', 'SRIJEDA', 'ČETVRTAK', 'PETAK', 'SUBOTA'];
+export const formatMatchDate = (value: string | Date): string => {
+  const date = typeof value === 'string' ? new Date(value) : value;
+  const days = [
+    'NEDJELJA',
+    'PONEDJELJAK',
+    'UTORAK',
+    'SRIJEDA',
+    'ČETVRTAK',
+    'PETAK',
+    'SUBOTA',
+  ];
   const day = days[date.getDay()];
   const d = date.getDate();
   const m = date.getMonth() + 1;

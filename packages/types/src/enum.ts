@@ -5,6 +5,14 @@ export enum Group {
   D = 'D',
 }
 
+export enum MatchType {
+  group = 'group',
+  quarterFinal = 'quarterFinal',
+  semiFinal = 'semiFinal',
+  final = 'final',
+  thirdPlace = 'thirdPlace',
+}
+
 export enum EventType {
   goal = 'goal',
   ownGoal = 'ownGoal',

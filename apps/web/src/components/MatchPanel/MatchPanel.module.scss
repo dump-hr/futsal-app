@@ -124,7 +124,7 @@
   flex-direction: column;
   gap: 40px;
   width: 476px;
-  padding: 0 16px 40px;
+  padding: 0 0px 40px;
   position: relative;
   isolation: isolate;
 
@@ -134,8 +134,14 @@
     left: 50%;
     top: -40px;
     bottom: 0;
-    width: 1px;
-    border-left: 2px dashed $white;
+    width: 3px;
+    background: repeating-linear-gradient(
+      to bottom,
+      $white 0,
+      $white 10px,
+      transparent 12px,
+      transparent 20px
+    );
     z-index: -1;
   }
 }
@@ -170,12 +176,12 @@
 .teamPicker {
   background-color: $black;
   border-radius: 16px;
-  padding: 16px;
+  padding: 8px 16px;
   display: flex;
   flex-direction: column;
   gap: 16px;
   align-items: center;
-  width: 272px;
+  width: 292px;
   margin: 0 auto;
 }
 
@@ -186,7 +192,7 @@
   width: 100%;
   position: relative;
 
-  >div:last-child {
+  > div:last-child {
     position: absolute;
     right: 0;
   }

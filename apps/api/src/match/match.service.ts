@@ -31,9 +31,6 @@ export class MatchService {
       throw new NotFoundException(`Match with id ${id} not found`);
     }
 
-    return {
-      ...match,
-      timeOfMatch: match.timeOfMatch.toISOString(),
-    };
+    return match;
   }
 }

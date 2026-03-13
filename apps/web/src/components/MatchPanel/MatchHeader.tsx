@@ -12,7 +12,7 @@ type MatchHeaderProps = {
   homeGoals: number;
   awayGoals: number;
   matchType: string;
-  timeOfMatch: string;
+  timeOfMatch: Date;
   penaltyHomeGoals?: number;
   penaltyAwayGoals?: number;
   onClose: () => void;
