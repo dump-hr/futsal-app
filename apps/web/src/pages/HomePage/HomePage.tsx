@@ -19,7 +19,6 @@ const MOCK_PLAYERS: PlayerDto[] = [
   { id: 2, firstName: 'Marko', lastName: 'Kovač' },
   { id: 3, firstName: 'Luka', lastName: 'Perić' },
   { id: 4, firstName: 'Ante', lastName: 'Babić' },
-  { id: 5, firstName: 'Toma', lastName: 'Gej' },
 ];
 import c from './HomePage.module.scss';
 import trashCanSvg from '@assets/icons/trash-can-gray.svg';
