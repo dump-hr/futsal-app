@@ -13,7 +13,6 @@ type MatchActionsProps = {
 };
 
 export const MatchActions: React.FC<MatchActionsProps> = ({ status }) => {
-  console.log('MatchActions render with status:', status);
   switch (status) {
     case MATCH_STATUS.UPCOMING:
       return (

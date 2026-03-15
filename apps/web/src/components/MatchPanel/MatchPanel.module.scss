@@ -1,0 +1,244 @@
+.panel {
+  background-color: $background-black;
+  width: 516px;
+  max-height: 100vh;
+  overflow-y: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  width: 100%;
+  padding: 24px 24px 0;
+}
+
+.headerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.headerTopLeft {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.matchTypeBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 22px;
+
+  span {
+    @include body-small;
+    color: $white;
+  }
+}
+
+.badgeBlue {
+  background-color: $blue;
+}
+
+.badgeRed {
+  background-color: $red;
+}
+
+.matchInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 8px;
+  width: 100%;
+}
+
+.matchDate {
+  @include legal-text;
+  color: $gray-dark;
+  text-align: center;
+}
+
+.teamNames {
+  @include body-normal;
+  color: $white;
+  text-align: center;
+  width: 100%;
+}
+
+.dash {
+  margin: 0 16px;
+}
+
+.score {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+}
+
+.scoreNumber {
+  @include title-1;
+  color: $white;
+}
+
+.scoreDash {
+  @include title-2;
+  color: $white;
+}
+
+.penaltyScore {
+  @include title-2;
+  color: $white;
+  text-align: center;
+  margin-top: -4px;
+}
+
+.sectionLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $background-black;
+  padding: 16px 0;
+
+  span {
+    @include title-3;
+    color: $white;
+    font-weight: 500;
+  }
+}
+
+.addButton {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 476px;
+  padding: 0 0px 40px;
+  position: relative;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: -40px;
+    bottom: 0;
+    width: 3px;
+    background: repeating-linear-gradient(
+      to bottom,
+      $white 0,
+      $white 10px,
+      transparent 12px,
+      transparent 20px
+    );
+    z-index: -1;
+  }
+}
+
+.eventRow {
+  display: flex;
+  width: 100%;
+  position: relative;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.eventLeft {
+  justify-content: flex-start;
+}
+
+.eventRight {
+  justify-content: flex-end;
+}
+
+.teamPicker {
+  background-color: $black;
+  border-radius: 16px;
+  padding: 8px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  width: 292px;
+  margin: 0 auto;
+}
+
+.teamPickerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+
+  > div:last-child {
+    position: absolute;
+    right: 0;
+  }
+}
+
+.teamPickerTitle {
+  @include body-normal-bold;
+  color: $white;
+}
+
+.teamPickerTeams {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 191px;
+}
+
+.teamOption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+
+  &:hover {
+    background-color: $gray-dark;
+  }
+}
+
+.teamLogo {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.teamName {
+  @include body-normal-bold;
+  color: $white;
+}
+
+.vsLabel {
+  @include body-normal-bold;
+  color: $white;
+}

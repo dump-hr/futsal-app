@@ -6,7 +6,7 @@ const getMatchEvents = (matchId: number) => {
   return api.get<never, MatchEventDto[]>(`/match-event/match/${matchId}`);
 };
 
-export const useMatchEvents = (matchId: number) => {
+export const useMatchEventsGet = (matchId: number) => {
   return useQuery({
     queryFn: () => getMatchEvents(matchId),
     queryKey: ['matchEvents', matchId],
