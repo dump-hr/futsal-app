@@ -11,6 +11,11 @@ import {
 } from '@components/index';
 import { useState } from 'react';
 import { EventType, PlayerDto } from '@futsal-app/types';
+import {
+  usePlayerCreate,
+  usePlayerUpdate,
+  usePlayerDelete,
+} from '../../api/player';
 import { MATCH_STAGE, MATCH_STATUS, MatchInfo } from '../../components';
 
 const MOCK_PLAYERS: PlayerDto[] = [
@@ -57,6 +62,17 @@ export const HomePage = () => {
   const [penaltyEvent, setPenaltyEvent] = useState<EventType | null>(null);
 
   const [searchValue, setSearchValue] = useState<string>('');
+
+  // Player hooks test state
+  const [newFirstName, setNewFirstName] = useState('');
+  const [newLastName, setNewLastName] = useState('');
+  const [updateId, setUpdateId] = useState('');
+  const [updateFirstName, setUpdateFirstName] = useState('');
+  const [deleteId, setDeleteId] = useState('');
+
+  const createPlayer = usePlayerCreate();
+  const updatePlayer = usePlayerUpdate();
+  const deletePlayer = usePlayerDelete();
 
   return (
     <div
@@ -215,6 +231,136 @@ export const HomePage = () => {
         }}>
         <Group groupTitle='Skupina A' teams={teams.slice(0, 5)} />
         <Group groupTitle='Skupina B' teams={teams} />
+      </div>
+      {/* Player Hooks Test Section */}
+      <div
+        style={{
+          backgroundColor: '#1a1a2e',
+          padding: '20px',
+          borderRadius: '8px',
+          color: 'white',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px',
+        }}>
+        <h2>Player Hooks Test</h2>
+
+        {/* Create */}
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <strong>Create:</strong>
+          <input
+            placeholder='First name'
+            value={newFirstName}
+            onChange={(e) => setNewFirstName(e.target.value)}
+            style={{ padding: '6px' }}
+          />
+          <input
+            placeholder='Last name'
+            value={newLastName}
+            onChange={(e) => setNewLastName(e.target.value)}
+            style={{ padding: '6px' }}
+          />
+          <button
+            disabled={createPlayer.isPending}
+            onClick={() =>
+              createPlayer.mutate(
+                { firstName: newFirstName, lastName: newLastName },
+                {
+                  onSuccess: (data) =>
+                    console.log('Created player:', data),
+                },
+              )
+            }
+            style={{ padding: '6px 12px' }}>
+            {createPlayer.isPending ? 'Creating...' : 'Create'}
+          </button>
+          {createPlayer.isError && (
+            <span style={{ color: 'salmon' }}>
+              {createPlayer.error.message}
+            </span>
+          )}
+          {createPlayer.isSuccess && (
+            <span style={{ color: 'lightgreen' }}>
+              Created: {JSON.stringify(createPlayer.data)}
+            </span>
+          )}
+        </div>
+
+        {/* Update */}
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <strong>Update:</strong>
+          <input
+            placeholder='Player ID'
+            value={updateId}
+            onChange={(e) => setUpdateId(e.target.value)}
+            style={{ padding: '6px', width: '80px' }}
+          />
+          <input
+            placeholder='New first name'
+            value={updateFirstName}
+            onChange={(e) => setUpdateFirstName(e.target.value)}
+            style={{ padding: '6px' }}
+          />
+          <button
+            disabled={updatePlayer.isPending}
+            onClick={() =>
+              updatePlayer.mutate(
+                {
+                  id: Number(updateId),
+                  dto: { firstName: updateFirstName },
+                },
+                {
+                  onSuccess: (data) =>
+                    console.log('Updated player:', data),
+                },
+              )
+            }
+            style={{ padding: '6px 12px' }}>
+            {updatePlayer.isPending ? 'Updating...' : 'Update'}
+          </button>
+          {updatePlayer.isError && (
+            <span style={{ color: 'salmon' }}>
+              {updatePlayer.error.message}
+            </span>
+          )}
+          {updatePlayer.isSuccess && (
+            <span style={{ color: 'lightgreen' }}>
+              Updated: {JSON.stringify(updatePlayer.data)}
+            </span>
+          )}
+        </div>
+
+        {/* Delete */}
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <strong>Delete:</strong>
+          <input
+            placeholder='Player ID'
+            value={deleteId}
+            onChange={(e) => setDeleteId(e.target.value)}
+            style={{ padding: '6px', width: '80px' }}
+          />
+          <button
+            disabled={deletePlayer.isPending}
+            onClick={() =>
+              deletePlayer.mutate(Number(deleteId), {
+                onSuccess: (data) =>
+                  console.log('Deleted player:', data),
+              })
+            }
+            style={{ padding: '6px 12px' }}>
+            {deletePlayer.isPending ? 'Deleting...' : 'Delete'}
+          </button>
+          {deletePlayer.isError && (
+            <span style={{ color: 'salmon' }}>
+              {deletePlayer.error.message}
+            </span>
+          )}
+          {deletePlayer.isSuccess && (
+            <span style={{ color: 'lightgreen' }}>
+              Deleted: {JSON.stringify(deletePlayer.data)}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );
