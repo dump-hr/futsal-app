@@ -16,6 +16,7 @@ export const usePlayerDelete = () => {
       queryClient.invalidateQueries({
         queryKey: ['players'],
       });
+      toast.success('Igrač uspješno obrisan');
     },
     onError: (error) => {
       toast.error(`Greška pri brisanju igrača - ${error.message}`);

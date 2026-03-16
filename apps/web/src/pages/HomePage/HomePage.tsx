@@ -6,16 +6,12 @@ import {
   Search,
   TeamInfo,
   MatchEventCard,
+  MatchPanel,
   Input,
   Group,
 } from '@components/index';
 import { useState } from 'react';
 import { EventType, PlayerDto } from '@futsal-app/types';
-import {
-  usePlayerCreate,
-  usePlayerUpdate,
-  usePlayerDelete,
-} from '../../api/player';
 import { MATCH_STAGE, MATCH_STATUS, MatchInfo } from '../../components';
 
 const MOCK_PLAYERS: PlayerDto[] = [
@@ -23,12 +19,11 @@ const MOCK_PLAYERS: PlayerDto[] = [
   { id: 2, firstName: 'Marko', lastName: 'Kovač' },
   { id: 3, firstName: 'Luka', lastName: 'Perić' },
   { id: 4, firstName: 'Ante', lastName: 'Babić' },
-  { id: 5, firstName: 'Toma', lastName: 'Gej' },
 ];
 import c from './HomePage.module.scss';
 import trashCanSvg from '@assets/icons/trash-can-gray.svg';
 import plusSvg from '@assets/icons/plus-gray.svg';
-import { BackgroundColor } from '../../types';
+import { BackgroundColor } from '@types';
 import otpLogo from '../../../public/test-logos/otp.png';
 import infobipLogo from '../../../public/test-logos/infobip.png';
 import {
@@ -57,311 +52,185 @@ export const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
   const [showSecondaryModal, setShowSecondaryModal] = useState(false);
 
-  const [eventLeft, setEventLeft] = useState<EventType | null>(null);
-  const [eventRight, setEventRight] = useState<EventType | null>(null);
-  const [penaltyEvent, setPenaltyEvent] = useState<EventType | null>(null);
+  const [eventLeft, setEventLeft] = useState<`${EventType}` | null>(null);
+  const [eventRight, setEventRight] = useState<`${EventType}` | null>(null);
+  const [penaltyEvent, setPenaltyEvent] = useState<`${EventType}` | null>(null);
 
   const [searchValue, setSearchValue] = useState<string>('');
-
-  // Player hooks test state
-  const [newFirstName, setNewFirstName] = useState('');
-  const [newLastName, setNewLastName] = useState('');
-  const [updateId, setUpdateId] = useState('');
-  const [updateFirstName, setUpdateFirstName] = useState('');
-  const [deleteId, setDeleteId] = useState('');
-
-  const createPlayer = usePlayerCreate();
-  const updatePlayer = usePlayerUpdate();
-  const deletePlayer = usePlayerDelete();
 
   return (
     <div
       style={{
         background: 'gray',
-        padding: '20px',
         display: 'flex',
-        flexDirection: 'column',
-        gap: '16px',
+        minHeight: 'calc(100vh - 80px)',
       }}>
-      <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-        <h1 className={c.a}>Title 1</h1>
-        <h1 className={c.b}>Title 1</h1>
-        <h1 className={c.c}>Title 1</h1>
-      </div>
-
-      <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-        <EventDropdown side='left' value={eventLeft} onChange={setEventLeft} />
-        <EventDropdown
-          side='right'
-          value={eventRight}
-          onChange={setEventRight}
-        />
-        <EventDropdown
-          side='left'
-          isPenaltyShootout
-          value={penaltyEvent}
-          onChange={setPenaltyEvent}
-        />
-      </div>
-
-      <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-        <Button icon={PlusBlack} variant='primary'>
-          Nova utakmica
-        </Button>
-        <Button icon={XWhite} variant='secondary'>
-          Odustani
-        </Button>
-        <Button icon={CheckBlack} variant='green'>
-          Potvrdi
-        </Button>
-      </div>
-
-      <button
-        onClick={() => setShowModal(true)}
-        style={{ padding: '10px', background: '#333', color: 'white' }}>
-        Open Modal
-      </button>
-      <button
-        onClick={() => setShowSecondaryModal(true)}
-        style={{ padding: '10px', background: '#333', color: 'white' }}>
-        Open Modal
-      </button>
-
-      {showSecondaryModal && (
-        <ModalConfirmation
-          description='Ovim postupkom pokrenut ćeš utakmicu '
-          boldText='Maurer Electronics vs Ericsson Nikola Tesla'
-          icon={TrashCanBlack}
-          circleVariant='green'
-          onCancel={() => setShowSecondaryModal(false)}
-          onConfirm={() => setShowSecondaryModal(false)}
-        />
-      )}
-
-      {showModal && (
-        <ModalConfirmation
-          description='Ovim postupkom izbrisat ćete'
-          boldText='Skupinu A'
-          icon={TrashCanBlack}
-          circleVariant='gray'
-          onCancel={() => setShowModal(false)}
-          onConfirm={() => setShowModal(false)}
-        />
-      )}
-
-      <ButtonSmall
-        iconSrc={trashCanSvg}
-        hasBorder
-        backgroundColor={BackgroundColor.Lime}
-      />
-      <ButtonSmall
-        iconSrc={plusSvg}
-        width={40}
-        backgroundColor={BackgroundColor.Red}
-      />
-
-      <div style={{ backgroundColor: 'black', padding: '10px' }}>
-        <Search
-          value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
-        />
-      </div>
-      <div style={{ width: '1296px' }}>
-        <MatchInfo
-          teamA={{ teamName: 'Ericsson Nikola Tesla', logoUrl: otpLogo }}
-          teamB={{ teamName: 'Maurer Electronics', logoUrl: infobipLogo }}
-          matchTime={'21:30'}
-          teamAScore={3}
-          teamBScore={1}
-          matchStage={MATCH_STAGE.QUARTER_FINALS}
-          matchStatus={MATCH_STATUS.FINISHED}
-        />
-        <div style={{ width: '1281px' }}>
-          <TeamInfo
-            teamName='Infobip'
-            teamLogoUrl={infobipLogo}
-            teamScore={3}
-            teamGroup='A'
-            numberOfPlayers={12}
-            numberOfMatchesPlayed={4}
-          />
-        </div>
-      </div>
-
-      <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-        <MatchEventCard
-          side='left'
-          players={MOCK_PLAYERS}
-          isNew
-          onSave={(data) => console.log('save', data)}
-          onDelete={() => console.log('delete')}
-        />
-        <MatchEventCard
-          side='right'
-          players={MOCK_PLAYERS}
-          isNew
-          onSave={(data) => console.log('save', data)}
-          onDelete={() => console.log('delete')}
-        />
-      </div>
-
       <div
         style={{
-          backgroundColor: 'black',
-          padding: '30px',
-          display: 'flex',
-          gap: '30px',
-          flexDirection: 'column',
-        }}>
-        <Input placeholder='Ericsson Nikola Tesla Jos Nesto' />
-
-        <Input
-          label='Ime ekipe'
-          placeholder='Ericsson Nikola Tesla Jos Nesto'
-        />
-      </div>
-
-      <div
-        style={{
-          backgroundColor: 'black',
-          marginTop: '50px',
-          padding: '30px',
-          display: 'flex',
-          gap: '30px',
-        }}>
-        <Group groupTitle='Skupina A' teams={teams.slice(0, 5)} />
-        <Group groupTitle='Skupina B' teams={teams} />
-      </div>
-      {/* Player Hooks Test Section */}
-      <div
-        style={{
-          backgroundColor: '#1a1a2e',
+          flex: 1,
+          background: 'gray',
           padding: '20px',
-          borderRadius: '8px',
-          color: 'white',
           display: 'flex',
           flexDirection: 'column',
           gap: '16px',
+          overflowY: 'auto',
         }}>
-        <h2>Player Hooks Test</h2>
-
-        {/* Create */}
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <strong>Create:</strong>
-          <input
-            placeholder='First name'
-            value={newFirstName}
-            onChange={(e) => setNewFirstName(e.target.value)}
-            style={{ padding: '6px' }}
-          />
-          <input
-            placeholder='Last name'
-            value={newLastName}
-            onChange={(e) => setNewLastName(e.target.value)}
-            style={{ padding: '6px' }}
-          />
-          <button
-            disabled={createPlayer.isPending}
-            onClick={() =>
-              createPlayer.mutate(
-                { firstName: newFirstName, lastName: newLastName },
-                {
-                  onSuccess: (data) =>
-                    console.log('Created player:', data),
-                },
-              )
-            }
-            style={{ padding: '6px 12px' }}>
-            {createPlayer.isPending ? 'Creating...' : 'Create'}
-          </button>
-          {createPlayer.isError && (
-            <span style={{ color: 'salmon' }}>
-              {createPlayer.error.message}
-            </span>
-          )}
-          {createPlayer.isSuccess && (
-            <span style={{ color: 'lightgreen' }}>
-              Created: {JSON.stringify(createPlayer.data)}
-            </span>
-          )}
+        <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+          <h1 className={c.a}>Title 1</h1>
+          <h1 className={c.b}>Title 1</h1>
+          <h1 className={c.c}>Title 1</h1>
         </div>
 
-        {/* Update */}
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <strong>Update:</strong>
-          <input
-            placeholder='Player ID'
-            value={updateId}
-            onChange={(e) => setUpdateId(e.target.value)}
-            style={{ padding: '6px', width: '80px' }}
+        <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+          <EventDropdown
+            side='left'
+            value={eventLeft}
+            onChange={setEventLeft}
           />
-          <input
-            placeholder='New first name'
-            value={updateFirstName}
-            onChange={(e) => setUpdateFirstName(e.target.value)}
-            style={{ padding: '6px' }}
+          <EventDropdown
+            side='right'
+            value={eventRight}
+            onChange={setEventRight}
           />
-          <button
-            disabled={updatePlayer.isPending}
-            onClick={() =>
-              updatePlayer.mutate(
-                {
-                  id: Number(updateId),
-                  dto: { firstName: updateFirstName },
-                },
-                {
-                  onSuccess: (data) =>
-                    console.log('Updated player:', data),
-                },
-              )
-            }
-            style={{ padding: '6px 12px' }}>
-            {updatePlayer.isPending ? 'Updating...' : 'Update'}
-          </button>
-          {updatePlayer.isError && (
-            <span style={{ color: 'salmon' }}>
-              {updatePlayer.error.message}
-            </span>
-          )}
-          {updatePlayer.isSuccess && (
-            <span style={{ color: 'lightgreen' }}>
-              Updated: {JSON.stringify(updatePlayer.data)}
-            </span>
-          )}
+          <EventDropdown
+            side='left'
+            isPenaltyShootout
+            value={penaltyEvent}
+            onChange={setPenaltyEvent}
+          />
         </div>
 
-        {/* Delete */}
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <strong>Delete:</strong>
-          <input
-            placeholder='Player ID'
-            value={deleteId}
-            onChange={(e) => setDeleteId(e.target.value)}
-            style={{ padding: '6px', width: '80px' }}
+        <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+          <Button icon={PlusBlack} variant='primary'>
+            Nova utakmica
+          </Button>
+          <Button icon={XWhite} variant='secondary'>
+            Odustani
+          </Button>
+          <Button icon={CheckBlack} variant='green'>
+            Potvrdi
+          </Button>
+        </div>
+
+        <button
+          onClick={() => setShowModal(true)}
+          style={{ padding: '10px', background: '#333', color: 'white' }}>
+          Open Modal
+        </button>
+        <button
+          onClick={() => setShowSecondaryModal(true)}
+          style={{ padding: '10px', background: '#333', color: 'white' }}>
+          Open Modal
+        </button>
+
+        {showSecondaryModal && (
+          <ModalConfirmation
+            description='Ovim postupkom pokrenut ćeš utakmicu '
+            boldText='Maurer Electronics vs Ericsson Nikola Tesla'
+            icon={TrashCanBlack}
+            circleVariant='green'
+            onCancel={() => setShowSecondaryModal(false)}
+            onConfirm={() => setShowSecondaryModal(false)}
           />
-          <button
-            disabled={deletePlayer.isPending}
-            onClick={() =>
-              deletePlayer.mutate(Number(deleteId), {
-                onSuccess: (data) =>
-                  console.log('Deleted player:', data),
-              })
-            }
-            style={{ padding: '6px 12px' }}>
-            {deletePlayer.isPending ? 'Deleting...' : 'Delete'}
-          </button>
-          {deletePlayer.isError && (
-            <span style={{ color: 'salmon' }}>
-              {deletePlayer.error.message}
-            </span>
-          )}
-          {deletePlayer.isSuccess && (
-            <span style={{ color: 'lightgreen' }}>
-              Deleted: {JSON.stringify(deletePlayer.data)}
-            </span>
-          )}
+        )}
+
+        {showModal && (
+          <ModalConfirmation
+            description='Ovim postupkom izbrisat ćete'
+            boldText='Skupinu A'
+            icon={TrashCanBlack}
+            circleVariant='gray'
+            onCancel={() => setShowModal(false)}
+            onConfirm={() => setShowModal(false)}
+          />
+        )}
+
+        <ButtonSmall
+          iconSrc={trashCanSvg}
+          hasBorder
+          backgroundColor={BackgroundColor.Lime}
+        />
+        <ButtonSmall
+          iconSrc={plusSvg}
+          width={40}
+          backgroundColor={BackgroundColor.Red}
+        />
+
+        <div style={{ backgroundColor: 'black', padding: '10px' }}>
+          <Search
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+          />
+        </div>
+        <div style={{ width: '1296px' }}>
+          <MatchInfo
+            teamA={{ teamName: 'Ericsson Nikola Tesla', logoUrl: otpLogo }}
+            teamB={{ teamName: 'Maurer Electronics', logoUrl: infobipLogo }}
+            matchTime={'21:30'}
+            teamAScore={3}
+            teamBScore={1}
+            matchStage={MATCH_STAGE.QUARTER_FINALS}
+            matchStatus={MATCH_STATUS.FINISHED}
+          />
+          <div style={{ width: '1281px' }}>
+            <TeamInfo
+              teamName='Infobip'
+              teamLogoUrl={infobipLogo}
+              teamScore={3}
+              teamGroup='A'
+              numberOfPlayers={12}
+              numberOfMatchesPlayed={4}
+            />
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+          <MatchEventCard
+            side='left'
+            players={MOCK_PLAYERS}
+            isNew
+            onSave={(data) => console.log('save', data)}
+            onDelete={() => console.log('delete')}
+          />
+          <MatchEventCard
+            side='right'
+            players={MOCK_PLAYERS}
+            isNew
+            onSave={(data) => console.log('save', data)}
+            onDelete={() => console.log('delete')}
+          />
+        </div>
+
+        <div
+          style={{
+            backgroundColor: 'black',
+            padding: '30px',
+            display: 'flex',
+            gap: '30px',
+            flexDirection: 'column',
+          }}>
+          <Input placeholder='Ericsson Nikola Tesla Jos Nesto' />
+
+          <Input
+            label='Ime ekipe'
+            placeholder='Ericsson Nikola Tesla Jos Nesto'
+          />
+        </div>
+
+        <div
+          style={{
+            backgroundColor: 'black',
+            marginTop: '50px',
+            padding: '30px',
+            display: 'flex',
+            gap: '30px',
+          }}>
+          <Group groupTitle='Skupina A' teams={teams.slice(0, 5)} />
+          <Group groupTitle='Skupina B' teams={teams} />
         </div>
       </div>
+
+      <MatchPanel matchId={1} onClose={() => console.log('close panel')} />
     </div>
   );
 };

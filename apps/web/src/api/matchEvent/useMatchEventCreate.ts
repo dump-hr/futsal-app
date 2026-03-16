@@ -7,7 +7,10 @@ const matchEventCreate = (dto: MatchEventCreateDto) => {
   return api.post<MatchEventCreateDto, MatchEventDto>('/match-event', dto);
 };
 
-export const useMatchEventCreate = (matchId: number) => {
+export const useMatchEventCreate = (
+  matchId: number,
+  options?: { onSuccess?: () => void },
+) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -19,6 +22,8 @@ export const useMatchEventCreate = (matchId: number) => {
       queryClient.invalidateQueries({
         queryKey: ['match', matchId],
       });
+      toast.success('Event uspješno kreiran');
+      options?.onSuccess?.();
     },
     onError: (error) => {
       toast.error(`Greška pri kreiranju eventa - ${error.message}`);

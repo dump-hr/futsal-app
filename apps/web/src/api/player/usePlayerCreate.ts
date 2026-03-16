@@ -16,6 +16,7 @@ export const usePlayerCreate = () => {
       queryClient.invalidateQueries({
         queryKey: ['players'],
       });
+      toast.success('Igrač uspješno kreiran');
     },
     onError: (error) => {
       toast.error(`Greška pri kreiranju igrača - ${error.message}`);

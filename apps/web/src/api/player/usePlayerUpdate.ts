@@ -17,6 +17,7 @@ export const usePlayerUpdate = () => {
       queryClient.invalidateQueries({
         queryKey: ['players'],
       });
+      toast.success('Igrač uspješno ažuriran');
     },
     onError: (error) => {
       toast.error(`Greška pri ažuriranju igrača - ${error.message}`);
