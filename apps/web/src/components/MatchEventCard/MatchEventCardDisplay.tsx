@@ -2,13 +2,13 @@ import clsx from 'clsx';
 import { EventType } from '@futsal-app/types';
 import { ButtonSmall } from '@components/index';
 import { TrashCanGray, PencilGray } from '@assets/index';
-import { EVENT_LABELS } from '../../types';
+import { EVENT_LABELS } from '@types';
 import c from './MatchEventCard.module.scss';
 
 type MatchEventCardDisplayProps = {
   minute?: number;
   playerName?: string;
-  eventType?: EventType;
+  eventType?: `${EventType}`;
   side: 'left' | 'right';
   isPenaltyShootout: boolean;
   onEdit: () => void;
@@ -38,7 +38,7 @@ const MatchEventCardDisplay: React.FC<MatchEventCardDisplayProps> = ({
           </div>
         </div>
         <p className={isPenaltyShootout ? c.penaltyLabel : c.minute}>
-          {isPenaltyShootout ? 'PENAL' : `${minute}'`}
+          {isPenaltyShootout ? 'PENAL' : `${minute ?? 0}'`}
         </p>
       </div>
       <div className={clsx(c.info, !isLeft && c.infoRight)}>

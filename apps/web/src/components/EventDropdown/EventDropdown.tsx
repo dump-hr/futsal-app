@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { ArrowDownWhite } from '@assets/index';
 import { EventType } from '@futsal-app/types';
 import { useCloseComponent } from '@hooks/index';
-import { EVENT_LABELS } from '../../types';
+import { EVENT_LABELS } from '@types';
 import c from './EventDropdown.module.scss';
 
 const REGULAR_EVENTS: EventType[] = [
@@ -24,8 +24,8 @@ const PENALTY_SHOOTOUT_EVENTS: EventType[] = [
 type EventDropdownProps = {
   side: 'left' | 'right';
   isPenaltyShootout?: boolean;
-  value: EventType | null;
-  onChange: (event: EventType) => void;
+  value: `${EventType}` | null;
+  onChange: (event: `${EventType}`) => void;
   className?: string;
 };
 
