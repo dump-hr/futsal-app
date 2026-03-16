@@ -17,6 +17,7 @@ export const useTeamUpdate = () => {
       queryClient.invalidateQueries({
         queryKey: ['teams'],
       });
+      toast.success('Ekipa uspješno ažurirana');
     },
     onError: (error) => {
       toast.error(`Greška pri ažuriranju ekipe - ${error.message}`);

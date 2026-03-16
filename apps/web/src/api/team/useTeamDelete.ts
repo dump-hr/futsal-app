@@ -16,6 +16,7 @@ export const useTeamDelete = () => {
       queryClient.invalidateQueries({
         queryKey: ['teams'],
       });
+      toast.success('Ekipa uspješno obrisana');
     },
     onError: (error) => {
       toast.error(`Greška pri brisanju ekipe - ${error.message}`);

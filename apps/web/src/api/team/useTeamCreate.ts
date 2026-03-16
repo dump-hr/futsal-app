@@ -16,6 +16,7 @@ export const useTeamCreate = () => {
       queryClient.invalidateQueries({
         queryKey: ['teams'],
       });
+      toast.success('Ekipa uspješno kreirana');
     },
     onError: (error) => {
       toast.error(`Greška pri kreiranju ekipe - ${error.message}`);
