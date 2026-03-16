@@ -21,8 +21,10 @@ api.interceptors.response.use(
   (response) => response.data,
   (error: ErrorResponseType) => {
     if (error.response)
-      return Promise.reject(error.response.data.message || error.message);
+      return Promise.reject(
+        new Error(error.response.data.message || error.message),
+      );
 
-    return Promise.reject('Network error');
+    return Promise.reject(new Error('Network error'));
   },
 );
