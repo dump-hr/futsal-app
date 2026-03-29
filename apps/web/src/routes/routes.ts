@@ -4,6 +4,7 @@ interface RouteType {
 
 export const routes: RouteType = {
   HOME: '/',
+  LOGIN: '/admin/login',
   ADMIN: '/admin',
   TEAMS: '/admin/teams',
   GROUPS: '/admin/groups',
