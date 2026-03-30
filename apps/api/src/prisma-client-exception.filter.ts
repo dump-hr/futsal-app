@@ -26,6 +26,12 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
             'No record was found for an update',
             HttpStatus.NOT_FOUND,
           );
+
+        case 'P2003':
+          throw new HttpException(
+            'Foreign key constraint violation',
+            HttpStatus.BAD_REQUEST,
+          );
       }
     }
 
