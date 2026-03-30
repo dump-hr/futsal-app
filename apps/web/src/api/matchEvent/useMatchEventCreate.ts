@@ -22,6 +22,7 @@ export const useMatchEventCreate = (
       queryClient.invalidateQueries({
         queryKey: ['match', matchId],
       });
+      toast.success('Event uspješno kreiran');
       options?.onSuccess?.();
     },
     onError: (error) => {
