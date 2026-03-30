@@ -19,6 +19,7 @@ export const useMatchEventDelete = (matchId: number) => {
       queryClient.invalidateQueries({
         queryKey: ['match', matchId],
       });
+      toast.success('Event uspješno obrisan');
     },
     onError: (error) => {
       toast.error(`Greška pri brisanju eventa - ${error.message}`);
