@@ -22,10 +22,9 @@ export class TeamCreateDto {
   @IsEnum(Group)
   group?: Group;
 
-  @IsOptional()
   @IsInt()
   @IsPositive()
-  tournamentId?: number;
+  tournamentId: number;
 }
 
 export class TeamUpdateDto {

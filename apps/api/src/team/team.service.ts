@@ -13,9 +13,17 @@ export class TeamService {
   }
 
   async getByTournamentId(tournamentId: number): Promise<TeamDto[]> {
-    return await prisma.team.findMany({
+    const teams = await prisma.team.findMany({
       where: { tournamentId },
     });
+
+    if (!teams.length) {
+      throw new NotFoundException(
+        `No teams found for tournament with id ${tournamentId}`,
+      );
+    }
+
+    return teams;
   }
 
   async getById(id: number): Promise<TeamDto> {
