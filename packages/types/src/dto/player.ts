@@ -1,4 +1,6 @@
+import { Transform } from 'class-transformer';
 import {
+  IsDate,
   IsDateString,
   IsInt,
   IsNotEmpty,
@@ -20,8 +22,9 @@ export class PlayerCreateDto {
   lastName: string;
 
   @IsOptional()
-  @IsDateString()
-  dateOfBirth?: string;
+  @Transform(({ value }) => (value ? new Date(value) : null))
+  @IsDate()
+  dateOfBirth?: Date | null;
 
   @IsInt()
   @IsOptional()
@@ -41,8 +44,9 @@ export class PlayerUpdateDto {
   lastName?: string;
 
   @IsOptional()
-  @IsDateString()
-  dateOfBirth?: string;
+  @Transform(({ value }) => (value ? new Date(value) : null))
+  @IsDate()
+  dateOfBirth?: Date | null;
 
   @IsInt()
   @IsOptional()
@@ -67,6 +71,8 @@ export class PlayerDto {
   lastName: string;
 
   @IsOptional()
+  @Transform(({ value }) => (value ? new Date(value) : null))
+  @IsDate()
   dateOfBirth?: Date | null;
 
   @IsInt()
