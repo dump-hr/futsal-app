@@ -19,8 +19,8 @@ export const useLogin = () => {
       localStorage.setItem('jwt', data.accessToken);
       navigate(routes.ADMIN);
     },
-    onError: () => {
-      toast.error('Pogrešno korisničko ime ili lozinka');
+    onError: (error) => {
+      toast.error(`${error}`);
     },
   });
 };

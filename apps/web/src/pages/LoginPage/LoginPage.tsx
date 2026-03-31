@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Input from '@components/Input/Input';
+import { Input } from '@components/index';
 import { useLogin } from '@api/auth/useLogin';
 import { useTournamentCreate } from '@api/tournament/useTournamentCreate';
 import c from './LoginPage.module.scss';
