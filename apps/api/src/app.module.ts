@@ -8,6 +8,7 @@ import { MatchEventModule } from './match-event/match-event.module';
 import { MatchModule } from './match/match.module';
 import { PlayerModule } from './player/player.module';
 import { TeamModule } from './team/team.module';
+import { GroupModule } from './group/group.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { TeamModule } from './team/team.module';
     MatchEventModule,
     PlayerModule,
     TeamModule,
+    GroupModule,
   ],
   controllers: [AppController],
   providers: [AppService],

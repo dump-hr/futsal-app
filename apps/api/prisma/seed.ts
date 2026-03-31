@@ -1,4 +1,4 @@
-import { Group, MatchType, EventType } from '../generated/prisma/client';
+import { MatchType, EventType } from '../generated/prisma/client';
 import { prisma } from '../lib/prisma';
 
 async function main() {
@@ -6,21 +6,34 @@ async function main() {
   await prisma.match.deleteMany();
   await prisma.player.deleteMany();
   await prisma.team.deleteMany();
+  await prisma.group.deleteMany();
   await prisma.tournament.deleteMany();
 
   const tournament = await prisma.tournament.create({
     data: { name: 'DUMP Futsal 2026' },
   });
 
+  const groupNames = ['A', 'B', 'C', 'D'];
+  const groups = await Promise.all(
+    groupNames.map((name) =>
+      prisma.group.create({
+        data: {
+          name,
+          tournamentId: tournament.id,
+        },
+      }),
+    ),
+  );
+
   const teamsData = [
-    { name: 'FESB United', group: Group.A },
-    { name: 'PMF Strikers', group: Group.A },
-    { name: 'Ekonomski FC', group: Group.B },
-    { name: 'Pravni Lions', group: Group.B },
-    { name: 'KTF Rockets', group: Group.C },
-    { name: 'Kineziologija XI', group: Group.C },
-    { name: 'Medicinski Wolves', group: Group.D },
-    { name: 'Građevinski Titans', group: Group.D },
+    { name: 'FESB United', groupId: groups[0].id },
+    { name: 'PMF Strikers', groupId: groups[0].id },
+    { name: 'Ekonomski FC', groupId: groups[1].id },
+    { name: 'Pravni Lions', groupId: groups[1].id },
+    { name: 'KTF Rockets', groupId: groups[2].id },
+    { name: 'Kineziologija XI', groupId: groups[2].id },
+    { name: 'Medicinski Wolves', groupId: groups[3].id },
+    { name: 'Građevinski Titans', groupId: groups[3].id },
   ];
 
   const teams = await Promise.all(
@@ -28,7 +41,7 @@ async function main() {
       prisma.team.create({
         data: {
           name: t.name,
-          group: t.group,
+          groupId: t.groupId,
           tournamentId: tournament.id,
         },
       }),
@@ -229,6 +242,7 @@ async function main() {
   console.log(`  Tournament: ${tournament.name}`);
   console.log(`  Teams: ${teams.length}`);
   console.log(`  Players: ${players.length}`);
+  console.log(`  Groups: ${groups.length}`);
   console.log(`  Matches: 6 (4 group + 1 semi + 1 final)`);
 }
 
