@@ -92,3 +92,9 @@ model MatchEvent {
   eventType     EventType
   isForHomeTeam Boolean
 }
+
+model Admin {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  password String
+}

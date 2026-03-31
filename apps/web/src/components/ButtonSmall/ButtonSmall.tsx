@@ -14,13 +14,15 @@ const ButtonSmall: React.FC<ButtonSmallProps> = ({
   backgroundColor = BackgroundColor.Transparent,
   width = 40,
   hasBorder = false,
+  ...props
 }) => {
   return (
     <button
       style={{ width, height: width, backgroundColor }}
       className={clsx(c.buttonContainer, {
         [c.grayMediumBorder]: hasBorder,
-      })}>
+      })}
+      {...props}>
       <img src={iconSrc} className={c.buttonIcon} />
     </button>
   );

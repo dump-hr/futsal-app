@@ -12,6 +12,7 @@
     "db:migrate": "yarn workspace api run db:migrate",
     "db:studio": "yarn workspace api run db:studio",
     "db:seed": "yarn workspace api run db:seed",
+    "hash-password": "yarn workspace api run hash-password",
     "prisma": "yarn workspace api run prisma"
   },
   "packageManager": "yarn@3.6.4",

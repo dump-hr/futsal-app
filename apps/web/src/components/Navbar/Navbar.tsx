@@ -6,7 +6,12 @@ import { BackgroundColor } from '../../types';
 import c from './Navbar.module.scss';
 
 export const Navbar = () => {
-  const [location] = useLocation();
+  const [location, navigate] = useLocation();
+
+  const handleLogout = () => {
+    localStorage.removeItem('jwt');
+    navigate(routes.LOGIN);
+  };
 
   return (
     <nav className={c.navbar}>
@@ -42,6 +47,7 @@ export const Navbar = () => {
       <ButtonSmall
         iconSrc={ExitBlack}
         backgroundColor={BackgroundColor.White}
+        onClick={handleLogout}
       />
     </nav>
   );
