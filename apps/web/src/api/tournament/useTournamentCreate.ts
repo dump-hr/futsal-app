@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../base';
 import { TournamentDto, TournamentModifyDto } from '@futsal-app/types';
 import toast from 'react-hot-toast';
@@ -8,12 +8,16 @@ const tournamentCreate = (dto: TournamentModifyDto) => {
 };
 
 export const useTournamentCreate = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: tournamentCreate,
-    mutationKey: ['tournament'],
-    onSuccess: () => toast.success('Tournament created successfully'),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tournaments'] });
+      toast.success('Tournament created successfully');
+    },
     onError: (error) => {
-      toast.error(`Error creating tournament - ${error.message} `);
+      toast.error(`Error creating tournament - ${error.message}`);
     },
   });
 };

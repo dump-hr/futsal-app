@@ -1,4 +1,5 @@
 import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { TeamDto } from './team';
 
 export class TournamentModifyDto {
   @IsNotEmpty()
@@ -15,6 +16,5 @@ export class TournamentDto {
   @IsString()
   name: string;
 
-  //TODO:
-  // teams: Team[];
+  teams?: TeamDto[];
 }

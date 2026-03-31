@@ -20,9 +20,13 @@ export class TournamentController {
     return await this.tournamentService.create(dto);
   }
 
+  @Get()
+  async getAll(): Promise<TournamentDto[]> {
+    return await this.tournamentService.getAll();
+  }
+
   @Get(':id')
   async getById(@Param('id', ParseIntPipe) id: number): Promise<TournamentDto> {
-    //TODO: include teams
     return await this.tournamentService.getById(id);
   }
 
