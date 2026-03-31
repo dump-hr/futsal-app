@@ -9,6 +9,7 @@ import { MatchModule } from './match/match.module';
 import { PlayerModule } from './player/player.module';
 import { TeamModule } from './team/team.module';
 import { GroupModule } from './group/group.module';
+import { BlobModule } from './blob/blob.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { GroupModule } from './group/group.module';
     PlayerModule,
     TeamModule,
     GroupModule,
+    BlobModule,
   ],
   controllers: [AppController],
   providers: [AppService],
