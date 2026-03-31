@@ -23,6 +23,7 @@ export const useMatchEventUpdate = (matchId: number) => {
       queryClient.invalidateQueries({
         queryKey: ['match', matchId],
       });
+      toast.success('Event uspješno ažuriran');
     },
     onError: (error) => {
       toast.error(`Greška pri ažuriranju eventa - ${error.message}`);
