@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { TournamentService } from './tournament.service';
 import { TournamentDto, TournamentModifyDto } from '@futsal-app/types';
@@ -21,7 +22,10 @@ export class TournamentController {
   }
 
   @Get()
-  async getAll(): Promise<TournamentDto[]> {
+  async getAll(@Query('date') date?: string): Promise<TournamentDto[]> {
+    if (date) {
+      return await this.tournamentService.getByDate(date);
+    }
     return await this.tournamentService.getAll();
   }
 
