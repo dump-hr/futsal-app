@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import { Input } from '@components/index';
 import { useLogin } from '@api/auth/useLogin';
-import { useTournamentCreate } from '@api/tournament/useTournamentCreate';
 import c from './LoginPage.module.scss';
 
 export const LoginPage = () => {
   const [admin, setAdmin] = useState({ username: '', password: '' });
   const { mutate: login, isPending } = useLogin();
-  const { mutate: createTournament } = useTournamentCreate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,9 +37,6 @@ export const LoginPage = () => {
           {isPending ? 'Prijava...' : 'Prijava'}
         </button>
       </form>
-      <button onClick={() => createTournament({ name: 'Test Tournament' })}>
-        Test create tournament (should fail)
-      </button>
     </div>
   );
 };

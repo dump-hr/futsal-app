@@ -12,7 +12,6 @@ import {
 } from '@components/index';
 import { useState } from 'react';
 import { EventType, PlayerDto } from '@futsal-app/types';
-import { useTournamentCreate } from '@api/tournament/useTournamentCreate';
 import { MATCH_STAGE, MATCH_STATUS, MatchInfo } from '../../components';
 
 const MOCK_PLAYERS: PlayerDto[] = [
@@ -50,7 +49,6 @@ const teams = [
 ];
 
 export const HomePage = () => {
-  const { mutate: createTournament } = useTournamentCreate();
   const [showModal, setShowModal] = useState(false);
   const [showSecondaryModal, setShowSecondaryModal] = useState(false);
 
@@ -67,10 +65,6 @@ export const HomePage = () => {
         display: 'flex',
         minHeight: 'calc(100vh - 80px)',
       }}>
-      <button onClick={() => createTournament({ name: 'Test Tournament' })}>
-        Test create tournament
-      </button>
-
       <div
         style={{
           flex: 1,

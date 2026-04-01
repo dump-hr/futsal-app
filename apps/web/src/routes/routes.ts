@@ -3,7 +3,8 @@ interface RouteType {
 }
 
 export const routes: RouteType = {
-  HOME: '/',
+  HOME: '/home',
+  STARTING: '/',
   LOGIN: '/admin/login',
   ADMIN: '/admin',
   TEAMS: '/admin/teams',
