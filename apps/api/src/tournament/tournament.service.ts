@@ -23,10 +23,6 @@ export class TournamentService {
       where: { date },
     });
 
-    if (!tournaments.length) {
-      throw new NotFoundException(`No tournaments found for date ${date}`);
-    }
-
     return tournaments;
   }
 

@@ -1,4 +1,10 @@
-import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { TeamDto } from './team';
 
 export class TournamentModifyDto {
@@ -20,10 +26,11 @@ export class TournamentDto {
   @IsString()
   name: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  date: string;
+  date?: string;
 
   @IsOptional()
+  @IsArray()
   teams?: TeamDto[];
 }
