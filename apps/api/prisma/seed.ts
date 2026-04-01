@@ -1,5 +1,6 @@
 import { Group, MatchType, EventType } from '../generated/prisma/client';
 import { prisma } from '../lib/prisma';
+import * as bcrypt from 'bcrypt';
 
 async function main() {
   await prisma.matchEvent.deleteMany();
@@ -7,6 +8,15 @@ async function main() {
   await prisma.player.deleteMany();
   await prisma.team.deleteMany();
   await prisma.tournament.deleteMany();
+  await prisma.admin.deleteMany();
+
+  const hashedPassword = await bcrypt.hash('admin', 10);
+  await prisma.admin.create({
+    data: {
+      username: 'admin',
+      password: hashedPassword,
+    },
+  });
 
   const tournament = await prisma.tournament.create({
     data: { name: 'DUMP Futsal 2026' },
