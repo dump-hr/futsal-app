@@ -80,6 +80,7 @@ model Match {
   awayTeam    Team?        @relation("AwayTeamMatches", fields: [awayTeamId], references: [id])
   events      MatchEvent[]
   matchType   MatchType
+  isActive    Boolean      @default(false)
 }
 
 model MatchEvent {

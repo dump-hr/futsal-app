@@ -1,5 +1,6 @@
 import {
   IsArray,
+  IsBoolean,
   IsDate,
   IsEnum,
   IsInt,
@@ -48,6 +49,10 @@ export class MatchDto {
   @IsNotEmpty()
   matchType: `${MatchType}`;
 
+  @IsBoolean()
+  @IsNotEmpty()
+  isActive: boolean;
+
   @IsOptional()
   homeTeam: MatchTeamDto | null;
 
@@ -88,6 +93,10 @@ export class MatchListDto {
   @IsEnum(MatchType)
   @IsNotEmpty()
   matchType: `${MatchType}`;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  isActive: boolean;
 
   @IsOptional()
   homeTeam: MatchListTeamDto | null;

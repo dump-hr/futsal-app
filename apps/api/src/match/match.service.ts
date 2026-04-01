@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { prisma } from '../../lib/prisma';
 import {
   MatchDto,
@@ -122,6 +126,48 @@ export class MatchService {
         homeTeam: { select: teamSelect },
         awayTeam: { select: teamSelect },
       },
+    });
+  }
+
+  async getActive(): Promise<MatchDto | null> {
+    return prisma.match.findFirst({
+      where: { isActive: true },
+      include: {
+        homeTeam: { select: teamWithPlayersSelect },
+        awayTeam: { select: teamWithPlayersSelect },
+      },
+    });
+  }
+
+  async setActive(id: number): Promise<void> {
+    const match = await prisma.match.findUnique({ where: { id } });
+
+    if (!match) {
+      throw new NotFoundException(`Match with id ${id} not found`);
+    }
+
+    await prisma.$transaction([
+      prisma.match.updateMany({
+        where: { isActive: true },
+        data: { isActive: false },
+      }),
+      prisma.match.update({
+        where: { id },
+        data: { isActive: true },
+      }),
+    ]);
+  }
+
+  async deactivate(): Promise<void> {
+    const active = await prisma.match.findFirst({ where: { isActive: true } });
+
+    if (!active) {
+      throw new BadRequestException('No active match to deactivate');
+    }
+
+    await prisma.match.update({
+      where: { id: active.id },
+      data: { isActive: false },
     });
   }
 

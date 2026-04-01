@@ -35,6 +35,17 @@ export class MatchController {
     return await this.matchService.getNextMatch();
   }
 
+  @Get('active')
+  async getActive(): Promise<MatchDto | null> {
+    return await this.matchService.getActive();
+  }
+
+  @Patch('deactivate')
+  @UseGuards(JwtAuthGuard)
+  async deactivate(): Promise<void> {
+    return await this.matchService.deactivate();
+  }
+
   @Get('team/:teamId')
   async getByTeamId(
     @Param('teamId', ParseIntPipe) teamId: number,
@@ -51,6 +62,12 @@ export class MatchController {
   @UseGuards(JwtAuthGuard)
   async create(@Body() dto: MatchCreateDto): Promise<MatchListDto> {
     return await this.matchService.create(dto);
+  }
+
+  @Patch(':id/activate')
+  @UseGuards(JwtAuthGuard)
+  async setActive(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return await this.matchService.setActive(id);
   }
 
   @Patch(':id')
