@@ -32,7 +32,6 @@ export class MatchDto {
   @IsNotEmpty()
   id: number;
 
-  @Type(() => Date)
   @IsDate()
   @IsNotEmpty()
   timeOfMatch: Date;
@@ -74,7 +73,6 @@ export class MatchListDto {
   @IsNotEmpty()
   id: number;
 
-  @Type(() => Date)
   @IsDate()
   @IsNotEmpty()
   timeOfMatch: Date;
@@ -99,7 +97,6 @@ export class MatchListDto {
 }
 
 export class MatchCreateDto {
-  @Type(() => Date)
   @IsDate()
   @IsNotEmpty()
   timeOfMatch: Date;
@@ -118,7 +115,6 @@ export class MatchCreateDto {
 }
 
 export class MatchUpdateDto {
-  @Type(() => Date)
   @IsDate()
   @IsOptional()
   timeOfMatch?: Date;
