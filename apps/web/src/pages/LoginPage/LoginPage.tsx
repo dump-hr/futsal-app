@@ -8,6 +8,10 @@ export const LoginPage = () => {
   const [admin, setAdmin] = useState({ username: '', password: '' });
   const { mutate: login, isPending } = useLogin();
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAdmin({ ...admin, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     login(admin);
@@ -19,17 +23,19 @@ export const LoginPage = () => {
         <h1 className={c.title}>Pozdrav!</h1>
         <div className={c.inputs}>
           <Input
+            name='username'
             label='Korisničko ime'
             placeholder='Unesite korisničko ime'
             value={admin.username}
-            onChange={(e) => setAdmin({ ...admin, username: e.target.value })}
+            onChange={handleChange}
           />
           <Input
+            name='password'
             label='Lozinka'
             placeholder='Unesite lozinku'
             type='password'
             value={admin.password}
-            onChange={(e) => setAdmin({ ...admin, password: e.target.value })}
+            onChange={handleChange}
           />
         </div>
         <Button
