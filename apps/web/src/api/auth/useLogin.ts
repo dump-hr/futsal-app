@@ -20,7 +20,7 @@ export const useLogin = () => {
       navigate(routes.ADMIN);
     },
     onError: (error) => {
-      toast.error(`${error}`);
+      toast.error(error.message);
     },
   });
 };
