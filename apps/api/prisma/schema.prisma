@@ -96,3 +96,9 @@ model Group {
   teams        Team[]
   @@unique([name, tournamentId])
 }
+
+model Admin {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  password String
+}
