@@ -8,7 +8,9 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { TeamService } from './team.service';
 import { TeamCreateDto, TeamUpdateDto, TeamDto } from '@futsal-app/types';
 
@@ -16,6 +18,7 @@ import { TeamCreateDto, TeamUpdateDto, TeamDto } from '@futsal-app/types';
 export class TeamController {
   constructor(private readonly teamService: TeamService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() dto: TeamCreateDto): Promise<TeamDto> {
     return await this.teamService.create(dto);
@@ -33,6 +36,7 @@ export class TeamController {
     return await this.teamService.getById(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,
@@ -41,6 +45,7 @@ export class TeamController {
     return await this.teamService.update(id, dto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) id: number): Promise<TeamDto> {
     return await this.teamService.delete(id);
