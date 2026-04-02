@@ -126,4 +126,8 @@
   @include body-normal;
   color: $white;
   gap: 8px;
+
+  &.filterOpen {
+    border-color: $lime;
+  }
 }

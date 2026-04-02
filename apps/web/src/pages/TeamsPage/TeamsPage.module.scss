@@ -1,9 +1,9 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: 54px;
+  gap: 30px;
   width: 100%;
-  padding: 72px 60px;
+  padding: 36px 60px;
 }
 
 .header {
@@ -48,20 +48,18 @@
   align-items: center;
   justify-content: space-between;
   padding-left: 110px;
-  padding-right: 221px;
+  padding-right: 214px;
 }
 
-.columnRight {
+.columnStats {
   display: flex;
-  gap: 76px;
+  gap: 24px;
   align-items: center;
-  justify-content: flex-end;
 }
 
-.columnInner {
-  display: flex;
-  gap: 70px;
-  align-items: center;
+.colHeader {
+  width: 120px;
+  text-align: center;
 }
 
 .teamList {
@@ -69,14 +67,15 @@
   flex-direction: column;
   gap: 12px;
   overflow-y: auto;
-  max-height: 540px;
+  max-height: 380px;
+  padding-right: 20px;
 
   &::-webkit-scrollbar {
     width: 14px;
   }
 
   &::-webkit-scrollbar-track {
-    background: $gray-dark;
+    background: $black;
     border-radius: 15px;
   }
 

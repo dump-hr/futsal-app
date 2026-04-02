@@ -28,10 +28,10 @@ export const TeamInfo: React.FC<TeamInfoProps> = ({
       </div>
       <div className={c.teamStatsWrapper}>
         <div className={c.teamStats}>
-          <span>{teamScore}</span>
-          <span>Skupina {teamGroup}</span>
-          <span>{numberOfPlayers} igrača</span>
-          <span>{numberOfMatchesPlayed} utakmice</span>
+          <span className={c.teamStat}>{teamScore}</span>
+          <span className={c.teamStat}>Skupina {teamGroup}</span>
+          <span className={c.teamStat}>{numberOfPlayers} igrača</span>
+          <span className={c.teamStat}>{numberOfMatchesPlayed} utakmice</span>
         </div>
         <div className={c.teamActions}>
           <ButtonSmall iconSrc={trashIconUrl} hasBorder />

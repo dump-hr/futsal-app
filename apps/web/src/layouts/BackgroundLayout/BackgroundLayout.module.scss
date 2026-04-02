@@ -1,5 +1,5 @@
 .layout {
-  min-height: 100vh;
+  min-height: calc(100vh - 80px);
   width: 100%;
   background-color: $background-black;
   background-size: 60%;
