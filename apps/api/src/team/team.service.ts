@@ -1,9 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { TeamCreateDto, TeamUpdateDto, TeamDto } from '@futsal-app/types';
+import { BlobService } from '../blob/blob.service';
 import { prisma } from '../../lib/prisma';
 
 @Injectable()
 export class TeamService {
+  constructor(private readonly blobService: BlobService) {}
   async create(dto: TeamCreateDto): Promise<TeamDto> {
     const team = await prisma.team.create({
       data: { ...dto },
@@ -42,6 +44,33 @@ export class TeamService {
     const team = await prisma.team.update({
       where: { id },
       data: { ...dto },
+    });
+
+    return team;
+  }
+
+  async updateLogo(
+    id: number,
+    file: Express.Multer.File,
+  ): Promise<TeamDto> {
+    const logoUrl = await this.blobService.upload(
+      'team-logos',
+      file.buffer,
+      file.mimetype,
+    );
+
+    const team = await prisma.team.update({
+      where: { id },
+      data: { logoUrl },
+    });
+
+    return team;
+  }
+
+  async deleteLogo(id: number): Promise<TeamDto> {
+    const team = await prisma.team.update({
+      where: { id },
+      data: { logoUrl: null },
     });
 
     return team;

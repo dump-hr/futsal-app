@@ -10,6 +10,7 @@ import {
   Input,
   Group,
 } from '@components/index';
+import LogoUpload from '@components/LogoUpload/LogoUpload';
 import { useState } from 'react';
 import { EventType, PlayerDto } from '@futsal-app/types';
 import { useTournamentCreate } from '@api/tournament/useTournamentCreate';
@@ -221,6 +222,8 @@ export const HomePage = () => {
             label='Ime ekipe'
             placeholder='Ericsson Nikola Tesla Jos Nesto'
           />
+
+          <LogoUpload teamId={1} logoUrl={null} />
         </div>
 
         <div

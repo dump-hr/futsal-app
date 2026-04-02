@@ -3,12 +3,18 @@ import {
   Controller,
   Delete,
   Get,
+  MaxFileSizeValidator,
+  FileTypeValidator,
   Param,
+  ParseFilePipe,
   ParseIntPipe,
   Patch,
   Post,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { TeamService } from './team.service';
 import { TeamCreateDto, TeamUpdateDto, TeamDto } from '@futsal-app/types';
 
@@ -39,6 +45,28 @@ export class TeamController {
     @Body() dto: TeamUpdateDto,
   ): Promise<TeamDto> {
     return await this.teamService.update(id, dto);
+  }
+
+  @Patch(':id/logo')
+  @UseInterceptors(FileInterceptor('file'))
+  async updateLogo(
+    @Param('id', ParseIntPipe) id: number,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }),
+          new FileTypeValidator({ fileType: /image\/(jpeg|png|svg\+xml|webp)/ }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+  ): Promise<TeamDto> {
+    return await this.teamService.updateLogo(id, file);
+  }
+
+  @Delete(':id/logo')
+  async deleteLogo(@Param('id', ParseIntPipe) id: number): Promise<TeamDto> {
+    return await this.teamService.deleteLogo(id);
   }
 
   @Delete(':id')
