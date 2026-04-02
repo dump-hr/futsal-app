@@ -66,4 +66,16 @@ export class TeamDto {
   @IsInt()
   @IsPositive()
   tournamentId?: number | null;
+
+  @IsOptional()
+  @IsInt()
+  numberOfPlayers?: number;
+
+  @IsOptional()
+  @IsInt()
+  numberOfMatchesPlayed?: number;
+
+  @IsOptional()
+  @IsInt()
+  teamScore?: number;
 }

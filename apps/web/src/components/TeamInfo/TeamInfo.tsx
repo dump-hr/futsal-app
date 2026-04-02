@@ -10,6 +10,7 @@ type TeamInfoProps = {
   teamGroup: string;
   numberOfPlayers: number;
   numberOfMatchesPlayed: number;
+  onDelete?: () => void;
 };
 
 export const TeamInfo: React.FC<TeamInfoProps> = ({
@@ -19,6 +20,7 @@ export const TeamInfo: React.FC<TeamInfoProps> = ({
   teamGroup,
   numberOfPlayers,
   numberOfMatchesPlayed,
+  onDelete,
 }) => {
   return (
     <div className={c.team}>
@@ -34,7 +36,7 @@ export const TeamInfo: React.FC<TeamInfoProps> = ({
           <span className={c.teamStat}>{numberOfMatchesPlayed} utakmice</span>
         </div>
         <div className={c.teamActions}>
-          <ButtonSmall iconSrc={trashIconUrl} hasBorder />
+          <ButtonSmall iconSrc={trashIconUrl} hasBorder onClick={onDelete} />
           <ButtonSmall iconSrc={editIconUrl} hasBorder />
         </div>
       </div>

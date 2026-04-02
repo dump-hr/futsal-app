@@ -1,7 +1,9 @@
 import { useState, useMemo } from 'react';
 import { Button, FilterDropdown, TeamInfo } from '@components/index';
-import { PlusBlack } from '@assets/icons';
+import ModalConfirmation from '@components/ModalConfirmation/ModalConfirmation';
+import { PlusBlack, TrashCanBlack, TrashCanGray } from '@assets/icons';
 import { useTeamsGet } from '@api/team/useTeamsGet';
+import { useTeamDelete } from '@api/team/useTeamDelete';
 import c from './TeamsPage.module.scss';
 
 //TODO: Get tournament ID from URL params or context
@@ -25,8 +27,13 @@ const GROUP_OPTIONS: { label: string; value: GroupFilter }[] = [
 
 export const TeamsPage = () => {
   const { data: teams } = useTeamsGet(TOURNAMENT_ID);
+  const { mutate: deleteTeam } = useTeamDelete();
   const [sortOrder, setSortOrder] = useState<SortOrder>('az');
   const [groupFilter, setGroupFilter] = useState<GroupFilter>('all');
+  const [teamToDelete, setTeamToDelete] = useState<{
+    id: number;
+    name: string;
+  } | null>(null);
 
   const filteredTeams = useMemo(() => {
     if (!teams) return [];
@@ -87,14 +94,31 @@ export const TeamsPage = () => {
               key={team.id}
               teamName={team.name}
               teamLogoUrl={team.logoUrl ?? ''}
-              teamScore={0}
+              teamScore={team.teamScore ?? 0}
               teamGroup={team.group ?? '-'}
-              numberOfPlayers={0}
-              numberOfMatchesPlayed={0}
+              numberOfPlayers={team.numberOfPlayers ?? 0}
+              numberOfMatchesPlayed={team.numberOfMatchesPlayed ?? 0}
+              onDelete={() =>
+                setTeamToDelete({ id: team.id, name: team.name })
+              }
             />
           ))}
         </div>
       </div>
+
+      {teamToDelete && (
+        <ModalConfirmation
+          description='Želite obrisati ekipu'
+          boldText={teamToDelete.name}
+          icon={TrashCanBlack}
+          circleVariant='gray'
+          onCancel={() => setTeamToDelete(null)}
+          onConfirm={() => {
+            deleteTeam(teamToDelete.id);
+            setTeamToDelete(null);
+          }}
+        />
+      )}
     </div>
   );
 };
