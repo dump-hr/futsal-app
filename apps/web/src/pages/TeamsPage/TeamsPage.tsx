@@ -8,8 +8,7 @@ import {
   ModalConfirmation,
 } from '@components/index';
 import { PlusBlack, TrashCanBlack } from '@assets/icons';
-import { useTeamsGet } from '@api/team/useTeamsGet';
-import { useTeamDelete } from '@api/team/useTeamDelete';
+import { useTeamsGet, useTeamDelete } from '@api/team';
 import c from './TeamsPage.module.scss';
 import { SortOrder, GroupFilter, SORT_OPTIONS, GROUP_OPTIONS } from './options';
 

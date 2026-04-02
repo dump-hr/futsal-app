@@ -5,9 +5,9 @@ import {
   ButtonSmall,
   ModalConfirmation,
   TeamFormModal,
+  PlayerList,
 } from '@components/index';
 import PlayerFormModal from '@components/TeamFormModal/PlayerFormModal';
-import PlayerList from '@components/PlayerList/PlayerList';
 import {
   ArrowLeftGray,
   PlusBlack,
@@ -25,7 +25,8 @@ type PlayerModal = PlayerModalAdd | PlayerModalEditById;
 export const TeamDetailPage = () => {
   const [, navigate] = useLocation();
   const params = useParams<{ teamId: string }>();
-  const teamId = params.teamId ? Number(params.teamId) : undefined;
+  const parsed = Number(params.teamId);
+  const teamId = isNaN(parsed) ? undefined : parsed;
 
   const { data: team } = useTeamGet(teamId);
   const { mutate: createPlayer } = usePlayerCreate();
