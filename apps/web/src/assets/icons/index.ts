@@ -6,6 +6,7 @@ export { default as ArrowRightWhite } from './arrow-right-white.svg';
 export { default as CheckBlack } from './check-black.svg';
 export { default as CrossGray } from './cross-gray.svg';
 export { default as XBlack } from './x-black.svg';
+export { default as XGray } from './x-gray.svg';
 export { default as XWhite } from './x-white.svg';
 
 export { default as PlusBlack } from './plus-black.svg';

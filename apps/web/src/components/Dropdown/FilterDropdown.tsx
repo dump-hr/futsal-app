@@ -13,6 +13,8 @@ type FilterDropdownProps<T extends string> = {
   value: T;
   options: FilterOption<T>[];
   onChange: (value: T) => void;
+  variant?: 'filter' | 'default';
+  placeholder?: string;
   className?: string;
 };
 
@@ -20,6 +22,8 @@ const FilterDropdown = <T extends string>({
   value,
   options,
   onChange,
+  variant = 'filter',
+  placeholder,
   className,
 }: FilterDropdownProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,17 +32,26 @@ const FilterDropdown = <T extends string>({
   const closeDropdown = useCallback(() => setIsOpen(false), []);
   useCloseComponent({ onClose: closeDropdown, containerRef: wrapperRef });
 
-  const selectedLabel = options.find((o) => o.value === value)?.label ?? '';
+  const selectedLabel =
+    options.find((o) => o.value === value)?.label ?? placeholder ?? '';
 
   const handleSelect = (optionValue: T) => {
     onChange(optionValue);
     setIsOpen(false);
   };
 
+  const isDefault = variant === 'default';
+
+  const wrapperClass = isDefault ? c.defaultWrapper : c.filterWrapper;
+  const triggerClass = clsx(
+    isDefault ? c.defaultTrigger : c.filterTrigger,
+    isOpen && (isDefault ? c.defaultOpen : c.filterOpen),
+  );
+
   return (
-    <div className={clsx(c.filterWrapper, className)} ref={wrapperRef}>
+    <div className={clsx(wrapperClass, className)} ref={wrapperRef}>
       <button
-        className={clsx(c.filterTrigger, isOpen && c.filterOpen)}
+        className={triggerClass}
         onClick={() => setIsOpen(!isOpen)}
         type='button'>
         <span className={c.selectedText}>{selectedLabel}</span>

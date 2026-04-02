@@ -11,3 +11,4 @@ export { default as Input } from './Input/Input';
 export { default as Group } from './Group/Group';
 export { default as MatchEventCard } from './MatchEventCard/MatchEventCard';
 export { default as MatchPanel } from './MatchPanel/MatchPanel';
+export { default as TeamFormModal } from './TeamFormModal/TeamFormModal';

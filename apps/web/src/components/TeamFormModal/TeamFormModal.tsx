@@ -1,0 +1,308 @@
+import { useState, useEffect, useCallback } from 'react';
+import { Group } from '@futsal-app/types';
+import { Button, FilterDropdown } from '@components/index';
+import ButtonSmall from '@components/ButtonSmall/ButtonSmall';
+import Input from '@components/Input/Input';
+import { useCloseComponent } from '@hooks/index';
+import {
+  PlusBlack,
+  XWhite,
+  CheckBlack,
+  UploadGray,
+  TrashCanGray,
+  XGray,
+} from '@assets/icons';
+import { useTeamGet, useTeamCreate, useTeamUpdate } from '@api/team';
+import { usePlayerCreate, usePlayerDelete, usePlayerUpdate } from '@api/player';
+import { BackgroundColor } from '@types';
+import PlayerFormModal from './PlayerFormModal';
+import c from './TeamFormModal.module.scss';
+
+type PlayerEntry = {
+  id?: number;
+  firstName: string;
+  lastName: string;
+};
+
+type GroupOption = 'none' | `${Group}`;
+
+const GROUP_OPTIONS: { label: string; value: GroupOption }[] = [
+  { label: 'Bez skupine', value: 'none' },
+  { label: 'Skupina A', value: 'A' },
+  { label: 'Skupina B', value: 'B' },
+  { label: 'Skupina C', value: 'C' },
+  { label: 'Skupina D', value: 'D' },
+];
+
+//TODO: Get tournament ID from URL params or context
+const TOURNAMENT_ID = 1;
+
+type PlayerModal = { type: 'add' } | { type: 'edit'; index: number };
+
+type TeamFormModalProps = {
+  teamId?: number;
+  onClose: () => void;
+};
+
+const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
+  const isEdit = teamId !== undefined;
+  const { data: existingTeam } = useTeamGet(teamId);
+  const { mutateAsync: createTeam } = useTeamCreate();
+  const { mutateAsync: updateTeam } = useTeamUpdate();
+  const { mutateAsync: createPlayer } = usePlayerCreate();
+  const { mutateAsync: deletePlayer } = usePlayerDelete();
+  const { mutateAsync: updatePlayer } = usePlayerUpdate();
+
+  const [teamName, setTeamName] = useState('');
+  const [group, setGroup] = useState<GroupOption>('none');
+  const [players, setPlayers] = useState<PlayerEntry[]>([]);
+  const [isSaving, setIsSaving] = useState(false);
+  const [originalPlayerIds, setOriginalPlayerIds] = useState<number[]>([]);
+  const [playerModal, setPlayerModal] = useState<PlayerModal | null>(null);
+
+  useEffect(() => {
+    if (existingTeam && isEdit) {
+      setTeamName(existingTeam.name);
+      setGroup(existingTeam.group ?? 'none');
+      const existingPlayers: PlayerEntry[] = (existingTeam.players ?? []).map(
+        (p: PlayerEntry) => ({
+          id: p.id,
+          firstName: p.firstName,
+          lastName: p.lastName,
+        }),
+      );
+      setPlayers(existingPlayers);
+      setOriginalPlayerIds(existingPlayers.map((p) => p.id!));
+    }
+  }, [existingTeam, isEdit]);
+
+  const handleClose = useCallback(() => onClose(), [onClose]);
+  useCloseComponent({ onClose: handleClose });
+
+  const handlePlayerSave = (firstName: string, lastName: string) => {
+    if (playerModal?.type === 'add') {
+      setPlayers([...players, { firstName, lastName }]);
+    } else if (playerModal?.type === 'edit') {
+      const updated = [...players];
+      updated[playerModal.index] = {
+        ...updated[playerModal.index],
+        firstName,
+        lastName,
+      };
+      setPlayers(updated);
+    }
+    setPlayerModal(null);
+  };
+
+  const handleSave = async () => {
+    if (!teamName.trim()) return;
+    setIsSaving(true);
+
+    try {
+      if (isEdit && teamId) {
+        await updateTeam({
+          id: teamId,
+          dto: {
+            name: teamName,
+            group: group === 'none' ? undefined : (group as Group),
+          },
+        });
+
+        const currentPlayerIds = players.filter((p) => p.id).map((p) => p.id!);
+        const removedIds = originalPlayerIds.filter(
+          (id) => !currentPlayerIds.includes(id),
+        );
+
+        for (const id of removedIds) {
+          await deletePlayer(id);
+        }
+
+        for (const player of players) {
+          if (player.id) {
+            const original = existingTeam?.players?.find(
+              (p: PlayerEntry) => p.id === player.id,
+            );
+            if (
+              original &&
+              (original.firstName !== player.firstName ||
+                original.lastName !== player.lastName)
+            ) {
+              await updatePlayer({
+                id: player.id,
+                dto: {
+                  firstName: player.firstName,
+                  lastName: player.lastName,
+                },
+              });
+            }
+          } else {
+            await createPlayer({
+              firstName: player.firstName,
+              lastName: player.lastName,
+              teamId,
+            });
+          }
+        }
+      } else {
+        const created = await createTeam({
+          name: teamName,
+          group: group === 'none' ? undefined : (group as Group),
+          tournamentId: TOURNAMENT_ID,
+        });
+
+        for (const player of players) {
+          await createPlayer({
+            firstName: player.firstName,
+            lastName: player.lastName,
+            teamId: created.id,
+          });
+        }
+      }
+
+      onClose();
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  return (
+    <div
+      className={c.overlay}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}>
+      <div className={c.modal} role='dialog' aria-modal='true'>
+        <div className={c.header}>
+          <div className={c.headerText}>
+            <h1 className={c.title}>{isEdit ? 'Uredi ekipu' : 'Nova ekipa'}</h1>
+            <p className={c.subtitle}>
+              {isEdit
+                ? 'Uredi ime, promjeni logo, unesi nove igrače, uredi već postojeće igrače'
+                : 'Kreiraj ime, importaj logo i unesi igrače nove ekipe'}
+            </p>
+          </div>
+          <ButtonSmall iconSrc={XGray} onClick={onClose} hasBorder />
+        </div>
+
+        <div className={c.main}>
+          <div className={c.teamInfoSection}>
+            <div className={c.logoArea}>
+              <div className={c.logoPlaceholder}>
+                {isEdit && existingTeam?.logoUrl ? (
+                  <img
+                    src={existingTeam.logoUrl}
+                    alt={teamName}
+                    className={c.logoImage}
+                  />
+                ) : (
+                  <span className={c.logoText}>LOGO</span>
+                )}
+              </div>
+              <div className={c.logoActions}>
+                <ButtonSmall iconSrc={UploadGray} />
+                <ButtonSmall iconSrc={TrashCanGray} />
+              </div>
+            </div>
+            <div className={c.teamFields}>
+              <div className={teamName.trim() ? c.inputValid : undefined}>
+                <Input
+                  label='Ime ekipe'
+                  value={teamName}
+                  onChange={(e) => setTeamName(e.target.value)}
+                  placeholder='Ime ekipe'
+                />
+              </div>
+              <div className={c.fieldGroup}>
+                <span className={c.fieldLabel}>Skupina (nije obavezno)</span>
+                <FilterDropdown
+                  variant='default'
+                  value={group}
+                  options={GROUP_OPTIONS}
+                  onChange={setGroup}
+                  placeholder='Odaberi skupinu'
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className={c.playerSection}>
+            <div className={c.playerSectionHeader}>
+              <span className={c.playerSectionTitle}>Unos igrača</span>
+              <span className={c.playerSectionSubtitle}>
+                Unos igrača nije obavezan u ovom koraku, može se kasnije urediti
+              </span>
+            </div>
+
+            <div className={c.playerList}>
+              {players.map((player, index) => (
+                <div
+                  key={player.id ?? `new-${index}`}
+                  className={c.playerRow}
+                  onClick={() => setPlayerModal({ type: 'edit', index })}>
+                  <span className={c.playerLabel}>Igrač #{index + 1}</span>
+                  <Input
+                    value={`${player.firstName} ${player.lastName}`}
+                    readOnly
+                  />
+                </div>
+              ))}
+
+              <div className={c.playerRow}>
+                <span className={c.playerLabel}>
+                  Igrač #{players.length + 1}
+                </span>
+                <div className={c.newPlayerRow}>
+                  <div className={c.newPlayerInput}>
+                    <Input
+                      value=''
+                      readOnly
+                      placeholder='Ime i prezime'
+                      onClick={() => setPlayerModal({ type: 'add' })}
+                    />
+                  </div>
+                  <ButtonSmall
+                    backgroundColor={BackgroundColor.White}
+                    iconSrc={PlusBlack}
+                    onClick={() => setPlayerModal({ type: 'add' })}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className={c.footer}>
+          <Button icon={XWhite} variant='secondary' onClick={onClose}>
+            Odustani
+          </Button>
+          <Button
+            icon={CheckBlack}
+            variant='primary'
+            onClick={handleSave}
+            disabled={isSaving || !teamName.trim()}>
+            Spremi
+          </Button>
+        </div>
+      </div>
+
+      {playerModal && (
+        <PlayerFormModal
+          firstName={
+            playerModal.type === 'edit'
+              ? players[playerModal.index].firstName
+              : undefined
+          }
+          lastName={
+            playerModal.type === 'edit'
+              ? players[playerModal.index].lastName
+              : undefined
+          }
+          onSave={handlePlayerSave}
+          onClose={() => setPlayerModal(null)}
+        />
+      )}
+    </div>
+  );
+};
+
+export default TeamFormModal;

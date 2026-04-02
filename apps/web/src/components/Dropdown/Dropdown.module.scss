@@ -1,3 +1,5 @@
+// === EventDropdown ===
+
 .wrapper {
   position: relative;
   width: 208px;
@@ -38,6 +40,68 @@
   }
 }
 
+// === FilterDropdown: filter variant (TeamsPage) ===
+
+.filterWrapper {
+  position: relative;
+  width: 256px;
+
+  .dropdown {
+    border-radius: 16px;
+  }
+}
+
+.filterTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 52px;
+  padding: 6px 16px;
+  border-radius: 16px;
+  border: 1px solid $white;
+  background-color: $black;
+  cursor: pointer;
+  @include body-normal;
+  color: $white;
+  gap: 8px;
+
+  &.filterOpen {
+    border-color: $white;
+  }
+}
+
+// === FilterDropdown: default variant (form modals) ===
+
+.defaultWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.defaultTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 0.5px solid $white;
+  background-color: transparent;
+  cursor: pointer;
+  @include body-normal;
+  color: $white;
+  gap: 8px;
+  opacity: 0.4;
+  transition: opacity 0.2s, border-color 0.2s;
+
+  &.defaultOpen {
+    opacity: 1;
+    border-color: $white;
+  }
+}
+
+// === Shared ===
+
 .arrowIcon {
   width: 24px;
   height: 24px;
@@ -54,6 +118,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: left;
 }
 
 .dropdown {
@@ -105,29 +170,4 @@
 
 .optionRight {
   text-align: left;
-}
-
-.filterWrapper {
-  position: relative;
-  width: 256px;
-}
-
-.filterTrigger {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  height: 52px;
-  padding: 6px 16px;
-  border-radius: 16px;
-  border: 1px solid $white;
-  background-color: $black;
-  cursor: pointer;
-  @include body-normal;
-  color: $white;
-  gap: 8px;
-
-  &.filterOpen {
-    border-color: $lime;
-  }
 }

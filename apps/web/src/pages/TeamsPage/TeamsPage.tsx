@@ -1,7 +1,8 @@
 import { useState, useMemo } from 'react';
-import { Button, FilterDropdown, TeamInfo } from '@components/index';
+import { Button, FilterDropdown, TeamFormModal } from '@components/index';
+import TeamsTable from '@components/TeamsTable/TeamsTable';
 import ModalConfirmation from '@components/ModalConfirmation/ModalConfirmation';
-import { PlusBlack, TrashCanBlack, TrashCanGray } from '@assets/icons';
+import { PlusBlack, TrashCanBlack } from '@assets/icons';
 import { useTeamsGet } from '@api/team/useTeamsGet';
 import { useTeamDelete } from '@api/team/useTeamDelete';
 import c from './TeamsPage.module.scss';
@@ -34,6 +35,10 @@ export const TeamsPage = () => {
     id: number;
     name: string;
   } | null>(null);
+  const [formModal, setFormModal] = useState<{
+    open: boolean;
+    teamId?: number;
+  }>({ open: false });
 
   const filteredTeams = useMemo(() => {
     if (!teams) return [];
@@ -56,7 +61,10 @@ export const TeamsPage = () => {
     <div className={c.page}>
       <div className={c.header}>
         <h1 className={c.title}>EKIPE</h1>
-        <Button icon={PlusBlack} variant='primary'>
+        <Button
+          icon={PlusBlack}
+          variant='primary'
+          onClick={() => setFormModal({ open: true })}>
           Nova ekipa
         </Button>
       </div>
@@ -77,34 +85,18 @@ export const TeamsPage = () => {
         </div>
       </div>
 
-      <div className={c.teamListSection}>
-        <div className={c.columnHeaders}>
-          <span>Naziv</span>
-          <div className={c.columnStats}>
-            <span className={c.colHeader}>Broj bodova</span>
-            <span className={c.colHeader}>Skupina</span>
-            <span className={c.colHeader}>Broj igrača</span>
-            <span className={c.colHeader}>Broj utakmica</span>
-          </div>
-        </div>
+      <TeamsTable
+        teams={filteredTeams}
+        onDelete={setTeamToDelete}
+        onEdit={(teamId) => setFormModal({ open: true, teamId })}
+      />
 
-        <div className={c.teamList}>
-          {filteredTeams.map((team) => (
-            <TeamInfo
-              key={team.id}
-              teamName={team.name}
-              teamLogoUrl={team.logoUrl ?? ''}
-              teamScore={team.teamScore ?? 0}
-              teamGroup={team.group ?? '-'}
-              numberOfPlayers={team.numberOfPlayers ?? 0}
-              numberOfMatchesPlayed={team.numberOfMatchesPlayed ?? 0}
-              onDelete={() =>
-                setTeamToDelete({ id: team.id, name: team.name })
-              }
-            />
-          ))}
-        </div>
-      </div>
+      {formModal.open && (
+        <TeamFormModal
+          teamId={formModal.teamId}
+          onClose={() => setFormModal({ open: false })}
+        />
+      )}
 
       {teamToDelete && (
         <ModalConfirmation

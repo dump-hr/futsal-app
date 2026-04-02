@@ -8,6 +8,7 @@ import {
   IsUrl,
 } from 'class-validator';
 import { Group } from '../enum';
+import { PlayerDto } from './player';
 
 export class TeamCreateDto {
   @IsNotEmpty()
@@ -78,4 +79,7 @@ export class TeamDto {
   @IsOptional()
   @IsInt()
   teamScore?: number;
+
+  @IsOptional()
+  players?: PlayerDto[];
 }

@@ -56,6 +56,9 @@ export class TeamService {
   async getById(id: number): Promise<TeamDto> {
     const team = await prisma.team.findUnique({
       where: { id },
+      include: {
+        players: { select: { id: true, firstName: true, lastName: true } },
+      },
     });
 
     if (!team) {

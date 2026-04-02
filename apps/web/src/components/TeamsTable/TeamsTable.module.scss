@@ -1,0 +1,49 @@
+.teamListSection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.columnHeaders {
+  @include body-normal-bold;
+  color: $white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 110px;
+  padding-right: 214px;
+}
+
+.columnStats {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.colHeader {
+  width: 120px;
+  text-align: center;
+}
+
+.teamList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  max-height: 380px;
+  padding-right: 20px;
+
+  &::-webkit-scrollbar {
+    width: 14px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $black;
+    border-radius: 15px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $gray-light;
+    border-radius: 15px;
+  }
+}
