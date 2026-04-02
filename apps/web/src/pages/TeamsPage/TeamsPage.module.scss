@@ -1,0 +1,87 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 54px;
+  width: 100%;
+  padding: 72px 60px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  @include title-2;
+  font-weight: 600;
+  color: $white;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 42px;
+}
+
+.filterLabel {
+  @include body-normal;
+  color: $white;
+  opacity: 0.6;
+}
+
+.filterDropdowns {
+  display: flex;
+  gap: 20px;
+}
+
+.teamListSection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.columnHeaders {
+  @include body-normal-bold;
+  color: $white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 110px;
+  padding-right: 221px;
+}
+
+.columnRight {
+  display: flex;
+  gap: 76px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.columnInner {
+  display: flex;
+  gap: 70px;
+  align-items: center;
+}
+
+.teamList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  max-height: 540px;
+
+  &::-webkit-scrollbar {
+    width: 14px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $gray-dark;
+    border-radius: 15px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $gray-light;
+    border-radius: 15px;
+  }
+}
