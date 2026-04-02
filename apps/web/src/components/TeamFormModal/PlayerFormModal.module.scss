@@ -1,10 +1,5 @@
 .overlay {
-  position: fixed;
-  inset: 0;
   z-index: 1100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
 }
 
@@ -18,32 +13,6 @@
   width: 616px;
 }
 
-.header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding-bottom: 24px;
-}
-
-.headerText {
-  display: flex;
-  flex-direction: column;
-}
-
-.title {
-  @include title-2;
-  font-weight: 600;
-  color: $white;
-  line-height: 1;
-  margin: 0;
-}
-
-.subtitle {
-  @include body-normal;
-  color: $white;
-  opacity: 0.6;
-}
-
 .fields {
   display: flex;
   gap: 20px;
@@ -55,10 +24,4 @@
   input {
     max-width: 100%;
   }
-}
-
-.footer {
-  display: flex;
-  gap: 16px;
-  justify-content: flex-end;
 }

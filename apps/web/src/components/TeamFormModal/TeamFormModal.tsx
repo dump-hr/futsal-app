@@ -17,6 +17,7 @@ import { useTeamGet, useTeamCreate, useTeamUpdate } from '@api/team';
 import { usePlayerCreate, usePlayerDelete, usePlayerUpdate } from '@api/player';
 import { BackgroundColor } from '@types';
 import PlayerFormModal from './PlayerFormModal';
+import common from './ModalCommon.module.scss';
 import c from './TeamFormModal.module.scss';
 
 type PlayerEntry = {
@@ -103,7 +104,7 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
     setIsSaving(true);
 
     try {
-      if (isEdit && teamId) {
+      if (isEdit) {
         await updateTeam({
           id: teamId,
           dto: {
@@ -171,15 +172,15 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
 
   return (
     <div
-      className={c.overlay}
+      className={`${common.overlay} ${c.overlay}`}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}>
       <div className={c.modal} role='dialog' aria-modal='true'>
-        <div className={c.header}>
-          <div className={c.headerText}>
-            <h1 className={c.title}>{isEdit ? 'Uredi ekipu' : 'Nova ekipa'}</h1>
-            <p className={c.subtitle}>
+        <div className={common.header}>
+          <div className={common.headerText}>
+            <h1 className={common.title}>{isEdit ? 'Uredi ekipu' : 'Nova ekipa'}</h1>
+            <p className={common.subtitle}>
               {isEdit
                 ? 'Uredi ime, promjeni logo, unesi nove igrače, uredi već postojeće igrače'
                 : 'Kreiraj ime, importaj logo i unesi igrače nove ekipe'}
@@ -275,7 +276,7 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
           </div>
         </div>
 
-        <div className={c.footer}>
+        <div className={`${common.footer} ${c.footer}`}>
           <Button icon={XWhite} variant='secondary' onClick={onClose}>
             Odustani
           </Button>

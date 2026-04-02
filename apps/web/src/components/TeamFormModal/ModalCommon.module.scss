@@ -1,0 +1,39 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-bottom: 24px;
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  @include title-2;
+  font-weight: 600;
+  color: $white;
+  line-height: 1;
+  margin: 0;
+}
+
+.subtitle {
+  @include body-normal;
+  color: $white;
+  opacity: 0.6;
+}
+
+.footer {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+}

@@ -4,6 +4,7 @@ import { Button } from '@components/index';
 import ButtonSmall from '@components/ButtonSmall/ButtonSmall';
 import Input from '@components/Input/Input';
 import { XWhite, CheckBlack, XGray } from '@assets/icons';
+import common from './ModalCommon.module.scss';
 import c from './PlayerFormModal.module.scss';
 
 type PlayerFormModalProps = {
@@ -41,17 +42,17 @@ const PlayerFormModal: React.FC<PlayerFormModalProps> = ({
 
   return (
     <div
-      className={c.overlay}
+      className={`${common.overlay} ${c.overlay}`}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}>
       <div className={c.modal} role='dialog' aria-modal='true'>
-        <div className={c.header}>
-          <div className={c.headerText}>
-            <h2 className={c.title}>
+        <div className={common.header}>
+          <div className={common.headerText}>
+            <h2 className={common.title}>
               {isEdit ? 'Uredi igrača' : 'Novi igrač'}
             </h2>
-            <p className={c.subtitle}>
+            <p className={common.subtitle}>
               {isEdit
                 ? 'Uredi ime i prezime igrača'
                 : 'Unesi ime i prezime novog igrača'}
@@ -79,15 +80,14 @@ const PlayerFormModal: React.FC<PlayerFormModalProps> = ({
           </div>
         </div>
 
-        <div className={c.footer}>
+        <div className={common.footer}>
           <Button icon={XWhite} variant='secondary' onClick={onClose}>
             Odustani
           </Button>
           <Button
             icon={CheckBlack}
             variant='primary'
-            onClick={handleSave}
->
+            onClick={handleSave}>
             Spremi
           </Button>
         </div>

@@ -13,9 +13,9 @@ export const usePlayerDelete = () => {
   return useMutation({
     mutationFn: playerDelete,
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['players'],
-      });
+      queryClient.invalidateQueries({ queryKey: ['players'] });
+      queryClient.invalidateQueries({ queryKey: ['team'] });
+      queryClient.invalidateQueries({ queryKey: ['teams'] });
       toast.success('Igrač uspješno obrisan');
     },
     onError: (error) => {

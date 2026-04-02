@@ -1,7 +1,6 @@
 import ButtonSmall from '@components/ButtonSmall';
+import { TrashCanGray, PencilGray } from '@assets/icons';
 import c from './TeamInfo.module.scss';
-import trashIconUrl from '../../assets/icons/trash-can-gray.svg';
-import editIconUrl from '../../assets/icons/pencil-gray.svg';
 
 type TeamInfoProps = {
   teamName: string;
@@ -38,8 +37,8 @@ export const TeamInfo: React.FC<TeamInfoProps> = ({
           <span className={c.teamStat}>{numberOfMatchesPlayed} utakmice</span>
         </div>
         <div className={c.teamActions}>
-          <ButtonSmall iconSrc={trashIconUrl} hasBorder onClick={onDelete} />
-          <ButtonSmall iconSrc={editIconUrl} hasBorder onClick={onEdit} />
+          <ButtonSmall iconSrc={TrashCanGray} hasBorder onClick={onDelete} />
+          <ButtonSmall iconSrc={PencilGray} hasBorder onClick={onEdit} />
         </div>
       </div>
     </div>

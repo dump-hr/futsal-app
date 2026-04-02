@@ -1,7 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Button, FilterDropdown, TeamFormModal } from '@components/index';
-import TeamsTable from '@components/TeamsTable/TeamsTable';
-import ModalConfirmation from '@components/ModalConfirmation/ModalConfirmation';
+import { Button, FilterDropdown, TeamFormModal, TeamsTable, ModalConfirmation } from '@components/index';
 import { PlusBlack, TrashCanBlack } from '@assets/icons';
 import { useTeamsGet } from '@api/team/useTeamsGet';
 import { useTeamDelete } from '@api/team/useTeamDelete';
