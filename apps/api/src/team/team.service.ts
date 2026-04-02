@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { TeamCreateDto, TeamUpdateDto, TeamDto } from '@futsal-app/types';
 import { prisma } from '../../lib/prisma';
 
