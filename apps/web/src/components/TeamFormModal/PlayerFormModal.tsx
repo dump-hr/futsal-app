@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import { Button } from '@components/index';
 import ButtonSmall from '@components/ButtonSmall/ButtonSmall';
 import Input from '@components/Input/Input';
-import { XWhite, CheckBlack } from '@assets/icons';
+import { XWhite, CheckBlack, XGray } from '@assets/icons';
 import c from './PlayerFormModal.module.scss';
 
 type PlayerFormModalProps = {
@@ -23,7 +24,18 @@ const PlayerFormModal: React.FC<PlayerFormModalProps> = ({
   const [lastName, setLastName] = useState(initialLast);
 
   const handleSave = () => {
-    if (!firstName.trim() || !lastName.trim()) return;
+    if (!firstName.trim() && !lastName.trim()) {
+      toast.error('Unesite ime i prezime igrača');
+      return;
+    }
+    if (!firstName.trim()) {
+      toast.error('Unesite ime igrača');
+      return;
+    }
+    if (!lastName.trim()) {
+      toast.error('Unesite prezime igrača');
+      return;
+    }
     onSave(firstName.trim(), lastName.trim());
   };
 
@@ -45,7 +57,7 @@ const PlayerFormModal: React.FC<PlayerFormModalProps> = ({
                 : 'Unesi ime i prezime novog igrača'}
             </p>
           </div>
-          <ButtonSmall iconSrc={XWhite} onClick={onClose} hasBorder />
+          <ButtonSmall iconSrc={XGray} onClick={onClose} hasBorder />
         </div>
 
         <div className={c.fields}>
@@ -75,7 +87,7 @@ const PlayerFormModal: React.FC<PlayerFormModalProps> = ({
             icon={CheckBlack}
             variant='primary'
             onClick={handleSave}
-            disabled={!firstName.trim() || !lastName.trim()}>
+>
             Spremi
           </Button>
         </div>

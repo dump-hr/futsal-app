@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import toast from 'react-hot-toast';
 import { Group } from '@futsal-app/types';
 import { Button, FilterDropdown } from '@components/index';
 import ButtonSmall from '@components/ButtonSmall/ButtonSmall';
@@ -95,7 +96,10 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
   };
 
   const handleSave = async () => {
-    if (!teamName.trim()) return;
+    if (!teamName.trim()) {
+      toast.error('Unesite ime ekipe');
+      return;
+    }
     setIsSaving(true);
 
     try {
@@ -279,7 +283,7 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
             icon={CheckBlack}
             variant='primary'
             onClick={handleSave}
-            disabled={isSaving || !teamName.trim()}>
+            disabled={isSaving}>
             Spremi
           </Button>
         </div>
