@@ -29,7 +29,7 @@ export class GroupService {
     });
 
     if (!group) {
-      throw new NotFoundException(`Group with id ${id} not found`);
+      throw new NotFoundException(`Group not found`);
     }
 
     return group;
