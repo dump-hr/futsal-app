@@ -7,6 +7,7 @@ export const routes: RouteType = {
   LOGIN: '/admin/login',
   ADMIN: '/admin',
   TEAMS: '/admin/teams',
+  TEAM_DETAIL: '/admin/teams/:teamId',
   GROUPS: '/admin/groups',
   MATCHES: '/admin/matches',
 };

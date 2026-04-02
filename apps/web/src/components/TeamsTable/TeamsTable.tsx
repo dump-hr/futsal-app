@@ -6,9 +6,10 @@ type TeamsTableProps = {
   teams: TeamDto[];
   onDelete: (team: { id: number; name: string }) => void;
   onEdit: (teamId: number) => void;
+  onRowClick: (teamId: number) => void;
 };
 
-const TeamsTable: React.FC<TeamsTableProps> = ({ teams, onDelete, onEdit }) => {
+const TeamsTable: React.FC<TeamsTableProps> = ({ teams, onDelete, onEdit, onRowClick }) => {
   return (
     <div className={c.teamListSection}>
       <div className={c.columnHeaders}>
@@ -33,6 +34,7 @@ const TeamsTable: React.FC<TeamsTableProps> = ({ teams, onDelete, onEdit }) => {
             numberOfMatchesPlayed={team.numberOfMatchesPlayed ?? 0}
             onDelete={() => onDelete({ id: team.id, name: team.name })}
             onEdit={() => onEdit(team.id)}
+            onClick={() => onRowClick(team.id)}
           />
         ))}
       </div>

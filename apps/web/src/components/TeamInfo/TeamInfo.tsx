@@ -11,6 +11,7 @@ type TeamInfoProps = {
   numberOfMatchesPlayed: number;
   onDelete?: () => void;
   onEdit?: () => void;
+  onClick?: () => void;
 };
 
 export const TeamInfo: React.FC<TeamInfoProps> = ({
@@ -22,9 +23,10 @@ export const TeamInfo: React.FC<TeamInfoProps> = ({
   numberOfMatchesPlayed,
   onDelete,
   onEdit,
+  onClick,
 }) => {
   return (
-    <div className={c.team}>
+    <div className={c.team} onClick={onClick} style={onClick ? { cursor: 'pointer' } : undefined}>
       <div className={c.teamInfo}>
         <img src={teamLogoUrl} alt={teamName} className={c.teamLogo} />
         <span className={c.teamName}>{teamName}</span>
@@ -36,7 +38,7 @@ export const TeamInfo: React.FC<TeamInfoProps> = ({
           <span className={c.teamStat}>{numberOfPlayers} igrača</span>
           <span className={c.teamStat}>{numberOfMatchesPlayed} utakmice</span>
         </div>
-        <div className={c.teamActions}>
+        <div className={c.teamActions} onClick={(e) => e.stopPropagation()}>
           <ButtonSmall iconSrc={TrashCanGray} hasBorder onClick={onDelete} />
           <ButtonSmall iconSrc={PencilGray} hasBorder onClick={onEdit} />
         </div>

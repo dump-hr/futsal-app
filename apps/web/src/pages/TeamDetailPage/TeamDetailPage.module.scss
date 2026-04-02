@@ -1,0 +1,119 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 54px;
+  width: 100%;
+  padding: 36px 60px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.teamIdentity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.teamLogo {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.teamName {
+  @include title-2;
+  font-weight: 600;
+  color: $white;
+  line-height: 1;
+  margin: 0;
+  margin-left: 24px;
+}
+
+.content {
+  display: flex;
+  gap: 80px;
+  align-items: flex-start;
+}
+
+.playersSection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 335px;
+  flex-shrink: 0;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sectionTitle {
+  @include title-3;
+  color: $white;
+}
+
+.playerList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  max-height: calc(100vh - 320px);
+  padding-right: 12px;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $black;
+    border-radius: 15px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $gray-light;
+    border-radius: 15px;
+  }
+}
+
+.matchesSection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 1;
+}
+
+.matchList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  max-height: calc(100vh - 320px);
+  padding-right: 12px;
+
+  &::-webkit-scrollbar {
+    width: 14px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $black;
+    border-radius: 15px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $gray-light;
+    border-radius: 15px;
+  }
+}
+
+.matchPlaceholder {
+  @include body-normal;
+  color: $white;
+  opacity: 0.4;
+}

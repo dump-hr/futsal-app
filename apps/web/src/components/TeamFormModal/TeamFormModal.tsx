@@ -15,7 +15,7 @@ import {
 } from '@assets/icons';
 import { useTeamGet, useTeamCreate, useTeamUpdate } from '@api/team';
 import { usePlayerCreate, usePlayerDelete, usePlayerUpdate } from '@api/player';
-import { BackgroundColor } from '@types';
+import { BackgroundColor, PlayerModalAdd, PlayerModalEditByIndex } from '@types';
 import PlayerFormModal from './PlayerFormModal';
 import common from './ModalCommon.module.scss';
 import c from './TeamFormModal.module.scss';
@@ -39,7 +39,7 @@ const GROUP_OPTIONS: { label: string; value: GroupOption }[] = [
 //TODO: Get tournament ID from URL params or context
 const TOURNAMENT_ID = 1;
 
-type PlayerModal = { type: 'add' } | { type: 'edit'; index: number };
+type PlayerModal = PlayerModalAdd | PlayerModalEditByIndex;
 
 type TeamFormModalProps = {
   teamId?: number;

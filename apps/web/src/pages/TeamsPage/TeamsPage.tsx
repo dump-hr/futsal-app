@@ -1,30 +1,23 @@
 import { useState, useMemo } from 'react';
-import { Button, FilterDropdown, TeamFormModal, TeamsTable, ModalConfirmation } from '@components/index';
+import { useLocation } from 'wouter';
+import {
+  Button,
+  FilterDropdown,
+  TeamFormModal,
+  TeamsTable,
+  ModalConfirmation,
+} from '@components/index';
 import { PlusBlack, TrashCanBlack } from '@assets/icons';
 import { useTeamsGet } from '@api/team/useTeamsGet';
 import { useTeamDelete } from '@api/team/useTeamDelete';
 import c from './TeamsPage.module.scss';
+import { SortOrder, GroupFilter, SORT_OPTIONS, GROUP_OPTIONS } from './options';
 
 //TODO: Get tournament ID from URL params or context
 const TOURNAMENT_ID = 1;
 
-type SortOrder = 'az' | 'za';
-type GroupFilter = 'all' | 'A' | 'B' | 'C' | 'D';
-
-const SORT_OPTIONS: { label: string; value: SortOrder }[] = [
-  { label: 'Abecedno (A do Z)', value: 'az' },
-  { label: 'Abecedno (Z do A)', value: 'za' },
-];
-
-const GROUP_OPTIONS: { label: string; value: GroupFilter }[] = [
-  { label: 'Skupina', value: 'all' },
-  { label: 'Skupina A', value: 'A' },
-  { label: 'Skupina B', value: 'B' },
-  { label: 'Skupina C', value: 'C' },
-  { label: 'Skupina D', value: 'D' },
-];
-
 export const TeamsPage = () => {
+  const [, navigate] = useLocation();
   const { data: teams } = useTeamsGet(TOURNAMENT_ID);
   const { mutate: deleteTeam } = useTeamDelete();
   const [sortOrder, setSortOrder] = useState<SortOrder>('az');
@@ -87,6 +80,7 @@ export const TeamsPage = () => {
         teams={filteredTeams}
         onDelete={setTeamToDelete}
         onEdit={(teamId) => setFormModal({ open: true, teamId })}
+        onRowClick={(teamId) => navigate(`/admin/teams/${teamId}`)}
       />
 
       {formModal.open && (
