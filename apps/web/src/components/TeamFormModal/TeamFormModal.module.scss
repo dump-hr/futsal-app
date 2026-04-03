@@ -8,7 +8,7 @@
   border-radius: 32px;
   padding: 40px 64px;
   width: 100%;
-  max-width: 1044px;
+  max-width: min(1172px, calc(100vw - 40px));
   max-height: 90vh;
   overflow-y: auto;
   display: flex;
@@ -132,8 +132,15 @@
 
 .playerList {
   display: flex;
+  gap: 42px;
+  flex-wrap: wrap;
+}
+
+.playerColumn {
+  display: flex;
   flex-direction: column;
   gap: 24px;
+  width: 320px;
 }
 
 .playerRow {

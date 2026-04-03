@@ -9,6 +9,19 @@ import { prisma } from '../../lib/prisma';
 @Injectable()
 export class TeamService {
   async create(dto: TeamCreateDto): Promise<TeamDto> {
+    const existingTeam = await prisma.team.findFirst({
+      where: {
+        name: dto.name,
+        tournamentId: dto.tournamentId,
+      },
+    });
+
+    if (existingTeam) {
+      throw new BadRequestException(
+        `Team with name "${dto.name}" already exists in this tournament`,
+      );
+    }
+
     const team = await prisma.team.create({
       data: { ...dto },
     });

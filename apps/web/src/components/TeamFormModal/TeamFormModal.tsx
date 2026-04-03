@@ -1,9 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { Group } from '@futsal-app/types';
-import { Button, FilterDropdown } from '@components/index';
-import ButtonSmall from '@components/ButtonSmall/ButtonSmall';
-import Input from '@components/Input/Input';
+import { Button, FilterDropdown, ButtonSmall, Input } from '@components/index';
 import { useCloseComponent } from '@hooks/index';
 import {
   PlusBlack,
@@ -15,7 +13,13 @@ import {
 } from '@assets/icons';
 import { useTeamGet, useTeamCreate, useTeamUpdate } from '@api/team';
 import { usePlayerCreate, usePlayerDelete, usePlayerUpdate } from '@api/player';
-import { BackgroundColor, PlayerModalAdd, PlayerModalEditByIndex } from '@types';
+import {
+  BackgroundColor,
+  PlayerModalAdd,
+  PlayerModalEditByIndex,
+} from '@types';
+import { validatePlayers } from '@helpers/validatePlayers';
+import { GroupOption, GROUP_OPTIONS } from '@constants/groupOptions';
 import PlayerFormModal from './PlayerFormModal';
 import common from './ModalCommon.module.scss';
 import c from './TeamFormModal.module.scss';
@@ -25,16 +29,6 @@ type PlayerEntry = {
   firstName: string;
   lastName: string;
 };
-
-type GroupOption = 'none' | `${Group}`;
-
-const GROUP_OPTIONS: { label: string; value: GroupOption }[] = [
-  { label: 'Bez skupine', value: 'none' },
-  { label: 'Skupina A', value: 'A' },
-  { label: 'Skupina B', value: 'B' },
-  { label: 'Skupina C', value: 'C' },
-  { label: 'Skupina D', value: 'D' },
-];
 
 //TODO: Get tournament ID from URL params or context
 const TOURNAMENT_ID = 1;
@@ -55,15 +49,18 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
   const { mutateAsync: deletePlayer } = usePlayerDelete();
   const { mutateAsync: updatePlayer } = usePlayerUpdate();
 
+  const ready = !isEdit || !!existingTeam;
+
   const [teamName, setTeamName] = useState('');
   const [group, setGroup] = useState<GroupOption>('none');
   const [players, setPlayers] = useState<PlayerEntry[]>([]);
   const [isSaving, setIsSaving] = useState(false);
   const [originalPlayerIds, setOriginalPlayerIds] = useState<number[]>([]);
   const [playerModal, setPlayerModal] = useState<PlayerModal | null>(null);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    if (existingTeam && isEdit) {
+    if (existingTeam && isEdit && !initialized) {
       setTeamName(existingTeam.name);
       setGroup(existingTeam.group ?? 'none');
       const existingPlayers: PlayerEntry[] = (existingTeam.players ?? []).map(
@@ -75,8 +72,9 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
       );
       setPlayers(existingPlayers);
       setOriginalPlayerIds(existingPlayers.map((p) => p.id!));
+      setInitialized(true);
     }
-  }, [existingTeam, isEdit]);
+  }, [existingTeam, isEdit, initialized]);
 
   const handleClose = useCallback(() => onClose(), [onClose]);
   useCloseComponent({ onClose: handleClose });
@@ -101,6 +99,8 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
       toast.error('Unesite ime ekipe');
       return;
     }
+    if (!validatePlayers(players)) return;
+
     setIsSaving(true);
 
     try {
@@ -170,6 +170,8 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
     }
   };
 
+  if (!ready || (isEdit && !initialized)) return null;
+
   return (
     <div
       className={`${common.overlay} ${c.overlay}`}
@@ -179,7 +181,9 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
       <div className={c.modal} role='dialog' aria-modal='true'>
         <div className={common.header}>
           <div className={common.headerText}>
-            <h1 className={common.title}>{isEdit ? 'Uredi ekipu' : 'Nova ekipa'}</h1>
+            <h1 className={common.title}>
+              {isEdit ? 'Uredi ekipu' : 'Nova ekipa'}
+            </h1>
             <p className={common.subtitle}>
               {isEdit
                 ? 'Uredi ime, promjeni logo, unesi nove igrače, uredi već postojeće igrače'
@@ -239,39 +243,75 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
             </div>
 
             <div className={c.playerList}>
-              {players.map((player, index) => (
-                <div
-                  key={player.id ?? `new-${index}`}
-                  className={c.playerRow}
-                  onClick={() => setPlayerModal({ type: 'edit', index })}>
-                  <span className={c.playerLabel}>Igrač #{index + 1}</span>
-                  <Input
-                    value={`${player.firstName} ${player.lastName}`}
-                    readOnly
-                  />
-                </div>
-              ))}
+              {(() => {
+                const cols = 3;
+                const totalSlots = players.length + 1;
+                const perCol = Math.max(3, Math.ceil(totalSlots / cols));
+                let placed = 0;
+                let newRowPlaced = false;
 
-              <div className={c.playerRow}>
-                <span className={c.playerLabel}>
-                  Igrač #{players.length + 1}
-                </span>
-                <div className={c.newPlayerRow}>
-                  <div className={c.newPlayerInput}>
-                    <Input
-                      value=''
-                      readOnly
-                      placeholder='Ime i prezime'
-                      onClick={() => setPlayerModal({ type: 'add' })}
-                    />
-                  </div>
-                  <ButtonSmall
-                    backgroundColor={BackgroundColor.White}
-                    iconSrc={PlusBlack}
-                    onClick={() => setPlayerModal({ type: 'add' })}
-                  />
-                </div>
-              </div>
+                return Array.from({ length: cols }, (_, colIndex) => {
+                  const start = placed;
+                  const columnPlayers = players.slice(start, start + perCol);
+                  placed += columnPlayers.length;
+                  const showNewRow =
+                    !newRowPlaced &&
+                    columnPlayers.length < perCol &&
+                    start + columnPlayers.length === players.length;
+                  if (showNewRow) newRowPlaced = true;
+
+                  if (columnPlayers.length === 0 && !showNewRow) return null;
+
+                  return (
+                    <div key={colIndex} className={c.playerColumn}>
+                      {columnPlayers.map((player, i) => {
+                        const globalIndex = start + i;
+                        return (
+                          <div
+                            key={player.id ?? `new-${globalIndex}`}
+                            className={c.playerRow}
+                            onClick={() =>
+                              setPlayerModal({
+                                type: 'edit',
+                                index: globalIndex,
+                              })
+                            }>
+                            <span className={c.playerLabel}>
+                              Igrač #{globalIndex + 1}
+                            </span>
+                            <Input
+                              value={`${player.firstName} ${player.lastName}`}
+                              readOnly
+                            />
+                          </div>
+                        );
+                      })}
+                      {showNewRow && (
+                        <div className={c.playerRow}>
+                          <span className={c.playerLabel}>
+                            Igrač #{players.length + 1}
+                          </span>
+                          <div className={c.newPlayerRow}>
+                            <div className={c.newPlayerInput}>
+                              <Input
+                                value=''
+                                readOnly
+                                placeholder='Ime i prezime'
+                                onClick={() => setPlayerModal({ type: 'add' })}
+                              />
+                            </div>
+                            <ButtonSmall
+                              backgroundColor={BackgroundColor.White}
+                              iconSrc={PlusBlack}
+                              onClick={() => setPlayerModal({ type: 'add' })}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                });
+              })()}
             </div>
           </div>
         </div>
