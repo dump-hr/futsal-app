@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import c from './Button.module.scss';
 
-type ButtonVariant = 'primary' | 'secondary' | 'green';
+type ButtonVariant = 'primary' | 'secondary' | 'green' | 'gray';
 
 type ButtonProps = {
   children: React.ReactNode;

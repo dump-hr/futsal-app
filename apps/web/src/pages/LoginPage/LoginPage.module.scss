@@ -3,27 +3,31 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: $lime;
+  background-color: $background-black;
+  background-image: url(@assets/logo-background.png);
+  background-size: 60%;
+  background-position: center 20%;
+  background-repeat: no-repeat;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  align-items: center;
+  gap: 64px;
   width: 320px;
 }
 
 .title {
-  margin-bottom: 8px;
+  @include title-2;
+  color: $white;
+  text-align: center;
+  width: 100%;
 }
 
-.button {
-  margin-top: 8px;
-  padding: 12px;
-  cursor: pointer;
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
 }
