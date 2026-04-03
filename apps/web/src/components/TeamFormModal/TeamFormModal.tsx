@@ -179,6 +179,7 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
         if (e.target === e.currentTarget) onClose();
       }}>
       <div className={c.modal} role='dialog' aria-modal='true'>
+        <div className={c.scrollContent}>
         <div className={common.header}>
           <div className={common.headerText}>
             <h1 className={common.title}>
@@ -314,6 +315,7 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
               })()}
             </div>
           </div>
+        </div>
         </div>
 
         <div className={`${common.footer} ${c.footer}`}>

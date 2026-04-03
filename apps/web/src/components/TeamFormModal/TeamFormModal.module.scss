@@ -6,13 +6,20 @@
 .modal {
   background-color: #0d0d0d;
   border-radius: 32px;
-  padding: 40px 64px;
+  padding: 40px 0 40px 64px;
   width: 100%;
   max-width: min(1172px, calc(100vw - 40px));
-  max-height: 90vh;
-  overflow-y: auto;
+  height: 90vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+.scrollContent {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 64px;
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -133,14 +140,15 @@
 .playerList {
   display: flex;
   gap: 42px;
-  flex-wrap: wrap;
 }
 
 .playerColumn {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  width: 320px;
+  flex: 1;
+  min-width: 0;
+  max-width: 320px;
 }
 
 .playerRow {
@@ -148,6 +156,10 @@
   flex-direction: column;
   gap: 4px;
   cursor: pointer;
+
+  input {
+    max-width: 100%;
+  }
 }
 
 .playerLabel {
@@ -158,19 +170,21 @@
 .newPlayerRow {
   display: flex;
   align-items: center;
-  width: 320px;
   justify-content: space-between;
+  gap: 16px;
 }
 
 .newPlayerInput {
-  width: 256px;
+  flex: 1;
+  min-width: 0;
 
   input {
-    max-width: 256px;
+    max-width: 100%;
   }
 }
 
 .footer {
   margin-top: auto;
-  padding-top: 40px;
+  padding-top: 20px;
+  padding-right: 64px;
 }
