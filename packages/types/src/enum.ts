@@ -1,10 +1,3 @@
-export enum Group {
-  A = 'A',
-  B = 'B',
-  C = 'C',
-  D = 'D',
-}
-
 export enum MatchType {
   group = 'group',
   quarterFinal = 'quarterFinal',

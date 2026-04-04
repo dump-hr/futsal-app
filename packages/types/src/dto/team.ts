@@ -1,5 +1,5 @@
 import {
-  IsEnum,
+  IsArray,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -20,8 +20,9 @@ export class TeamCreateDto {
   logoUrl?: string;
 
   @IsOptional()
-  @IsEnum(Group)
-  group?: Group;
+  @IsInt()
+  @IsPositive()
+  groupId?: number;
 
   @IsInt()
   @IsPositive()
@@ -38,8 +39,9 @@ export class TeamUpdateDto {
   logoUrl?: string;
 
   @IsOptional()
-  @IsEnum(Group)
-  group?: Group;
+  @IsInt()
+  @IsPositive()
+  groupId?: number;
 
   @IsOptional()
   @IsInt()
@@ -58,10 +60,10 @@ export class TeamDto {
   name: string;
 
   @IsOptional()
-  logoUrl?: string | null;
+  logoUrl: string | null;
 
   @IsOptional()
-  group?: `${Group}` | null;
+  groupId?: number | null;
 
   @IsOptional()
   @IsInt()
