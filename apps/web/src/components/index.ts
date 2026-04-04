@@ -15,3 +15,4 @@ export { default as TeamFormModal } from './TeamFormModal/TeamFormModal';
 export { default as TeamsTable } from './TeamsTable/TeamsTable';
 export { default as PlayerList } from './PlayerList/PlayerList';
 export { default as MatchList } from './MatchList/MatchList';
+export { MatchDayGroup } from './MatchDayGroup/MatchDayGroup';

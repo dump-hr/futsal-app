@@ -1,0 +1,51 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
+  padding: 36px 60px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  @include title-2;
+  font-weight: 600;
+  color: $white;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 42px;
+}
+
+.filterLabel {
+  @include body-normal;
+  color: $white;
+  opacity: 0.6;
+}
+
+.filterDropdowns {
+  display: flex;
+  gap: 20px;
+}
+
+.matchGroups {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include body-normal;
+  color: $gray-dark;
+}
