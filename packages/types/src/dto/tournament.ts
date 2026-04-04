@@ -6,6 +6,7 @@ import {
   IsString,
 } from 'class-validator';
 import { TeamDto } from './team';
+import { GroupDto } from './group';
 
 export class TournamentModifyDto {
   @IsNotEmpty()
@@ -33,4 +34,8 @@ export class TournamentDto {
   @IsOptional()
   @IsArray()
   teams?: TeamDto[];
+
+  @IsOptional()
+  @IsArray()
+  groups?: GroupDto[];
 }

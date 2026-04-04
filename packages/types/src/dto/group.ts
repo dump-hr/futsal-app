@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -37,6 +38,8 @@ export class GroupDto {
   @IsPositive()
   tournamentId: number;
 
+  @IsArray()
+  @IsOptional()
   teams: TeamDto[];
 }
 
