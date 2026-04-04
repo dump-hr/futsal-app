@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Button, FilterDropdown, MatchDayGroup } from '@components/index';
+import { Button, FilterDropdown, MatchDayGroup, MatchFormModal } from '@components/index';
 import { PlusBlack } from '@assets/icons';
 import { useMatchGetAll } from '@api/match';
 import { getDateKey, formatMatchDayHeader } from '@/helpers/matchHelpers';
@@ -21,6 +21,7 @@ export const MatchesPage = () => {
   const [matchTypeFilter, setMatchTypeFilter] = useState<MatchTypeFilter>('all');
   const [dateSort, setDateSort] = useState<DateSort>('asc');
   const [teamFilter, setTeamFilter] = useState<TeamFilter>('all');
+  const [formOpen, setFormOpen] = useState(false);
 
   const teamOptions = useMemo(() => {
     const opts: { label: string; value: TeamFilter }[] = [
@@ -96,7 +97,7 @@ export const MatchesPage = () => {
     <div className={c.page}>
       <div className={c.header}>
         <h1 className={c.title}>UTAKMICE</h1>
-        <Button icon={PlusBlack} variant='primary'>
+        <Button icon={PlusBlack} variant='primary' onClick={() => setFormOpen(true)}>
           Nova utakmica
         </Button>
       </div>
@@ -135,6 +136,8 @@ export const MatchesPage = () => {
           ))}
         </div>
       )}
+
+      {formOpen && <MatchFormModal onClose={() => setFormOpen(false)} />}
     </div>
   );
 };
