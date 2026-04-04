@@ -1,9 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '../base';
 import toast from 'react-hot-toast';
+import { api } from '../base';
+import { TournamentDto } from '@futsal-app/types';
 
 const tournamentDelete = (id: number) => {
-  return api.delete(`/tournament/${id}`);
+  return api.delete<never, TournamentDto>(`/tournament/${id}`);
 };
 
 export const useTournamentDelete = () => {

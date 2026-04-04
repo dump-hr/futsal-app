@@ -14,9 +14,14 @@ export class TournamentService {
     return createdTournament;
   }
 
+  async getAll(): Promise<TournamentDto[]> {
+    return await prisma.tournament.findMany();
+  }
+
   async getById(id: number): Promise<TournamentDto> {
     const tournament = await prisma.tournament.findFirst({
       where: { id },
+      include: { groups: { include: { teams: true } }, teams: true },
     });
 
     if (!tournament) {
