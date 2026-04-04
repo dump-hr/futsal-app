@@ -14,13 +14,6 @@ datasource db {
   provider = "postgresql"
 }
 
-enum Group {
-  A
-  B
-  C
-  D
-}
-
 enum EventType {
   goal
   ownGoal
@@ -42,21 +35,23 @@ enum MatchType {
 }
 
 model Tournament {
-  id    Int    @id @default(autoincrement())
-  name  String @unique
-  teams Team[]
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
+  teams  Team[]
+  groups Group[]
 }
 
 model Team {
   id           Int        @id @default(autoincrement())
   name         String     @unique
   logoUrl      String?
-  group        Group?
   tournamentId Int
   Tournament   Tournament @relation(fields: [tournamentId], references: [id])
   players      Player[]
   homeMatches  Match[]    @relation("HomeTeamMatches")
   awayMatches  Match[]    @relation("AwayTeamMatches")
+  groupId      Int?
+  group        Group?      @relation(fields: [groupId], references: [id])
 }
 
 model Player {
@@ -80,17 +75,27 @@ model Match {
   awayTeam    Team?        @relation("AwayTeamMatches", fields: [awayTeamId], references: [id])
   events      MatchEvent[]
   matchType   MatchType
+  isActive    Boolean      @default(false)
 }
 
 model MatchEvent {
   id            Int       @id @default(autoincrement())
   minute        Int
-  match         Match     @relation(fields: [matchId], references: [id])
+  match         Match     @relation(fields: [matchId], references: [id], onDelete: Cascade)
   matchId       Int
   player        Player?   @relation(fields: [playerId], references: [id])
   playerId      Int?
   eventType     EventType
   isForHomeTeam Boolean
+}
+
+model Group {
+  id           Int        @id @default(autoincrement())
+  name         String
+  tournamentId Int
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
+  teams        Team[]
+  @@unique([name, tournamentId])
 }
 
 model Admin {

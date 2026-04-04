@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Input } from '@components/index';
+import { Button, Input } from '@components/index';
 import { useLogin } from '@api/auth/useLogin';
+import arrowRightBlack from '@assets/icons/arrow-right-black.svg';
 import c from './LoginPage.module.scss';
 
 export const LoginPage = () => {
@@ -15,27 +16,31 @@ export const LoginPage = () => {
   return (
     <div className={c.wrapper}>
       <form className={c.form} onSubmit={handleSubmit}>
-        <h1 className={c.title}>Admin prijava</h1>
-        <Input
-          label='Korisničko ime'
-          placeholder='Unesite korisničko ime'
-          value={admin.username}
-          onChange={(e) => setAdmin({ ...admin, username: e.target.value })}
-        />
-        <Input
-          label='Lozinka'
-          placeholder='Unesite lozinku'
-          type='password'
-          value={admin.password}
-          onChange={(e) => setAdmin({ ...admin, password: e.target.value })}
-        />
-        <button
-          style={{ color: 'black' }}
-          className={c.button}
+        <h1 className={c.title}>Pozdrav!</h1>
+        <div className={c.inputs}>
+          <Input
+            name='username'
+            label='Korisničko ime'
+            placeholder='Unesite korisničko ime'
+            value={admin.username}
+            onChange={handleChange}
+          />
+          <Input
+            name='password'
+            label='Lozinka'
+            placeholder='Unesite lozinku'
+            type='password'
+            value={admin.password}
+            onChange={handleChange}
+          />
+        </div>
+        <Button
+          icon={arrowRightBlack}
+          variant='green'
           type='submit'
           disabled={isPending}>
-          {isPending ? 'Prijava...' : 'Prijava'}
-        </button>
+          {isPending ? 'Prijava...' : 'Prijavi se'}
+        </Button>
       </form>
     </div>
   );

@@ -1,5 +1,5 @@
 import {
-  IsEnum,
+  IsArray,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -7,7 +7,7 @@ import {
   IsString,
   IsUrl,
 } from 'class-validator';
-import { Group } from '../enum';
+import { PlayerDto } from './player';
 
 export class TeamCreateDto {
   @IsNotEmpty()
@@ -19,8 +19,9 @@ export class TeamCreateDto {
   logoUrl?: string;
 
   @IsOptional()
-  @IsEnum(Group)
-  group?: Group;
+  @IsInt()
+  @IsPositive()
+  groupId?: number;
 
   @IsInt()
   @IsPositive()
@@ -37,8 +38,9 @@ export class TeamUpdateDto {
   logoUrl?: string;
 
   @IsOptional()
-  @IsEnum(Group)
-  group?: Group;
+  @IsInt()
+  @IsPositive()
+  groupId?: number;
 
   @IsOptional()
   @IsInt()
@@ -57,13 +59,17 @@ export class TeamDto {
   name: string;
 
   @IsOptional()
-  logoUrl?: string | null;
+  logoUrl: string | null;
 
   @IsOptional()
-  group?: `${Group}` | null;
+  groupId?: number | null;
 
   @IsOptional()
   @IsInt()
   @IsPositive()
   tournamentId?: number | null;
+
+  @IsOptional()
+  @IsArray()
+  players?: PlayerDto[];
 }

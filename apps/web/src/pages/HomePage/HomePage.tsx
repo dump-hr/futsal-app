@@ -110,6 +110,10 @@ export const HomePage = () => {
           <Button icon={CheckBlack} variant='green'>
             Potvrdi
           </Button>
+
+          <Button icon={infobipLogo} variant='gray'>
+            Superteam Balkan
+          </Button>
         </div>
 
         <button
