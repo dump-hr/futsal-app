@@ -3,7 +3,6 @@ import toast from 'react-hot-toast';
 import { Button, FilterDropdown, ButtonSmall, Input } from '@components/index';
 import { useCloseComponent } from '@hooks/index';
 import {
-  PlusBlack,
   XWhite,
   CheckBlack,
   UploadGray,
@@ -13,22 +12,13 @@ import {
 import { useTeamGet, useTeamCreate, useTeamUpdate } from '@api/team';
 import { useGroupsGet } from '@api/group';
 import { usePlayerCreate, usePlayerDelete, usePlayerUpdate } from '@api/player';
-import {
-  BackgroundColor,
-  PlayerModalAdd,
-  PlayerModalEditByIndex,
-} from '@types';
+import { PlayerModalAdd, PlayerModalEditByIndex } from '@types';
 import { validatePlayers } from '@helpers/validatePlayers';
 import { GroupOption } from '@constants/groupOptions';
 import PlayerFormModal from './PlayerFormModal';
+import PlayerGrid, { type PlayerEntry } from './PlayerGrid';
 import common from './ModalCommon.module.scss';
 import c from './TeamFormModal.module.scss';
-
-type PlayerEntry = {
-  id?: number;
-  firstName: string;
-  lastName: string;
-};
 
 //TODO: Get tournament ID from URL params or context
 const TOURNAMENT_ID = 1;
@@ -259,79 +249,13 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
                 </span>
               </div>
 
-              <div className={c.playerList}>
-                {(() => {
-                  const cols = 3;
-                  const totalSlots = players.length + 1;
-                  const perCol = Math.max(3, Math.ceil(totalSlots / cols));
-                  let placed = 0;
-                  let newRowPlaced = false;
-
-                  return Array.from({ length: cols }, (_, colIndex) => {
-                    const start = placed;
-                    const columnPlayers = players.slice(start, start + perCol);
-                    placed += columnPlayers.length;
-                    const showNewRow =
-                      !newRowPlaced &&
-                      columnPlayers.length < perCol &&
-                      start + columnPlayers.length === players.length;
-                    if (showNewRow) newRowPlaced = true;
-
-                    if (columnPlayers.length === 0 && !showNewRow) return null;
-
-                    return (
-                      <div key={colIndex} className={c.playerColumn}>
-                        {columnPlayers.map((player, i) => {
-                          const globalIndex = start + i;
-                          return (
-                            <div
-                              key={player.id ?? `new-${globalIndex}`}
-                              className={c.playerRow}
-                              onClick={() =>
-                                setPlayerModal({
-                                  type: 'edit',
-                                  index: globalIndex,
-                                })
-                              }>
-                              <span className={c.playerLabel}>
-                                Igrač #{globalIndex + 1}
-                              </span>
-                              <Input
-                                value={`${player.firstName} ${player.lastName}`}
-                                readOnly
-                              />
-                            </div>
-                          );
-                        })}
-                        {showNewRow && (
-                          <div className={c.playerRow}>
-                            <span className={c.playerLabel}>
-                              Igrač #{players.length + 1}
-                            </span>
-                            <div className={c.newPlayerRow}>
-                              <div className={c.newPlayerInput}>
-                                <Input
-                                  value=''
-                                  readOnly
-                                  placeholder='Ime i prezime'
-                                  onClick={() =>
-                                    setPlayerModal({ type: 'add' })
-                                  }
-                                />
-                              </div>
-                              <ButtonSmall
-                                backgroundColor={BackgroundColor.White}
-                                iconSrc={PlusBlack}
-                                onClick={() => setPlayerModal({ type: 'add' })}
-                              />
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  });
-                })()}
-              </div>
+              <PlayerGrid
+                players={players}
+                onEditPlayer={(index) =>
+                  setPlayerModal({ type: 'edit', index })
+                }
+                onAddPlayer={() => setPlayerModal({ type: 'add' })}
+              />
             </div>
           </div>
         </div>
