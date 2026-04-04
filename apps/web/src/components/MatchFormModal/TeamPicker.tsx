@@ -8,6 +8,7 @@ type TeamPickerProps = {
   value: string;
   options: { label: string; value: string }[];
   onChange: (value: string) => void;
+  disabled?: boolean;
 };
 
 const TeamPicker: React.FC<TeamPickerProps> = ({
@@ -16,6 +17,7 @@ const TeamPicker: React.FC<TeamPickerProps> = ({
   value,
   options,
   onChange,
+  disabled = false,
 }) => {
   return (
     <div className={c.teamPicker}>
@@ -27,17 +29,19 @@ const TeamPicker: React.FC<TeamPickerProps> = ({
             <span className={c.logoText}>LOGO</span>
           )}
         </div>
-        <span className={c.teamLabel}>{label}</span>
+        <span className={c.teamLabel}>{team?.name ?? label}</span>
       </div>
-      <div className={c.dropdownWrap}>
-        <FilterDropdown
-          value={value}
-          options={options}
-          onChange={onChange}
-          variant='default'
-          placeholder='Odaberi ekipu'
-        />
-      </div>
+      {!disabled && (
+        <div className={c.dropdownWrap}>
+          <FilterDropdown
+            value={value}
+            options={options}
+            onChange={onChange}
+            variant='default'
+            placeholder='Odaberi ekipu'
+          />
+        </div>
+      )}
     </div>
   );
 };

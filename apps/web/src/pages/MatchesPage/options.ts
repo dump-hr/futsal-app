@@ -1,3 +1,5 @@
+import { MATCH_TYPE_OPTIONS as MATCH_TYPE_BASE_OPTIONS } from '@helpers/matchHelpers';
+
 export type MatchTypeFilter = 'all' | string;
 export type DateSort = 'asc' | 'desc';
 export type TeamFilter = 'all' | string;
@@ -9,9 +11,5 @@ export const DATE_SORT_OPTIONS: { label: string; value: DateSort }[] = [
 
 export const MATCH_TYPE_OPTIONS: { label: string; value: MatchTypeFilter }[] = [
   { label: 'Tip utakmice', value: 'all' },
-  { label: 'Grupna faza', value: 'group' },
-  { label: 'Četvrtfinale', value: 'quarterFinal' },
-  { label: 'Polufinale', value: 'semiFinal' },
-  { label: 'Finale', value: 'final' },
-  { label: 'Za 3. mjesto', value: 'thirdPlace' },
+  ...MATCH_TYPE_BASE_OPTIONS,
 ];

@@ -1,16 +1,20 @@
 import { MatchDto } from '@futsal-app/types';
 import { MatchInfo, MATCH_STAGE } from '@components/MatchInfo';
-import { MATCH_TYPE_TO_STAGE, getMatchStatus } from '@/helpers/matchHelpers';
+import { MATCH_TYPE_TO_STAGE, getMatchStatus } from '@helpers/matchHelpers';
 import c from './MatchDayGroup.module.scss';
 
 type MatchDayGroupProps = {
   dateLabel: string;
   matches: MatchDto[];
+  onEdit?: (matchId: number) => void;
+  onDelete?: (matchId: number) => void;
 };
 
 export const MatchDayGroup: React.FC<MatchDayGroupProps> = ({
   dateLabel,
   matches,
+  onEdit,
+  onDelete,
 }) => {
   return (
     <div className={c.group}>
@@ -37,6 +41,8 @@ export const MatchDayGroup: React.FC<MatchDayGroupProps> = ({
               MATCH_TYPE_TO_STAGE[match.matchType] ?? MATCH_STAGE.GROUP_STAGE
             }
             matchStatus={getMatchStatus(match)}
+            onEdit={onEdit ? () => onEdit(match.id) : undefined}
+            onDelete={onDelete ? () => onDelete(match.id) : undefined}
           />
         ))}
       </div>

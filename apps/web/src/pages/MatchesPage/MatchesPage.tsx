@@ -1,8 +1,8 @@
 import { useState, useMemo } from 'react';
-import { Button, FilterDropdown, MatchDayGroup, MatchFormModal } from '@components/index';
-import { PlusBlack } from '@assets/icons';
-import { useMatchGetAll } from '@api/match';
-import { getDateKey, formatMatchDayHeader } from '@/helpers/matchHelpers';
+import { Button, FilterDropdown, MatchDayGroup, MatchFormModal, ModalConfirmation } from '@components/index';
+import { PlusBlack, TrashCanGray } from '@assets/icons';
+import { useMatchGetAll, useMatchDelete } from '@api/match';
+import { getDateKey, formatMatchDayHeader } from '@helpers/matchHelpers';
 import c from './MatchesPage.module.scss';
 import {
   type MatchTypeFilter,
@@ -21,7 +21,9 @@ export const MatchesPage = () => {
   const [matchTypeFilter, setMatchTypeFilter] = useState<MatchTypeFilter>('all');
   const [dateSort, setDateSort] = useState<DateSort>('asc');
   const [teamFilter, setTeamFilter] = useState<TeamFilter>('all');
-  const [formOpen, setFormOpen] = useState(false);
+  const [formModal, setFormModal] = useState<{ open: boolean; matchId?: number }>({ open: false });
+  const [deleteConfirm, setDeleteConfirm] = useState<{ open: boolean; matchId?: number }>({ open: false });
+  const { mutate: deleteMatch } = useMatchDelete();
 
   const teamOptions = useMemo(() => {
     const opts: { label: string; value: TeamFilter }[] = [
@@ -97,7 +99,7 @@ export const MatchesPage = () => {
     <div className={c.page}>
       <div className={c.header}>
         <h1 className={c.title}>UTAKMICE</h1>
-        <Button icon={PlusBlack} variant='primary' onClick={() => setFormOpen(true)}>
+        <Button icon={PlusBlack} variant='primary' onClick={() => setFormModal({ open: true })}>
           Nova utakmica
         </Button>
       </div>
@@ -132,12 +134,33 @@ export const MatchesPage = () => {
               key={dateKey}
               dateLabel={dateLabel}
               matches={matches}
+              onEdit={(matchId) => setFormModal({ open: true, matchId })}
+              onDelete={(matchId) => setDeleteConfirm({ open: true, matchId })}
             />
           ))}
         </div>
       )}
 
-      {formOpen && <MatchFormModal onClose={() => setFormOpen(false)} />}
+      {formModal.open && (
+        <MatchFormModal
+          matchId={formModal.matchId}
+          onClose={() => setFormModal({ open: false })}
+        />
+      )}
+
+      {deleteConfirm.open && deleteConfirm.matchId !== undefined && (
+        <ModalConfirmation
+          description='Jeste li sigurni da želite obrisati utakmicu?'
+          boldText='Ova radnja se ne može poništiti.'
+          icon={TrashCanGray}
+          circleVariant='gray'
+          onCancel={() => setDeleteConfirm({ open: false })}
+          onConfirm={() => {
+            deleteMatch(deleteConfirm.matchId!);
+            setDeleteConfirm({ open: false });
+          }}
+        />
+      )}
     </div>
   );
 };

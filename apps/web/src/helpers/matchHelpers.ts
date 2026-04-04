@@ -1,4 +1,4 @@
-import { MatchDto } from '@futsal-app/types';
+import { MatchDto, MatchType } from '@futsal-app/types';
 import { MATCH_STATUS, MATCH_STAGE } from '@components/MatchInfo';
 import type { MatchStage, MatchStatus } from '@components/MatchInfo';
 
@@ -10,6 +10,14 @@ const CROATIAN_DAY_NAMES = [
   'Četvrtak',
   'Petak',
   'Subota',
+];
+
+export const MATCH_TYPE_OPTIONS: { label: string; value: string }[] = [
+  { label: 'Grupna faza', value: MatchType.group },
+  { label: 'Četvrtfinale', value: MatchType.quarterFinal },
+  { label: 'Polufinale', value: MatchType.semiFinal },
+  { label: 'Finale', value: MatchType.final },
+  { label: 'Za 3. mjesto', value: MatchType.thirdPlace },
 ];
 
 export const MATCH_TYPE_TO_STAGE: Record<string, MatchStage> = {
@@ -38,6 +46,3 @@ export const formatMatchDayHeader = (date: Date): string => {
   return `${day}, ${date.getDate()}/${date.getMonth() + 1}`;
 };
 
-export const formatDateShort = (date: Date): string => {
-  return `${date.getDate()}/${date.getMonth() + 1}`;
-};

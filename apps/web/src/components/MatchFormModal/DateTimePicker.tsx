@@ -27,10 +27,17 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
       <div className={c.field}>
         <label className={c.label}>Vrijeme</label>
         <input
-          type='time'
+          type='text'
           className={c.timeInput}
           value={time}
-          onChange={(e) => onTimeChange(e.target.value)}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (/^[0-9:]*$/.test(val) && val.length <= 5) {
+              onTimeChange(val);
+            }
+          }}
+          placeholder='HH:MM'
+          maxLength={5}
         />
       </div>
     </div>

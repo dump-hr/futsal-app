@@ -19,6 +19,8 @@ type MatchInfoProps = {
   matchTime: string;
   matchStage: MatchStage;
   matchStatus: MatchStatus;
+  onEdit?: () => void;
+  onDelete?: () => void;
 };
 
 export const MatchInfo: React.FC<MatchInfoProps> = ({
@@ -29,6 +31,8 @@ export const MatchInfo: React.FC<MatchInfoProps> = ({
   matchTime,
   matchStage,
   matchStatus,
+  onEdit,
+  onDelete,
 }) => {
   return (
     <div className={c.card}>
@@ -44,7 +48,7 @@ export const MatchInfo: React.FC<MatchInfoProps> = ({
 
         <div className={c.matchTime}>{matchTime}</div>
 
-        <MatchActions status={matchStatus} />
+        <MatchActions status={matchStatus} onEdit={onEdit} onDelete={onDelete} />
       </div>
     </div>
   );

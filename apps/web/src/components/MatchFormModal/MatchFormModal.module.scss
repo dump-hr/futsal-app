@@ -18,8 +18,6 @@
   flex-shrink: 0;
 }
 
-// ── Date / Time / Match type row ──────────────────────────────
-
 .topRow {
   display: flex;
   align-items: flex-end;
@@ -61,27 +59,21 @@
     opacity: 0.6;
     cursor: pointer;
   }
-
-  &::-webkit-datetime-edit-fields-wrapper {
-    opacity: 0.6;
-  }
 }
 
 .dateInput {
   @extend %inputBase;
-  width: 128px;
+  width: 160px;
 }
 
 .timeInput {
   @extend %inputBase;
-  width: 108px;
+  width: 128px;
 }
 
 .dropdownWrap {
   width: 256px;
 }
-
-// ── Teams section ─────────────────────────────────────────────
 
 .teamsSection {
   display: flex;
