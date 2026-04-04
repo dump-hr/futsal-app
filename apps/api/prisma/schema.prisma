@@ -75,12 +75,13 @@ model Match {
   awayTeam    Team?        @relation("AwayTeamMatches", fields: [awayTeamId], references: [id])
   events      MatchEvent[]
   matchType   MatchType
+  isActive    Boolean      @default(false)
 }
 
 model MatchEvent {
   id            Int       @id @default(autoincrement())
   minute        Int
-  match         Match     @relation(fields: [matchId], references: [id])
+  match         Match     @relation(fields: [matchId], references: [id], onDelete: Cascade)
   matchId       Int
   player        Player?   @relation(fields: [playerId], references: [id])
   playerId      Int?
