@@ -1,32 +1,13 @@
 import {
-  IsArray,
   IsBoolean,
   IsDate,
   IsEnum,
   IsInt,
   IsNotEmpty,
   IsOptional,
-  IsString,
 } from 'class-validator';
-import { Type } from 'class-transformer';
-import { PlayerDto } from './player';
 import { MatchType } from '../enum';
-
-export class MatchTeamDto {
-  @IsInt()
-  @IsNotEmpty()
-  id: number;
-
-  @IsString()
-  @IsNotEmpty()
-  name: string;
-
-  @IsOptional()
-  logoUrl: string | null;
-
-  @IsArray()
-  players: PlayerDto[];
-}
+import { TeamDto } from './team';
 
 export class MatchDto {
   @IsInt()
@@ -54,55 +35,10 @@ export class MatchDto {
   isActive: boolean;
 
   @IsOptional()
-  homeTeam: MatchTeamDto | null;
+  homeTeam: TeamDto | null;
 
   @IsOptional()
-  awayTeam: MatchTeamDto | null;
-}
-
-export class MatchListTeamDto {
-  @IsInt()
-  @IsNotEmpty()
-  id: number;
-
-  @IsString()
-  @IsNotEmpty()
-  name: string;
-
-  @IsOptional()
-  logoUrl: string | null;
-}
-
-export class MatchListDto {
-  @IsInt()
-  @IsNotEmpty()
-  id: number;
-
-  @IsDate()
-  @IsNotEmpty()
-  timeOfMatch: Date;
-
-  @IsInt()
-  @IsNotEmpty()
-  homeGoals: number;
-
-  @IsInt()
-  @IsNotEmpty()
-  awayGoals: number;
-
-  @IsEnum(MatchType)
-  @IsNotEmpty()
-  matchType: `${MatchType}`;
-
-  @IsBoolean()
-  @IsNotEmpty()
-  isActive: boolean;
-
-  @IsOptional()
-  homeTeam: MatchListTeamDto | null;
-
-  @IsOptional()
-  awayTeam: MatchListTeamDto | null;
+  awayTeam: TeamDto | null;
 }
 
 export class MatchCreateDto {

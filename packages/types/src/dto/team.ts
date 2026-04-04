@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -6,6 +7,7 @@ import {
   IsString,
   IsUrl,
 } from 'class-validator';
+import { PlayerDto } from './player';
 
 export class TeamCreateDto {
   @IsNotEmpty()
@@ -57,7 +59,7 @@ export class TeamDto {
   name: string;
 
   @IsOptional()
-  logoUrl?: string | null;
+  logoUrl: string | null;
 
   @IsOptional()
   groupId?: number | null;
@@ -66,4 +68,8 @@ export class TeamDto {
   @IsInt()
   @IsPositive()
   tournamentId?: number | null;
+
+  @IsOptional()
+  @IsArray()
+  players?: PlayerDto[];
 }

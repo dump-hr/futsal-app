@@ -11,12 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { MatchService } from './match.service';
-import {
-  MatchDto,
-  MatchListDto,
-  MatchCreateDto,
-  MatchUpdateDto,
-} from '@futsal-app/types';
+import { MatchDto, MatchCreateDto, MatchUpdateDto } from '@futsal-app/types';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('match')
@@ -26,7 +21,7 @@ export class MatchController {
   @Get()
   async getAll(
     @Query('tournamentId', ParseIntPipe) tournamentId: number,
-  ): Promise<MatchListDto[]> {
+  ): Promise<MatchDto[]> {
     return await this.matchService.getAll(tournamentId);
   }
 
@@ -49,7 +44,7 @@ export class MatchController {
   @Get('team/:teamId')
   async getByTeamId(
     @Param('teamId', ParseIntPipe) teamId: number,
-  ): Promise<MatchListDto[]> {
+  ): Promise<MatchDto[]> {
     return await this.matchService.getByTeamId(teamId);
   }
 
@@ -60,7 +55,7 @@ export class MatchController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  async create(@Body() dto: MatchCreateDto): Promise<MatchListDto> {
+  async create(@Body() dto: MatchCreateDto): Promise<MatchDto> {
     return await this.matchService.create(dto);
   }
 
@@ -75,7 +70,7 @@ export class MatchController {
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: MatchUpdateDto,
-  ): Promise<MatchListDto> {
+  ): Promise<MatchDto> {
     return await this.matchService.update(id, dto);
   }
 

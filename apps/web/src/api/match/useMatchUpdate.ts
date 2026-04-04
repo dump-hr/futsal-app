@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { api } from '../base';
-import { MatchListDto, MatchUpdateDto } from '@futsal-app/types';
+import { MatchDto, MatchUpdateDto } from '@futsal-app/types';
 
 const matchUpdate = ({ id, dto }: { id: number; dto: MatchUpdateDto }) => {
-  return api.patch<MatchUpdateDto, MatchListDto>(`/match/${id}`, dto);
+  return api.patch<MatchUpdateDto, MatchDto>(`/match/${id}`, dto);
 };
 
 export const useMatchUpdate = () => {

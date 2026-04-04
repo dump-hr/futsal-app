@@ -4,12 +4,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { prisma } from '../../lib/prisma';
-import {
-  MatchDto,
-  MatchListDto,
-  MatchCreateDto,
-  MatchUpdateDto,
-} from '@futsal-app/types';
+import { MatchDto, MatchCreateDto, MatchUpdateDto } from '@futsal-app/types';
 
 const teamWithPlayersSelect = {
   id: true,
@@ -42,7 +37,7 @@ export class MatchService {
     return match;
   }
 
-  async getAll(tournamentId: number): Promise<MatchListDto[]> {
+  async getAll(tournamentId: number): Promise<MatchDto[]> {
     const matches = await prisma.match.findMany({
       where: {
         homeTeam: { tournamentId },
@@ -76,7 +71,7 @@ export class MatchService {
     return match;
   }
 
-  async getByTeamId(teamId: number): Promise<MatchListDto[]> {
+  async getByTeamId(teamId: number): Promise<MatchDto[]> {
     const matches = await prisma.match.findMany({
       where: {
         OR: [{ homeTeamId: teamId }, { awayTeamId: teamId }],
@@ -97,7 +92,7 @@ export class MatchService {
     return matches;
   }
 
-  async create(dto: MatchCreateDto): Promise<MatchListDto> {
+  async create(dto: MatchCreateDto): Promise<MatchDto> {
     return prisma.match.create({
       data: {
         timeOfMatch: dto.timeOfMatch,
@@ -112,7 +107,7 @@ export class MatchService {
     });
   }
 
-  async update(id: number, dto: MatchUpdateDto): Promise<MatchListDto> {
+  async update(id: number, dto: MatchUpdateDto): Promise<MatchDto> {
     const match = await prisma.match.findUnique({ where: { id } });
 
     if (!match) {
