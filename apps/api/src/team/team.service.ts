@@ -98,12 +98,10 @@ export class TeamService {
     const team = await prisma.team.update({
       where: { id },
       data: {
-        ...(dto.name !== undefined && { name: dto.name }),
-        ...(dto.logoUrl !== undefined && { logoUrl: dto.logoUrl }),
-        ...(dto.tournamentId !== undefined && {
-          tournamentId: dto.tournamentId,
-        }),
-        ...(dto.groupId !== undefined && { groupId: dto.groupId }),
+        name: dto.name,
+        logoUrl: dto.logoUrl,
+        tournamentId: dto.tournamentId,
+        groupId: dto.groupId,
       },
       include: { group: true },
     });
