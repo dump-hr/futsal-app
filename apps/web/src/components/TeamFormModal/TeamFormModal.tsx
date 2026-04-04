@@ -31,7 +31,7 @@ type PlayerEntry = {
 };
 
 //TODO: Get tournament ID from URL params or context
-const TOURNAMENT_ID = 3;
+const TOURNAMENT_ID = 1;
 
 type PlayerModal = PlayerModalAdd | PlayerModalEditByIndex;
 

@@ -14,7 +14,7 @@ import c from './TeamsPage.module.scss';
 import { SortOrder, GroupFilter, SORT_OPTIONS } from './options';
 
 //TODO: Get tournament ID from URL params or context
-const TOURNAMENT_ID = 3;
+const TOURNAMENT_ID = 1;
 
 export const TeamsPage = () => {
   const [, navigate] = useLocation();

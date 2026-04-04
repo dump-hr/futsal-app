@@ -11,6 +11,27 @@ async function main() {
   await prisma.tournament.deleteMany();
   await prisma.admin.deleteMany();
 
+  // Reset auto-increment sequences so IDs start from 1
+  await prisma.$executeRawUnsafe(
+    `ALTER SEQUENCE "Tournament_id_seq" RESTART WITH 1`,
+  );
+  await prisma.$executeRawUnsafe(`ALTER SEQUENCE "Team_id_seq" RESTART WITH 1`);
+  await prisma.$executeRawUnsafe(
+    `ALTER SEQUENCE "Player_id_seq" RESTART WITH 1`,
+  );
+  await prisma.$executeRawUnsafe(
+    `ALTER SEQUENCE "Match_id_seq" RESTART WITH 1`,
+  );
+  await prisma.$executeRawUnsafe(
+    `ALTER SEQUENCE "MatchEvent_id_seq" RESTART WITH 1`,
+  );
+  await prisma.$executeRawUnsafe(
+    `ALTER SEQUENCE "Group_id_seq" RESTART WITH 1`,
+  );
+  await prisma.$executeRawUnsafe(
+    `ALTER SEQUENCE "Admin_id_seq" RESTART WITH 1`,
+  );
+
   const hashedPassword = await bcrypt.hash('admin', 10);
   await prisma.admin.create({
     data: {
@@ -35,6 +56,9 @@ async function main() {
     ),
   );
 
+  const testLogo =
+    'https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg';
+
   const teamsData = [
     { name: 'FESB United', groupId: groups[0].id },
     { name: 'PMF Strikers', groupId: groups[0].id },
@@ -51,6 +75,7 @@ async function main() {
       prisma.team.create({
         data: {
           name: t.name,
+          logoUrl: testLogo,
           groupId: t.groupId,
           tournamentId: tournament.id,
         },
@@ -293,12 +318,79 @@ async function main() {
     },
   });
 
+  // Extra matches for Ekonomski FC (teams[2]) to test scrolling
+  await prisma.match.create({
+    data: {
+      timeOfMatch: new Date('2026-06-16T18:00:00'),
+      homeTeamId: teams[2].id,
+      awayTeamId: teams[0].id,
+      homeGoals: 2,
+      awayGoals: 1,
+      matchType: MatchType.group,
+    },
+  });
+
+  await prisma.match.create({
+    data: {
+      timeOfMatch: new Date('2026-06-17T19:00:00'),
+      homeTeamId: teams[7].id,
+      awayTeamId: teams[2].id,
+      homeGoals: 0,
+      awayGoals: 3,
+      matchType: MatchType.group,
+    },
+  });
+
+  await prisma.match.create({
+    data: {
+      timeOfMatch: new Date('2026-06-18T20:00:00'),
+      homeTeamId: teams[2].id,
+      awayTeamId: teams[4].id,
+      homeGoals: 1,
+      awayGoals: 1,
+      matchType: MatchType.quarterFinal,
+    },
+  });
+
+  await prisma.match.create({
+    data: {
+      timeOfMatch: new Date('2026-07-01T18:00:00'),
+      homeTeamId: teams[2].id,
+      awayTeamId: teams[1].id,
+      homeGoals: 0,
+      awayGoals: 0,
+      matchType: MatchType.semiFinal,
+    },
+  });
+
+  await prisma.match.create({
+    data: {
+      timeOfMatch: new Date('2026-07-05T20:00:00'),
+      homeTeamId: teams[6].id,
+      awayTeamId: teams[2].id,
+      homeGoals: 0,
+      awayGoals: 0,
+      matchType: MatchType.final,
+    },
+  });
+
+  await prisma.match.create({
+    data: {
+      timeOfMatch: new Date('2026-07-06T20:00:00'),
+      homeTeamId: teams[6].id,
+      awayTeamId: teams[2].id,
+      homeGoals: 0,
+      awayGoals: 0,
+      matchType: MatchType.final,
+    },
+  });
+
   console.log('Seed complete!');
   console.log(`  Tournament: ${tournament.name}`);
   console.log(`  Teams: ${teams.length}`);
   console.log(`  Players: ${players.length}`);
   console.log(`  Groups: ${groups.length}`);
-  console.log(`  Matches: 10 (4 group + 2 quarter + 2 semi + 1 final + 1 played final)`);
+  console.log(`  Matches: 15`);
 }
 
 main().catch((e) => {

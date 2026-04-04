@@ -11,12 +11,12 @@
 .header {
   display: flex;
   align-items: center;
+  gap: 64px;
 }
 
 .teamIdentity {
   display: flex;
   align-items: center;
-  gap: 12px;
   flex: 1;
 }
 
@@ -38,16 +38,17 @@
 
 .content {
   display: flex;
-  gap: 80px;
-  align-items: flex-start;
+  justify-content: space-between;
+  flex: 1;
+  min-height: 0;
 }
 
 .playersSection {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  width: 335px;
-  flex-shrink: 0;
+  flex: 0 0 25%;
+  max-width: 500px;
 }
 
 .sectionHeader {
@@ -66,11 +67,12 @@
   flex-direction: column;
   gap: 16px;
   overflow-y: auto;
-  max-height: calc(100vh - 320px);
+  flex: 1;
+  min-height: 0;
   padding-right: 12px;
 
   &::-webkit-scrollbar {
-    width: 8px;
+    width: 14px;
   }
 
   &::-webkit-scrollbar-track {
@@ -88,7 +90,8 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  flex: 1;
+  flex: 0 0 65%;
+  min-height: 0;
 }
 
 .matchList {
@@ -96,7 +99,8 @@
   flex-direction: column;
   gap: 12px;
   overflow-y: auto;
-  max-height: calc(100vh - 320px);
+  flex: 1;
+  min-height: 0;
   padding-right: 12px;
 
   &::-webkit-scrollbar {
