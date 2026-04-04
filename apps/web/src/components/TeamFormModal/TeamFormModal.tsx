@@ -178,6 +178,8 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
       }
 
       onClose();
+    } catch {
+      // Errors are handled by individual hook onError toasts
     } finally {
       setIsSaving(false);
     }

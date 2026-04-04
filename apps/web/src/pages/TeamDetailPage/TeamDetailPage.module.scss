@@ -62,10 +62,7 @@
   color: $white;
 }
 
-.playerList {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+@mixin scrollable-list {
   overflow-y: auto;
   flex: 1;
   min-height: 0;
@@ -84,6 +81,10 @@
     background: $gray-light;
     border-radius: 15px;
   }
+}
+
+.playerList {
+  @include scrollable-list;
 }
 
 .matchesSection {
@@ -95,31 +96,5 @@
 }
 
 .matchList {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  overflow-y: auto;
-  flex: 1;
-  min-height: 0;
-  padding-right: 12px;
-
-  &::-webkit-scrollbar {
-    width: 14px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: $black;
-    border-radius: 15px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: $gray-light;
-    border-radius: 15px;
-  }
-}
-
-.matchPlaceholder {
-  @include body-normal;
-  color: $white;
-  opacity: 0.4;
+  @include scrollable-list;
 }
