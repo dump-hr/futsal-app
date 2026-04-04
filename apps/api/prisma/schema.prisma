@@ -37,6 +37,7 @@ enum MatchType {
 model Tournament {
   id     Int     @id @default(autoincrement())
   name   String  @unique
+  date   String  @default(dbgenerated("EXTRACT(YEAR FROM NOW())::text"))
   teams  Team[]
   groups Group[]
 }
