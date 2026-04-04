@@ -29,7 +29,7 @@ const TeamsTable: React.FC<TeamsTableProps> = ({ teams, onDelete, onEdit, onRowC
             teamName={team.name}
             teamLogoUrl={team.logoUrl ?? ''}
             teamScore={team.teamScore ?? 0}
-            teamGroup={team.group ?? '-'}
+            teamGroup={team.group?.name ?? '-'}
             numberOfPlayers={team.numberOfPlayers ?? 0}
             numberOfMatchesPlayed={team.numberOfMatchesPlayed ?? 0}
             onDelete={() => onDelete({ id: team.id, name: team.name })}

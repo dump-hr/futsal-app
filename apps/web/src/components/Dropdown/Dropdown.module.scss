@@ -16,10 +16,6 @@
   @include body-normal;
   color: $white;
   gap: 8px;
-
-  &.open {
-    border-color: transparent;
-  }
 }
 
 .triggerLeft {

@@ -23,7 +23,13 @@ export class TeamService {
     }
 
     const team = await prisma.team.create({
-      data: { ...dto },
+      data: {
+        name: dto.name,
+        logoUrl: dto.logoUrl,
+        tournamentId: dto.tournamentId,
+        groupId: dto.groupId ?? null,
+      },
+      include: { group: true },
     });
 
     return team;
@@ -33,6 +39,7 @@ export class TeamService {
     const teams = await prisma.team.findMany({
       where: { tournamentId },
       include: {
+        group: true,
         players: { select: { id: true } },
         homeMatches: { select: { homeGoals: true, awayGoals: true } },
         awayMatches: { select: { homeGoals: true, awayGoals: true } },
@@ -60,6 +67,7 @@ export class TeamService {
         id: team.id,
         name: team.name,
         logoUrl: team.logoUrl,
+        groupId: team.groupId,
         group: team.group,
         tournamentId: team.tournamentId,
         numberOfPlayers: team.players.length,
@@ -74,6 +82,7 @@ export class TeamService {
     const team = await prisma.team.findUnique({
       where: { id },
       include: {
+        group: true,
         players: { select: { id: true, firstName: true, lastName: true } },
       },
     });
@@ -88,7 +97,15 @@ export class TeamService {
   async update(id: number, dto: TeamUpdateDto): Promise<TeamDto> {
     const team = await prisma.team.update({
       where: { id },
-      data: { ...dto },
+      data: {
+        ...(dto.name !== undefined && { name: dto.name }),
+        ...(dto.logoUrl !== undefined && { logoUrl: dto.logoUrl }),
+        ...(dto.tournamentId !== undefined && {
+          tournamentId: dto.tournamentId,
+        }),
+        ...(dto.groupId !== undefined && { groupId: dto.groupId }),
+      },
+      include: { group: true },
     });
 
     return team;

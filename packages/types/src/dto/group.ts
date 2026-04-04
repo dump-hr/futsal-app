@@ -37,7 +37,8 @@ export class GroupDto {
   @IsPositive()
   tournamentId: number;
 
-  teams: TeamDto[];
+  @IsOptional()
+  teams?: TeamDto[];
 }
 
 export class GroupAddTeamDto {

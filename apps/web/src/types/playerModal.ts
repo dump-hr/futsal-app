@@ -11,8 +11,3 @@ export type PlayerModalEditById = {
   firstName: string;
   lastName: string;
 };
-
-export type PlayerModalState =
-  | PlayerModalAdd
-  | PlayerModalEditByIndex
-  | PlayerModalEditById;

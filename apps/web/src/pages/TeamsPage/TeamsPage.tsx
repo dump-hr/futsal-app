@@ -9,16 +9,30 @@ import {
 } from '@components/index';
 import { PlusBlack, TrashCanBlack } from '@assets/icons';
 import { useTeamsGet, useTeamDelete } from '@api/team';
+import { useGroupsGet } from '@api/group';
 import c from './TeamsPage.module.scss';
-import { SortOrder, GroupFilter, SORT_OPTIONS, GROUP_OPTIONS } from './options';
+import { SortOrder, GroupFilter, SORT_OPTIONS } from './options';
 
 //TODO: Get tournament ID from URL params or context
-const TOURNAMENT_ID = 1;
+const TOURNAMENT_ID = 3;
 
 export const TeamsPage = () => {
   const [, navigate] = useLocation();
   const { data: teams } = useTeamsGet(TOURNAMENT_ID);
+  const { data: groups } = useGroupsGet();
   const { mutate: deleteTeam } = useTeamDelete();
+
+  const groupFilterOptions = useMemo(() => {
+    const opts: { label: string; value: GroupFilter }[] = [
+      { label: 'Skupina', value: 'all' },
+    ];
+    if (groups) {
+      for (const g of groups) {
+        opts.push({ label: `Skupina ${g.name}`, value: String(g.id) });
+      }
+    }
+    return opts;
+  }, [groups]);
   const [sortOrder, setSortOrder] = useState<SortOrder>('az');
   const [groupFilter, setGroupFilter] = useState<GroupFilter>('all');
   const [teamToDelete, setTeamToDelete] = useState<{
@@ -36,7 +50,9 @@ export const TeamsPage = () => {
     let result = [...teams];
 
     if (groupFilter !== 'all') {
-      result = result.filter((team) => team.group === groupFilter);
+      result = result.filter(
+        (team) => team.groupId != null && String(team.groupId) === groupFilter,
+      );
     }
 
     result.sort((a, b) => {
@@ -69,7 +85,7 @@ export const TeamsPage = () => {
           />
           <FilterDropdown
             value={groupFilter}
-            options={GROUP_OPTIONS}
+            options={groupFilterOptions}
             onChange={setGroupFilter}
           />
         </div>

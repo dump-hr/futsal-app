@@ -1,6 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import toast from 'react-hot-toast';
-import { Group } from '@futsal-app/types';
 import { Button, FilterDropdown, ButtonSmall, Input } from '@components/index';
 import { useCloseComponent } from '@hooks/index';
 import {
@@ -12,6 +11,7 @@ import {
   XGray,
 } from '@assets/icons';
 import { useTeamGet, useTeamCreate, useTeamUpdate } from '@api/team';
+import { useGroupsGet } from '@api/group';
 import { usePlayerCreate, usePlayerDelete, usePlayerUpdate } from '@api/player';
 import {
   BackgroundColor,
@@ -19,7 +19,7 @@ import {
   PlayerModalEditByIndex,
 } from '@types';
 import { validatePlayers } from '@helpers/validatePlayers';
-import { GroupOption, GROUP_OPTIONS } from '@constants/groupOptions';
+import { GroupOption } from '@constants/groupOptions';
 import PlayerFormModal from './PlayerFormModal';
 import common from './ModalCommon.module.scss';
 import c from './TeamFormModal.module.scss';
@@ -31,7 +31,7 @@ type PlayerEntry = {
 };
 
 //TODO: Get tournament ID from URL params or context
-const TOURNAMENT_ID = 1;
+const TOURNAMENT_ID = 3;
 
 type PlayerModal = PlayerModalAdd | PlayerModalEditByIndex;
 
@@ -48,6 +48,19 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
   const { mutateAsync: createPlayer } = usePlayerCreate();
   const { mutateAsync: deletePlayer } = usePlayerDelete();
   const { mutateAsync: updatePlayer } = usePlayerUpdate();
+  const { data: groups } = useGroupsGet();
+
+  const groupOptions = useMemo(() => {
+    const opts: { label: string; value: GroupOption }[] = [
+      { label: 'Bez skupine', value: 'none' },
+    ];
+    if (groups) {
+      for (const g of groups) {
+        opts.push({ label: `Skupina ${g.name}`, value: String(g.id) });
+      }
+    }
+    return opts;
+  }, [groups]);
 
   const ready = !isEdit || !!existingTeam;
 
@@ -62,7 +75,7 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
   useEffect(() => {
     if (existingTeam && isEdit && !initialized) {
       setTeamName(existingTeam.name);
-      setGroup(existingTeam.group ?? 'none');
+      setGroup(existingTeam.groupId ? String(existingTeam.groupId) : 'none');
       const existingPlayers: PlayerEntry[] = (existingTeam.players ?? []).map(
         (p: PlayerEntry) => ({
           id: p.id,
@@ -109,7 +122,7 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
           id: teamId,
           dto: {
             name: teamName,
-            group: group === 'none' ? undefined : (group as Group),
+            groupId: group === 'none' ? null : Number(group),
           },
         });
 
@@ -151,7 +164,7 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
       } else {
         const created = await createTeam({
           name: teamName,
-          group: group === 'none' ? undefined : (group as Group),
+          groupId: group === 'none' ? undefined : Number(group),
           tournamentId: TOURNAMENT_ID,
         });
 
@@ -180,142 +193,145 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
       }}>
       <div className={c.modal} role='dialog' aria-modal='true'>
         <div className={c.scrollContent}>
-        <div className={common.header}>
-          <div className={common.headerText}>
-            <h1 className={common.title}>
-              {isEdit ? 'Uredi ekipu' : 'Nova ekipa'}
-            </h1>
-            <p className={common.subtitle}>
-              {isEdit
-                ? 'Uredi ime, promjeni logo, unesi nove igrače, uredi već postojeće igrače'
-                : 'Kreiraj ime, importaj logo i unesi igrače nove ekipe'}
-            </p>
+          <div className={common.header}>
+            <div className={common.headerText}>
+              <h1 className={common.title}>
+                {isEdit ? 'Uredi ekipu' : 'Nova ekipa'}
+              </h1>
+              <p className={common.subtitle}>
+                {isEdit
+                  ? 'Uredi ime, promjeni logo, unesi nove igrače, uredi već postojeće igrače'
+                  : 'Kreiraj ime, importaj logo i unesi igrače nove ekipe'}
+              </p>
+            </div>
+            <ButtonSmall iconSrc={XGray} onClick={onClose} hasBorder />
           </div>
-          <ButtonSmall iconSrc={XGray} onClick={onClose} hasBorder />
-        </div>
 
-        <div className={c.main}>
-          <div className={c.teamInfoSection}>
-            <div className={c.logoArea}>
-              <div className={c.logoPlaceholder}>
-                {isEdit && existingTeam?.logoUrl ? (
-                  <img
-                    src={existingTeam.logoUrl}
-                    alt={teamName}
-                    className={c.logoImage}
+          <div className={c.main}>
+            <div className={c.teamInfoSection}>
+              <div className={c.logoArea}>
+                <div className={c.logoPlaceholder}>
+                  {isEdit && existingTeam?.logoUrl ? (
+                    <img
+                      src={existingTeam.logoUrl}
+                      alt={teamName}
+                      className={c.logoImage}
+                    />
+                  ) : (
+                    <span className={c.logoText}>LOGO</span>
+                  )}
+                </div>
+                <div className={c.logoActions}>
+                  <ButtonSmall iconSrc={UploadGray} />
+                  <ButtonSmall iconSrc={TrashCanGray} />
+                </div>
+              </div>
+              <div className={c.teamFields}>
+                <div className={teamName.trim() ? c.inputValid : undefined}>
+                  <Input
+                    label='Ime ekipe'
+                    value={teamName}
+                    onChange={(e) => setTeamName(e.target.value)}
+                    placeholder='Ime ekipe'
                   />
-                ) : (
-                  <span className={c.logoText}>LOGO</span>
-                )}
-              </div>
-              <div className={c.logoActions}>
-                <ButtonSmall iconSrc={UploadGray} />
-                <ButtonSmall iconSrc={TrashCanGray} />
-              </div>
-            </div>
-            <div className={c.teamFields}>
-              <div className={teamName.trim() ? c.inputValid : undefined}>
-                <Input
-                  label='Ime ekipe'
-                  value={teamName}
-                  onChange={(e) => setTeamName(e.target.value)}
-                  placeholder='Ime ekipe'
-                />
-              </div>
-              <div className={c.fieldGroup}>
-                <span className={c.fieldLabel}>Skupina (nije obavezno)</span>
-                <FilterDropdown
-                  variant='default'
-                  value={group}
-                  options={GROUP_OPTIONS}
-                  onChange={setGroup}
-                  placeholder='Odaberi skupinu'
-                />
+                </div>
+                <div className={c.fieldGroup}>
+                  <span className={c.fieldLabel}>Skupina (nije obavezno)</span>
+                  <FilterDropdown
+                    variant='default'
+                    value={group}
+                    options={groupOptions}
+                    onChange={setGroup}
+                    placeholder='Odaberi skupinu'
+                  />
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className={c.playerSection}>
-            <div className={c.playerSectionHeader}>
-              <span className={c.playerSectionTitle}>Unos igrača</span>
-              <span className={c.playerSectionSubtitle}>
-                Unos igrača nije obavezan u ovom koraku, može se kasnije urediti
-              </span>
-            </div>
+            <div className={c.playerSection}>
+              <div className={c.playerSectionHeader}>
+                <span className={c.playerSectionTitle}>Unos igrača</span>
+                <span className={c.playerSectionSubtitle}>
+                  Unos igrača nije obavezan u ovom koraku, može se kasnije
+                  urediti
+                </span>
+              </div>
 
-            <div className={c.playerList}>
-              {(() => {
-                const cols = 3;
-                const totalSlots = players.length + 1;
-                const perCol = Math.max(3, Math.ceil(totalSlots / cols));
-                let placed = 0;
-                let newRowPlaced = false;
+              <div className={c.playerList}>
+                {(() => {
+                  const cols = 3;
+                  const totalSlots = players.length + 1;
+                  const perCol = Math.max(3, Math.ceil(totalSlots / cols));
+                  let placed = 0;
+                  let newRowPlaced = false;
 
-                return Array.from({ length: cols }, (_, colIndex) => {
-                  const start = placed;
-                  const columnPlayers = players.slice(start, start + perCol);
-                  placed += columnPlayers.length;
-                  const showNewRow =
-                    !newRowPlaced &&
-                    columnPlayers.length < perCol &&
-                    start + columnPlayers.length === players.length;
-                  if (showNewRow) newRowPlaced = true;
+                  return Array.from({ length: cols }, (_, colIndex) => {
+                    const start = placed;
+                    const columnPlayers = players.slice(start, start + perCol);
+                    placed += columnPlayers.length;
+                    const showNewRow =
+                      !newRowPlaced &&
+                      columnPlayers.length < perCol &&
+                      start + columnPlayers.length === players.length;
+                    if (showNewRow) newRowPlaced = true;
 
-                  if (columnPlayers.length === 0 && !showNewRow) return null;
+                    if (columnPlayers.length === 0 && !showNewRow) return null;
 
-                  return (
-                    <div key={colIndex} className={c.playerColumn}>
-                      {columnPlayers.map((player, i) => {
-                        const globalIndex = start + i;
-                        return (
-                          <div
-                            key={player.id ?? `new-${globalIndex}`}
-                            className={c.playerRow}
-                            onClick={() =>
-                              setPlayerModal({
-                                type: 'edit',
-                                index: globalIndex,
-                              })
-                            }>
-                            <span className={c.playerLabel}>
-                              Igrač #{globalIndex + 1}
-                            </span>
-                            <Input
-                              value={`${player.firstName} ${player.lastName}`}
-                              readOnly
-                            />
-                          </div>
-                        );
-                      })}
-                      {showNewRow && (
-                        <div className={c.playerRow}>
-                          <span className={c.playerLabel}>
-                            Igrač #{players.length + 1}
-                          </span>
-                          <div className={c.newPlayerRow}>
-                            <div className={c.newPlayerInput}>
+                    return (
+                      <div key={colIndex} className={c.playerColumn}>
+                        {columnPlayers.map((player, i) => {
+                          const globalIndex = start + i;
+                          return (
+                            <div
+                              key={player.id ?? `new-${globalIndex}`}
+                              className={c.playerRow}
+                              onClick={() =>
+                                setPlayerModal({
+                                  type: 'edit',
+                                  index: globalIndex,
+                                })
+                              }>
+                              <span className={c.playerLabel}>
+                                Igrač #{globalIndex + 1}
+                              </span>
                               <Input
-                                value=''
+                                value={`${player.firstName} ${player.lastName}`}
                                 readOnly
-                                placeholder='Ime i prezime'
+                              />
+                            </div>
+                          );
+                        })}
+                        {showNewRow && (
+                          <div className={c.playerRow}>
+                            <span className={c.playerLabel}>
+                              Igrač #{players.length + 1}
+                            </span>
+                            <div className={c.newPlayerRow}>
+                              <div className={c.newPlayerInput}>
+                                <Input
+                                  value=''
+                                  readOnly
+                                  placeholder='Ime i prezime'
+                                  onClick={() =>
+                                    setPlayerModal({ type: 'add' })
+                                  }
+                                />
+                              </div>
+                              <ButtonSmall
+                                backgroundColor={BackgroundColor.White}
+                                iconSrc={PlusBlack}
                                 onClick={() => setPlayerModal({ type: 'add' })}
                               />
                             </div>
-                            <ButtonSmall
-                              backgroundColor={BackgroundColor.White}
-                              iconSrc={PlusBlack}
-                              onClick={() => setPlayerModal({ type: 'add' })}
-                            />
                           </div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                });
-              })()}
+                        )}
+                      </div>
+                    );
+                  });
+                })()}
+              </div>
             </div>
           </div>
-        </div>
         </div>
 
         <div className={`${common.footer} ${c.footer}`}>

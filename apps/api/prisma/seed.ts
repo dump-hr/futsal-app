@@ -248,12 +248,57 @@ async function main() {
     },
   });
 
+  // Upcoming matches (future dates)
+  await prisma.match.create({
+    data: {
+      timeOfMatch: new Date('2026-06-10T18:00:00'),
+      homeTeamId: teams[1].id,
+      awayTeamId: teams[3].id,
+      homeGoals: 0,
+      awayGoals: 0,
+      matchType: MatchType.quarterFinal,
+    },
+  });
+
+  await prisma.match.create({
+    data: {
+      timeOfMatch: new Date('2026-06-10T20:00:00'),
+      homeTeamId: teams[4].id,
+      awayTeamId: teams[6].id,
+      homeGoals: 0,
+      awayGoals: 0,
+      matchType: MatchType.quarterFinal,
+    },
+  });
+
+  await prisma.match.create({
+    data: {
+      timeOfMatch: new Date('2026-06-12T19:00:00'),
+      homeTeamId: teams[0].id,
+      awayTeamId: teams[7].id,
+      homeGoals: 0,
+      awayGoals: 0,
+      matchType: MatchType.semiFinal,
+    },
+  });
+
+  await prisma.match.create({
+    data: {
+      timeOfMatch: new Date('2026-06-14T20:00:00'),
+      homeTeamId: teams[2].id,
+      awayTeamId: teams[5].id,
+      homeGoals: 0,
+      awayGoals: 0,
+      matchType: MatchType.semiFinal,
+    },
+  });
+
   console.log('Seed complete!');
   console.log(`  Tournament: ${tournament.name}`);
   console.log(`  Teams: ${teams.length}`);
   console.log(`  Players: ${players.length}`);
   console.log(`  Groups: ${groups.length}`);
-  console.log(`  Matches: 6 (4 group + 1 semi + 1 final)`);
+  console.log(`  Matches: 10 (4 group + 2 quarter + 2 semi + 1 final + 1 played final)`);
 }
 
 main().catch((e) => {
