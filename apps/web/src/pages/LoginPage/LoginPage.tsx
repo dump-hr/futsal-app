@@ -8,6 +8,10 @@ export const LoginPage = () => {
   const [admin, setAdmin] = useState({ username: '', password: '' });
   const { mutate: login, isPending } = useLogin();
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAdmin({ ...admin, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     login(admin);
@@ -38,7 +42,8 @@ export const LoginPage = () => {
           icon={arrowRightBlack}
           variant='green'
           type='submit'
-          disabled={isPending}>
+          disabled={isPending}
+        >
           {isPending ? 'Prijava...' : 'Prijavi se'}
         </Button>
       </form>
