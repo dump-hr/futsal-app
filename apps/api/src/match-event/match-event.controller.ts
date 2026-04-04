@@ -7,7 +7,9 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { MatchEventService } from './match-event.service';
 import {
   MatchEventCreateDto,
@@ -19,6 +21,7 @@ import {
 export class MatchEventController {
   constructor(private readonly matchEventService: MatchEventService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() dto: MatchEventCreateDto): Promise<MatchEventDto> {
     return await this.matchEventService.create(dto);
@@ -31,6 +34,7 @@ export class MatchEventController {
     return await this.matchEventService.getByMatchId(matchId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,
@@ -39,6 +43,7 @@ export class MatchEventController {
     return await this.matchEventService.update(id, dto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) id: number): Promise<MatchEventDto> {
     return await this.matchEventService.delete(id);
