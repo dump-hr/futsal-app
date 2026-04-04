@@ -18,14 +18,6 @@ export class TournamentService {
     return await prisma.tournament.findMany();
   }
 
-  async getByDate(date: string): Promise<TournamentDto[]> {
-    const tournaments = await prisma.tournament.findMany({
-      where: { date },
-    });
-
-    return tournaments;
-  }
-
   async getById(id: number): Promise<TournamentDto> {
     const tournament = await prisma.tournament.findFirst({
       where: { id },

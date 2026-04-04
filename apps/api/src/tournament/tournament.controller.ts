@@ -22,10 +22,7 @@ export class TournamentController {
   }
 
   @Get()
-  async getAll(@Query('date') date?: string): Promise<TournamentDto[]> {
-    if (date) {
-      return await this.tournamentService.getByDate(date);
-    }
+  async getAll(): Promise<TournamentDto[]> {
     return await this.tournamentService.getAll();
   }
 
