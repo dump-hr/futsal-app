@@ -14,7 +14,6 @@ export const StartingPage = () => {
 
   return (
     <div className={c.page}>
-      <div className={c.background} />
       <div className={c.actions}>
         <Button
           icon={HistoryBlack}

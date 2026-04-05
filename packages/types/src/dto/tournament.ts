@@ -1,6 +1,5 @@
 import {
   IsArray,
-  IsBoolean,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -13,10 +12,6 @@ export class TournamentModifyDto {
   @IsNotEmpty()
   @IsString()
   name: string;
-
-  @IsNotEmpty()
-  @IsString()
-  date: string;
 }
 
 export class TournamentDto {
@@ -27,14 +22,6 @@ export class TournamentDto {
   @IsNotEmpty()
   @IsString()
   name: string;
-
-  @IsOptional()
-  @IsString()
-  date?: string;
-
-  @IsOptional()
-  @IsBoolean()
-  isDeleted?: boolean;
 
   @IsOptional()
   @IsArray()
