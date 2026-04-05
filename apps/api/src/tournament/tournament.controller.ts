@@ -17,7 +17,6 @@ import { TournamentDto, TournamentModifyDto } from '@futsal-app/types';
 export class TournamentController {
   constructor(private readonly tournamentService: TournamentService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() dto: TournamentModifyDto): Promise<TournamentDto> {
     return await this.tournamentService.create(dto);

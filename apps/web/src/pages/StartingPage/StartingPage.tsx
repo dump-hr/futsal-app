@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { HistoryGray, PlusBlack } from '@assets/icons';
+import { HistoryBlack, PlusBlack } from '@assets/icons';
 import c from './StartingPage.module.scss';
 import {
   Button,
@@ -17,7 +17,7 @@ export const StartingPage = () => {
       <div className={c.background} />
       <div className={c.actions}>
         <Button
-          icon={HistoryGray}
+          icon={HistoryBlack}
           variant='primary'
           onClick={() => setOpenModal('history')}>
           Pregledaj turnire

@@ -24,12 +24,14 @@ const ModalTournamentHistory: React.FC<ModalTournamentHistoryProps> = ({
       }}>
       <p className={c.label}>Prošli turniri</p>
       <div tabIndex={-1} role='dialog' aria-modal='true' className={c.modal}>
-        <button className={c.closeButton} onClick={onClose}>
-          <img src={XBlack} alt='close' />
-        </button>
         <div className={c.header}>
-          <h2 className={c.title}>Povijest turnira</h2>
-          <p className={c.subtitle}>Pogledaj prošle turnire</p>
+          <div className={c.titleGroup}>
+            <h2 className={c.title}>Povijest turnira</h2>
+            <p className={c.subtitle}>Pogledaj prošle turnire</p>
+          </div>
+          <button className={c.closeButton} onClick={onClose}>
+            <img src={XBlack} alt='close' />
+          </button>
         </div>
         <div className={c.list}>
           {tournaments.map((tournament) => (
