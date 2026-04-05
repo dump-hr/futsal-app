@@ -1,0 +1,121 @@
+.page {
+  padding: 0px 64px 48px;
+  height: calc(100vh - 80px);
+  box-sizing: border-box;
+  background-color: $background-black;
+  color: $white;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.title {
+  @include title-2;
+  color: $white;
+}
+
+.content {
+  display: flex;
+  gap: 50px;
+  align-items: flex-start;
+  flex: 1;
+  overflow: hidden;
+}
+
+.leftPanel {
+  width: 336px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.unassignedLabel {
+  @include body-large;
+  color: $white;
+  margin-top: 0;
+}
+
+.teamPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 8px;
+}
+
+.groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 424px);
+  gap: 24px;
+  align-content: flex-start;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  justify-content: center;
+
+  &::-webkit-scrollbar {
+    width: 19.2px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #151515;
+    border-radius: 15px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #e5e5e5;
+    border-radius: 15px;
+  }
+}
+
+.emptyState {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 80px;
+}
+
+.emptyText {
+  @include body-normal;
+  color: $gray-dark;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  background-color: $black;
+  border: 0.5px solid $gray-dark;
+  border-radius: 20px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 400px;
+}
+
+.modalTitle {
+  @include title-3;
+  color: $white;
+}
+
+.modalButtons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
