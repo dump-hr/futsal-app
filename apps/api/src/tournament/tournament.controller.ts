@@ -41,7 +41,6 @@ export class TournamentController {
     return await this.tournamentService.update(id, dto);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) id: number): Promise<TournamentDto> {
     return this.tournamentService.delete(id);

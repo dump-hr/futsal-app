@@ -1,6 +1,6 @@
 import { Button } from '@components/index';
 import { useCloseComponent } from '@hooks/index';
-import { XBlack, CheckBlack, TrashCanGray } from '@assets/icons';
+import { CheckBlack, TrashCanWhite, XWhite } from '@assets/icons';
 import { useTournamentsGet, useTournamentDelete } from '@api/tournament';
 import c from './ModalTournamentHistory.module.scss';
 
@@ -22,7 +22,6 @@ const ModalTournamentHistory: React.FC<ModalTournamentHistoryProps> = ({
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}>
-      <p className={c.label}>Prošli turniri</p>
       <div tabIndex={-1} role='dialog' aria-modal='true' className={c.modal}>
         <div className={c.header}>
           <div className={c.titleGroup}>
@@ -30,7 +29,7 @@ const ModalTournamentHistory: React.FC<ModalTournamentHistoryProps> = ({
             <p className={c.subtitle}>Pogledaj prošle turnire</p>
           </div>
           <button className={c.closeButton} onClick={onClose}>
-            <img src={XBlack} alt='close' />
+            <img src={XWhite} alt='close' />
           </button>
         </div>
         <div className={c.list}>
@@ -40,13 +39,13 @@ const ModalTournamentHistory: React.FC<ModalTournamentHistoryProps> = ({
               <button
                 className={c.deleteButton}
                 onClick={() => deleteTournament(tournament.id)}>
-                <img src={TrashCanGray} alt='delete' />
+                <img src={TrashCanWhite} alt='delete' />
               </button>
             </div>
           ))}
         </div>
         <div className={c.buttons}>
-          <Button icon={XBlack} variant='secondary' onClick={onClose}>
+          <Button icon={XWhite} variant='secondary' onClick={onClose}>
             Odustani
           </Button>
           <Button icon={CheckBlack} variant='primary' onClick={onClose}>
