@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Button, Input } from '@components/index';
 import { useCloseComponent } from '@hooks/index';
 import { XWhite, CheckBlack } from '@assets/icons';
@@ -13,13 +13,17 @@ const ModalNewTournament: React.FC<ModalNewTournamentProps> = ({ onClose }) => {
   const [name, setName] = useState('');
   const { mutate: createTournament, isPending } = useTournamentCreate();
   const { overlayRef } = useCloseComponent({ onClose });
+  const inputWrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    inputWrapperRef.current?.querySelector('input')?.focus();
+  }, []);
 
   const handleSave = () => {
     if (!name.trim()) return;
-    createTournament(
-      { name, date: new Date().toString() },
-      { onSuccess: onClose },
-    );
+    const d = new Date();
+    const date = `${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+    createTournament({ name, date }, { onSuccess: onClose });
   };
 
   return (
@@ -39,12 +43,13 @@ const ModalNewTournament: React.FC<ModalNewTournamentProps> = ({ onClose }) => {
             <img src={XWhite} alt='close' />
           </button>
         </div>
-        <div className={c.wideInput}>
+        <div className={c.wideInput} ref={inputWrapperRef}>
           <Input
             label='Ime turnira'
             placeholder='Ime'
             value={name}
             onChange={(e) => setName(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSave()}
           />
         </div>
         <div className={c.buttons}>
