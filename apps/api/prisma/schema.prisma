@@ -35,11 +35,12 @@ enum MatchType {
 }
 
 model Tournament {
-  id     Int     @id @default(autoincrement())
-  name   String  @unique
-  date   String  @default(dbgenerated("EXTRACT(YEAR FROM NOW())::text"))
-  teams  Team[]
-  groups Group[]
+  id        Int     @id @default(autoincrement())
+  name      String  @unique
+  date      String  @default(dbgenerated("TO_CHAR(NOW(), 'MM/YYYY')"))
+  isDeleted Boolean @default(false)
+  teams     Team[]
+  groups    Group[]
 }
 
 model Team {
