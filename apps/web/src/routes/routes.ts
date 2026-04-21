@@ -4,9 +4,9 @@ interface RouteType {
 
 export const routes: RouteType = {
   HOME: '/home',
-  STARTING: '/',
+  ADMIN: '/admin/test-page',
+  ADMIN_HOME: '/admin',
   LOGIN: '/admin/login',
-  ADMIN: '/admin',
   TEAMS: '/admin/teams',
   GROUPS: '/admin/groups',
   MATCHES: '/admin/matches',
