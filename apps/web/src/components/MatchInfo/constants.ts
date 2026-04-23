@@ -19,11 +19,3 @@ export const MATCH_STAGE_LABEL: Record<MatchStage, string> = {
   [MATCH_STAGE.SEMI_FINALS]: 'Polufinale',
   [MATCH_STAGE.FINAL]: 'Finale',
 };
-
-export const MATCH_TYPE_TO_STAGE: Record<string, MatchStage> = {
-  group: MATCH_STAGE.GROUP_STAGE,
-  quarterFinal: MATCH_STAGE.QUARTER_FINALS,
-  semiFinal: MATCH_STAGE.SEMI_FINALS,
-  final: MATCH_STAGE.FINAL,
-  thirdPlace: MATCH_STAGE.FINAL,
-};

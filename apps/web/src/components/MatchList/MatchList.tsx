@@ -1,21 +1,10 @@
 import { MatchDto } from '@futsal-app/types';
-import {
-  MatchInfo,
-  MATCH_STATUS,
-  MATCH_STAGE,
-  MATCH_TYPE_TO_STAGE,
-} from '@components/MatchInfo';
-import type { MatchStatus } from '@components/MatchInfo';
+import { MatchInfo, MATCH_STAGE } from '@components/MatchInfo';
+import { MATCH_TYPE_TO_STAGE, getMatchStatus } from '@helpers/matchHelpers';
 import c from './MatchList.module.scss';
 
 type MatchListProps = {
   matches: MatchDto[];
-};
-
-const getMatchStatus = (match: MatchDto): MatchStatus => {
-  if (match.isActive) return MATCH_STATUS.LIVE;
-  const matchTime = new Date(match.timeOfMatch);
-  return matchTime < new Date() ? MATCH_STATUS.FINISHED : MATCH_STATUS.UPCOMING;
 };
 
 const MatchList: React.FC<MatchListProps> = ({ matches }) => {

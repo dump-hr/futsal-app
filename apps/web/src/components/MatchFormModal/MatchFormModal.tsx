@@ -8,8 +8,8 @@ import { useMatchCreate, useMatchUpdate, useMatchGet } from '@api/match';
 import { useTeamsGet } from '@api/team';
 import { useCloseComponent } from '@hooks/index';
 import { MatchType } from '@futsal-app/types';
-import { MATCH_TYPE_OPTIONS } from '@helpers/matchHelpers';
-import { formatLocalDate, formatLocalTime, validateTime } from '@helpers/formatMatchDate';
+import { MATCH_TYPE_OPTIONS, validateMatchForm } from '@helpers/matchHelpers';
+import { formatLocalDate, formatLocalTime } from '@helpers/formatMatchDate';
 import common from '../TeamFormModal/ModalCommon.module.scss';
 import c from './MatchFormModal.module.scss';
 
@@ -21,20 +21,23 @@ type MatchFormModalProps = {
   matchId?: number;
 };
 
-const MatchFormModal: React.FC<MatchFormModalProps> = ({ onClose, matchId }) => {
-  const isEdit = matchId !== undefined;
-
-  const { data: existingMatch } = useMatchGet(matchId ?? 0);
-  const { mutate: createMatch, isPending: isCreating } = useMatchCreate();
-  const { mutate: updateMatch, isPending: isUpdating } = useMatchUpdate();
-  const { data: teams } = useTeamsGet(TOURNAMENT_ID);
-
+const MatchFormModal: React.FC<MatchFormModalProps> = ({
+  onClose,
+  matchId,
+}) => {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [matchType, setMatchType] = useState('');
   const [homeTeamId, setHomeTeamId] = useState('');
   const [awayTeamId, setAwayTeamId] = useState('');
   const [initialized, setInitialized] = useState(false);
+
+  const isEdit = matchId !== undefined;
+
+  const { data: existingMatch } = useMatchGet(matchId ?? 0);
+  const { mutate: createMatch, isPending: isCreating } = useMatchCreate();
+  const { mutate: updateMatch, isPending: isUpdating } = useMatchUpdate();
+  const { data: teams } = useTeamsGet(TOURNAMENT_ID);
 
   useEffect(() => {
     if (existingMatch && isEdit && !initialized) {
@@ -59,22 +62,17 @@ const MatchFormModal: React.FC<MatchFormModalProps> = ({ onClose, matchId }) => 
   const awayTeam = teams?.find((t) => String(t.id) === awayTeamId);
 
   const handleSubmit = () => {
-    if (!date || !time || !matchType) {
-      toast.error('Molimo ispunite sva polja');
-      return;
-    }
-
-    const timeError = validateTime(time);
-    if (timeError) {
-      toast.error(timeError);
-      return;
-    }
-    if (!isEdit && (!homeTeamId || !awayTeamId)) {
-      toast.error('Molimo odaberite ekipe');
-      return;
-    }
-    if (!isEdit && homeTeamId === awayTeamId) {
-      toast.error('Ekipe moraju biti različite');
+    const error = validateMatchForm({
+      date,
+      time,
+      matchType,
+      homeTeamId,
+      awayTeamId,
+      isEdit,
+    });
+    
+    if (error) {
+      toast.error(error);
       return;
     }
 

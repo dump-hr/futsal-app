@@ -1,6 +1,7 @@
 import { MatchDto, MatchType } from '@futsal-app/types';
 import { MATCH_STATUS, MATCH_STAGE } from '@components/MatchInfo';
 import type { MatchStage, MatchStatus } from '@components/MatchInfo';
+import { validateTime } from './formatMatchDate';
 
 const CROATIAN_DAY_NAMES = [
   'Nedjelja',
@@ -44,5 +45,30 @@ export const getDateKey = (date: Date): string => {
 export const formatMatchDayHeader = (date: Date): string => {
   const day = CROATIAN_DAY_NAMES[date.getDay()];
   return `${day}, ${date.getDate()}/${date.getMonth() + 1}`;
+};
+
+type MatchFormInput = {
+  date: string;
+  time: string;
+  matchType: string;
+  homeTeamId: string;
+  awayTeamId: string;
+  isEdit: boolean;
+};
+
+export const validateMatchForm = (input: MatchFormInput): string | null => {
+  const { date, time, matchType, homeTeamId, awayTeamId, isEdit } = input;
+
+  if (!date || !time || !matchType) return 'Molimo ispunite sva polja';
+
+  const timeError = validateTime(time);
+  if (timeError) return timeError;
+
+  if (!isEdit && (!homeTeamId || !awayTeamId))
+    return 'Molimo odaberite ekipe';
+  if (!isEdit && homeTeamId === awayTeamId)
+    return 'Ekipe moraju biti različite';
+
+  return null;
 };
 
