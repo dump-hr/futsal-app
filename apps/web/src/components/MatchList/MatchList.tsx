@@ -1,6 +1,11 @@
 import { MatchDto } from '@futsal-app/types';
-import { MatchInfo, MATCH_STAGE } from '@components/MatchInfo';
-import { MATCH_TYPE_TO_STAGE, getMatchStatus } from '@helpers/matchHelpers';
+import {
+  MatchInfo,
+  MATCH_STATUS,
+  MATCH_STAGE,
+  MATCH_TYPE_TO_STAGE,
+} from '@components/MatchInfo';
+import type { MatchStatus } from '@components/MatchInfo';
 import c from './MatchList.module.scss';
 
 type MatchListProps = {

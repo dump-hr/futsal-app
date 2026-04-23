@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Tournament" ADD COLUMN     "isDeleted" BOOLEAN NOT NULL DEFAULT false,
+ALTER COLUMN "date" SET DEFAULT EXTRACT(YEAR FROM NOW())::text;

@@ -1,11 +1,16 @@
 import {
+  IsArray,
   IsInt,
   IsNotEmpty,
   IsOptional,
   IsPositive,
   IsString,
   IsUrl,
+  Length,
+  Min,
+  ValidateNested,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 import { PlayerDto } from './player';
 import { GroupDto } from './group';
 
@@ -75,10 +80,12 @@ export class TeamDto {
 
   @IsOptional()
   @IsInt()
+  @Min(0)
   numberOfPlayers?: number;
 
   @IsOptional()
   @IsInt()
+  @Min(0)
   numberOfMatchesPlayed?: number;
 
   @IsOptional()
@@ -87,4 +94,28 @@ export class TeamDto {
 
   @IsOptional()
   players?: PlayerDto[];
+}
+
+export class PlayerSyncDto {
+  @IsOptional()
+  @IsInt()
+  @IsPositive()
+  id?: number;
+
+  @IsNotEmpty()
+  @IsString()
+  @Length(2, 20)
+  firstName: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Length(2, 20)
+  lastName: string;
+}
+
+export class TeamPlayersSyncDto {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => PlayerSyncDto)
+  players: PlayerSyncDto[];
 }

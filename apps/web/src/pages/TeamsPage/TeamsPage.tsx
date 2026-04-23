@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useLocation } from 'wouter';
 import {
   Button,
@@ -17,22 +17,6 @@ import { SortOrder, GroupFilter, SORT_OPTIONS } from './options';
 const TOURNAMENT_ID = 1;
 
 export const TeamsPage = () => {
-  const [, navigate] = useLocation();
-  const { data: teams } = useTeamsGet(TOURNAMENT_ID);
-  const { data: groups } = useGroupsGet();
-  const { mutate: deleteTeam } = useTeamDelete();
-
-  const groupFilterOptions = useMemo(() => {
-    const opts: { label: string; value: GroupFilter }[] = [
-      { label: 'Skupina', value: 'all' },
-    ];
-    if (groups) {
-      for (const g of groups) {
-        opts.push({ label: `Skupina ${g.name}`, value: String(g.id) });
-      }
-    }
-    return opts;
-  }, [groups]);
   const [sortOrder, setSortOrder] = useState<SortOrder>('az');
   const [groupFilter, setGroupFilter] = useState<GroupFilter>('all');
   const [teamToDelete, setTeamToDelete] = useState<{
@@ -43,25 +27,32 @@ export const TeamsPage = () => {
     open: boolean;
     teamId?: number;
   }>({ open: false });
+  const [, navigate] = useLocation();
 
-  const filteredTeams = useMemo(() => {
-    if (!teams) return [];
+  const { data: teams } = useTeamsGet(TOURNAMENT_ID);
+  const { data: groups } = useGroupsGet();
+  const { mutate: deleteTeam } = useTeamDelete();
 
-    let result = [...teams];
+  const groupFilterOptions: { label: string; value: GroupFilter }[] = [
+    { label: 'Skupina', value: 'all' },
+    ...(groups?.map((g) => ({
+      label: `Skupina ${g.name}`,
+      value: String(g.id),
+    })) ?? []),
+  ];
 
-    if (groupFilter !== 'all') {
-      result = result.filter(
-        (team) => team.groupId != null && String(team.groupId) === groupFilter,
-      );
-    }
-
-    result.sort((a, b) => {
-      const cmp = a.name.localeCompare(b.name, 'hr');
-      return sortOrder === 'az' ? cmp : -cmp;
-    });
-
-    return result;
-  }, [teams, sortOrder, groupFilter]);
+  const filteredTeams = teams
+    ? [...teams]
+        .filter(
+          (team) =>
+            groupFilter === 'all' ||
+            (team.groupId != null && String(team.groupId) === groupFilter),
+        )
+        .sort((a, b) => {
+          const cmp = a.name.localeCompare(b.name, 'hr');
+          return sortOrder === 'az' ? cmp : -cmp;
+        })
+    : [];
 
   return (
     <div className={c.page}>
