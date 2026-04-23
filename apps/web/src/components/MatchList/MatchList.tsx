@@ -12,6 +12,12 @@ type MatchListProps = {
   matches: MatchDto[];
 };
 
+const getMatchStatus = (match: MatchDto): MatchStatus => {
+  if (match.isActive) return MATCH_STATUS.LIVE;
+  const matchTime = new Date(match.timeOfMatch);
+  return matchTime < new Date() ? MATCH_STATUS.FINISHED : MATCH_STATUS.UPCOMING;
+};
+
 const MatchList: React.FC<MatchListProps> = ({ matches }) => {
   if (matches.length === 0) {
     return <span className={c.empty}>Još nema utakmica za ovu ekipu</span>;

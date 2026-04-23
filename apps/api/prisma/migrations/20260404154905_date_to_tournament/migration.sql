@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Tournament" ALTER COLUMN "date" SET DEFAULT EXTRACT(YEAR FROM NOW())::text;
