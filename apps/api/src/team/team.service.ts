@@ -3,7 +3,13 @@ import {
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
-import { TeamCreateDto, TeamUpdateDto, TeamDto } from '@futsal-app/types';
+import {
+  TeamCreateDto,
+  TeamUpdateDto,
+  TeamDto,
+  TeamPlayersSyncDto,
+  PlayerDto,
+} from '@futsal-app/types';
 import { prisma } from '../../lib/prisma';
 
 @Injectable()
@@ -52,7 +58,7 @@ export class TeamService {
       );
     }
 
-    return teams.map((team) => {
+    return teams.map((team): TeamDto => {
       let score = 0;
       for (const match of team.homeMatches) {
         if (match.homeGoals > match.awayGoals) score += 3;
@@ -127,5 +133,72 @@ export class TeamService {
     });
 
     return team;
+  }
+
+  async syncPlayers(
+    teamId: number,
+    dto: TeamPlayersSyncDto,
+  ): Promise<PlayerDto[]> {
+    const team = await prisma.team.findUnique({
+      where: { id: teamId },
+      include: { players: true },
+    });
+
+    if (!team) {
+      throw new NotFoundException(`Team with id ${teamId} not found`);
+    }
+
+    const currentById = new Map(team.players.map((p) => [p.id, p]));
+    const payloadIds = new Set(
+      dto.players.filter((p) => p.id !== undefined).map((p) => p.id!),
+    );
+
+    for (const id of payloadIds) {
+      if (!currentById.has(id)) {
+        throw new BadRequestException(
+          `Player ${id} does not belong to team ${teamId}`,
+        );
+      }
+    }
+
+    const toDelete = team.players
+      .filter((p) => !payloadIds.has(p.id))
+      .map((p) => p.id);
+
+    const toCreate = dto.players.filter((p) => p.id === undefined);
+
+    const toUpdate = dto.players
+      .filter((p) => p.id !== undefined)
+      .filter((p) => {
+        const existing = currentById.get(p.id!)!;
+        return (
+          existing.firstName !== p.firstName || existing.lastName !== p.lastName
+        );
+      });
+
+    return prisma.$transaction(async (tx) => {
+      if (toDelete.length) {
+        await tx.player.deleteMany({ where: { id: { in: toDelete } } });
+      }
+      for (const p of toUpdate) {
+        await tx.player.update({
+          where: { id: p.id! },
+          data: { firstName: p.firstName, lastName: p.lastName },
+        });
+      }
+      if (toCreate.length) {
+        await tx.player.createMany({
+          data: toCreate.map((p) => ({
+            firstName: p.firstName,
+            lastName: p.lastName,
+            teamId,
+          })),
+        });
+      }
+      return tx.player.findMany({
+        where: { teamId },
+        orderBy: { id: 'asc' },
+      });
+    });
   }
 }

@@ -7,12 +7,19 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { TeamService } from './team.service';
-import { TeamCreateDto, TeamUpdateDto, TeamDto } from '@futsal-app/types';
+import {
+  TeamCreateDto,
+  TeamUpdateDto,
+  TeamDto,
+  TeamPlayersSyncDto,
+  PlayerDto,
+} from '@futsal-app/types';
 
 @Controller('team')
 export class TeamController {
@@ -49,5 +56,14 @@ export class TeamController {
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) id: number): Promise<TeamDto> {
     return await this.teamService.delete(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put(':id/players')
+  async syncPlayers(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: TeamPlayersSyncDto,
+  ): Promise<PlayerDto[]> {
+    return await this.teamService.syncPlayers(id, dto);
   }
 }

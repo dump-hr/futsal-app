@@ -9,9 +9,13 @@ import {
   TrashCanGray,
   XGray,
 } from '@assets/icons';
-import { useTeamGet, useTeamCreate, useTeamUpdate } from '@api/team';
+import {
+  useTeamGet,
+  useTeamCreate,
+  useTeamUpdate,
+  useTeamPlayersSync,
+} from '@api/team';
 import { useGroupsGet } from '@api/group';
-import { usePlayerCreate, usePlayerDelete, usePlayerUpdate } from '@api/player';
 import { PlayerModalAdd, PlayerModalEditByIndex } from '@types';
 import { GroupOption } from '@constants/groupOptions';
 import PlayerFormModal from './PlayerFormModal';
@@ -34,7 +38,6 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
   const [group, setGroup] = useState<GroupOption>('none');
   const [players, setPlayers] = useState<PlayerEntry[]>([]);
   const [isSaving, setIsSaving] = useState(false);
-  const [originalPlayerIds, setOriginalPlayerIds] = useState<number[]>([]);
   const [playerModal, setPlayerModal] = useState<PlayerModal | null>(null);
   const [initialized, setInitialized] = useState(false);
   const [submitAttempted, setSubmitAttempted] = useState(false);
@@ -44,10 +47,11 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
   const { data: existingTeam } = useTeamGet(teamId);
   const { mutateAsync: createTeam } = useTeamCreate();
   const { mutateAsync: updateTeam } = useTeamUpdate();
-  const { mutateAsync: createPlayer } = usePlayerCreate();
-  const { mutateAsync: deletePlayer } = usePlayerDelete();
-  const { mutateAsync: updatePlayer } = usePlayerUpdate();
+  const { mutateAsync: syncPlayers } = useTeamPlayersSync();
   const { data: groups } = useGroupsGet();
+
+  const handleClose = useCallback(() => onClose(), [onClose]);
+  useCloseComponent({ onClose: handleClose });
 
   const isEdit = teamId !== undefined;
   const ready = !isEdit || !!existingTeam;
@@ -68,6 +72,7 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
     if (existingTeam && isEdit && !initialized) {
       setTeamName(existingTeam.name);
       setGroup(existingTeam.groupId ? String(existingTeam.groupId) : 'none');
+
       const existingPlayers: PlayerEntry[] = (existingTeam.players ?? []).map(
         (p: PlayerEntry) => ({
           id: p.id,
@@ -75,14 +80,11 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
           lastName: p.lastName,
         }),
       );
+
       setPlayers(existingPlayers);
-      setOriginalPlayerIds(existingPlayers.map((p) => p.id!));
       setInitialized(true);
     }
   }, [existingTeam, isEdit, initialized]);
-
-  const handleClose = useCallback(() => onClose(), [onClose]);
-  useCloseComponent({ onClose: handleClose });
 
   const handlePlayerSave = (firstName: string, lastName: string) => {
     if (playerModal?.type === 'add') {
@@ -99,67 +101,6 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
     setPlayerModal(null);
   };
 
-  const saveNewTeam = async () => {
-    const created = await createTeam({
-      name: teamName,
-      groupId: group === 'none' ? undefined : Number(group),
-      tournamentId: TOURNAMENT_ID,
-    });
-    for (const player of players) {
-      await createPlayer({
-        firstName: player.firstName,
-        lastName: player.lastName,
-        teamId: created.id,
-      });
-    }
-  };
-
-  const syncPlayers = async () => {
-    const currentPlayerIds = players.filter((p) => p.id).map((p) => p.id!);
-    const removedIds = originalPlayerIds.filter(
-      (id) => !currentPlayerIds.includes(id),
-    );
-
-    for (const id of removedIds) {
-      await deletePlayer(id);
-    }
-
-    for (const player of players) {
-      if (!player.id) {
-        await createPlayer({
-          firstName: player.firstName,
-          lastName: player.lastName,
-          teamId,
-        });
-        continue;
-      }
-      const original = existingTeam?.players?.find(
-        (p: PlayerEntry) => p.id === player.id,
-      );
-      const changed =
-        original &&
-        (original.firstName !== player.firstName ||
-          original.lastName !== player.lastName);
-      if (changed) {
-        await updatePlayer({
-          id: player.id,
-          dto: { firstName: player.firstName, lastName: player.lastName },
-        });
-      }
-    }
-  };
-
-  const saveExistingTeam = async (id: number) => {
-    await updateTeam({
-      id,
-      dto: {
-        name: teamName,
-        groupId: group === 'none' ? null : Number(group),
-      },
-    });
-    await syncPlayers();
-  };
-
   const handleSave = async () => {
     if (!teamName.trim()) {
       setSubmitAttempted(true);
@@ -169,14 +110,37 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
 
     setIsSaving(true);
     try {
-      if (isEdit) {
-        await saveExistingTeam(teamId);
-      } else {
-        await saveNewTeam();
-      }
+      const targetTeamId = isEdit
+        ? (
+            await updateTeam({
+              id: teamId,
+              dto: {
+                name: teamName,
+                groupId: group === 'none' ? null : Number(group),
+              },
+            })
+          ).id
+        : (
+            await createTeam({
+              name: teamName,
+              groupId: group === 'none' ? undefined : Number(group),
+              tournamentId: TOURNAMENT_ID,
+            })
+          ).id;
+
+      await syncPlayers({
+        teamId: targetTeamId,
+        dto: {
+          players: players.map(({ id, firstName, lastName }) => ({
+            id,
+            firstName,
+            lastName,
+          })),
+        },
+      });
       onClose();
-    } catch {
-      // Errors are handled by individual hook onError toasts
+    } catch (error) {
+      console.error('Failed to save team:', error);
     } finally {
       setIsSaving(false);
     }
