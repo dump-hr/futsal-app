@@ -139,23 +139,19 @@
 
 .playerList {
   display: flex;
-  gap: 42px;
+  flex-wrap: wrap;
+  gap: 24px 42px;
 }
 
-.playerColumn {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  flex: 1;
-  min-width: 0;
-  max-width: 320px;
-}
 
 .playerRow {
   display: flex;
   flex-direction: column;
   gap: 4px;
   cursor: pointer;
+  flex: 1 1 calc(33% - 42px);
+  min-width: 200px;
+  max-width: 320px;
 
   input {
     max-width: 100%;
