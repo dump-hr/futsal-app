@@ -2,6 +2,10 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Button, ButtonSmall, Input } from '@components/index';
 import { XWhite, CheckBlack, XGray } from '@assets/icons';
+import {
+  isInvalidName,
+  getPlayerNameValidationError,
+} from '@helpers/validatePlayerName';
 import common from './ModalCommon.module.scss';
 import c from './PlayerFormModal.module.scss';
 
@@ -23,11 +27,6 @@ const PlayerFormModal: React.FC<PlayerFormModalProps> = ({
   const [lastName, setLastName] = useState(initialLast);
   const [submitAttempted, setSubmitAttempted] = useState(false);
 
-  const isInvalidName = (value: string) => {
-    const trimmed = value.trim();
-    return trimmed.length < 2 || trimmed.length > 20;
-  };
-
   const firstNameError = submitAttempted && isInvalidName(firstName);
   const lastNameError = submitAttempted && isInvalidName(lastName);
 
@@ -35,22 +34,10 @@ const PlayerFormModal: React.FC<PlayerFormModalProps> = ({
     const fn = firstName.trim();
     const ln = lastName.trim();
 
-    if (!fn || !ln || isInvalidName(fn) || isInvalidName(ln)) {
+    const error = getPlayerNameValidationError(fn, ln);
+    if (error) {
       setSubmitAttempted(true);
-
-      if (!fn && !ln) {
-        toast.error('Unesite ime i prezime igrača');
-      } else if (!fn) {
-        toast.error('Unesite ime igrača');
-      } else if (!ln) {
-        toast.error('Unesite prezime igrača');
-      } else if (isInvalidName(fn) && isInvalidName(ln)) {
-        toast.error('Ime i prezime moraju imati između 2 i 20 znakova');
-      } else if (isInvalidName(fn)) {
-        toast.error('Ime mora imati između 2 i 20 znakova');
-      } else {
-        toast.error('Prezime mora imati između 2 i 20 znakova');
-      }
+      toast.error(error);
       return;
     }
 
@@ -103,10 +90,7 @@ const PlayerFormModal: React.FC<PlayerFormModalProps> = ({
           <Button icon={XWhite} variant='secondary' onClick={onClose}>
             Odustani
           </Button>
-          <Button
-            icon={CheckBlack}
-            variant='primary'
-            onClick={handleSave}>
+          <Button icon={CheckBlack} variant='primary' onClick={handleSave}>
             Spremi
           </Button>
         </div>
