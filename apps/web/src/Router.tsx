@@ -7,16 +7,9 @@ import {
   StartingPage,
   TeamDetailPage,
   TeamsPage,
+  MatchesPage,
 } from '@pages/index';
 import { ProtectedRoute } from '@components/index';
-import { BackgroundLayout } from '@layouts/BackgroundLayout/BackgroundLayout';
-import { NavbarLayout } from '@layouts/NavbarLayout/NavbarLayout';
-import { HomePage } from './pages/HomePage/HomePage';
-import { TeamsPage } from './pages/TeamsPage/TeamsPage';
-import { TeamDetailPage } from './pages/TeamDetailPage/TeamDetailPage';
-import { MatchesPage } from './pages/MatchesPage/MatchesPage';
-import { LoginPage } from './pages/LoginPage';
-import { ProtectedRoute } from '@components/ProtectedRoute/ProtectedRoute';
 
 export const Router = () => {
   return (
