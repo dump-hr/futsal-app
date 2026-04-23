@@ -6,8 +6,13 @@ import {
   IsPositive,
   IsString,
   IsUrl,
+  Length,
+  Min,
+  ValidateNested,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 import { PlayerDto } from './player';
+import { GroupDto } from './group';
 
 export class TeamCreateDto {
   @IsNotEmpty()
@@ -40,7 +45,7 @@ export class TeamUpdateDto {
   @IsOptional()
   @IsInt()
   @IsPositive()
-  groupId?: number;
+  groupId?: number | null;
 
   @IsOptional()
   @IsInt()
@@ -59,10 +64,14 @@ export class TeamDto {
   name: string;
 
   @IsOptional()
-  logoUrl: string | null;
+  logoUrl?: string | null;
 
   @IsOptional()
+  @IsInt()
   groupId?: number | null;
+
+  @IsOptional()
+  group?: GroupDto | null;
 
   @IsOptional()
   @IsInt()
@@ -70,6 +79,43 @@ export class TeamDto {
   tournamentId?: number | null;
 
   @IsOptional()
-  @IsArray()
+  @IsInt()
+  @Min(0)
+  numberOfPlayers?: number;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  numberOfMatchesPlayed?: number;
+
+  @IsOptional()
+  @IsInt()
+  teamScore?: number;
+
+  @IsOptional()
   players?: PlayerDto[];
+}
+
+export class PlayerSyncDto {
+  @IsOptional()
+  @IsInt()
+  @IsPositive()
+  id?: number;
+
+  @IsNotEmpty()
+  @IsString()
+  @Length(2, 20)
+  firstName: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Length(2, 20)
+  lastName: string;
+}
+
+export class TeamPlayersSyncDto {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => PlayerSyncDto)
+  players: PlayerSyncDto[];
 }

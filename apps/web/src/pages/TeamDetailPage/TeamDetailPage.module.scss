@@ -1,0 +1,100 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 54px;
+  width: 100%;
+  padding: 36px 60px;
+  height: calc(100vh - 80px);
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 64px;
+}
+
+.teamIdentity {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.teamLogo {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.teamName {
+  @include title-2;
+  font-weight: 600;
+  color: $white;
+  line-height: 1;
+  margin: 0;
+  margin-left: 24px;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  min-height: 0;
+}
+
+.playersSection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 0 0 25%;
+  max-width: 500px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sectionTitle {
+  @include title-3;
+  color: $white;
+}
+
+@mixin scrollable-list {
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  padding-right: 12px;
+
+  &::-webkit-scrollbar {
+    width: 14px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $black;
+    border-radius: 15px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $gray-light;
+    border-radius: 15px;
+  }
+}
+
+.playerList {
+  @include scrollable-list;
+}
+
+.matchesSection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 0 0 65%;
+  min-height: 0;
+}
+
+.matchList {
+  @include scrollable-list;
+}

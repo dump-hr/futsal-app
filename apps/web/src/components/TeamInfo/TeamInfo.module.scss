@@ -28,11 +28,17 @@
     display: flex;
     opacity: 0.6;
     margin-right: 74px;
-    gap: 74px;
+    gap: 24px;
+
     &Wrapper {
       display: flex;
       align-items: center;
     }
+  }
+
+  &Stat {
+    width: 120px;
+    text-align: center;
   }
 
   &Actions {
