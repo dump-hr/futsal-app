@@ -25,7 +25,14 @@ import c from './TeamDetailPage.module.scss';
 type PlayerModal = PlayerModalAdd | PlayerModalEditById;
 
 export const TeamDetailPage = () => {
+  const [playerModal, setPlayerModal] = useState<PlayerModal | null>(null);
+  const [playerToDelete, setPlayerToDelete] = useState<{
+    id: number;
+    name: string;
+  } | null>(null);
+  const [showTeamEdit, setShowTeamEdit] = useState(false);
   const [, navigate] = useLocation();
+  
   const params = useParams<{ teamId: string }>();
   const parsed = Number(params.teamId);
   const teamId = isNaN(parsed) ? undefined : parsed;
@@ -35,13 +42,6 @@ export const TeamDetailPage = () => {
   const { mutate: createPlayer } = usePlayerCreate();
   const { mutate: updatePlayer } = usePlayerUpdate();
   const { mutate: deletePlayer } = usePlayerDelete();
-
-  const [playerModal, setPlayerModal] = useState<PlayerModal | null>(null);
-  const [playerToDelete, setPlayerToDelete] = useState<{
-    id: number;
-    name: string;
-  } | null>(null);
-  const [showTeamEdit, setShowTeamEdit] = useState(false);
 
   if (!teamId) return null;
 

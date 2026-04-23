@@ -4,9 +4,10 @@ import { useCloseComponent } from '@hooks/index';
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
+  error?: boolean;
 };
 
-const Input: React.FC<InputProps> = ({ label, ...props }) => {
+const Input: React.FC<InputProps> = ({ label, error, ...props }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const inputId = useId();
 
@@ -27,7 +28,7 @@ const Input: React.FC<InputProps> = ({ label, ...props }) => {
         ref={inputRef}
         id={inputId}
         type='text'
-        className={c.input}
+        className={error ? `${c.input} ${c.error}` : c.input}
         {...props}
       />
     </div>

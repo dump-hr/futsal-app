@@ -1,15 +1,12 @@
 import { MatchDto } from '@futsal-app/types';
-import { MatchInfo, MATCH_STATUS, MATCH_STAGE } from '@components/MatchInfo';
-import type { MatchStage, MatchStatus } from '@components/MatchInfo';
+import {
+  MatchInfo,
+  MATCH_STATUS,
+  MATCH_STAGE,
+  MATCH_TYPE_TO_STAGE,
+} from '@components/MatchInfo';
+import type { MatchStatus } from '@components/MatchInfo';
 import c from './MatchList.module.scss';
-
-const MATCH_TYPE_TO_STAGE: Record<string, MatchStage> = {
-  group: MATCH_STAGE.GROUP_STAGE,
-  quarterFinal: MATCH_STAGE.QUARTER_FINALS,
-  semiFinal: MATCH_STAGE.SEMI_FINALS,
-  final: MATCH_STAGE.FINAL,
-  thirdPlace: MATCH_STAGE.FINAL,
-};
 
 type MatchListProps = {
   matches: MatchDto[];

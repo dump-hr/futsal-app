@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { Button } from '@components/index';
-import ButtonSmall from '@components/ButtonSmall/ButtonSmall';
-import Input from '@components/Input/Input';
+import { Button, ButtonSmall, Input } from '@components/index';
 import { XWhite, CheckBlack, XGray } from '@assets/icons';
 import common from './ModalCommon.module.scss';
 import c from './PlayerFormModal.module.scss';
@@ -23,21 +21,40 @@ const PlayerFormModal: React.FC<PlayerFormModalProps> = ({
   const isEdit = !!(initialFirst || initialLast);
   const [firstName, setFirstName] = useState(initialFirst);
   const [lastName, setLastName] = useState(initialLast);
+  const [submitAttempted, setSubmitAttempted] = useState(false);
+
+  const isInvalidName = (value: string) => {
+    const trimmed = value.trim();
+    return trimmed.length < 2 || trimmed.length > 20;
+  };
+
+  const firstNameError = submitAttempted && isInvalidName(firstName);
+  const lastNameError = submitAttempted && isInvalidName(lastName);
 
   const handleSave = () => {
-    if (!firstName.trim() && !lastName.trim()) {
-      toast.error('Unesite ime i prezime igrača');
+    const fn = firstName.trim();
+    const ln = lastName.trim();
+
+    if (!fn || !ln || isInvalidName(fn) || isInvalidName(ln)) {
+      setSubmitAttempted(true);
+
+      if (!fn && !ln) {
+        toast.error('Unesite ime i prezime igrača');
+      } else if (!fn) {
+        toast.error('Unesite ime igrača');
+      } else if (!ln) {
+        toast.error('Unesite prezime igrača');
+      } else if (isInvalidName(fn) && isInvalidName(ln)) {
+        toast.error('Ime i prezime moraju imati između 2 i 20 znakova');
+      } else if (isInvalidName(fn)) {
+        toast.error('Ime mora imati između 2 i 20 znakova');
+      } else {
+        toast.error('Prezime mora imati između 2 i 20 znakova');
+      }
       return;
     }
-    if (!firstName.trim()) {
-      toast.error('Unesite ime igrača');
-      return;
-    }
-    if (!lastName.trim()) {
-      toast.error('Unesite prezime igrača');
-      return;
-    }
-    onSave(firstName.trim(), lastName.trim());
+
+    onSave(fn, ln);
   };
 
   return (
@@ -68,6 +85,7 @@ const PlayerFormModal: React.FC<PlayerFormModalProps> = ({
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               placeholder='Ime'
+              error={firstNameError}
             />
           </div>
           <div className={c.field}>
@@ -76,6 +94,7 @@ const PlayerFormModal: React.FC<PlayerFormModalProps> = ({
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               placeholder='Prezime'
+              error={lastNameError}
             />
           </div>
         </div>

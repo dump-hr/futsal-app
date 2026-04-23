@@ -17,7 +17,18 @@ import { SortOrder, GroupFilter, SORT_OPTIONS } from './options';
 const TOURNAMENT_ID = 1;
 
 export const TeamsPage = () => {
+  const [sortOrder, setSortOrder] = useState<SortOrder>('az');
+  const [groupFilter, setGroupFilter] = useState<GroupFilter>('all');
+  const [teamToDelete, setTeamToDelete] = useState<{
+    id: number;
+    name: string;
+  } | null>(null);
+  const [formModal, setFormModal] = useState<{
+    open: boolean;
+    teamId?: number;
+  }>({ open: false });
   const [, navigate] = useLocation();
+
   const { data: teams } = useTeamsGet(TOURNAMENT_ID);
   const { data: groups } = useGroupsGet();
   const { mutate: deleteTeam } = useTeamDelete();
@@ -33,16 +44,6 @@ export const TeamsPage = () => {
     }
     return opts;
   }, [groups]);
-  const [sortOrder, setSortOrder] = useState<SortOrder>('az');
-  const [groupFilter, setGroupFilter] = useState<GroupFilter>('all');
-  const [teamToDelete, setTeamToDelete] = useState<{
-    id: number;
-    name: string;
-  } | null>(null);
-  const [formModal, setFormModal] = useState<{
-    open: boolean;
-    teamId?: number;
-  }>({ open: false });
 
   const filteredTeams = useMemo(() => {
     if (!teams) return [];

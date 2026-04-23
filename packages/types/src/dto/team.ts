@@ -5,6 +5,7 @@ import {
   IsPositive,
   IsString,
   IsUrl,
+  Min,
 } from 'class-validator';
 import { PlayerDto } from './player';
 import { GroupDto } from './group';
@@ -75,10 +76,12 @@ export class TeamDto {
 
   @IsOptional()
   @IsInt()
+  @Min(0)
   numberOfPlayers?: number;
 
   @IsOptional()
   @IsInt()
+  @Min(0)
   numberOfMatchesPlayed?: number;
 
   @IsOptional()

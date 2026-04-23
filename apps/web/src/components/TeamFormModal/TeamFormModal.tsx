@@ -13,7 +13,6 @@ import { useTeamGet, useTeamCreate, useTeamUpdate } from '@api/team';
 import { useGroupsGet } from '@api/group';
 import { usePlayerCreate, usePlayerDelete, usePlayerUpdate } from '@api/player';
 import { PlayerModalAdd, PlayerModalEditByIndex } from '@types';
-import { validatePlayers } from '@helpers/validatePlayers';
 import { GroupOption } from '@constants/groupOptions';
 import PlayerFormModal from './PlayerFormModal';
 import PlayerGrid, { type PlayerEntry } from './PlayerGrid';
@@ -31,7 +30,17 @@ type TeamFormModalProps = {
 };
 
 const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
-  const isEdit = teamId !== undefined;
+  const [teamName, setTeamName] = useState('');
+  const [group, setGroup] = useState<GroupOption>('none');
+  const [players, setPlayers] = useState<PlayerEntry[]>([]);
+  const [isSaving, setIsSaving] = useState(false);
+  const [originalPlayerIds, setOriginalPlayerIds] = useState<number[]>([]);
+  const [playerModal, setPlayerModal] = useState<PlayerModal | null>(null);
+  const [initialized, setInitialized] = useState(false);
+  const [submitAttempted, setSubmitAttempted] = useState(false);
+
+  const teamNameError = submitAttempted && !teamName.trim();
+
   const { data: existingTeam } = useTeamGet(teamId);
   const { mutateAsync: createTeam } = useTeamCreate();
   const { mutateAsync: updateTeam } = useTeamUpdate();
@@ -39,6 +48,9 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
   const { mutateAsync: deletePlayer } = usePlayerDelete();
   const { mutateAsync: updatePlayer } = usePlayerUpdate();
   const { data: groups } = useGroupsGet();
+
+  const isEdit = teamId !== undefined;
+  const ready = !isEdit || !!existingTeam;
 
   const groupOptions = useMemo(() => {
     const opts: { label: string; value: GroupOption }[] = [
@@ -51,16 +63,6 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
     }
     return opts;
   }, [groups]);
-
-  const ready = !isEdit || !!existingTeam;
-
-  const [teamName, setTeamName] = useState('');
-  const [group, setGroup] = useState<GroupOption>('none');
-  const [players, setPlayers] = useState<PlayerEntry[]>([]);
-  const [isSaving, setIsSaving] = useState(false);
-  const [originalPlayerIds, setOriginalPlayerIds] = useState<number[]>([]);
-  const [playerModal, setPlayerModal] = useState<PlayerModal | null>(null);
-  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     if (existingTeam && isEdit && !initialized) {
@@ -97,76 +99,81 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
     setPlayerModal(null);
   };
 
+  const saveNewTeam = async () => {
+    const created = await createTeam({
+      name: teamName,
+      groupId: group === 'none' ? undefined : Number(group),
+      tournamentId: TOURNAMENT_ID,
+    });
+    for (const player of players) {
+      await createPlayer({
+        firstName: player.firstName,
+        lastName: player.lastName,
+        teamId: created.id,
+      });
+    }
+  };
+
+  const syncPlayers = async () => {
+    const currentPlayerIds = players.filter((p) => p.id).map((p) => p.id!);
+    const removedIds = originalPlayerIds.filter(
+      (id) => !currentPlayerIds.includes(id),
+    );
+
+    for (const id of removedIds) {
+      await deletePlayer(id);
+    }
+
+    for (const player of players) {
+      if (!player.id) {
+        await createPlayer({
+          firstName: player.firstName,
+          lastName: player.lastName,
+          teamId,
+        });
+        continue;
+      }
+      const original = existingTeam?.players?.find(
+        (p: PlayerEntry) => p.id === player.id,
+      );
+      const changed =
+        original &&
+        (original.firstName !== player.firstName ||
+          original.lastName !== player.lastName);
+      if (changed) {
+        await updatePlayer({
+          id: player.id,
+          dto: { firstName: player.firstName, lastName: player.lastName },
+        });
+      }
+    }
+  };
+
+  const saveExistingTeam = async (id: number) => {
+    await updateTeam({
+      id,
+      dto: {
+        name: teamName,
+        groupId: group === 'none' ? null : Number(group),
+      },
+    });
+    await syncPlayers();
+  };
+
   const handleSave = async () => {
     if (!teamName.trim()) {
+      setSubmitAttempted(true);
       toast.error('Unesite ime ekipe');
       return;
     }
-    if (!validatePlayers(players)) return;
 
     setIsSaving(true);
-
     try {
       if (isEdit) {
-        await updateTeam({
-          id: teamId,
-          dto: {
-            name: teamName,
-            groupId: group === 'none' ? null : Number(group),
-          },
-        });
-
-        const currentPlayerIds = players.filter((p) => p.id).map((p) => p.id!);
-        const removedIds = originalPlayerIds.filter(
-          (id) => !currentPlayerIds.includes(id),
-        );
-
-        for (const id of removedIds) {
-          await deletePlayer(id);
-        }
-
-        for (const player of players) {
-          if (player.id) {
-            const original = existingTeam?.players?.find(
-              (p: PlayerEntry) => p.id === player.id,
-            );
-            if (
-              original &&
-              (original.firstName !== player.firstName ||
-                original.lastName !== player.lastName)
-            ) {
-              await updatePlayer({
-                id: player.id,
-                dto: {
-                  firstName: player.firstName,
-                  lastName: player.lastName,
-                },
-              });
-            }
-          } else {
-            await createPlayer({
-              firstName: player.firstName,
-              lastName: player.lastName,
-              teamId,
-            });
-          }
-        }
+        await saveExistingTeam(teamId);
       } else {
-        const created = await createTeam({
-          name: teamName,
-          groupId: group === 'none' ? undefined : Number(group),
-          tournamentId: TOURNAMENT_ID,
-        });
-
-        for (const player of players) {
-          await createPlayer({
-            firstName: player.firstName,
-            lastName: player.lastName,
-            teamId: created.id,
-          });
-        }
+        await saveNewTeam();
       }
-
       onClose();
     } catch {
       // Errors are handled by individual hook onError toasts
@@ -225,6 +232,7 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
                     value={teamName}
                     onChange={(e) => setTeamName(e.target.value)}
                     placeholder='Ime ekipe'
+                    error={teamNameError}
                   />
                 </div>
                 <div className={c.fieldGroup}>
