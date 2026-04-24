@@ -1,6 +1,5 @@
 import { MatchDto } from '@futsal-app/types';
-import { MatchInfo, MATCH_STAGE } from '@components/MatchInfo';
-import { MATCH_TYPE_TO_STAGE, getMatchStatus } from '@helpers/matchHelpers';
+import { MatchInfoFromDto } from '@components/MatchInfo';
 import c from './MatchDayGroup.module.scss';
 
 type MatchDayGroupProps = {
@@ -21,28 +20,11 @@ export const MatchDayGroup: React.FC<MatchDayGroupProps> = ({
       <h2 className={c.dateHeader}>{dateLabel}</h2>
       <div className={c.matchList}>
         {matches.map((match) => (
-          <MatchInfo
+          <MatchInfoFromDto
             key={match.id}
-            teamA={{
-              teamName: match.homeTeam?.name ?? 'TBD',
-              logoUrl: match.homeTeam?.logoUrl ?? '',
-            }}
-            teamB={{
-              teamName: match.awayTeam?.name ?? 'TBD',
-              logoUrl: match.awayTeam?.logoUrl ?? '',
-            }}
-            teamAScore={match.homeGoals}
-            teamBScore={match.awayGoals}
-            matchTime={new Date(match.timeOfMatch).toLocaleTimeString('hr', {
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
-            matchStage={
-              MATCH_TYPE_TO_STAGE[match.matchType] ?? MATCH_STAGE.GROUP_STAGE
-            }
-            matchStatus={getMatchStatus(match)}
-            onEdit={onEdit ? () => onEdit(match.id) : undefined}
-            onDelete={onDelete ? () => onDelete(match.id) : undefined}
+            match={match}
+            onEdit={onEdit}
+            onDelete={onDelete}
           />
         ))}
       </div>

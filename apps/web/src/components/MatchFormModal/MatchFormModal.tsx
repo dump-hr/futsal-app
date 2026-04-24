@@ -1,15 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
 import { Button, ButtonSmall, FilterDropdown } from '@components/index';
-import TeamPicker from './TeamPicker';
-import DateTimePicker from './DateTimePicker';
 import { XGray, CheckBlack, XWhite } from '@assets/icons';
-import { useMatchCreate, useMatchUpdate, useMatchGet } from '@api/match';
-import { useTeamsGet } from '@api/team';
+import {
+  useMatchCreate,
+  useMatchUpdate,
+  useMatchGet,
+  useTeamsGet,
+} from '@api/index';
 import { useCloseComponent } from '@hooks/index';
 import { MatchType } from '@futsal-app/types';
 import { MATCH_TYPE_OPTIONS, validateMatchForm } from '@helpers/matchHelpers';
 import { formatLocalDate, formatLocalTime } from '@helpers/formatMatchDate';
+import TeamPicker from './TeamPicker';
+import DateTimePicker from './DateTimePicker';
 import common from '../TeamFormModal/ModalCommon.module.scss';
 import c from './MatchFormModal.module.scss';
 
@@ -39,6 +43,9 @@ const MatchFormModal: React.FC<MatchFormModalProps> = ({
   const { mutate: updateMatch, isPending: isUpdating } = useMatchUpdate();
   const { data: teams } = useTeamsGet(TOURNAMENT_ID);
 
+  const modalRef = useRef<HTMLDivElement>(null);
+  const { overlayRef } = useCloseComponent({ onClose, containerRef: modalRef });
+
   useEffect(() => {
     if (existingMatch && isEdit && !initialized) {
       const dt = new Date(existingMatch.timeOfMatch);
@@ -50,9 +57,6 @@ const MatchFormModal: React.FC<MatchFormModalProps> = ({
       setInitialized(true);
     }
   }, [existingMatch, isEdit, initialized]);
-
-  const modalRef = useRef<HTMLDivElement>(null);
-  const { overlayRef } = useCloseComponent({ onClose, containerRef: modalRef });
 
   const teamOptions: { label: string; value: string }[] = (teams ?? []).map(
     (t) => ({ label: t.name, value: String(t.id) }),
@@ -70,7 +74,7 @@ const MatchFormModal: React.FC<MatchFormModalProps> = ({
       awayTeamId,
       isEdit,
     });
-    
+
     if (error) {
       toast.error(error);
       return;

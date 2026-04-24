@@ -1,7 +1,14 @@
 import { useState, useMemo } from 'react';
-import { Button, FilterDropdown, MatchDayGroup, MatchFormModal, ModalConfirmation } from '@components/index';
+import {
+  Button,
+  FilterDropdown,
+  MatchDayGroup,
+  MatchFormModal,
+  ModalConfirmation,
+} from '@components/index';
 import { PlusBlack, TrashCanGray } from '@assets/icons';
 import { useMatchGetAll, useMatchDelete } from '@api/match';
+import { useTeamsGet } from '@api/team';
 import { getDateKey, formatMatchDayHeader } from '@helpers/matchHelpers';
 import c from './MatchesPage.module.scss';
 import {
@@ -16,40 +23,30 @@ import {
 const TOURNAMENT_ID = 1;
 
 export const MatchesPage = () => {
-  const { data: matches } = useMatchGetAll(TOURNAMENT_ID);
-
-  const [matchTypeFilter, setMatchTypeFilter] = useState<MatchTypeFilter>('all');
+  const [matchTypeFilter, setMatchTypeFilter] =
+    useState<MatchTypeFilter>('all');
   const [dateSort, setDateSort] = useState<DateSort>('asc');
   const [teamFilter, setTeamFilter] = useState<TeamFilter>('all');
-  const [formModal, setFormModal] = useState<{ open: boolean; matchId?: number }>({ open: false });
-  const [deleteConfirm, setDeleteConfirm] = useState<{ open: boolean; matchId?: number }>({ open: false });
+  const [formModal, setFormModal] = useState<{
+    open: boolean;
+    matchId?: number;
+  }>({ open: false });
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    open: boolean;
+    matchId?: number;
+  }>({ open: false });
+
+  const { data: matches } = useMatchGetAll(TOURNAMENT_ID);
+  const { data: teams } = useTeamsGet(TOURNAMENT_ID);
   const { mutate: deleteMatch } = useMatchDelete();
 
-  const teamOptions = useMemo(() => {
-    const opts: { label: string; value: TeamFilter }[] = [
+  const teamOptions = useMemo<{ label: string; value: TeamFilter }[]>(
+    () => [
       { label: 'Ekipa', value: 'all' },
-    ];
-    if (!matches) return opts;
-
-    const seen = new Set<number>();
-    for (const match of matches) {
-      if (match.homeTeam && !seen.has(match.homeTeam.id)) {
-        seen.add(match.homeTeam.id);
-        opts.push({
-          label: match.homeTeam.name,
-          value: String(match.homeTeam.id),
-        });
-      }
-      if (match.awayTeam && !seen.has(match.awayTeam.id)) {
-        seen.add(match.awayTeam.id);
-        opts.push({
-          label: match.awayTeam.name,
-          value: String(match.awayTeam.id),
-        });
-      }
-    }
-    return opts;
-  }, [matches]);
+      ...(teams ?? []).map((t) => ({ label: t.name, value: String(t.id) })),
+    ],
+    [teams],
+  );
 
   const matchGroups = useMemo(() => {
     if (!matches) return [];
@@ -88,18 +85,23 @@ export const MatchesPage = () => {
       groups.get(key)!.matches.push(match);
     }
 
-    return Array.from(groups.entries()).map(([dateKey, { dateLabel, matches }]) => ({
-      dateKey,
-      dateLabel,
-      matches,
-    }));
+    return Array.from(groups.entries()).map(
+      ([dateKey, { dateLabel, matches }]) => ({
+        dateKey,
+        dateLabel,
+        matches,
+      }),
+    );
   }, [matches, matchTypeFilter, dateSort, teamFilter]);
 
   return (
     <div className={c.page}>
       <div className={c.header}>
         <h1 className={c.title}>UTAKMICE</h1>
-        <Button icon={PlusBlack} variant='primary' onClick={() => setFormModal({ open: true })}>
+        <Button
+          icon={PlusBlack}
+          variant='primary'
+          onClick={() => setFormModal({ open: true })}>
           Nova utakmica
         </Button>
       </div>
@@ -126,7 +128,11 @@ export const MatchesPage = () => {
       </div>
 
       {matchGroups.length === 0 ? (
-        <div className={c.empty}>Nema dodanih utakmica!</div>
+        <div className={c.empty}>
+          {matches && matches.length > 0
+            ? 'Nema utakmica koje odgovaraju filtrima'
+            : 'Nema dodanih utakmica!'}
+        </div>
       ) : (
         <div className={c.matchGroups}>
           {matchGroups.map(({ dateKey, dateLabel, matches }) => (
