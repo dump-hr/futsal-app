@@ -1,11 +1,5 @@
 const pad = (n: number) => String(n).padStart(2, '0');
 
-export const formatLocalDate = (d: Date): string =>
-  `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-
-export const formatLocalTime = (d: Date): string =>
-  `${pad(d.getHours())}:${pad(d.getMinutes())}`;
-
 export const validateTime = (time: string): string | null => {
   const match = time.match(/^(\d{1,2}):(\d{2})$/);
   if (!match) return 'Vrijeme mora biti u formatu HH:MM';

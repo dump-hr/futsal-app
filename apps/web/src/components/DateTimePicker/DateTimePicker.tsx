@@ -1,4 +1,4 @@
-import c from './MatchFormModal.module.scss';
+import c from './DateTimePicker.module.scss';
 
 type DateTimePickerProps = {
   date: string;

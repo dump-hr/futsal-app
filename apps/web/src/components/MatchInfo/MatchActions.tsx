@@ -12,14 +12,14 @@ type MatchActionsProps = {
   status: MatchStatus;
   onEdit?: () => void;
   onDelete?: () => void;
-  onShowEvents?: () => void;
+  onActivate?: () => void;
 };
 
 export const MatchActions: React.FC<MatchActionsProps> = ({
   status,
   onEdit,
   onDelete,
-  onShowEvents,
+  onActivate,
 }) => {
   switch (status) {
     case MATCH_STATUS.UPCOMING:
@@ -29,6 +29,7 @@ export const MatchActions: React.FC<MatchActionsProps> = ({
             iconSrc={playIconSvg}
             hasBorder
             backgroundColor={BackgroundColor.White}
+            onClick={onActivate}
           />
           <ButtonSmall iconSrc={trashCanIconSvg} hasBorder onClick={onDelete} />
           <ButtonSmall iconSrc={editIconSvg} hasBorder onClick={onEdit} />
@@ -49,7 +50,6 @@ export const MatchActions: React.FC<MatchActionsProps> = ({
           <ButtonSmall
             iconSrc={doneIconSvg}
             backgroundColor={BackgroundColor.Lime}
-            onClick={onShowEvents}
           />
           <ButtonSmall iconSrc={trashCanIconSvg} hasBorder onClick={onDelete} />
           <ButtonSmall iconSrc={editIconSvg} hasBorder onClick={onEdit} />

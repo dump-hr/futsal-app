@@ -53,21 +53,18 @@ type MatchFormInput = {
   matchType: string;
   homeTeamId: string;
   awayTeamId: string;
-  isEdit: boolean;
 };
 
 export const validateMatchForm = (input: MatchFormInput): string | null => {
-  const { date, time, matchType, homeTeamId, awayTeamId, isEdit } = input;
+  const { date, time, matchType, homeTeamId, awayTeamId } = input;
 
   if (!date || !time || !matchType) return 'Molimo ispunite sva polja';
 
   const timeError = validateTime(time);
   if (timeError) return timeError;
 
-  if (!isEdit && (!homeTeamId || !awayTeamId))
-    return 'Molimo odaberite ekipe';
-  if (!isEdit && homeTeamId === awayTeamId)
-    return 'Ekipe moraju biti različite';
+  if (!homeTeamId || !awayTeamId) return 'Molimo odaberite ekipe';
+  if (homeTeamId === awayTeamId) return 'Ekipe moraju biti različite';
 
   return null;
 };

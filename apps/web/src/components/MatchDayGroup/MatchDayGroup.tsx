@@ -7,7 +7,7 @@ type MatchDayGroupProps = {
   matches: MatchDto[];
   onEdit?: (matchId: number) => void;
   onDelete?: (matchId: number) => void;
-  onShowEvents?: (matchId: number) => void;
+  onActivate?: (matchId: number) => void;
 };
 
 const MatchDayGroup: React.FC<MatchDayGroupProps> = ({
@@ -15,7 +15,7 @@ const MatchDayGroup: React.FC<MatchDayGroupProps> = ({
   matches,
   onEdit,
   onDelete,
-  onShowEvents,
+  onActivate,
 }) => {
   return (
     <div className={c.group}>
@@ -27,7 +27,7 @@ const MatchDayGroup: React.FC<MatchDayGroupProps> = ({
             match={match}
             onEdit={onEdit}
             onDelete={onDelete}
-            onShowEvents={onShowEvents}
+            onActivate={onActivate}
           />
         ))}
       </div>

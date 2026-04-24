@@ -1,19 +1,17 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import toast from 'react-hot-toast';
-import { Button, ButtonSmall, FilterDropdown } from '@components/index';
-import { XGray, CheckBlack, XWhite } from '@assets/icons';
 import {
-  useMatchCreate,
-  useMatchUpdate,
-  useMatchGet,
-  useTeamsGet,
-} from '@api/index';
+  Button,
+  ButtonSmall,
+  DateTimePicker,
+  FilterDropdown,
+} from '@components/index';
+import { XGray, CheckBlack, XWhite } from '@assets/icons';
+import { useMatchCreate, useTeamsGet } from '@api/index';
 import { useCloseComponent } from '@hooks/index';
 import { MatchType } from '@futsal-app/types';
 import { MATCH_TYPE_OPTIONS, validateMatchForm } from '@helpers/matchHelpers';
-import { formatLocalDate, formatLocalTime } from '@helpers/formatMatchDate';
 import TeamPicker from './TeamPicker';
-import DateTimePicker from './DateTimePicker';
 import common from '../TeamFormModal/ModalCommon.module.scss';
 import c from './MatchFormModal.module.scss';
 
@@ -22,41 +20,20 @@ const TOURNAMENT_ID = 1;
 
 type MatchFormModalProps = {
   onClose: () => void;
-  matchId?: number;
 };
 
-const MatchFormModal: React.FC<MatchFormModalProps> = ({
-  onClose,
-  matchId,
-}) => {
+const MatchFormModal: React.FC<MatchFormModalProps> = ({ onClose }) => {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [matchType, setMatchType] = useState('');
   const [homeTeamId, setHomeTeamId] = useState('');
   const [awayTeamId, setAwayTeamId] = useState('');
-  const [initialized, setInitialized] = useState(false);
 
-  const isEdit = matchId !== undefined;
-
-  const { data: existingMatch } = useMatchGet(matchId ?? 0);
   const { mutate: createMatch, isPending: isCreating } = useMatchCreate();
-  const { mutate: updateMatch, isPending: isUpdating } = useMatchUpdate();
   const { data: teams } = useTeamsGet(TOURNAMENT_ID);
 
   const modalRef = useRef<HTMLDivElement>(null);
   const { overlayRef } = useCloseComponent({ onClose, containerRef: modalRef });
-
-  useEffect(() => {
-    if (existingMatch && isEdit && !initialized) {
-      const dt = new Date(existingMatch.timeOfMatch);
-      setDate(formatLocalDate(dt));
-      setTime(formatLocalTime(dt));
-      setMatchType(existingMatch.matchType);
-      setHomeTeamId(String(existingMatch.homeTeam?.id ?? ''));
-      setAwayTeamId(String(existingMatch.awayTeam?.id ?? ''));
-      setInitialized(true);
-    }
-  }, [existingMatch, isEdit, initialized]);
 
   const teamOptions: { label: string; value: string }[] = (teams ?? []).map(
     (t) => ({ label: t.name, value: String(t.id) }),
@@ -72,7 +49,6 @@ const MatchFormModal: React.FC<MatchFormModalProps> = ({
       matchType,
       homeTeamId,
       awayTeamId,
-      isEdit,
     });
 
     if (error) {
@@ -80,44 +56,25 @@ const MatchFormModal: React.FC<MatchFormModalProps> = ({
       return;
     }
 
-    if (isEdit) {
-      updateMatch(
-        {
-          id: matchId,
-          dto: {
-            timeOfMatch: new Date(`${date}T${time}`),
-            matchType: matchType as `${MatchType}`,
-          },
-        },
-        { onSuccess: onClose },
-      );
-    } else {
-      createMatch(
-        {
-          timeOfMatch: new Date(`${date}T${time}`),
-          homeTeamId: Number(homeTeamId),
-          awayTeamId: Number(awayTeamId),
-          matchType: matchType as `${MatchType}`,
-        },
-        { onSuccess: onClose },
-      );
-    }
+    createMatch(
+      {
+        timeOfMatch: new Date(`${date}T${time}`),
+        homeTeamId: Number(homeTeamId),
+        awayTeamId: Number(awayTeamId),
+        matchType: matchType as `${MatchType}`,
+      },
+      { onSuccess: onClose },
+    );
   };
-
-  if (isEdit && !initialized) return null;
 
   return (
     <div className={`${common.overlay} ${c.overlay}`} ref={overlayRef}>
       <div className={c.modal} ref={modalRef} role='dialog'>
         <div className={common.header}>
           <div className={common.headerText}>
-            <h2 className={common.title}>
-              {isEdit ? 'Uredi utakmicu' : 'Nova utakmica'}
-            </h2>
+            <h2 className={common.title}>Nova utakmica</h2>
             <p className={common.subtitle}>
-              {isEdit
-                ? 'Uredi datum, vrijeme ili tip utakmice'
-                : 'Unesi vrijeme, datum i ostale informacije bitne za novu utakmicu'}
+              Unesi vrijeme, datum i ostale informacije bitne za novu utakmicu
             </p>
           </div>
           <div className={c.closeButton}>
@@ -155,7 +112,6 @@ const MatchFormModal: React.FC<MatchFormModalProps> = ({
               value={homeTeamId}
               options={teamOptions}
               onChange={setHomeTeamId}
-              disabled={isEdit}
             />
 
             <span className={c.vs}>VS</span>
@@ -166,7 +122,6 @@ const MatchFormModal: React.FC<MatchFormModalProps> = ({
               value={awayTeamId}
               options={teamOptions}
               onChange={setAwayTeamId}
-              disabled={isEdit}
             />
           </div>
         </div>
@@ -179,7 +134,7 @@ const MatchFormModal: React.FC<MatchFormModalProps> = ({
             icon={CheckBlack}
             variant='primary'
             onClick={handleSubmit}
-            disabled={isCreating || isUpdating}>
+            disabled={isCreating}>
             Spremi
           </Button>
         </div>

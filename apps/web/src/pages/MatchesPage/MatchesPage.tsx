@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import {
   Button,
   FilterDropdown,
@@ -7,8 +7,12 @@ import {
   MatchPanel,
   ModalConfirmation,
 } from '@components/index';
-import { PlusBlack, TrashCanBlack } from '@assets/icons';
-import { useMatchGetAll, useMatchDelete } from '@api/match';
+import { PlayBlack, PlusBlack, TrashCanBlack } from '@assets/icons';
+import {
+  useMatchGetAll,
+  useMatchDelete,
+  useMatchSetActive,
+} from '@api/match';
 import { useTeamsGet } from '@api/team';
 import { groupMatchesByDay } from '@helpers/matchHelpers';
 import c from './MatchesPage.module.scss';
@@ -28,32 +32,33 @@ export const MatchesPage = () => {
     useState<MatchTypeFilter>('all');
   const [dateSort, setDateSort] = useState<DateSort>('asc');
   const [teamFilter, setTeamFilter] = useState<TeamFilter>('all');
-  const [formModal, setFormModal] = useState<{
-    open: boolean;
-    matchId?: number;
-  }>({ open: false });
+  const [formModalOpen, setFormModalOpen] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<{
     open: boolean;
     matchId?: number;
   }>({ open: false });
+  const [activateConfirm, setActivateConfirm] = useState<{
+    open: boolean;
+    matchId?: number;
+  }>({ open: false });
   const [panelMatchId, setPanelMatchId] = useState<number | undefined>();
+  const [panelClosing, setPanelClosing] = useState(false);
 
   const { data: matches } = useMatchGetAll(TOURNAMENT_ID);
   const { data: teams } = useTeamsGet(TOURNAMENT_ID);
   const { mutate: deleteMatch } = useMatchDelete();
+  const { mutate: setMatchActive } = useMatchSetActive();
 
-  const teamOptions = useMemo<{ label: string; value: TeamFilter }[]>(
-    () => [
-      { label: 'Ekipa', value: 'all' },
-      ...(teams ?? []).map((t) => ({ label: t.name, value: String(t.id) })),
-    ],
-    [teams],
-  );
+  const teamOptions: { label: string; value: TeamFilter }[] = [
+    { label: 'Ekipa', value: 'all' },
+    ...(teams ?? []).map((t) => ({ label: t.name, value: String(t.id) })),
+  ];
 
-  const matchGroups = useMemo(
-    () => groupMatchesByDay(matches, { matchTypeFilter, teamFilter, dateSort }),
-    [matches, matchTypeFilter, teamFilter, dateSort],
-  );
+  const matchGroups = groupMatchesByDay(matches, {
+    matchTypeFilter,
+    teamFilter,
+    dateSort,
+  });
 
   return (
     <div className={c.page}>
@@ -63,7 +68,7 @@ export const MatchesPage = () => {
           <Button
             icon={PlusBlack}
             variant='primary'
-            onClick={() => setFormModal({ open: true })}>
+            onClick={() => setFormModalOpen(true)}>
             Nova utakmica
           </Button>
         </div>
@@ -102,11 +107,13 @@ export const MatchesPage = () => {
                 key={dateKey}
                 dateLabel={dateLabel}
                 matches={matches}
-                onEdit={(matchId) => setFormModal({ open: true, matchId })}
+                onEdit={setPanelMatchId}
                 onDelete={(matchId) =>
                   setDeleteConfirm({ open: true, matchId })
                 }
-                onShowEvents={setPanelMatchId}
+                onActivate={(matchId) =>
+                  setActivateConfirm({ open: true, matchId })
+                }
               />
             ))}
           </div>
@@ -114,17 +121,25 @@ export const MatchesPage = () => {
       </div>
 
       {panelMatchId !== undefined && (
-        <MatchPanel
-          matchId={panelMatchId}
-          onClose={() => setPanelMatchId(undefined)}
-        />
+        <div
+          className={
+            panelClosing ? `${c.panelOverlay} ${c.closing}` : c.panelOverlay
+          }
+          onAnimationEnd={(e) => {
+            if (e.target === e.currentTarget && panelClosing) {
+              setPanelMatchId(undefined);
+              setPanelClosing(false);
+            }
+          }}>
+          <MatchPanel
+            matchId={panelMatchId}
+            onClose={() => setPanelClosing(true)}
+          />
+        </div>
       )}
 
-      {formModal.open && (
-        <MatchFormModal
-          matchId={formModal.matchId}
-          onClose={() => setFormModal({ open: false })}
-        />
+      {formModalOpen && (
+        <MatchFormModal onClose={() => setFormModalOpen(false)} />
       )}
 
       {deleteConfirm.open && deleteConfirm.matchId !== undefined && (
@@ -137,6 +152,20 @@ export const MatchesPage = () => {
           onConfirm={() => {
             deleteMatch(deleteConfirm.matchId!);
             setDeleteConfirm({ open: false });
+          }}
+        />
+      )}
+
+      {activateConfirm.open && activateConfirm.matchId !== undefined && (
+        <ModalConfirmation
+          description='Želite li aktivirati utakmicu?'
+          boldText='Utakmica će postati aktivna.'
+          icon={PlayBlack}
+          circleVariant='green'
+          onCancel={() => setActivateConfirm({ open: false })}
+          onConfirm={() => {
+            setMatchActive(activateConfirm.matchId!);
+            setActivateConfirm({ open: false });
           }}
         />
       )}
