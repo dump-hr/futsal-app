@@ -9,7 +9,7 @@ type MatchDayGroupProps = {
   onDelete?: (matchId: number) => void;
 };
 
-export const MatchDayGroup: React.FC<MatchDayGroupProps> = ({
+const MatchDayGroup: React.FC<MatchDayGroupProps> = ({
   dateLabel,
   matches,
   onEdit,
@@ -31,3 +31,5 @@ export const MatchDayGroup: React.FC<MatchDayGroupProps> = ({
     </div>
   );
 };
+
+export default MatchDayGroup;
