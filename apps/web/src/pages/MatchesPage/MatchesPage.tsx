@@ -4,6 +4,7 @@ import {
   FilterDropdown,
   MatchDayGroup,
   MatchFormModal,
+  MatchPanel,
   ModalConfirmation,
 } from '@components/index';
 import { PlusBlack, TrashCanBlack } from '@assets/icons';
@@ -35,6 +36,7 @@ export const MatchesPage = () => {
     open: boolean;
     matchId?: number;
   }>({ open: false });
+  const [panelMatchId, setPanelMatchId] = useState<number | undefined>();
 
   const { data: matches } = useMatchGetAll(TOURNAMENT_ID);
   const { data: teams } = useTeamsGet(TOURNAMENT_ID);
@@ -55,55 +57,67 @@ export const MatchesPage = () => {
 
   return (
     <div className={c.page}>
-      <div className={c.header}>
-        <h1 className={c.title}>UTAKMICE</h1>
-        <Button
-          icon={PlusBlack}
-          variant='primary'
-          onClick={() => setFormModal({ open: true })}>
-          Nova utakmica
-        </Button>
-      </div>
-
-      <div className={c.filters}>
-        <span className={c.filterLabel}>Filtriraj</span>
-        <div className={c.filterDropdowns}>
-          <FilterDropdown
-            value={matchTypeFilter}
-            options={MATCH_TYPE_OPTIONS}
-            onChange={setMatchTypeFilter}
-          />
-          <FilterDropdown
-            value={dateSort}
-            options={DATE_SORT_OPTIONS}
-            onChange={setDateSort}
-          />
-          <FilterDropdown
-            value={teamFilter}
-            options={teamOptions}
-            onChange={setTeamFilter}
-          />
+      <div className={c.content}>
+        <div className={c.header}>
+          <h1 className={c.title}>UTAKMICE</h1>
+          <Button
+            icon={PlusBlack}
+            variant='primary'
+            onClick={() => setFormModal({ open: true })}>
+            Nova utakmica
+          </Button>
         </div>
-      </div>
 
-      {matchGroups.length === 0 ? (
-        <div className={c.empty}>
-          {matches && matches.length > 0
-            ? 'Nema utakmica koje odgovaraju filtrima'
-            : 'Nema dodanih utakmica!'}
-        </div>
-      ) : (
-        <div className={c.matchGroups}>
-          {matchGroups.map(({ dateKey, dateLabel, matches }) => (
-            <MatchDayGroup
-              key={dateKey}
-              dateLabel={dateLabel}
-              matches={matches}
-              onEdit={(matchId) => setFormModal({ open: true, matchId })}
-              onDelete={(matchId) => setDeleteConfirm({ open: true, matchId })}
+        <div className={c.filters}>
+          <span className={c.filterLabel}>Filtriraj</span>
+          <div className={c.filterDropdowns}>
+            <FilterDropdown
+              value={matchTypeFilter}
+              options={MATCH_TYPE_OPTIONS}
+              onChange={setMatchTypeFilter}
             />
-          ))}
+            <FilterDropdown
+              value={dateSort}
+              options={DATE_SORT_OPTIONS}
+              onChange={setDateSort}
+            />
+            <FilterDropdown
+              value={teamFilter}
+              options={teamOptions}
+              onChange={setTeamFilter}
+            />
+          </div>
         </div>
+
+        {matchGroups.length === 0 ? (
+          <div className={c.empty}>
+            {matches && matches.length > 0
+              ? 'Nema utakmica koje odgovaraju filtrima'
+              : 'Nema dodanih utakmica!'}
+          </div>
+        ) : (
+          <div className={c.matchGroups}>
+            {matchGroups.map(({ dateKey, dateLabel, matches }) => (
+              <MatchDayGroup
+                key={dateKey}
+                dateLabel={dateLabel}
+                matches={matches}
+                onEdit={(matchId) => setFormModal({ open: true, matchId })}
+                onDelete={(matchId) =>
+                  setDeleteConfirm({ open: true, matchId })
+                }
+                onShowEvents={setPanelMatchId}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {panelMatchId !== undefined && (
+        <MatchPanel
+          matchId={panelMatchId}
+          onClose={() => setPanelMatchId(undefined)}
+        />
       )}
 
       {formModal.open && (

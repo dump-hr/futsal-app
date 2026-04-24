@@ -7,12 +7,14 @@ type MatchInfoFromDtoProps = {
   match: MatchDto;
   onEdit?: (matchId: number) => void;
   onDelete?: (matchId: number) => void;
+  onShowEvents?: (matchId: number) => void;
 };
 
 export const MatchInfoFromDto: React.FC<MatchInfoFromDtoProps> = ({
   match,
   onEdit,
   onDelete,
+  onShowEvents,
 }) => {
   return (
     <MatchInfo
@@ -36,6 +38,7 @@ export const MatchInfoFromDto: React.FC<MatchInfoFromDtoProps> = ({
       matchStatus={getMatchStatus(match)}
       onEdit={onEdit ? () => onEdit(match.id) : undefined}
       onDelete={onDelete ? () => onDelete(match.id) : undefined}
+      onShowEvents={onShowEvents ? () => onShowEvents(match.id) : undefined}
     />
   );
 };
