@@ -72,3 +72,56 @@ export const validateMatchForm = (input: MatchFormInput): string | null => {
   return null;
 };
 
+export type MatchDayGroup = {
+  dateKey: string;
+  dateLabel: string;
+  matches: MatchDto[];
+};
+
+type GroupMatchesOptions = {
+  matchTypeFilter: string;
+  teamFilter: string;
+  dateSort: 'asc' | 'desc';
+};
+
+export const groupMatchesByDay = (
+  matches: MatchDto[] | undefined,
+  { matchTypeFilter, teamFilter, dateSort }: GroupMatchesOptions,
+): MatchDayGroup[] => {
+  if (!matches) return [];
+
+  const filtered = matches.filter((m) => {
+    if (matchTypeFilter !== 'all' && m.matchType !== matchTypeFilter)
+      return false;
+    if (
+      teamFilter !== 'all' &&
+      String(m.homeTeam?.id) !== teamFilter &&
+      String(m.awayTeam?.id) !== teamFilter
+    )
+      return false;
+    return true;
+  });
+
+  const sorted = [...filtered].sort((a, b) => {
+    const diff =
+      new Date(a.timeOfMatch).getTime() - new Date(b.timeOfMatch).getTime();
+    return dateSort === 'desc' ? -diff : diff;
+  });
+
+  const groups = new Map<string, MatchDayGroup>();
+  for (const match of sorted) {
+    const date = new Date(match.timeOfMatch);
+    const key = getDateKey(date);
+    if (!groups.has(key)) {
+      groups.set(key, {
+        dateKey: key,
+        dateLabel: formatMatchDayHeader(date),
+        matches: [],
+      });
+    }
+    groups.get(key)!.matches.push(match);
+  }
+
+  return Array.from(groups.values());
+};
+

@@ -6,10 +6,10 @@ import {
   MatchFormModal,
   ModalConfirmation,
 } from '@components/index';
-import { PlusBlack, TrashCanGray } from '@assets/icons';
+import { PlusBlack, TrashCanBlack } from '@assets/icons';
 import { useMatchGetAll, useMatchDelete } from '@api/match';
 import { useTeamsGet } from '@api/team';
-import { getDateKey, formatMatchDayHeader } from '@helpers/matchHelpers';
+import { groupMatchesByDay } from '@helpers/matchHelpers';
 import c from './MatchesPage.module.scss';
 import {
   type MatchTypeFilter,
@@ -48,51 +48,10 @@ export const MatchesPage = () => {
     [teams],
   );
 
-  const matchGroups = useMemo(() => {
-    if (!matches) return [];
-
-    let result = [...matches];
-
-    if (matchTypeFilter !== 'all') {
-      result = result.filter((m) => m.matchType === matchTypeFilter);
-    }
-
-    if (teamFilter !== 'all') {
-      result = result.filter(
-        (m) =>
-          String(m.homeTeam?.id) === teamFilter ||
-          String(m.awayTeam?.id) === teamFilter,
-      );
-    }
-
-    result.sort((a, b) => {
-      const diff =
-        new Date(a.timeOfMatch).getTime() - new Date(b.timeOfMatch).getTime();
-      return dateSort === 'desc' ? -diff : diff;
-    });
-
-    const groups = new Map<
-      string,
-      { dateLabel: string; matches: typeof result }
-    >();
-
-    for (const match of result) {
-      const date = new Date(match.timeOfMatch);
-      const key = getDateKey(date);
-      if (!groups.has(key)) {
-        groups.set(key, { dateLabel: formatMatchDayHeader(date), matches: [] });
-      }
-      groups.get(key)!.matches.push(match);
-    }
-
-    return Array.from(groups.entries()).map(
-      ([dateKey, { dateLabel, matches }]) => ({
-        dateKey,
-        dateLabel,
-        matches,
-      }),
-    );
-  }, [matches, matchTypeFilter, dateSort, teamFilter]);
+  const matchGroups = useMemo(
+    () => groupMatchesByDay(matches, { matchTypeFilter, teamFilter, dateSort }),
+    [matches, matchTypeFilter, teamFilter, dateSort],
+  );
 
   return (
     <div className={c.page}>
@@ -158,7 +117,7 @@ export const MatchesPage = () => {
         <ModalConfirmation
           description='Jeste li sigurni da želite obrisati utakmicu?'
           boldText='Ova radnja se ne može poništiti.'
-          icon={TrashCanGray}
+          icon={TrashCanBlack}
           circleVariant='gray'
           onCancel={() => setDeleteConfirm({ open: false })}
           onConfirm={() => {
