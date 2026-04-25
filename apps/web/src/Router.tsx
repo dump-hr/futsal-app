@@ -7,6 +7,7 @@ import {
   StartingPage,
   TeamDetailPage,
   TeamsPage,
+  MatchesPage,
 } from '@pages/index';
 import { ProtectedRoute } from '@components/index';
 
@@ -21,6 +22,7 @@ export const Router = () => {
             <Route path={routes.ADMIN_HOME} component={StartingPage} />
             <Route path={routes.TEAM_DETAIL} component={TeamDetailPage} />
             <Route path={routes.TEAMS} component={TeamsPage} />
+            <Route path={routes.MATCHES} component={MatchesPage} />
           </BackgroundLayout>
         </NavbarLayout>
       </ProtectedRoute>
