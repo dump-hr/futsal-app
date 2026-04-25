@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { LoginDto, JwtResponseDto } from '@futsal-app/types';
 import { useLocation } from 'wouter';
 import toast from 'react-hot-toast';
@@ -11,13 +11,15 @@ const login = (dto: LoginDto) => {
 
 export const useLogin = () => {
   const [, navigate] = useLocation();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: login,
     mutationKey: ['auth'],
     onSuccess: (data) => {
       localStorage.setItem('jwt', data.accessToken);
-      navigate(routes.ADMIN_HOME);
+      queryClient.removeQueries({ queryKey: ['auth', 'verify'] });
+      navigate(routes.ADMIN);
     },
     onError: (error) => {
       toast.error(error.message);

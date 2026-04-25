@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { Link, useLocation } from 'wouter';
 import { routes } from '@routes/routes';
 import { ExitBlack, Logo } from '@assets/icons';
@@ -7,9 +8,11 @@ import c from './Navbar.module.scss';
 
 export const Navbar = () => {
   const [location, navigate] = useLocation();
+  const queryClient = useQueryClient();
 
   const handleLogout = () => {
     localStorage.removeItem('jwt');
+    queryClient.removeQueries({ queryKey: ['auth', 'verify'] });
     navigate(routes.LOGIN);
   };
 

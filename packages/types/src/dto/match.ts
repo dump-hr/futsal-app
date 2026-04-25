@@ -6,6 +6,7 @@ import {
   IsNotEmpty,
   IsOptional,
 } from 'class-validator';
+import { Transform } from 'class-transformer';
 import { MatchType } from '../enum';
 import { TeamDto } from './team';
 
@@ -42,6 +43,7 @@ export class MatchDto {
 }
 
 export class MatchCreateDto {
+  @Transform(({ value }) => new Date(value))
   @IsDate()
   @IsNotEmpty()
   timeOfMatch: Date;
@@ -60,6 +62,7 @@ export class MatchCreateDto {
 }
 
 export class MatchUpdateDto {
+  @Transform(({ value }) => (value ? new Date(value) : undefined))
   @IsDate()
   @IsOptional()
   timeOfMatch?: Date;
