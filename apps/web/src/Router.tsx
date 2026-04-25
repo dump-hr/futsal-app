@@ -10,7 +10,7 @@ import {
   MatchesPage,
   GroupsPage,
 } from '@pages/index';
-import { ProtectedRoute } from './components';
+import { ProtectedRoute } from '@components/index';
 
 export const Router = () => {
   return (
