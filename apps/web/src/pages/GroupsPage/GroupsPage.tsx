@@ -3,6 +3,7 @@ import {
   Button,
   Group,
   ModalConfirmation,
+  ModalAddChoice,
   Input,
   TeamFormModal,
 } from '@components/index';
@@ -187,38 +188,20 @@ export const GroupsPage = () => {
       )}
 
       {addChoiceGroupId !== null && (
-        <ModalConfirmation
+        <ModalAddChoice
           title='Što želite dodati?'
-          icon={PlusBlack}
-          circleVariant='gray'
-          onCancel={() => setAddChoiceGroupId(null)}>
-          <div className={c.choiceActions}>
-            <Button
-              icon={PlusBlack}
-              variant='primary'
-              onClick={() => {
-                setShowCreateTeamModal(true);
-                setAddChoiceGroupId(null);
-              }}>
-              Dodaj novu ekipu
-            </Button>
-            <Button
-              icon={PlusBlack}
-              variant='primary'
-              onClick={() => {
-                setAddTeamGroupId(addChoiceGroupId);
-                setAddChoiceGroupId(null);
-              }}>
-              Dodaj postojeću ekipu
-            </Button>
-          </div>
-          <Button
-            icon={XWhite}
-            variant='secondary'
-            onClick={() => setAddChoiceGroupId(null)}>
-            Odustani
-          </Button>
-        </ModalConfirmation>
+          primaryLabel='Dodaj novu ekipu'
+          secondaryLabel='Dodaj postojeću ekipu'
+          onPrimary={() => {
+            setShowCreateTeamModal(true);
+            setAddChoiceGroupId(null);
+          }}
+          onSecondary={() => {
+            setAddTeamGroupId(addChoiceGroupId);
+            setAddChoiceGroupId(null);
+          }}
+          onCancel={() => setAddChoiceGroupId(null)}
+        />
       )}
 
       {addTeamGroupId !== null && (
