@@ -16,6 +16,7 @@ export const useTeamUpdate = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['teams'] });
       queryClient.invalidateQueries({ queryKey: ['team'] });
+      queryClient.invalidateQueries({ queryKey: ['groups'] });
       toast.success('Ekipa uspješno ažurirana');
     },
     onError: (error) => {

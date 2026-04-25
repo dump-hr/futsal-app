@@ -13,9 +13,8 @@ export const useTeamCreate = () => {
   return useMutation({
     mutationFn: teamCreate,
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['teams'],
-      });
+      queryClient.invalidateQueries({ queryKey: ['teams'] });
+      queryClient.invalidateQueries({ queryKey: ['groups'] });
       toast.success('Ekipa uspješno kreirana');
     },
     onError: (error) => {
