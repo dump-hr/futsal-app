@@ -69,16 +69,15 @@ export class GroupService {
   }
 
   async removeTeam(groupId: number, teamId: number): Promise<GroupDto> {
-    const playedMatches = await prisma.match.count({
+    const matchesCount = await prisma.match.count({
       where: {
         OR: [{ homeTeamId: teamId }, { awayTeamId: teamId }],
-        events: { some: {} },
       },
     });
 
-    if (playedMatches > 0) {
+    if (matchesCount > 0) {
       throw new BadRequestException(
-        `Cannot remove team from group: team has already played matches`,
+        `Cannot remove team from group: team has matches assigned`,
       );
     }
 
