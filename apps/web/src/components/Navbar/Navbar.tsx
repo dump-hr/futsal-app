@@ -25,8 +25,8 @@ export const Navbar = () => {
 
         <ul className={c.navbarList}>
           <Link
-            to={routes.ADMIN}
-            className={location === routes.ADMIN ? c.active : ''}>
+            to={routes.ADMIN_HOME}
+            className={location === routes.ADMIN_HOME ? c.active : ''}>
             Početna
           </Link>
           <Link
