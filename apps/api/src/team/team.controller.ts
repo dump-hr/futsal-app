@@ -25,7 +25,6 @@ import {
 export class TeamController {
   constructor(private readonly teamService: TeamService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() dto: TeamCreateDto): Promise<TeamDto> {
     return await this.teamService.create(dto);

@@ -1,6 +1,17 @@
 import { useState } from 'react';
-import { Button, Group, ModalConfirmation, Input } from '@components/index';
-import { PlusBlack, CheckBlack, XWhite, TrashCanBlack } from '@assets/index';
+import {
+  Button,
+  Group,
+  ModalConfirmation,
+  Input,
+  TeamFormModal,
+} from '@components/index';
+import {
+  PlusBlack,
+  CheckBlack,
+  XWhite,
+  TrashCanBlack,
+} from '@assets/index';
 import {
   useGroupsGet,
   useGroupCreate,
@@ -17,7 +28,9 @@ export const GroupsPage = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newGroupName, setNewGroupName] = useState('');
   const [deleteGroupId, setDeleteGroupId] = useState<number | null>(null);
+  const [addChoiceGroupId, setAddChoiceGroupId] = useState<number | null>(null);
   const [addTeamGroupId, setAddTeamGroupId] = useState<number | null>(null);
+  const [showCreateTeamModal, setShowCreateTeamModal] = useState(false);
 
   const { data: groups = [] } = useGroupsGet();
   const { data: tournaments = [] } = useTournamentsGet();
@@ -127,7 +140,7 @@ export const GroupsPage = () => {
                   logo: t.logoUrl ?? '',
                 }))}
                 onDelete={() => setDeleteGroupId(group.id)}
-                onAddTeam={() => setAddTeamGroupId(group.id)}
+                onAddTeam={() => setAddChoiceGroupId(group.id)}
                 onRemoveTeam={(teamId) => removeTeam({ id: group.id, teamId })}
                 onDropTeam={(teamId) =>
                   addTeam({ id: group.id, dto: { teamId } })
@@ -178,6 +191,42 @@ export const GroupsPage = () => {
         </div>
       )}
 
+      {addChoiceGroupId !== null && (
+        <ModalConfirmation
+          title='Što želite dodati?'
+          icon={PlusBlack}
+          circleVariant='gray'
+          className={c.choiceModal}
+          onCancel={() => setAddChoiceGroupId(null)}>
+          <div className={c.choiceActions}>
+            <Button
+              icon={PlusBlack}
+              variant='primary'
+              onClick={() => {
+                setShowCreateTeamModal(true);
+                setAddChoiceGroupId(null);
+              }}>
+              Dodaj novu ekipu
+            </Button>
+            <Button
+              icon={PlusBlack}
+              variant='primary'
+              onClick={() => {
+                setAddTeamGroupId(addChoiceGroupId);
+                setAddChoiceGroupId(null);
+              }}>
+              Dodaj postojeću ekipu
+            </Button>
+          </div>
+          <Button
+            icon={XWhite}
+            variant='secondary'
+            onClick={() => setAddChoiceGroupId(null)}>
+            Odustani
+          </Button>
+        </ModalConfirmation>
+      )}
+
       {addTeamGroupId !== null && (
         <div
           className={c.overlay}
@@ -222,6 +271,10 @@ export const GroupsPage = () => {
           onCancel={() => setDeleteGroupId(null)}
           onConfirm={handleConfirmDelete}
         />
+      )}
+
+      {showCreateTeamModal && (
+        <TeamFormModal onClose={() => setShowCreateTeamModal(false)} />
       )}
     </div>
   );
