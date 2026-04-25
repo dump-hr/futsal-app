@@ -19,7 +19,7 @@ export const useLogin = () => {
     onSuccess: (data) => {
       localStorage.setItem('jwt', data.accessToken);
       queryClient.removeQueries({ queryKey: ['auth', 'verify'] });
-      navigate(routes.ADMIN);
+      navigate(routes.ADMIN_HOME);
     },
     onError: (error) => {
       toast.error(error.message);
