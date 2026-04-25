@@ -6,12 +6,7 @@ import {
   Input,
   TeamFormModal,
 } from '@components/index';
-import {
-  PlusBlack,
-  CheckBlack,
-  XWhite,
-  TrashCanBlack,
-} from '@assets/index';
+import { PlusBlack, CheckBlack, XWhite, TrashCanBlack } from '@assets/index';
 import {
   useGroupsGet,
   useGroupCreate,
@@ -196,7 +191,6 @@ export const GroupsPage = () => {
           title='Što želite dodati?'
           icon={PlusBlack}
           circleVariant='gray'
-          className={c.choiceModal}
           onCancel={() => setAddChoiceGroupId(null)}>
           <div className={c.choiceActions}>
             <Button
