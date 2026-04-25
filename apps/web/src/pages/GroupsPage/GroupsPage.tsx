@@ -21,6 +21,7 @@ export const GroupsPage = () => {
 
   const { data: groups = [] } = useGroupsGet();
   const { data: tournaments = [] } = useTournamentsGet();
+  // TODO: get tournamentId from global state (selected tournament) instead of assuming the first one
   const tournamentId = tournaments[0]?.id ?? 1;
   const { data: allTeams = [] } = useTeamsGet(tournamentId);
 
@@ -33,13 +34,21 @@ export const GroupsPage = () => {
 
   const handleCreateGroup = () => {
     if (!newGroupName.trim() || !tournamentId) {
-      toast.error('Group name is required and tournament must exist');
-      console.log('Validation failed:', { newGroupName, tournamentId });
+      toast.error('Potrebno je unijeti ime skupine i imati odabrani turnir.');
+      return;
+    }
+
+    const doesGroupExist = groups.some(
+      (g) => g.name.toLowerCase() === newGroupName.trim().toLowerCase(),
+    );
+
+    if (doesGroupExist) {
+      toast.error('Skupina s tim imenom već postoji.');
       return;
     }
 
     createGroup(
-      { name: newGroupName, tournamentId },
+      { name: newGroupName.trim(), tournamentId },
       {
         onSuccess: () => {
           setShowCreateModal(false);
@@ -86,7 +95,16 @@ export const GroupsPage = () => {
           </p>
           <div className={c.teamPills}>
             {unassignedTeams.map((team) => (
-              <Button key={team.id} icon={team.logoUrl ?? ''} variant='gray'>
+              <Button
+                key={team.id}
+                icon={team.logoUrl ?? ''}
+                variant='gray'
+                draggable
+                className={c.draggableTeam}
+                onDragStart={(e) => {
+                  e.dataTransfer.setData('text/team-id', String(team.id));
+                  e.dataTransfer.effectAllowed = 'move';
+                }}>
                 {team.name}
               </Button>
             ))}
@@ -111,6 +129,9 @@ export const GroupsPage = () => {
                 onDelete={() => setDeleteGroupId(group.id)}
                 onAddTeam={() => setAddTeamGroupId(group.id)}
                 onRemoveTeam={(teamId) => removeTeam({ id: group.id, teamId })}
+                onDropTeam={(teamId) =>
+                  addTeam({ id: group.id, dto: { teamId } })
+                }
               />
             ))}
           </div>

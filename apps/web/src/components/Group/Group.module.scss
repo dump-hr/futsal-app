@@ -10,6 +10,12 @@
   justify-content: space-between;
   color: $white;
   height: 448px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dragOver {
+  border-color: $white;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
 }
 
 .groupTitleWrapper {

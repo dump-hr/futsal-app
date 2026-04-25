@@ -50,6 +50,14 @@
   gap: 10px 8px;
 }
 
+.draggableTeam {
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
 .groups {
   display: grid;
   grid-template-columns: repeat(auto-fill, 424px);
