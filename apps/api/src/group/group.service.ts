@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import {
   GroupCreateDto,
   GroupUpdateDto,
@@ -10,6 +14,18 @@ import { prisma } from '../../lib/prisma';
 @Injectable()
 export class GroupService {
   async create(dto: GroupCreateDto): Promise<GroupDto> {
+    const tournament = await prisma.tournament.findUnique({
+      where: { id: dto.tournamentId },
+    });
+
+    if (!tournament) {
+      throw new NotFoundException(`Tournament not found`);
+    }
+
+    if (tournament.isDeleted) {
+      throw new BadRequestException(`Cannot add group to a deleted tournament`);
+    }
+
     return prisma.group.create({
       data: dto,
       include: { teams: true },

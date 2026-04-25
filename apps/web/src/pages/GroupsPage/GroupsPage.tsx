@@ -11,6 +11,7 @@ import {
 import { useTournamentsGet } from '@api/tournament';
 import { useTeamsGet } from '@api/team';
 import c from './GroupsPage.module.scss';
+import toast from 'react-hot-toast';
 
 export const GroupsPage = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -20,7 +21,7 @@ export const GroupsPage = () => {
 
   const { data: groups = [] } = useGroupsGet();
   const { data: tournaments = [] } = useTournamentsGet();
-  const tournamentId = tournaments[0]?.id ?? 0;
+  const tournamentId = tournaments[0]?.id ?? 1;
   const { data: allTeams = [] } = useTeamsGet(tournamentId);
 
   const { mutate: createGroup, isPending: isCreating } = useGroupCreate();
@@ -31,7 +32,12 @@ export const GroupsPage = () => {
   const unassignedTeams = allTeams.filter((t) => !t.groupId);
 
   const handleCreateGroup = () => {
-    if (!newGroupName.trim() || !tournamentId) return;
+    if (!newGroupName.trim() || !tournamentId) {
+      toast.error('Group name is required and tournament must exist');
+      console.log('Validation failed:', { newGroupName, tournamentId });
+      return;
+    }
+
     createGroup(
       { name: newGroupName, tournamentId },
       {
@@ -80,10 +86,7 @@ export const GroupsPage = () => {
           </p>
           <div className={c.teamPills}>
             {unassignedTeams.map((team) => (
-              <Button
-                key={team.id}
-                icon={team.logoUrl ?? ''}
-                variant='gray'>
+              <Button key={team.id} icon={team.logoUrl ?? ''} variant='gray'>
                 {team.name}
               </Button>
             ))}
