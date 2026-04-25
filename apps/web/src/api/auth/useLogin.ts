@@ -17,7 +17,7 @@ export const useLogin = () => {
     mutationKey: ['auth'],
     onSuccess: (data) => {
       localStorage.setItem('jwt', data.accessToken);
-      navigate(routes.ADMIN);
+      navigate(routes.ADMIN_HOME);
     },
     onError: (error) => {
       toast.error(error.message);
