@@ -14,9 +14,9 @@ export const usePlayerUpdate = () => {
     mutationFn: ({ id, dto }: { id: number; dto: PlayerUpdateDto }) =>
       playerUpdate(id, dto),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['players'],
-      });
+      queryClient.invalidateQueries({ queryKey: ['players'] });
+      queryClient.invalidateQueries({ queryKey: ['team'] });
+      queryClient.invalidateQueries({ queryKey: ['teams'] });
       toast.success('Igrač uspješno ažuriran');
     },
     onError: (error) => {

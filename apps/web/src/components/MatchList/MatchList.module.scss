@@ -1,0 +1,11 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.empty {
+  @include body-normal;
+  color: $white;
+  opacity: 0.4;
+}

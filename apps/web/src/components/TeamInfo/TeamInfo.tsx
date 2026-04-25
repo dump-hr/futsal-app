@@ -1,7 +1,6 @@
 import ButtonSmall from '@components/ButtonSmall';
+import { TrashCanGray, PencilGray } from '@assets/icons';
 import c from './TeamInfo.module.scss';
-import trashIconUrl from '../../assets/icons/trash-can-gray.svg';
-import editIconUrl from '../../assets/icons/pencil-gray.svg';
 
 type TeamInfoProps = {
   teamName: string;
@@ -10,6 +9,9 @@ type TeamInfoProps = {
   teamGroup: string;
   numberOfPlayers: number;
   numberOfMatchesPlayed: number;
+  onDelete?: () => void;
+  onEdit?: () => void;
+  onClick?: () => void;
 };
 
 export const TeamInfo: React.FC<TeamInfoProps> = ({
@@ -19,23 +21,26 @@ export const TeamInfo: React.FC<TeamInfoProps> = ({
   teamGroup,
   numberOfPlayers,
   numberOfMatchesPlayed,
+  onDelete,
+  onEdit,
+  onClick,
 }) => {
   return (
-    <div className={c.team}>
+    <div className={c.team} onClick={onClick} style={onClick ? { cursor: 'pointer' } : undefined}>
       <div className={c.teamInfo}>
         <img src={teamLogoUrl} alt={teamName} className={c.teamLogo} />
         <span className={c.teamName}>{teamName}</span>
       </div>
       <div className={c.teamStatsWrapper}>
         <div className={c.teamStats}>
-          <span>{teamScore}</span>
-          <span>Skupina {teamGroup}</span>
-          <span>{numberOfPlayers} igrača</span>
-          <span>{numberOfMatchesPlayed} utakmice</span>
+          <span className={c.teamStat}>{teamScore}</span>
+          <span className={c.teamStat}>Skupina {teamGroup}</span>
+          <span className={c.teamStat}>{numberOfPlayers} igrača</span>
+          <span className={c.teamStat}>{numberOfMatchesPlayed} utakmice</span>
         </div>
-        <div className={c.teamActions}>
-          <ButtonSmall iconSrc={trashIconUrl} hasBorder />
-          <ButtonSmall iconSrc={editIconUrl} hasBorder />
+        <div className={c.teamActions} onClick={(e) => e.stopPropagation()}>
+          <ButtonSmall iconSrc={TrashCanGray} hasBorder onClick={onDelete} />
+          <ButtonSmall iconSrc={PencilGray} hasBorder onClick={onEdit} />
         </div>
       </div>
     </div>

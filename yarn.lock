@@ -11811,6 +11811,7 @@ __metadata:
     react-error-boundary: ^6.0.0
     react-hook-form: ^7.62.0
     react-hot-toast: ^2.5.2
+    reflect-metadata: ^0.2.2
     sass: ^1.97.3
     typescript: ~5.8.3
     typescript-eslint: ^8.35.1

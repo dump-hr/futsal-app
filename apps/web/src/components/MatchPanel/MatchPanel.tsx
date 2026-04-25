@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import clsx from 'clsx';
 import { EventType, MatchType } from '@futsal-app/types';
 import {
@@ -10,6 +10,7 @@ import {
 } from '@api/index';
 import { MatchEventCard, ButtonSmall } from '@components/index';
 import { PlusBlack } from '@assets/index';
+import { useCloseComponent } from '@hooks/index';
 import { BackgroundColor, MatchEventSaveData } from '@types';
 import MatchHeader from './MatchHeader';
 import MatchEventRow from './MatchEventRow';
@@ -40,6 +41,9 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
   const { data: events = [] } = useMatchEventsGet(matchId);
   const [showTeamPicker, setShowTeamPicker] = useState(false);
   const [newEventSide, setNewEventSide] = useState<NewEventSide | null>(null);
+
+  const panelRef = useRef<HTMLDivElement>(null);
+  useCloseComponent({ onClose, containerRef: panelRef });
 
   const createEvent = useMatchEventCreate(matchId, {
     onSuccess: () => setNewEventSide(null),
@@ -99,7 +103,7 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
   const awayPlayers = match.awayTeam?.players ?? [];
 
   return (
-    <div className={c.panel}>
+    <div className={c.panel} ref={panelRef} role='dialog' aria-modal='true'>
       <MatchHeader
         homeTeamName={match.homeTeam?.name ?? ''}
         awayTeamName={match.awayTeam?.name ?? ''}

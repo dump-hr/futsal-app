@@ -1,0 +1,110 @@
+.page {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 80px);
+  overflow: hidden;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 36px 60px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.panelOverlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  animation: slideIn 0.25s ease-out;
+}
+
+.closing {
+  animation: slideOut 0.25s ease-in forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  @include title-2;
+  font-weight: 600;
+  color: $white;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 42px;
+}
+
+.filterLabel {
+  @include body-normal;
+  color: $white;
+  opacity: 0.6;
+}
+
+.filterDropdowns {
+  display: flex;
+  gap: 20px;
+}
+
+.matchGroups {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 20px;
+
+  &::-webkit-scrollbar {
+    width: 14px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $black;
+    border-radius: 15px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $gray-light;
+    border-radius: 15px;
+  }
+}
+
+.empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include body-normal;
+  color: $gray-dark;
+}

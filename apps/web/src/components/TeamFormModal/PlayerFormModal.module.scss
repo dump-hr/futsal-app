@@ -1,0 +1,27 @@
+.overlay {
+  z-index: 1100;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+  background-color: #0d0d0d;
+  border-radius: 20px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 616px;
+}
+
+.fields {
+  display: flex;
+  gap: 20px;
+}
+
+.field {
+  flex: 1;
+
+  input {
+    max-width: 100%;
+  }
+}

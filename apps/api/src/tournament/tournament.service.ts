@@ -15,12 +15,12 @@ export class TournamentService {
   }
 
   async getAll(): Promise<TournamentDto[]> {
-    return await prisma.tournament.findMany();
+    return await prisma.tournament.findMany({ where: { isDeleted: false } });
   }
 
   async getById(id: number): Promise<TournamentDto> {
     const tournament = await prisma.tournament.findFirst({
-      where: { id },
+      where: { id, isDeleted: false },
       include: { groups: { include: { teams: true } }, teams: true },
     });
 
@@ -41,8 +41,9 @@ export class TournamentService {
   }
 
   async delete(id: number): Promise<TournamentDto> {
-    const deletedTournament = await prisma.tournament.delete({
+    const deletedTournament = await prisma.tournament.update({
       where: { id },
+      data: { isDeleted: true },
     });
 
     return deletedTournament;
