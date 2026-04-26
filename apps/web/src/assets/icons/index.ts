@@ -6,6 +6,7 @@ export { default as ArrowRightWhite } from './arrow-right-white.svg';
 export { default as CheckBlack } from './check-black.svg';
 export { default as CrossGray } from './cross-gray.svg';
 export { default as XBlack } from './x-black.svg';
+export { default as XGray } from './x-gray.svg';
 export { default as XWhite } from './x-white.svg';
 
 export { default as PlusBlack } from './plus-black.svg';
@@ -14,6 +15,7 @@ export { default as PlusWhite } from './plus-white.svg';
 
 export { default as ExitBlack } from './exit-black.svg';
 export { default as HistoryGray } from './history-gray.svg';
+export { default as HistoryBlack } from './history-black.svg';
 export { default as LinkBlack } from './link-black.svg';
 export { default as LockBlack } from './lock-black.svg';
 export { default as LockGray } from './lock-gray.svg';

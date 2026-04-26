@@ -96,3 +96,20 @@
     }
   }
 }
+
+.gray {
+  background-color: $gray-light;
+  color: $black;
+
+  .iconWrapper {
+    background-color: $white;
+  }
+
+  &:hover {
+    background-color: $white;
+
+    .iconWrapper {
+      background-color: $gray-light;
+    }
+  }
+}

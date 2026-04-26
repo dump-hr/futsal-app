@@ -26,4 +26,9 @@
     border-color: $white;
     opacity: 1;
   }
+
+  &.error {
+    border-color: $red;
+    opacity: 1;
+  }
 }

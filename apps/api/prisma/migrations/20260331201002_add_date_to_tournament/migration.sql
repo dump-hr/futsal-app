@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Tournament" ADD COLUMN     "date" TEXT NOT NULL DEFAULT EXTRACT(YEAR FROM NOW())::text;

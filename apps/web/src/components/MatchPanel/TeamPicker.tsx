@@ -8,7 +8,7 @@ const AWAY_LOGO_TEST = '/test-logos/otp.png';
 
 type Team = {
   name: string;
-  logoUrl: string | null;
+  logoUrl?: string | null;
 };
 
 type TeamPickerProps = {

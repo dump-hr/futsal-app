@@ -13,9 +13,9 @@ export const usePlayerCreate = () => {
   return useMutation({
     mutationFn: playerCreate,
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['players'],
-      });
+      queryClient.invalidateQueries({ queryKey: ['players'] });
+      queryClient.invalidateQueries({ queryKey: ['team'] });
+      queryClient.invalidateQueries({ queryKey: ['teams'] });
       toast.success('Igrač uspješno kreiran');
     },
     onError: (error) => {

@@ -10,5 +10,6 @@ export const useMatchGet = (matchId: number) => {
   return useQuery({
     queryFn: () => getMatch(matchId),
     queryKey: ['match', matchId],
+    enabled: !!matchId,
   });
 };

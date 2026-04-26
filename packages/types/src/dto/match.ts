@@ -1,36 +1,21 @@
 import {
-  IsArray,
+  IsBoolean,
+  IsDate,
   IsEnum,
   IsInt,
   IsNotEmpty,
   IsOptional,
-  IsString,
 } from 'class-validator';
-import { PlayerDto } from './player';
+import { Transform } from 'class-transformer';
 import { MatchType } from '../enum';
-
-export class MatchTeamDto {
-  @IsInt()
-  @IsNotEmpty()
-  id: number;
-
-  @IsString()
-  @IsNotEmpty()
-  name: string;
-
-  @IsOptional()
-  logoUrl: string | null;
-
-  @IsArray()
-  players: PlayerDto[];
-}
+import { TeamDto } from './team';
 
 export class MatchDto {
   @IsInt()
   @IsNotEmpty()
   id: number;
 
-  @IsString()
+  @IsDate()
   @IsNotEmpty()
   timeOfMatch: Date;
 
@@ -42,12 +27,47 @@ export class MatchDto {
   @IsNotEmpty()
   awayGoals: number;
 
+  @IsEnum(MatchType)
   @IsNotEmpty()
   matchType: `${MatchType}`;
 
-  @IsOptional()
-  homeTeam: MatchTeamDto | null;
+  @IsBoolean()
+  @IsNotEmpty()
+  isActive: boolean;
 
   @IsOptional()
-  awayTeam: MatchTeamDto | null;
+  homeTeam: TeamDto | null;
+
+  @IsOptional()
+  awayTeam: TeamDto | null;
+}
+
+export class MatchCreateDto {
+  @Transform(({ value }) => new Date(value))
+  @IsDate()
+  @IsNotEmpty()
+  timeOfMatch: Date;
+
+  @IsInt()
+  @IsNotEmpty()
+  homeTeamId: number;
+
+  @IsInt()
+  @IsNotEmpty()
+  awayTeamId: number;
+
+  @IsEnum(MatchType)
+  @IsNotEmpty()
+  matchType: `${MatchType}`;
+}
+
+export class MatchUpdateDto {
+  @Transform(({ value }) => (value ? new Date(value) : undefined))
+  @IsDate()
+  @IsOptional()
+  timeOfMatch?: Date;
+
+  @IsEnum(MatchType)
+  @IsOptional()
+  matchType?: `${MatchType}`;
 }

@@ -12,10 +12,19 @@ export class JwtAuthGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const req = context.switchToHttp().getRequest<Request>();
+    const req = context
+      .switchToHttp()
+      .getRequest<Request & { user?: unknown }>();
     const token = req.headers.authorization?.split(' ')[1];
+
     if (!token) throw new UnauthorizedException();
-    req['user'] = this.jwtService.verify(token);
+    try {
+      req.user = this.jwtService.verify(token);
+    } catch {
+      throw new UnauthorizedException(
+        'Niste autorizirani, molimo prijavite se ponovno',
+      );
+    }
     return true;
   }
 }

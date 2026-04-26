@@ -4,7 +4,7 @@ import { ArrowDownWhite } from '@assets/index';
 import { EventType } from '@futsal-app/types';
 import { useCloseComponent } from '@hooks/index';
 import { EVENT_LABELS } from '@types';
-import c from './EventDropdown.module.scss';
+import c from './Dropdown.module.scss';
 
 const REGULAR_EVENTS: EventType[] = [
   EventType.goal,

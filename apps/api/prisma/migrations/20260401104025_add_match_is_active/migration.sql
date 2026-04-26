@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Match" ADD COLUMN     "isActive" BOOLEAN NOT NULL DEFAULT false;
