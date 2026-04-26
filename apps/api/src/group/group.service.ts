@@ -32,8 +32,9 @@ export class GroupService {
     });
   }
 
-  async findAll(): Promise<GroupDto[]> {
+  async getByTournamentId(tournamentId: number): Promise<GroupDto[]> {
     return prisma.group.findMany({
+      where: { tournamentId },
       include: { teams: true },
     });
   }

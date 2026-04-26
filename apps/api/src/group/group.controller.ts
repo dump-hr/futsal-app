@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { GroupService } from './group.service';
@@ -29,8 +30,10 @@ export class GroupController {
   }
 
   @Get()
-  async findAll(): Promise<GroupDto[]> {
-    return this.groupService.findAll();
+  async getByTournamentId(
+    @Query('tournamentId', ParseIntPipe) tournamentId: number,
+  ): Promise<GroupDto[]> {
+    return this.groupService.getByTournamentId(tournamentId);
   }
 
   @Get(':id')

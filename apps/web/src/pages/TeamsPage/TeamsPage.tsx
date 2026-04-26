@@ -9,7 +9,7 @@ import {
 } from '@components/index';
 import { PlusBlack, TrashCanBlack } from '@assets/icons';
 import { useTeamsGet, useTeamDelete } from '@api/team';
-import { useGroupsGet } from '@api/group';
+import { useGroupsGetByTournamentId } from '@api/group';
 import c from './TeamsPage.module.scss';
 import { SortOrder, GroupFilter, SORT_OPTIONS } from './options';
 
@@ -30,7 +30,7 @@ export const TeamsPage = () => {
   const [, navigate] = useLocation();
 
   const { data: teams } = useTeamsGet(TOURNAMENT_ID);
-  const { data: groups } = useGroupsGet();
+  const { data: groups } = useGroupsGetByTournamentId(TOURNAMENT_ID);
   const { mutate: deleteTeam } = useTeamDelete();
 
   const groupFilterOptions: { label: string; value: GroupFilter }[] = [

@@ -15,7 +15,7 @@ import {
   useTeamUpdate,
   useTeamPlayersSync,
 } from '@api/team';
-import { useGroupsGet } from '@api/group';
+import { useGroupsGetByTournamentId } from '@api/group';
 import { PlayerModalAdd, PlayerModalEditByIndex } from '@types';
 import { GroupOption } from '@constants/groupOptions';
 import PlayerFormModal from './PlayerFormModal';
@@ -48,7 +48,7 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
   const { mutateAsync: createTeam } = useTeamCreate();
   const { mutateAsync: updateTeam } = useTeamUpdate();
   const { mutateAsync: syncPlayers } = useTeamPlayersSync();
-  const { data: groups } = useGroupsGet();
+  const { data: groups } = useGroupsGetByTournamentId(TOURNAMENT_ID);
 
   const handleClose = useCallback(() => onClose(), [onClose]);
   useCloseComponent({ onClose: handleClose });

@@ -9,7 +9,7 @@ import {
 } from '@components/index';
 import { PlusBlack, CheckBlack, XWhite, TrashCanBlack } from '@assets/index';
 import {
-  useGroupsGet,
+  useGroupsGetByTournamentId,
   useGroupCreate,
   useGroupDelete,
   useGroupRemoveTeam,
@@ -28,10 +28,11 @@ export const GroupsPage = () => {
   const [addTeamGroupId, setAddTeamGroupId] = useState<number | null>(null);
   const [showCreateTeamModal, setShowCreateTeamModal] = useState(false);
 
-  const { data: groups = [] } = useGroupsGet();
+  // TODO: remove get all tournaments and get tournamentId from global state (selected tournament)
   const { data: tournaments = [] } = useTournamentsGet();
   // TODO: get tournamentId from global state (selected tournament) instead of assuming the first one
   const tournamentId = tournaments[0]?.id ?? 1;
+  const { data: groups = [] } = useGroupsGetByTournamentId(tournamentId);
   const { data: allTeams = [] } = useTeamsGet(tournamentId);
 
   const { mutate: createGroup, isPending: isCreating } = useGroupCreate();

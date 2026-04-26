@@ -33,5 +33,5 @@ export class TournamentDto {
   groups?: GroupDto[];
 
   @IsBoolean()
-  isDeleted?: boolean;
+  isDeleted: boolean;
 }
