@@ -27,6 +27,20 @@
   flex-shrink: 0;
 }
 
+.teamLogoFallback {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: $gray-medium;
+  color: $white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  @include title-2;
+  font-weight: 600;
+}
+
 .teamName {
   @include title-2;
   font-weight: 600;

@@ -1,19 +1,20 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import toast from 'react-hot-toast';
-import { Button, FilterDropdown, ButtonSmall, Input } from '@components/index';
-import { useCloseComponent } from '@hooks/index';
 import {
-  XWhite,
-  CheckBlack,
-  UploadGray,
-  TrashCanGray,
-  XGray,
-} from '@assets/icons';
+  Button,
+  FilterDropdown,
+  ButtonSmall,
+  Input,
+  LogoUpload,
+} from '@components/index';
+import { useCloseComponent } from '@hooks/index';
+import { XWhite, CheckBlack, XGray } from '@assets/icons';
 import {
   useTeamGet,
   useTeamCreate,
   useTeamUpdate,
   useTeamPlayersSync,
+  useTeamUploadLogo,
 } from '@api/team';
 import { useGroupsGet } from '@api/group';
 import { PlayerModalAdd, PlayerModalEditByIndex } from '@types';
@@ -41,6 +42,7 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
   const [playerModal, setPlayerModal] = useState<PlayerModal | null>(null);
   const [initialized, setInitialized] = useState(false);
   const [submitAttempted, setSubmitAttempted] = useState(false);
+  const [pendingLogo, setPendingLogo] = useState<File | null>(null);
 
   const teamNameError = submitAttempted && !teamName.trim();
 
@@ -48,6 +50,7 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
   const { mutateAsync: createTeam } = useTeamCreate();
   const { mutateAsync: updateTeam } = useTeamUpdate();
   const { mutateAsync: syncPlayers } = useTeamPlayersSync();
+  const { mutateAsync: uploadLogo } = useTeamUploadLogo();
   const { data: groups } = useGroupsGet();
 
   const handleClose = useCallback(() => onClose(), [onClose]);
@@ -138,6 +141,14 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
           })),
         },
       });
+
+      if (!isEdit && pendingLogo) {
+        try {
+          await uploadLogo({ teamId: targetTeamId, file: pendingLogo });
+        } catch {
+          console.error('Failed to upload logo for new team');
+        }
+      }
       onClose();
     } catch (error) {
       console.error('Failed to save team:', error);
@@ -172,23 +183,11 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
 
           <div className={c.main}>
             <div className={c.teamInfoSection}>
-              <div className={c.logoArea}>
-                <div className={c.logoPlaceholder}>
-                  {isEdit && existingTeam?.logoUrl ? (
-                    <img
-                      src={existingTeam.logoUrl}
-                      alt={teamName}
-                      className={c.logoImage}
-                    />
-                  ) : (
-                    <span className={c.logoText}>LOGO</span>
-                  )}
-                </div>
-                <div className={c.logoActions}>
-                  <ButtonSmall iconSrc={UploadGray} />
-                  <ButtonSmall iconSrc={TrashCanGray} />
-                </div>
-              </div>
+              {isEdit ? (
+                <LogoUpload teamId={teamId} logoUrl={existingTeam?.logoUrl} />
+              ) : (
+                <LogoUpload file={pendingLogo} onFileChange={setPendingLogo} />
+              )}
               <div className={c.teamFields}>
                 <div className={teamName.trim() ? c.inputValid : undefined}>
                   <Input

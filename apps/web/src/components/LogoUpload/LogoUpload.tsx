@@ -1,63 +1,109 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
+import toast from 'react-hot-toast';
 import ButtonSmall from '@components/ButtonSmall/ButtonSmall';
 import { UploadGray, TrashCanGray } from '@assets/icons';
 import { useTeamUploadLogo, useTeamDeleteLogo } from '@api/team';
 import c from './LogoUpload.module.scss';
 
 type LogoUploadProps = {
-  teamId: number;
+  teamId?: number;
   logoUrl?: string | null;
+  file?: File | null;
+  onFileChange?: (file: File | null) => void;
 };
 
-const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'];
+const ACCEPTED_TYPES = [
+  'image/jpeg',
+  'image/png',
+  'image/svg+xml',
+  'image/webp',
+];
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
-const LogoUpload: React.FC<LogoUploadProps> = ({ teamId, logoUrl }) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+const isValidFile = (f: File) =>
+  ACCEPTED_TYPES.includes(f.type) && f.size <= MAX_FILE_SIZE;
+
+const LogoUpload: React.FC<LogoUploadProps> = ({
+  teamId,
+  logoUrl,
+  file,
+  onFileChange,
+}) => {
   const [isDragOver, setIsDragOver] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
   const { mutate: uploadLogo, isPending: isUploading } = useTeamUploadLogo();
   const { mutate: deleteLogo } = useTeamDeleteLogo();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFile = (file: File) => {
-    if (!ACCEPTED_TYPES.includes(file.type)) return;
-    if (file.size > 5 * 1024 * 1024) return;
-    uploadLogo({ teamId, file });
+  const isDeferred = teamId === undefined;
+
+  useEffect(() => {
+    if (!isDeferred || !file) {
+      setPreviewUrl(null);
+      return;
+    }
+
+    const url = URL.createObjectURL(file);
+    setPreviewUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [file, isDeferred]);
+
+  const displayUrl = isDeferred ? previewUrl : logoUrl;
+
+  const handleFile = (picked: File | null) => {
+    if (picked && !isValidFile(picked)) {
+      toast.error(
+        ACCEPTED_TYPES.includes(picked.type)
+          ? 'Datoteka je prevelika'
+          : 'Format nije podržan',
+      );
+      return;
+    }
+
+    if (isDeferred) {
+      onFileChange?.(picked);
+      if (picked) toast.success('Logo odabran');
+    } else if (picked) {
+      uploadLogo({ teamId, file: picked });
+    } else {
+      deleteLogo(teamId);
+    }
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleDrag = (e: React.DragEvent, over: boolean) => {
     e.preventDefault();
-    setIsDragOver(true);
-  };
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(false);
+    setIsDragOver(over);
   };
 
   const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(false);
-    const file = e.dataTransfer.files[0];
-    if (file) handleFile(file);
+    handleDrag(e, false);
+    const dropped = e.dataTransfer.files[0];
+    if (dropped) handleFile(dropped);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) handleFile(file);
+    const picked = e.target.files?.[0];
+    if (picked) handleFile(picked);
     e.target.value = '';
   };
 
   return (
     <div className={c.wrapper}>
       <div
-        className={clsx(c.dropzone, isDragOver && c.dragOver, isUploading && c.loading)}
-        onDragOver={handleDragOver}
-        onDragEnter={handleDragOver}
-        onDragLeave={handleDragLeave}
+        className={clsx(
+          c.dropzone,
+          isDragOver && c.dragOver,
+          isUploading && c.loading,
+        )}
+        onDragOver={(e) => handleDrag(e, true)}
+        onDragEnter={(e) => handleDrag(e, true)}
+        onDragLeave={(e) => handleDrag(e, false)}
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}>
-        {logoUrl ? (
-          <img src={logoUrl} alt='Team logo' className={c.logo} />
+        {displayUrl ? (
+          <img src={displayUrl} alt='Team logo' className={c.logo} />
         ) : (
           <span className={c.placeholder}>LOGO</span>
         )}
@@ -76,10 +122,7 @@ const LogoUpload: React.FC<LogoUploadProps> = ({ teamId, logoUrl }) => {
           iconSrc={UploadGray}
           onClick={() => fileInputRef.current?.click()}
         />
-        <ButtonSmall
-          iconSrc={TrashCanGray}
-          onClick={() => deleteLogo(teamId)}
-        />
+        <ButtonSmall iconSrc={TrashCanGray} onClick={() => handleFile(null)} />
       </div>
     </div>
   );

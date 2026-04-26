@@ -70,6 +70,7 @@ export class TeamController {
           new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }),
           new FileTypeValidator({
             fileType: /image\/(jpeg|png|svg\+xml|webp)/,
+            skipMagicNumbersValidation: true,
           }),
         ],
       }),

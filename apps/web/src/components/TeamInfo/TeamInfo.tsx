@@ -4,7 +4,7 @@ import c from './TeamInfo.module.scss';
 
 type TeamInfoProps = {
   teamName: string;
-  teamLogoUrl: string;
+  teamLogoUrl?: string | null;
   teamScore: number;
   teamGroup: string;
   numberOfPlayers: number;
@@ -28,7 +28,13 @@ export const TeamInfo: React.FC<TeamInfoProps> = ({
   return (
     <div className={c.team} onClick={onClick} style={onClick ? { cursor: 'pointer' } : undefined}>
       <div className={c.teamInfo}>
-        <img src={teamLogoUrl} alt={teamName} className={c.teamLogo} />
+        {teamLogoUrl ? (
+          <img src={teamLogoUrl} alt={teamName} className={c.teamLogo} />
+        ) : (
+          <div className={c.teamLogoFallback} aria-label={teamName}>
+            {teamName.charAt(0).toUpperCase()}
+          </div>
+        )}
         <span className={c.teamName}>{teamName}</span>
       </div>
       <div className={c.teamStatsWrapper}>
