@@ -23,6 +23,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  padding-right: 8px;
 }
 .groupTitle {
   color: $white;
@@ -39,6 +40,7 @@
   overflow-y: auto;
   margin: 24px 0;
   padding-right: 8px;
+  padding-bottom: 40px;
 
   -webkit-mask-image: linear-gradient(to bottom, $black 75%, transparent 100%);
   mask-image: linear-gradient(to bottom, $black 75%, transparent 100%);

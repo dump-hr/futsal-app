@@ -4,13 +4,13 @@ import {
   Group,
   ModalConfirmation,
   ModalAddChoice,
-  Input,
+  ModalNewGroup,
+  ModalAddTeamToGroup,
   TeamFormModal,
 } from '@components/index';
-import { PlusBlack, CheckBlack, XWhite, TrashCanBlack } from '@assets/index';
+import { PlusBlack, TrashCanBlack } from '@assets/index';
 import {
   useGroupsGetByTournamentId,
-  useGroupCreate,
   useGroupDelete,
   useGroupRemoveTeam,
   useGroupAddTeam,
@@ -18,11 +18,9 @@ import {
 import { useTournamentsGet } from '@api/tournament';
 import { useTeamsGet } from '@api/team';
 import c from './GroupsPage.module.scss';
-import toast from 'react-hot-toast';
 
 export const GroupsPage = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [newGroupName, setNewGroupName] = useState('');
   const [deleteGroupId, setDeleteGroupId] = useState<number | null>(null);
   const [addChoiceGroupId, setAddChoiceGroupId] = useState<number | null>(null);
   const [addTeamGroupId, setAddTeamGroupId] = useState<number | null>(null);
@@ -35,52 +33,17 @@ export const GroupsPage = () => {
   const { data: groups = [] } = useGroupsGetByTournamentId(tournamentId);
   const { data: allTeams = [] } = useTeamsGet(tournamentId);
 
-  const { mutate: createGroup, isPending: isCreating } = useGroupCreate();
   const { mutate: deleteGroup } = useGroupDelete();
   const { mutate: removeTeam } = useGroupRemoveTeam();
   const { mutate: addTeam } = useGroupAddTeam();
 
   const unassignedTeams = allTeams.filter((t) => !t.groupId);
 
-  const handleCreateGroup = () => {
-    if (!newGroupName.trim() || !tournamentId) {
-      toast.error('Potrebno je unijeti ime skupine i imati odabrani turnir.');
-      return;
-    }
-
-    const doesGroupExist = groups.some(
-      (g) => g.name.toLowerCase() === newGroupName.trim().toLowerCase(),
-    );
-
-    if (doesGroupExist) {
-      toast.error('Skupina s tim imenom već postoji.');
-      return;
-    }
-
-    createGroup(
-      { name: newGroupName.trim(), tournamentId },
-      {
-        onSuccess: () => {
-          setShowCreateModal(false);
-          setNewGroupName('');
-        },
-      },
-    );
-  };
-
   const handleConfirmDelete = () => {
     if (!deleteGroupId) return;
     deleteGroup(deleteGroupId, {
       onSuccess: () => setDeleteGroupId(null),
     });
-  };
-
-  const handleAddTeam = (teamId: number) => {
-    if (!addTeamGroupId) return;
-    addTeam(
-      { id: addTeamGroupId, dto: { teamId } },
-      { onSuccess: () => setAddTeamGroupId(null) },
-    );
   };
 
   const deleteGroupName =
@@ -149,43 +112,11 @@ export const GroupsPage = () => {
       </div>
 
       {showCreateModal && (
-        <div
-          className={c.overlay}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) {
-              setShowCreateModal(false);
-              setNewGroupName('');
-            }
-          }}>
-          <div className={c.modal}>
-            <h3 className={c.modalTitle}>Nova skupina</h3>
-            <Input
-              label='Ime skupine'
-              placeholder='Skupina A'
-              value={newGroupName}
-              onChange={(e) => setNewGroupName(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleCreateGroup()}
-            />
-            <div className={c.modalButtons}>
-              <Button
-                icon={XWhite}
-                variant='secondary'
-                onClick={() => {
-                  setShowCreateModal(false);
-                  setNewGroupName('');
-                }}>
-                Odustani
-              </Button>
-              <Button
-                icon={CheckBlack}
-                variant='primary'
-                onClick={handleCreateGroup}
-                disabled={isCreating || !newGroupName.trim()}>
-                Potvrdi
-              </Button>
-            </div>
-          </div>
-        </div>
+        <ModalNewGroup
+          tournamentId={tournamentId}
+          existingGroupNames={groups.map((g) => g.name)}
+          onClose={() => setShowCreateModal(false)}
+        />
       )}
 
       {addChoiceGroupId !== null && (
@@ -206,38 +137,11 @@ export const GroupsPage = () => {
       )}
 
       {addTeamGroupId !== null && (
-        <div
-          className={c.overlay}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setAddTeamGroupId(null);
-          }}>
-          <div className={c.modal}>
-            <h3 className={c.modalTitle}>Dodaj ekipu u skupinu</h3>
-            <div className={c.teamPills}>
-              {unassignedTeams.length === 0 ? (
-                <p className={c.emptyText}>Nema neraspoređenih ekipa.</p>
-              ) : (
-                unassignedTeams.map((team) => (
-                  <Button
-                    key={team.id}
-                    icon={team.logoUrl ?? ''}
-                    variant='gray'
-                    onClick={() => handleAddTeam(team.id)}>
-                    {team.name}
-                  </Button>
-                ))
-              )}
-            </div>
-            <div className={c.modalButtons}>
-              <Button
-                icon={XWhite}
-                variant='secondary'
-                onClick={() => setAddTeamGroupId(null)}>
-                Odustani
-              </Button>
-            </div>
-          </div>
-        </div>
+        <ModalAddTeamToGroup
+          groupId={addTeamGroupId}
+          unassignedTeams={unassignedTeams}
+          onClose={() => setAddTeamGroupId(null)}
+        />
       )}
 
       {deleteGroupId !== null && (

@@ -1,0 +1,10 @@
+.wideInput input {
+  max-width: 100%;
+  width: 100%;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}

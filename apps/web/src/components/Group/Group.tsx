@@ -1,11 +1,6 @@
 import { useState } from 'react';
 import clsx from 'clsx';
-import {
-  PlusBlack,
-  TrashCanGray,
-  TrashCanWhite,
-  LockGray,
-} from '@assets/index';
+import { PlusBlack, TrashCanGray, TrashCanWhite } from '@assets/index';
 import c from './Group.module.scss';
 import { Button, ButtonSmall } from '@components/index';
 
@@ -61,7 +56,11 @@ const Group: React.FC<GroupProps> = ({
       onDrop={handleDrop}>
       <div className={c.groupTitleWrapper}>
         <span className={c.groupTitle}>{groupTitle}</span>
-        <ButtonSmall iconSrc={TrashCanGray} hasBorder={true} onClick={onDelete} />
+        <ButtonSmall
+          iconSrc={TrashCanGray}
+          hasBorder={true}
+          onClick={onDelete}
+        />
       </div>
 
       <div className={c.groupTeams}>
@@ -84,8 +83,6 @@ const Group: React.FC<GroupProps> = ({
         <Button icon={PlusBlack} variant='primary' onClick={onAddTeam}>
           Dodaj ekipu
         </Button>
-
-        <ButtonSmall iconSrc={LockGray} hasBorder={true} />
       </div>
     </section>
   );
