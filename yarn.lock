@@ -2490,6 +2490,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nestjs/throttler@npm:^6.5.0":
+  version: 6.5.0
+  resolution: "@nestjs/throttler@npm:6.5.0"
+  peerDependencies:
+    "@nestjs/common": ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0
+    "@nestjs/core": ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0
+    reflect-metadata: ^0.1.13 || ^0.2.0
+  checksum: 60310fbf4f2d928c87e94fda77be5fc16a6e40d04dadb61ad856ff255fef3fdc35073b88e7ce81872e309ca14e984b719a944063541505d125b70f6a1f967289
+  languageName: node
+  linkType: hard
+
 "@noble/hashes@npm:^1.1.5":
   version: 1.8.0
   resolution: "@noble/hashes@npm:1.8.0"
@@ -5150,6 +5161,7 @@ __metadata:
     "@nestjs/schematics": ^11.0.0
     "@nestjs/serve-static": ^5.0.3
     "@nestjs/testing": ^11.0.1
+    "@nestjs/throttler": ^6.5.0
     "@prisma/adapter-pg": ^7.2.0
     "@prisma/client": ^7.2.0
     "@swc/cli": ^0.6.0
