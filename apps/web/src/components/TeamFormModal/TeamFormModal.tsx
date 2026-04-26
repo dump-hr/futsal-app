@@ -15,6 +15,7 @@ import {
   useTeamUpdate,
   useTeamPlayersSync,
   useTeamUploadLogo,
+  useTeamDeleteLogo,
 } from '@api/team';
 import { useGroupsGet } from '@api/group';
 import { PlayerModalAdd, PlayerModalEditByIndex } from '@types';
@@ -43,6 +44,7 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
   const [initialized, setInitialized] = useState(false);
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [pendingLogo, setPendingLogo] = useState<File | null>(null);
+  const [removeLogo, setRemoveLogo] = useState(false);
 
   const teamNameError = submitAttempted && !teamName.trim();
 
@@ -51,7 +53,13 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
   const { mutateAsync: updateTeam } = useTeamUpdate();
   const { mutateAsync: syncPlayers } = useTeamPlayersSync();
   const { mutateAsync: uploadLogo } = useTeamUploadLogo();
+  const { mutateAsync: deleteLogo } = useTeamDeleteLogo();
   const { data: groups } = useGroupsGet();
+
+  const handleLogoChange = (file: File | null) => {
+    setPendingLogo(file);
+    setRemoveLogo(file === null && !!existingTeam?.logoUrl);
+  };
 
   const handleClose = useCallback(() => onClose(), [onClose]);
   useCloseComponent({ onClose: handleClose });
@@ -142,13 +150,12 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
         },
       });
 
-      if (!isEdit && pendingLogo) {
-        try {
-          await uploadLogo({ teamId: targetTeamId, file: pendingLogo });
-        } catch {
-          console.error('Failed to upload logo for new team');
-        }
+      if (pendingLogo) {
+        await uploadLogo({ teamId: targetTeamId, file: pendingLogo });
+      } else if (removeLogo) {
+        await deleteLogo(targetTeamId);
       }
+
       onClose();
     } catch (error) {
       console.error('Failed to save team:', error);
@@ -183,11 +190,12 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
 
           <div className={c.main}>
             <div className={c.teamInfoSection}>
-              {isEdit ? (
-                <LogoUpload teamId={teamId} logoUrl={existingTeam?.logoUrl} />
-              ) : (
-                <LogoUpload file={pendingLogo} onFileChange={setPendingLogo} />
-              )}
+              <LogoUpload
+                file={pendingLogo}
+                logoUrl={existingTeam?.logoUrl}
+                removed={removeLogo}
+                onFileChange={handleLogoChange}
+              />
               <div className={c.teamFields}>
                 <div className={teamName.trim() ? c.inputValid : undefined}>
                   <Input

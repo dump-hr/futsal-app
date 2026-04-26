@@ -3,14 +3,13 @@ import clsx from 'clsx';
 import toast from 'react-hot-toast';
 import ButtonSmall from '@components/ButtonSmall/ButtonSmall';
 import { UploadGray, TrashCanGray } from '@assets/icons';
-import { useTeamUploadLogo, useTeamDeleteLogo } from '@api/team';
 import c from './LogoUpload.module.scss';
 
 type LogoUploadProps = {
-  teamId?: number;
   logoUrl?: string | null;
   file?: File | null;
-  onFileChange?: (file: File | null) => void;
+  removed?: boolean;
+  onFileChange: (file: File | null) => void;
 };
 
 const ACCEPTED_TYPES = [
@@ -25,22 +24,17 @@ const isValidFile = (f: File) =>
   ACCEPTED_TYPES.includes(f.type) && f.size <= MAX_FILE_SIZE;
 
 const LogoUpload: React.FC<LogoUploadProps> = ({
-  teamId,
   logoUrl,
   file,
+  removed,
   onFileChange,
 }) => {
   const [isDragOver, setIsDragOver] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-  const { mutate: uploadLogo, isPending: isUploading } = useTeamUploadLogo();
-  const { mutate: deleteLogo } = useTeamDeleteLogo();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const isDeferred = teamId === undefined;
-
   useEffect(() => {
-    if (!isDeferred || !file) {
+    if (!file) {
       setPreviewUrl(null);
       return;
     }
@@ -48,9 +42,9 @@ const LogoUpload: React.FC<LogoUploadProps> = ({
     const url = URL.createObjectURL(file);
     setPreviewUrl(url);
     return () => URL.revokeObjectURL(url);
-  }, [file, isDeferred]);
+  }, [file]);
 
-  const displayUrl = isDeferred ? previewUrl : logoUrl;
+  const displayUrl = previewUrl ?? (removed ? null : logoUrl);
 
   const handleFile = (picked: File | null) => {
     if (picked && !isValidFile(picked)) {
@@ -62,14 +56,8 @@ const LogoUpload: React.FC<LogoUploadProps> = ({
       return;
     }
 
-    if (isDeferred) {
-      onFileChange?.(picked);
-      if (picked) toast.success('Logo odabran');
-    } else if (picked) {
-      uploadLogo({ teamId, file: picked });
-    } else {
-      deleteLogo(teamId);
-    }
+    onFileChange(picked);
+    if (picked) toast.success('Logo odabran');
   };
 
   const handleDrag = (e: React.DragEvent, over: boolean) => {
@@ -92,11 +80,7 @@ const LogoUpload: React.FC<LogoUploadProps> = ({
   return (
     <div className={c.wrapper}>
       <div
-        className={clsx(
-          c.dropzone,
-          isDragOver && c.dragOver,
-          isUploading && c.loading,
-        )}
+        className={clsx(c.dropzone, isDragOver && c.dragOver)}
         onDragOver={(e) => handleDrag(e, true)}
         onDragEnter={(e) => handleDrag(e, true)}
         onDragLeave={(e) => handleDrag(e, false)}
