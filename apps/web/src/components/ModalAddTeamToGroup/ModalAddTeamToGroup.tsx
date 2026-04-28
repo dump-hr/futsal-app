@@ -1,4 +1,5 @@
 import { Button, Modal } from '@components/index';
+import { useCloseComponent } from '@hooks/index';
 import { XWhite } from '@assets/icons';
 import { useGroupAddTeam } from '@api/group';
 import { TeamDto } from '@futsal-app/types';
@@ -16,6 +17,8 @@ const ModalAddTeamToGroup: React.FC<ModalAddTeamToGroupProps> = ({
   onClose,
 }) => {
   const { mutate: addTeam, isPending } = useGroupAddTeam();
+
+  useCloseComponent({ onClose });
 
   const handleAddTeam = (teamId: number) => {
     addTeam({ id: groupId, dto: { teamId } }, { onSuccess: onClose });
