@@ -124,6 +124,12 @@
 
 .nameInputWrapper {
   position: relative;
+  width: 208px;
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+  }
 }
 
 .suggestions {

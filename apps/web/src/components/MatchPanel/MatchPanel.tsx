@@ -27,6 +27,8 @@ type NewEventSide = {
   isPenalty: boolean;
 };
 
+type PendingKind = 'regular' | 'penalty';
+
 const SHOOTOUT_EVENTS: `${EventType}`[] = [
   EventType.shootoutGoal,
   EventType.shootoutMiss,
@@ -39,7 +41,7 @@ const isShootoutEvent = (eventType: `${EventType}`): boolean => {
 const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
   const { data: match, isLoading } = useMatchGet(matchId);
   const { data: events = [] } = useMatchEventsGet(matchId);
-  const [showTeamPicker, setShowTeamPicker] = useState(false);
+  const [pendingKind, setPendingKind] = useState<PendingKind | null>(null);
   const [newEventSide, setNewEventSide] = useState<NewEventSide | null>(null);
 
   const panelRef = useRef<HTMLDivElement>(null);
@@ -58,8 +60,8 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
   const isDraw = match.homeGoals === match.awayGoals;
   const regularEvents = events.filter((e) => !isShootoutEvent(e.eventType));
   const penaltyEvents = events.filter((e) => isShootoutEvent(e.eventType));
-  // TODO: also check that the 30-minute timer has expired once timer is implemented
-  const showPenaltySection = isPlayoff && isDraw;
+  const hasPenaltyEvents = penaltyEvents.length > 0;
+  const showPenaltySection = (isPlayoff && isDraw) || hasPenaltyEvents;
 
   const penaltyHomeGoals = penaltyEvents.filter(
     (e) => e.isForHomeTeam && e.eventType === EventType.shootoutGoal,
@@ -69,8 +71,8 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
   ).length;
 
   const handleTeamPick = (isHome: boolean) => {
-    setNewEventSide({ isHome, isPenalty: showPenaltySection });
-    setShowTeamPicker(false);
+    setNewEventSide({ isHome, isPenalty: pendingKind === 'penalty' });
+    setPendingKind(null);
   };
 
   const handleSave = (isForHomeTeam: boolean, data: MatchEventSaveData) => {
@@ -122,23 +124,14 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
         </div>
       )}
 
-      <div className={c.addButton}>
-        <div onClick={() => setShowTeamPicker(true)}>
-          <ButtonSmall
-            iconSrc={PlusBlack}
-            backgroundColor={BackgroundColor.White}
-          />
-        </div>
-      </div>
-
       <div className={c.timeline}>
-        {showTeamPicker && match.homeTeam && match.awayTeam && (
+        {pendingKind && match.homeTeam && match.awayTeam && (
           <div className={c.eventRow}>
             <TeamPicker
               homeTeam={match.homeTeam}
               awayTeam={match.awayTeam}
               onPick={handleTeamPick}
-              onClose={() => setShowTeamPicker(false)}
+              onClose={() => setPendingKind(null)}
             />
           </div>
         )}
@@ -161,10 +154,17 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
           </div>
         )}
 
-        {showPenaltySection &&
-          [...penaltyEvents]
-            .reverse()
-            .map((event) => (
+        {showPenaltySection && (
+          <>
+            <div className={c.addButton}>
+              <div onClick={() => setPendingKind('penalty')}>
+                <ButtonSmall
+                  iconSrc={PlusBlack}
+                  backgroundColor={BackgroundColor.White}
+                />
+              </div>
+            </div>
+            {[...penaltyEvents].reverse().map((event) => (
               <MatchEventRow
                 key={event.id}
                 event={event}
@@ -175,6 +175,17 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
                 onDelete={handleDelete}
               />
             ))}
+          </>
+        )}
+
+        <div className={c.addButton}>
+          <div onClick={() => setPendingKind('regular')}>
+            <ButtonSmall
+              iconSrc={PlusBlack}
+              backgroundColor={BackgroundColor.White}
+            />
+          </div>
+        </div>
         {[...regularEvents].reverse().map((event) => (
           <MatchEventRow
             key={event.id}

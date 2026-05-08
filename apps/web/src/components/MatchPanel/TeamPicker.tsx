@@ -3,9 +3,6 @@ import { XBlack } from '@assets/index';
 import { BackgroundColor } from '@types';
 import c from './MatchPanel.module.scss';
 
-const HOME_LOGO_TEST = '/test-logos/infobip.png';
-const AWAY_LOGO_TEST = '/test-logos/otp.png';
-
 type Team = {
   name: string;
   logoUrl?: string | null;
@@ -38,7 +35,7 @@ const TeamPicker: React.FC<TeamPickerProps> = ({
       <div className={c.teamPickerTeams}>
         <button className={c.teamOption} onClick={() => onPick(true)}>
           <img
-            src={homeTeam.logoUrl || HOME_LOGO_TEST}
+            src={homeTeam.logoUrl ?? ''}
             alt={homeTeam.name}
             className={c.teamLogo}
           />
@@ -47,7 +44,7 @@ const TeamPicker: React.FC<TeamPickerProps> = ({
         <p className={c.vsLabel}>VS</p>
         <button className={c.teamOption} onClick={() => onPick(false)}>
           <img
-            src={awayTeam.logoUrl || AWAY_LOGO_TEST}
+            src={awayTeam.logoUrl ?? ''}
             alt={awayTeam.name}
             className={c.teamLogo}
           />
