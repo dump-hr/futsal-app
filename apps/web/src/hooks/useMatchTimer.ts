@@ -70,10 +70,10 @@ export const useMatchTimer = (matchId: number) => {
     });
   }, []);
 
-  // Mount-time reconciliation: if backend snapshot is newer than local, adopt it.
   const { data: backendState } = useMatchTimerGet(matchId);
   useEffect(() => {
     if (!backendState) return;
+
     const backendSyncedAt = backendState.lastSyncedAt
       ? new Date(backendState.lastSyncedAt).getTime()
       : 0;
@@ -83,11 +83,13 @@ export const useMatchTimer = (matchId: number) => {
     const startedAtMs = backendState.startedAt
       ? new Date(backendState.startedAt).getTime()
       : null;
+
     const adopted = writeState(matchId, {
       startedAt: backendState.isRunning && startedAtMs ? startedAtMs : null,
       accumulatedMs: backendState.accumulatedMs,
       isRunning: backendState.isRunning,
     });
+
     stateRef.current = adopted;
     setIsRunning(adopted.isRunning);
     setElapsedSeconds(Math.floor(elapsedMsFromState(adopted) / 1000));
@@ -113,8 +115,7 @@ export const useMatchTimer = (matchId: number) => {
     return () => clearInterval(interval);
   }, [isRunning]);
 
-  // Heartbeat: while running, push the current state to the backend every 5s
-  // so the public stream stays fresh and a backend restart doesn't lose state.
+  // Heartbeat to ensure other clients get updates even if the tab is inactive
   useEffect(() => {
     if (!isRunning) return;
     const interval = setInterval(() => {
@@ -123,6 +124,7 @@ export const useMatchTimer = (matchId: number) => {
     return () => clearInterval(interval);
   }, [isRunning, pushSync]);
 
+  // Listen to localStorage changes to sync across tabs
   const toggle = useCallback(() => {
     const now = Date.now();
     const current = stateRef.current;
@@ -150,28 +152,25 @@ export const useMatchTimer = (matchId: number) => {
     pushSync(next);
   }, [matchId, pushSync]);
 
-  const setElapsed = useCallback(
-    (seconds: number) => {
-      const safe = Math.max(0, Math.floor(seconds));
-      const current = stateRef.current;
-      const next = writeState(matchId, {
-        startedAt: current.isRunning ? Date.now() : null,
-        accumulatedMs: safe * 1000,
-        isRunning: current.isRunning,
-      });
-      stateRef.current = next;
-      setElapsedSeconds(safe);
-      pushSync(next);
-    },
-    [matchId, pushSync],
-  );
+  const setElapsed = (seconds: number) => {
+    const safe = Math.max(0, Math.floor(seconds));
+    const current = stateRef.current;
+    const next = writeState(matchId, {
+      startedAt: current.isRunning ? Date.now() : null,
+      accumulatedMs: safe * 1000,
+      isRunning: current.isRunning,
+    });
+    stateRef.current = next;
+    setElapsedSeconds(safe);
+    pushSync(next);
+  };
 
-  const clearTimer = useCallback(() => {
+  const clearTimer = () => {
     localStorage.removeItem(storageKey(matchId));
     stateRef.current = emptyState();
     setIsRunning(false);
     setElapsedSeconds(0);
-  }, [matchId]);
+  };
 
   return { elapsedSeconds, isRunning, toggle, setElapsed, clearTimer };
 };
