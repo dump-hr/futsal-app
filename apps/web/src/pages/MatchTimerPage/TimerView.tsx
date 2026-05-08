@@ -30,11 +30,11 @@ const TimerView: React.FC<TimerViewProps> = ({
   onTogglePenalty,
   onEndMatch,
 }) => {
-  const minutes = Math.floor(elapsedSeconds / 60);
-  const seconds = elapsedSeconds % 60;
-
   const [editing, setEditing] = useState<EditingField>(null);
   const [draft, setDraft] = useState('');
+
+  const minutes = Math.floor(elapsedSeconds / 60);
+  const seconds = elapsedSeconds % 60;
 
   useEffect(() => {
     if (isRunning) setEditing(null);
@@ -50,10 +50,7 @@ const TimerView: React.FC<TimerViewProps> = ({
     if (!editing) return;
     const parsed = Number(draft);
     if (Number.isFinite(parsed)) {
-      const safe = clamp(
-        Math.floor(parsed),
-        editing === 'minutes' ? 999 : 59,
-      );
+      const safe = clamp(Math.floor(parsed), editing === 'minutes' ? 999 : 59);
       const newMinutes = editing === 'minutes' ? safe : minutes;
       const newSeconds = editing === 'seconds' ? safe : seconds;
       onElapsedChange(newMinutes * 60 + newSeconds);

@@ -54,7 +54,7 @@ export const useMatchTimerLive = (matchId: number) => {
         setSnapshot(next);
         setElapsedSeconds(computeElapsedSeconds(next));
       } catch {
-        // ignore malformed payloads
+        console.error('Failed to parse timer state event', event.data);
       }
     };
     return () => source.close();

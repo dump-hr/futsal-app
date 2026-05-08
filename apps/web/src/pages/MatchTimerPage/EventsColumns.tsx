@@ -1,40 +1,11 @@
 import clsx from 'clsx';
 import { EventType, type MatchEventDto } from '@futsal-app/types';
-import {
-  CardRed,
-  CardYellow,
-  GoalLime,
-  TickLime,
-  XRed,
-} from '@assets/icons';
+import { EVENT_ICON, REGULATION_EVENTS, SHOOTOUT_EVENTS } from './constants';
 import c from './MatchTimerPage.module.scss';
 
 type EventsColumnsProps = {
   events: MatchEventDto[];
   mode: 'regulation' | 'shootout';
-};
-
-const REGULATION_EVENTS: EventType[] = [
-  EventType.goal,
-  EventType.ownGoal,
-  EventType.penaltyGoal,
-  EventType.yellowCard,
-  EventType.redCard,
-];
-
-const SHOOTOUT_EVENTS: EventType[] = [
-  EventType.shootoutGoal,
-  EventType.shootoutMiss,
-];
-
-const EVENT_ICON: Partial<Record<EventType, string>> = {
-  [EventType.goal]: GoalLime,
-  [EventType.ownGoal]: GoalLime,
-  [EventType.penaltyGoal]: GoalLime,
-  [EventType.yellowCard]: CardYellow,
-  [EventType.redCard]: CardRed,
-  [EventType.shootoutGoal]: TickLime,
-  [EventType.shootoutMiss]: XRed,
 };
 
 const playerLabel = (event: MatchEventDto): string => {

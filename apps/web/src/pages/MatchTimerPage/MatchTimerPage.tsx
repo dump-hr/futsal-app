@@ -1,11 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'wouter';
 import { EventType } from '@futsal-app/types';
-import {
-  useMatchGet,
-  useMatchEventsGet,
-  useMatchDeactivate,
-} from '@api/index';
+import { useMatchGet, useMatchEventsGet, useMatchDeactivate } from '@api/index';
 import { ModalConfirmation, NewEventModal } from '@components/index';
 import { useMatchTimer } from '@hooks/index';
 import { CheckBlack, HistoryBlack } from '@assets/icons';
@@ -14,24 +10,12 @@ import MatchTimerHeader from './MatchTimerHeader';
 import TimerView from './TimerView';
 import ShootoutView from './ShootoutView';
 import EventsColumns from './EventsColumns';
+import { REGULATION_HOTKEYS, SHOOTOUT_HOTKEYS } from './constants';
 import c from './MatchTimerPage.module.scss';
 
 type ModalState = {
   presetEventType?: EventType;
 } | null;
-
-const REGULATION_HOTKEYS: Record<string, EventType> = {
-  g: EventType.goal,
-  a: EventType.ownGoal,
-  c: EventType.redCard,
-  z: EventType.yellowCard,
-  p: EventType.penaltyGoal,
-};
-
-const SHOOTOUT_HOTKEYS: Record<string, EventType> = {
-  g: EventType.shootoutGoal,
-  p: EventType.shootoutMiss,
-};
 
 const isTypingTarget = (target: EventTarget | null) => {
   if (!(target instanceof HTMLElement)) return false;
@@ -41,6 +25,11 @@ const isTypingTarget = (target: EventTarget | null) => {
 };
 
 export const MatchTimerPage = () => {
+  const [isShootoutView, setIsShootoutView] = useState(false);
+  const [modalState, setModalState] = useState<ModalState>(null);
+  const [endConfirmOpen, setEndConfirmOpen] = useState(false);
+  const [penaltyConfirmOpen, setPenaltyConfirmOpen] = useState(false);
+
   const params = useParams<{ matchId: string }>();
   const matchId = Number(params.matchId);
   const [, navigate] = useLocation();
@@ -52,23 +41,14 @@ export const MatchTimerPage = () => {
   const { elapsedSeconds, isRunning, toggle, setElapsed, clearTimer } =
     useMatchTimer(matchId);
 
-  const [isShootoutView, setIsShootoutView] = useState(false);
-  const [modalState, setModalState] = useState<ModalState>(null);
-  const [endConfirmOpen, setEndConfirmOpen] = useState(false);
-  const [penaltyConfirmOpen, setPenaltyConfirmOpen] = useState(false);
-
   const currentMinute = Math.floor(elapsedSeconds / 60);
 
-  const shootoutCounts = useMemo(() => {
-    let home = 0;
-    let away = 0;
-    for (const event of events) {
-      if (event.eventType !== EventType.shootoutGoal) continue;
-      if (event.isForHomeTeam) home += 1;
-      else away += 1;
-    }
-    return { home, away };
-  }, [events]);
+  const shootoutCounts = { home: 0, away: 0 };
+  for (const event of events) {
+    if (event.eventType !== EventType.shootoutGoal) continue;
+    if (event.isForHomeTeam) shootoutCounts.home += 1;
+    else shootoutCounts.away += 1;
+  }
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {

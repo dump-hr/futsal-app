@@ -3,6 +3,14 @@ import { Observable, Subject, concat, defer, from, map } from 'rxjs';
 import { prisma } from '../../lib/prisma';
 import { MatchTimerStateDto, MatchTimerSyncDto } from '@futsal-app/types';
 
+const timerStateSelect = {
+  id: true,
+  timerIsRunning: true,
+  timerAccumulatedMs: true,
+  timerStartedAt: true,
+  timerLastSyncedAt: true,
+} as const;
+
 const toState = (match: {
   id: number;
   timerIsRunning: boolean;
@@ -23,6 +31,7 @@ export class MatchTimerService {
 
   private getStream(matchId: number): Subject<MatchTimerStateDto> {
     let stream = this.streams.get(matchId);
+
     if (!stream) {
       stream = new Subject<MatchTimerStateDto>();
       this.streams.set(matchId, stream);
@@ -33,13 +42,7 @@ export class MatchTimerService {
   async getState(id: number): Promise<MatchTimerStateDto> {
     const match = await prisma.match.findUnique({
       where: { id },
-      select: {
-        id: true,
-        timerIsRunning: true,
-        timerAccumulatedMs: true,
-        timerStartedAt: true,
-        timerLastSyncedAt: true,
-      },
+      select: timerStateSelect,
     });
 
     if (!match) {
@@ -68,13 +71,7 @@ export class MatchTimerService {
         timerStartedAt: dto.isRunning ? now : null,
         timerLastSyncedAt: now,
       },
-      select: {
-        id: true,
-        timerIsRunning: true,
-        timerAccumulatedMs: true,
-        timerStartedAt: true,
-        timerLastSyncedAt: true,
-      },
+      select: timerStateSelect,
     });
 
     const state = toState(updated);

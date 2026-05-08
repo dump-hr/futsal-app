@@ -14,7 +14,6 @@ export const useMatchTimerSync = (matchId: number) => {
   return useMutation({
     mutationFn: (dto: MatchTimerSyncDto) => matchTimerSync(matchId, dto),
     onError: (error) => {
-      // Network blips are normal mid-match — the next heartbeat will retry.
       if (error.message === 'Network error') return;
       toast.error(`Greška pri sinkronizaciji tajmera - ${error.message}`);
     },
