@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react';
-import clsx from 'clsx';
 import { EventType, MatchType } from '@futsal-app/types';
 import {
   useMatchGet,
@@ -8,26 +7,22 @@ import {
   useMatchEventDelete,
   useMatchEventUpdate,
 } from '@api/index';
-import { MatchEventCard, ButtonSmall } from '@components/index';
+import { ButtonSmall } from '@components/index';
 import { PlusBlack } from '@assets/index';
 import { useCloseComponent } from '@hooks/index';
 import { BackgroundColor, MatchEventSaveData } from '@types';
 import MatchHeader from './MatchHeader';
 import MatchEventRow from './MatchEventRow';
-import TeamPicker from './TeamPicker';
+import TransientEventSlot, {
+  type PendingKind,
+  type NewEventSide,
+} from './TransientEventSlot';
 import c from './MatchPanel.module.scss';
 
 type MatchPanelProps = {
   matchId: number;
   onClose: () => void;
 };
-
-type NewEventSide = {
-  isHome: boolean;
-  isPenalty: boolean;
-};
-
-type PendingKind = 'regular' | 'penalty';
 
 const SHOOTOUT_EVENTS: `${EventType}`[] = [
   EventType.shootoutGoal,
@@ -104,6 +99,24 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
   const homePlayers = match.homeTeam?.players ?? [];
   const awayPlayers = match.awayTeam?.players ?? [];
 
+  const renderSlot = (kind: PendingKind) =>
+    match.homeTeam &&
+    match.awayTeam && (
+      <TransientEventSlot
+        kind={kind}
+        pendingKind={pendingKind}
+        newEventSide={newEventSide}
+        homeTeam={match.homeTeam}
+        awayTeam={match.awayTeam}
+        homePlayers={homePlayers}
+        awayPlayers={awayPlayers}
+        onTeamPick={handleTeamPick}
+        onPickerClose={() => setPendingKind(null)}
+        onSave={handleSave}
+        onCancel={() => setNewEventSide(null)}
+      />
+    );
+
   return (
     <div className={c.panel} ref={panelRef} role='dialog' aria-modal='true'>
       <MatchHeader
@@ -125,35 +138,6 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
       )}
 
       <div className={c.timeline}>
-        {pendingKind && match.homeTeam && match.awayTeam && (
-          <div className={c.eventRow}>
-            <TeamPicker
-              homeTeam={match.homeTeam}
-              awayTeam={match.awayTeam}
-              onPick={handleTeamPick}
-              onClose={() => setPendingKind(null)}
-            />
-          </div>
-        )}
-
-        {newEventSide && (
-          <div
-            className={clsx(
-              c.eventRow,
-              newEventSide.isHome ? c.eventLeft : c.eventRight,
-            )}>
-            <MatchEventCard
-              side={newEventSide.isHome ? 'left' : 'right'}
-              players={newEventSide.isHome ? homePlayers : awayPlayers}
-              isPenaltyShootout={newEventSide.isPenalty}
-              isNew
-              onSave={(data) => handleSave(newEventSide.isHome, data)}
-              onDelete={() => setNewEventSide(null)}
-              onCancel={() => setNewEventSide(null)}
-            />
-          </div>
-        )}
-
         {showPenaltySection && (
           <>
             <div className={c.addButton}>
@@ -164,6 +148,7 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
                 />
               </div>
             </div>
+            {renderSlot('penalty')}
             {[...penaltyEvents].reverse().map((event) => (
               <MatchEventRow
                 key={event.id}
@@ -186,6 +171,7 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
             />
           </div>
         </div>
+        {renderSlot('regular')}
         {[...regularEvents].reverse().map((event) => (
           <MatchEventRow
             key={event.id}

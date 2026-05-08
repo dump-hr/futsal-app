@@ -143,13 +143,20 @@
   position: relative;
   isolation: isolate;
 
+  > *:first-child::before {
+    display: none;
+  }
+}
+
+.eventRow,
+.addButton {
   &::before {
     content: '';
     position: absolute;
     left: 50%;
     top: -40px;
-    bottom: 0;
     width: 3px;
+    height: 40px;
     background: repeating-linear-gradient(
       to bottom,
       $white 0,
