@@ -32,7 +32,7 @@ export const TeamInfo: React.FC<TeamInfoProps> = ({
           <img src={teamLogoUrl} alt={teamName} className={c.teamLogo} />
         ) : (
           <div className={c.teamLogoFallback} aria-label={teamName}>
-            {teamName.charAt(0).toUpperCase()}
+            {teamName.charAt(0)}
           </div>
         )}
         <span className={c.teamName}>{teamName}</span>

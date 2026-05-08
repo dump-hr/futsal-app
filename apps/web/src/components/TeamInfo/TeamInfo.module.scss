@@ -30,6 +30,7 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    text-transform: uppercase;
     @include body-normal-bold;
   }
 

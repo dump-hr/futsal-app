@@ -37,6 +37,7 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  text-transform: uppercase;
   @include title-2;
   font-weight: 600;
 }
