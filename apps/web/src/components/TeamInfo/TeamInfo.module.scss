@@ -19,6 +19,21 @@
     margin-right: 34px;
   }
 
+  &LogoFallback {
+    width: 42px;
+    height: 42px;
+    margin-right: 34px;
+    border-radius: 50%;
+    background-color: $gray-medium;
+    color: $white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    @include body-normal-bold;
+  }
+
   &Info {
     display: flex;
     align-items: center;

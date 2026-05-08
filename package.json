@@ -1,6 +1,5 @@
 {
   "devDependencies": {
-    "@types/multer": "^2.1.0",
     "turbo": "^2.5.5"
   },
   "scripts": {

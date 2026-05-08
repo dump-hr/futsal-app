@@ -10,10 +10,12 @@ import {
   TeamPlayersSyncDto,
   PlayerDto,
 } from '@futsal-app/types';
+import { BlobService } from '../blob/blob.service';
 import { prisma } from '../../lib/prisma';
 
 @Injectable()
 export class TeamService {
+  constructor(private readonly blobService: BlobService) {}
   async create(dto: TeamCreateDto): Promise<TeamDto> {
     const existingTeam = await prisma.team.findFirst({
       where: {
@@ -110,6 +112,30 @@ export class TeamService {
         groupId: dto.groupId,
       },
       include: { group: true },
+    });
+
+    return team;
+  }
+
+  async updateLogo(id: number, file: Express.Multer.File): Promise<TeamDto> {
+    const logoUrl = await this.blobService.upload(
+      'team-logos',
+      file.buffer,
+      file.mimetype,
+    );
+
+    const team = await prisma.team.update({
+      where: { id },
+      data: { logoUrl },
+    });
+
+    return team;
+  }
+
+  async deleteLogo(id: number): Promise<TeamDto> {
+    const team = await prisma.team.update({
+      where: { id },
+      data: { logoUrl: null },
     });
 
     return team;
