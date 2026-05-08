@@ -1,7 +1,3 @@
-// NOTE: The in-memory `streams` Map only works on a single Node process.
-// If the API is ever scaled horizontally, replace the Subject with a shared
-// pub/sub bus (Redis pub/sub) or pin matches to instances via sticky sessions.
-
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Observable, Subject, concat, defer, from, map } from 'rxjs';
 import { prisma } from '../../lib/prisma';
@@ -63,9 +59,6 @@ export class MatchTimerService {
       throw new NotFoundException(`Match with id ${id} not found`);
     }
 
-    // Each PATCH rebases the timeline: admin sends their "as-of-now"
-    // accumulatedMs, so the server stamps startedAt = serverNow. Public
-    // clients then extrapolate elapsed = accumulatedMs + (clientNow - startedAt).
     const now = new Date();
     const updated = await prisma.match.update({
       where: { id },
@@ -92,6 +85,7 @@ export class MatchTimerService {
   stream(id: number): Observable<MessageEvent> {
     const initial$ = defer(() => from(this.getState(id)));
     const subsequent$ = this.getStream(id).asObservable();
+
     return concat(initial$, subsequent$).pipe(
       map((state) => ({ data: state }) as MessageEvent),
     );

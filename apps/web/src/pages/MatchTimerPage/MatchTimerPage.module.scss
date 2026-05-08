@@ -91,8 +91,7 @@
 }
 
 .score {
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 400;
+  @include orbitron;
   font-size: 96px;
   line-height: 80px;
   color: $white;
@@ -100,10 +99,9 @@
 }
 
 .clock {
+  @include orbitron;
   display: flex;
   align-items: center;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 400;
   font-size: 260px;
   line-height: 200px;
   color: $white;
@@ -126,8 +124,7 @@
 }
 
 .clockInput {
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 400;
+  @include orbitron;
   font-size: 260px;
   line-height: 200px;
   color: $lime;
@@ -146,8 +143,7 @@
 }
 
 .shootoutScore {
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 400;
+  @include orbitron;
   font-size: 180px;
   line-height: 140px;
   color: $white;

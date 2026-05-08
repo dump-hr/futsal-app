@@ -1,3 +1,10 @@
+// Subscribes to /match/:id/timer/stream via SSE and exposes a smoothly-ticking
+// elapsedSeconds + isRunning. Read-only counterpart of useMatchTimer.
+//
+// Currently has no in-app consumer — it lives here so the SSE substrate is
+// exercisable end-to-end before the public live-game viewer page lands.
+// That page will be the first caller.
+
 import { useEffect, useRef, useState } from 'react';
 import { MatchTimerStateDto } from '@futsal-app/types';
 
@@ -18,11 +25,6 @@ const computeElapsedSeconds = (snapshot: LiveSnapshot): number => {
   return Math.floor(elapsedMs / 1000);
 };
 
-/**
- * Subscribes to /match/:id/timer/stream via SSE and exposes a smoothly-ticking
- * elapsedSeconds + isRunning. For the public viewer page (and any other
- * read-only consumer of the live clock).
- */
 export const useMatchTimerLive = (matchId: number) => {
   const [snapshot, setSnapshot] = useState<LiveSnapshot>({
     isRunning: false,

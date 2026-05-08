@@ -38,7 +38,6 @@ type NewEventModalProps = {
   mode: 'regulation' | 'shootout';
   currentMinute: number;
   presetEventType?: EventType;
-  presetIsForHomeTeam?: boolean;
   onClose: () => void;
 };
 
@@ -47,7 +46,6 @@ const NewEventModal: React.FC<NewEventModalProps> = ({
   mode,
   currentMinute,
   presetEventType,
-  presetIsForHomeTeam,
   onClose,
 }) => {
   const isShootout = mode === 'shootout';
@@ -60,13 +58,7 @@ const NewEventModal: React.FC<NewEventModalProps> = ({
     [match.awayTeam?.players],
   );
 
-  const [teamSide, setTeamSide] = useState<TeamSide | null>(
-    presetIsForHomeTeam == null
-      ? null
-      : presetIsForHomeTeam
-        ? 'home'
-        : 'away',
-  );
+  const [teamSide, setTeamSide] = useState<TeamSide | null>(null);
   const [eventType, setEventType] = useState<EventType | null>(
     presetEventType ?? null,
   );
@@ -209,10 +201,18 @@ const NewEventModal: React.FC<NewEventModalProps> = ({
                 placeholder='Ime prezime'
                 disabled={playerInputDisabled}
                 {...playerSuggestions.inputProps}
+                onChange={(e) => {
+                  // Typing invalidates a previously-picked suggestion so we
+                  // never submit a stale playerId that doesn't match the
+                  // visible name. The user must re-pick from the list to
+                  // attach a player to the event.
+                  setSelectedPlayerId(null);
+                  playerSuggestions.inputProps.onChange(e);
+                }}
                 onFocus={(e) => {
                   setPlayerInputFocused(true);
                   playerSuggestions.inputProps.onFocus();
-                  e.currentTarget.select?.();
+                  e.currentTarget.select();
                 }}
                 onBlur={() => setPlayerInputFocused(false)}
               />

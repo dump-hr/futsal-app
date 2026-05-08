@@ -166,7 +166,14 @@ export const useMatchTimer = (matchId: number) => {
     [matchId, pushSync],
   );
 
-  return { elapsedSeconds, isRunning, toggle, setElapsed };
+  const clearTimer = useCallback(() => {
+    localStorage.removeItem(storageKey(matchId));
+    stateRef.current = emptyState();
+    setIsRunning(false);
+    setElapsedSeconds(0);
+  }, [matchId]);
+
+  return { elapsedSeconds, isRunning, toggle, setElapsed, clearTimer };
 };
 
 export default useMatchTimer;

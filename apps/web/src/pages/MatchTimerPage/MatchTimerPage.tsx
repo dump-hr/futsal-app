@@ -18,7 +18,6 @@ import c from './MatchTimerPage.module.scss';
 
 type ModalState = {
   presetEventType?: EventType;
-  presetIsForHomeTeam?: boolean;
 } | null;
 
 const REGULATION_HOTKEYS: Record<string, EventType> = {
@@ -50,7 +49,7 @@ export const MatchTimerPage = () => {
   const { data: events = [] } = useMatchEventsGet(matchId);
   const { mutate: deactivate } = useMatchDeactivate();
 
-  const { elapsedSeconds, isRunning, toggle, setElapsed } =
+  const { elapsedSeconds, isRunning, toggle, setElapsed, clearTimer } =
     useMatchTimer(matchId);
 
   const [isShootoutView, setIsShootoutView] = useState(false);
@@ -114,7 +113,7 @@ export const MatchTimerPage = () => {
   const handleEndMatch = () => {
     deactivate(undefined, {
       onSuccess: () => {
-        localStorage.removeItem(`matchTimer:${matchId}`);
+        clearTimer();
         navigate(routes.MATCHES);
       },
     });
@@ -155,7 +154,6 @@ export const MatchTimerPage = () => {
           mode={isShootoutView ? 'shootout' : 'regulation'}
           currentMinute={currentMinute}
           presetEventType={modalState.presetEventType}
-          presetIsForHomeTeam={modalState.presetIsForHomeTeam}
           onClose={() => setModalState(null)}
         />
       )}

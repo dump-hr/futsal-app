@@ -16,6 +16,7 @@ import {
 } from '@api/match';
 import { useTeamsGet } from '@api/team';
 import { groupMatchesByDay } from '@helpers/matchHelpers';
+import { routes } from '@routes/routes';
 import c from './MatchesPage.module.scss';
 import {
   type MatchTypeFilter,
@@ -117,7 +118,9 @@ export const MatchesPage = () => {
                   setActivateConfirm({ open: true, matchId })
                 }
                 onTimer={(matchId) =>
-                  navigate(`/admin/matches/${matchId}/timer`)
+                  navigate(
+                    routes.MATCH_TIMER.replace(':matchId', String(matchId)),
+                  )
                 }
               />
             ))}
