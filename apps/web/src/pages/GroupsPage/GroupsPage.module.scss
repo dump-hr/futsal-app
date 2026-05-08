@@ -60,7 +60,7 @@
 
 .groups {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 424px);
+  grid-template-columns: repeat(2, 424px);
   gap: 24px;
   align-content: flex-start;
   overflow-y: auto;
