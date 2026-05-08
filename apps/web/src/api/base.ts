@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type { ErrorResponseType } from '../types/index';
+import { routes } from '@routes/routes';
 
 export const api = axios.create({
   baseURL: '/api',
@@ -20,10 +21,18 @@ api.interceptors.request.use(async (config) => {
 api.interceptors.response.use(
   (response) => response.data,
   (error: ErrorResponseType) => {
-    if (error.response)
+    if (error.response) {
+      if (
+        error.response.status === 401 &&
+        window.location.pathname !== routes.LOGIN
+      ) {
+        localStorage.removeItem('jwt');
+        window.location.href = routes.LOGIN;
+      }
       return Promise.reject(
         new Error(error.response.data.message || error.message),
       );
+    }
 
     return Promise.reject(new Error('Network error'));
   },

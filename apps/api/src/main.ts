@@ -1,6 +1,8 @@
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import helmet from 'helmet';
 import { PrismaClientExceptionFilter } from './prisma-client-exception.filter';
 
 const setupFilter = (app: INestApplication) => {
@@ -9,8 +11,10 @@ const setupFilter = (app: INestApplication) => {
 };
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.setGlobalPrefix('api');
+  app.set('trust proxy', 1);
+  app.use(helmet({ contentSecurityPolicy: false }));
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
