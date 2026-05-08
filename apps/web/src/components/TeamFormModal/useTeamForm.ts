@@ -9,7 +9,7 @@ import {
   useTeamUploadLogo,
   useTeamDeleteLogo,
 } from '@api/team';
-import { useGroupsGet } from '@api/group';
+import { useGroupsGetByTournamentId } from '@api/group';
 import { PlayerModalAdd, PlayerModalEditByIndex } from '@types';
 import { GroupOption } from '@constants/groupOptions';
 import type { PlayerEntry } from './PlayerGrid';
@@ -45,7 +45,7 @@ export const useTeamForm = ({ teamId, onClose }: UseTeamFormArgs) => {
     useTeamUploadLogo();
   const { mutateAsync: deleteLogo, isPending: isDeletingLogo } =
     useTeamDeleteLogo();
-  const { data: groups } = useGroupsGet();
+  const { data: groups } = useGroupsGetByTournamentId(TOURNAMENT_ID);
 
   const isSaving =
     isCreating ||
