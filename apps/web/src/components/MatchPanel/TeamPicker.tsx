@@ -34,20 +34,32 @@ const TeamPicker: React.FC<TeamPickerProps> = ({
       </div>
       <div className={c.teamPickerTeams}>
         <button className={c.teamOption} onClick={() => onPick(true)}>
-          <img
-            src={homeTeam.logoUrl ?? ''}
-            alt={homeTeam.name}
-            className={c.teamLogo}
-          />
+          {homeTeam.logoUrl ? (
+            <img
+              src={homeTeam.logoUrl}
+              alt={homeTeam.name}
+              className={c.teamLogo}
+            />
+          ) : (
+            <div className={c.teamLogoFallback} aria-label={homeTeam.name}>
+              {homeTeam.name.charAt(0)}
+            </div>
+          )}
           <p className={c.teamName}>{homeTeam.name}</p>
         </button>
         <p className={c.vsLabel}>VS</p>
         <button className={c.teamOption} onClick={() => onPick(false)}>
-          <img
-            src={awayTeam.logoUrl ?? ''}
-            alt={awayTeam.name}
-            className={c.teamLogo}
-          />
+          {awayTeam.logoUrl ? (
+            <img
+              src={awayTeam.logoUrl}
+              alt={awayTeam.name}
+              className={c.teamLogo}
+            />
+          ) : (
+            <div className={c.teamLogoFallback} aria-label={awayTeam.name}>
+              {awayTeam.name.charAt(0)}
+            </div>
+          )}
           <p className={c.teamName}>{awayTeam.name}</p>
         </button>
       </div>
