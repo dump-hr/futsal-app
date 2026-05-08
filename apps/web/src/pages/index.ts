@@ -3,3 +3,4 @@ export * from './StartingPage';
 export * from './TeamDetailPage';
 export * from './TeamsPage';
 export * from './MatchesPage';
+export * from './MatchTimerPage';

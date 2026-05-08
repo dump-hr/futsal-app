@@ -9,4 +9,5 @@ export const routes: RouteType = {
   TEAM_DETAIL: '/admin/teams/:teamId',
   GROUPS: '/admin/groups',
   MATCHES: '/admin/matches',
+  MATCH_TIMER: '/admin/matches/:matchId/timer',
 };

@@ -8,6 +8,7 @@ type MatchInfoFromDtoProps = {
   onEdit?: (matchId: number) => void;
   onDelete?: (matchId: number) => void;
   onActivate?: (matchId: number) => void;
+  onTimer?: (matchId: number) => void;
 };
 
 export const MatchInfoFromDto: React.FC<MatchInfoFromDtoProps> = ({
@@ -15,6 +16,7 @@ export const MatchInfoFromDto: React.FC<MatchInfoFromDtoProps> = ({
   onEdit,
   onDelete,
   onActivate,
+  onTimer,
 }) => {
   return (
     <MatchInfo
@@ -39,6 +41,7 @@ export const MatchInfoFromDto: React.FC<MatchInfoFromDtoProps> = ({
       onEdit={onEdit ? () => onEdit(match.id) : undefined}
       onDelete={onDelete ? () => onDelete(match.id) : undefined}
       onActivate={onActivate ? () => onActivate(match.id) : undefined}
+      onTimer={onTimer ? () => onTimer(match.id) : undefined}
     />
   );
 };

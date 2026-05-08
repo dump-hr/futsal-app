@@ -144,11 +144,23 @@ export class MatchService {
     await prisma.$transaction([
       prisma.match.updateMany({
         where: { isActive: true },
-        data: { isActive: false },
+        data: {
+          isActive: false,
+          timerIsRunning: false,
+          timerStartedAt: null,
+          timerAccumulatedMs: 0,
+          timerLastSyncedAt: null,
+        },
       }),
       prisma.match.update({
         where: { id },
-        data: { isActive: true },
+        data: {
+          isActive: true,
+          timerIsRunning: false,
+          timerStartedAt: null,
+          timerAccumulatedMs: 0,
+          timerLastSyncedAt: null,
+        },
       }),
     ]);
   }
@@ -162,7 +174,13 @@ export class MatchService {
 
     await prisma.match.update({
       where: { id: active.id },
-      data: { isActive: false },
+      data: {
+        isActive: false,
+        timerIsRunning: false,
+        timerStartedAt: null,
+        timerAccumulatedMs: 0,
+        timerLastSyncedAt: null,
+      },
     });
   }
 

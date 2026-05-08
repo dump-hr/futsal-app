@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'wouter';
 import {
   Button,
   FilterDropdown,
@@ -43,6 +44,7 @@ export const MatchesPage = () => {
   }>({ open: false });
   const [panelMatchId, setPanelMatchId] = useState<number | undefined>();
   const [panelClosing, setPanelClosing] = useState(false);
+  const [, navigate] = useLocation();
 
   const { data: matches } = useMatchGetAll(TOURNAMENT_ID);
   const { data: teams } = useTeamsGet(TOURNAMENT_ID);
@@ -113,6 +115,9 @@ export const MatchesPage = () => {
                 }
                 onActivate={(matchId) =>
                   setActivateConfirm({ open: true, matchId })
+                }
+                onTimer={(matchId) =>
+                  navigate(`/admin/matches/${matchId}/timer`)
                 }
               />
             ))}

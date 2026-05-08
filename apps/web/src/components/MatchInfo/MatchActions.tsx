@@ -13,6 +13,7 @@ type MatchActionsProps = {
   onEdit?: () => void;
   onDelete?: () => void;
   onActivate?: () => void;
+  onTimer?: () => void;
 };
 
 export const MatchActions: React.FC<MatchActionsProps> = ({
@@ -20,6 +21,7 @@ export const MatchActions: React.FC<MatchActionsProps> = ({
   onEdit,
   onDelete,
   onActivate,
+  onTimer,
 }) => {
   switch (status) {
     case MATCH_STATUS.UPCOMING:
@@ -38,7 +40,7 @@ export const MatchActions: React.FC<MatchActionsProps> = ({
     case MATCH_STATUS.LIVE:
       return (
         <div className={c.matchActionWrapper}>
-          <ButtonSmall iconSrc={timerIconSvg} hasBorder />
+          <ButtonSmall iconSrc={timerIconSvg} hasBorder onClick={onTimer} />
           <div className={c.redDotIndicator}>
             <div className={c.redDotIndicatorInner} />
           </div>
