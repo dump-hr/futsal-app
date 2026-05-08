@@ -47,46 +47,6 @@
   align-items: flex-start;
 }
 
-.logoArea {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: center;
-  width: 102px;
-  flex-shrink: 0;
-}
-
-.logoPlaceholder {
-  width: 102px;
-  height: 102px;
-  border-radius: 17px;
-  border: 1px solid $white;
-  background-color: $gray-dark;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.logoText {
-  @include body-normal-bold;
-  color: $white;
-  text-align: center;
-}
-
-.logoImage {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.logoActions {
-  display: flex;
-  gap: 6px;
-  justify-content: center;
-  width: 100%;
-}
-
 .inputValid {
   input {
     border-color: $lime;

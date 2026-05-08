@@ -5170,6 +5170,7 @@ __metadata:
     "@types/express": ^5.0.0
     "@types/jest": ^29.5.14
     "@types/mime-types": ^3.0.1
+    "@types/multer": ^2.1.0
     "@types/node": ^22.10.7
     "@types/supertest": ^6.0.2
     bcrypt: ^6.0.0
@@ -5184,6 +5185,7 @@ __metadata:
     helmet: ^8.1.0
     jest: ^29.7.0
     mime-types: ^3.0.2
+    multer: ^2.1.1
     nanoid: 3
     pg: ^8.16.3
     prettier: ^3.4.2
@@ -9210,7 +9212,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"multer@npm:2.1.1":
+"multer@npm:2.1.1, multer@npm:^2.1.1":
   version: 2.1.1
   resolution: "multer@npm:2.1.1"
   dependencies:
@@ -10401,7 +10403,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@types/multer": ^2.1.0
     turbo: ^2.5.5
   languageName: unknown
   linkType: soft
