@@ -32,7 +32,7 @@ export const TeamDetailPage = () => {
   } | null>(null);
   const [showTeamEdit, setShowTeamEdit] = useState(false);
   const [, navigate] = useLocation();
-  
+
   const params = useParams<{ teamId: string }>();
   const parsed = Number(params.teamId);
   const teamId = isNaN(parsed) ? undefined : parsed;
@@ -137,7 +137,7 @@ export const TeamDetailPage = () => {
 
       {playerToDelete && (
         <ModalConfirmation
-          description='Želite obrisati igrača'
+          description='Ovim postupkom izbrisat ćete igrača'
           boldText={playerToDelete.name}
           icon={TrashCanBlack}
           circleVariant='gray'

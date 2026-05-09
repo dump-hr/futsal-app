@@ -10,14 +10,12 @@ import {
   useTeamDeleteLogo,
 } from '@api/team';
 import { useGroupsGetByTournamentId } from '@api/group';
-import { PlayerModalAdd, PlayerModalEditByIndex } from '@types';
 import { GroupOption } from '@constants/groupOptions';
+import { getPlayerNameValidationError } from '@helpers/validatePlayerName';
 import type { PlayerEntry } from './PlayerGrid';
 
 //TODO: Get tournament ID from URL params or context
 const TOURNAMENT_ID = 1;
-
-export type PlayerModal = PlayerModalAdd | PlayerModalEditByIndex;
 
 type UseTeamFormArgs = {
   teamId?: number;
@@ -28,7 +26,9 @@ export const useTeamForm = ({ teamId, onClose }: UseTeamFormArgs) => {
   const [teamName, setTeamName] = useState('');
   const [group, setGroup] = useState<GroupOption>('none');
   const [players, setPlayers] = useState<PlayerEntry[]>([]);
-  const [playerModal, setPlayerModal] = useState<PlayerModal | null>(null);
+  const [pendingDeleteIndex, setPendingDeleteIndex] = useState<number | null>(
+    null,
+  );
   const [initialized, setInitialized] = useState(false);
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [pendingLogo, setPendingLogo] = useState<File | null>(null);
@@ -88,19 +88,22 @@ export const useTeamForm = ({ teamId, onClose }: UseTeamFormArgs) => {
     setRemoveLogo(file === null && !!existingTeam?.logoUrl);
   };
 
-  const handlePlayerSave = (firstName: string, lastName: string) => {
-    if (playerModal?.type === 'add') {
-      setPlayers([...players, { firstName, lastName }]);
-    } else if (playerModal?.type === 'edit') {
-      const updated = [...players];
-      updated[playerModal.index] = {
-        ...updated[playerModal.index],
-        firstName,
-        lastName,
-      };
-      setPlayers(updated);
-    }
-    setPlayerModal(null);
+  const updatePlayer = (index: number, patch: Partial<PlayerEntry>) => {
+    setPlayers((prev) =>
+      prev.map((p, i) => (i === index ? { ...p, ...patch } : p)),
+    );
+  };
+
+  const addPlayer = (player: { firstName: string; lastName: string }) => {
+    setPlayers((prev) => [...prev, player]);
+  };
+
+  const requestDeletePlayer = (index: number) => setPendingDeleteIndex(index);
+  const cancelDeletePlayer = () => setPendingDeleteIndex(null);
+  const confirmDeletePlayer = () => {
+    if (pendingDeleteIndex === null) return;
+    setPlayers((prev) => prev.filter((_, i) => i !== pendingDeleteIndex));
+    setPendingDeleteIndex(null);
   };
 
   const saveTeam = async (): Promise<TeamDto> => {
@@ -135,6 +138,16 @@ export const useTeamForm = ({ teamId, onClose }: UseTeamFormArgs) => {
       return;
     }
 
+    for (let i = 0; i < players.length; i++) {
+      const fn = players[i].firstName.trim();
+      const ln = players[i].lastName.trim();
+      const err = getPlayerNameValidationError(fn, ln);
+      if (err) {
+        toast.error(`Igrač #${i + 1}: ${err}`);
+        return;
+      }
+    }
+
     try {
       const team = await saveTeam();
       await syncPlayers({
@@ -142,8 +155,8 @@ export const useTeamForm = ({ teamId, onClose }: UseTeamFormArgs) => {
         dto: {
           players: players.map(({ id, firstName, lastName }) => ({
             id,
-            firstName,
-            lastName,
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
           })),
         },
       });
@@ -160,8 +173,7 @@ export const useTeamForm = ({ teamId, onClose }: UseTeamFormArgs) => {
     group,
     setGroup,
     players,
-    playerModal,
-    setPlayerModal,
+    pendingDeleteIndex,
     pendingLogo,
     removeLogo,
     existingTeam,
@@ -172,7 +184,11 @@ export const useTeamForm = ({ teamId, onClose }: UseTeamFormArgs) => {
     isSaving,
     teamNameError,
     handleLogoChange,
-    handlePlayerSave,
+    updatePlayer,
+    addPlayer,
+    requestDeletePlayer,
+    cancelDeletePlayer,
+    confirmDeletePlayer,
     handleSave,
   };
 };

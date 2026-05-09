@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { ButtonSmall, Input } from '@components/index';
-import { PlusBlack } from '@assets/icons';
+import { PlusBlack, XBlack } from '@assets/icons';
 import { BackgroundColor } from '@types';
 import c from './TeamFormModal.module.scss';
 
@@ -11,41 +12,77 @@ export type PlayerEntry = {
 
 type PlayerGridProps = {
   players: PlayerEntry[];
-  onEditPlayer: (index: number) => void;
-  onAddPlayer: () => void;
+  onUpdatePlayer: (index: number, patch: Partial<PlayerEntry>) => void;
+  onRequestDeletePlayer: (index: number) => void;
+  onAddPlayer: (player: { firstName: string; lastName: string }) => void;
 };
 
 const PlayerGrid: React.FC<PlayerGridProps> = ({
   players,
-  onEditPlayer,
+  onUpdatePlayer,
+  onRequestDeletePlayer,
   onAddPlayer,
 }) => {
+  const [newFirstName, setNewFirstName] = useState('');
+  const [newLastName, setNewLastName] = useState('');
+
+  const handleAdd = () => {
+    const fn = newFirstName.trim();
+    const ln = newLastName.trim();
+    if (!fn && !ln) return;
+    onAddPlayer({ firstName: fn, lastName: ln });
+    setNewFirstName('');
+    setNewLastName('');
+  };
+
   return (
     <div className={c.playerList}>
       {players.map((player, i) => (
-        <div
-          key={player.id ?? `new-${i}`}
-          className={c.playerRow}
-          onClick={() => onEditPlayer(i)}>
+        <div key={player.id ?? `new-${i}`} className={c.playerRow}>
           <span className={c.playerLabel}>Igrač #{i + 1}</span>
-          <Input value={`${player.firstName} ${player.lastName}`} readOnly />
-        </div>
-      ))}
-      <div className={c.playerRow}>
-        <span className={c.playerLabel}>Igrač #{players.length + 1}</span>
-        <div className={c.newPlayerRow}>
-          <div className={c.newPlayerInput}>
+          <div className={c.playerFields}>
             <Input
-              value=''
-              readOnly
-              placeholder='Ime i prezime'
-              onClick={onAddPlayer}
+              value={player.firstName}
+              onChange={(e) =>
+                onUpdatePlayer(i, { firstName: e.target.value })
+              }
+              placeholder='Ime'
+            />
+            <Input
+              value={player.lastName}
+              onChange={(e) =>
+                onUpdatePlayer(i, { lastName: e.target.value })
+              }
+              placeholder='Prezime'
+            />
+            <ButtonSmall
+              backgroundColor={BackgroundColor.White}
+              iconSrc={XBlack}
+              onClick={() => onRequestDeletePlayer(i)}
+              aria-label='Izbriši igrača'
             />
           </div>
+        </div>
+      ))}
+
+      <div className={c.playerRow}>
+        <span className={c.playerLabel}>Igrač #{players.length + 1}</span>
+        <div className={c.playerFields}>
+          <Input
+            value={newFirstName}
+            onChange={(e) => setNewFirstName(e.target.value)}
+            placeholder='Ime'
+          />
+          <Input
+            value={newLastName}
+            onChange={(e) => setNewLastName(e.target.value)}
+            placeholder='Prezime'
+          />
           <ButtonSmall
             backgroundColor={BackgroundColor.White}
             iconSrc={PlusBlack}
-            onClick={onAddPlayer}
+            onClick={handleAdd}
+            aria-label='Dodaj igrača'
           />
         </div>
       </div>
