@@ -142,6 +142,7 @@ export const useTeamForm = ({ teamId, onClose }: UseTeamFormArgs) => {
       const fn = players[i].firstName.trim();
       const ln = players[i].lastName.trim();
       const err = getPlayerNameValidationError(fn, ln);
+
       if (err) {
         toast.error(`Igrač #${i + 1}: ${err}`);
         return;

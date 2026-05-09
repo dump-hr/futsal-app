@@ -3,6 +3,7 @@ import { ButtonSmall, Input } from '@components/index';
 import { PlusBlack, XBlack } from '@assets/icons';
 import { BackgroundColor } from '@types';
 import c from './TeamFormModal.module.scss';
+import toast from 'react-hot-toast';
 
 export type PlayerEntry = {
   id?: number;
@@ -29,7 +30,12 @@ const PlayerGrid: React.FC<PlayerGridProps> = ({
   const handleAdd = () => {
     const fn = newFirstName.trim();
     const ln = newLastName.trim();
-    if (!fn && !ln) return;
+
+    if (!fn && !ln) {
+      toast.error('Unesite ime i prezime igrača');
+      return;
+    }
+
     onAddPlayer({ firstName: fn, lastName: ln });
     setNewFirstName('');
     setNewLastName('');
@@ -43,18 +49,15 @@ const PlayerGrid: React.FC<PlayerGridProps> = ({
           <div className={c.playerFields}>
             <Input
               value={player.firstName}
-              onChange={(e) =>
-                onUpdatePlayer(i, { firstName: e.target.value })
-              }
+              onChange={(e) => onUpdatePlayer(i, { firstName: e.target.value })}
               placeholder='Ime'
             />
             <Input
               value={player.lastName}
-              onChange={(e) =>
-                onUpdatePlayer(i, { lastName: e.target.value })
-              }
+              onChange={(e) => onUpdatePlayer(i, { lastName: e.target.value })}
               placeholder='Prezime'
             />
+
             <ButtonSmall
               backgroundColor={BackgroundColor.White}
               iconSrc={XBlack}
@@ -78,6 +81,7 @@ const PlayerGrid: React.FC<PlayerGridProps> = ({
             onChange={(e) => setNewLastName(e.target.value)}
             placeholder='Prezime'
           />
+
           <ButtonSmall
             backgroundColor={BackgroundColor.White}
             iconSrc={PlusBlack}
