@@ -56,9 +56,6 @@ async function main() {
     ),
   );
 
-  const testLogo =
-    'https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg';
-
   const teamsData = [
     { name: 'FESB United', groupId: groups[0].id },
     { name: 'PMF Strikers', groupId: groups[0].id },
@@ -75,7 +72,6 @@ async function main() {
       prisma.team.create({
         data: {
           name: t.name,
-          logoUrl: testLogo,
           groupId: t.groupId,
           tournamentId: tournament.id,
         },
@@ -262,16 +258,148 @@ async function main() {
     },
   });
 
-  await prisma.match.create({
+  // Scenario C: rich regular events on the 3-1 semi
+  await prisma.matchEvent.create({
+    data: {
+      minute: 18,
+      matchId: semi.id,
+      playerId: randomPlayer(teams[0].id).id,
+      eventType: EventType.yellowCard,
+      isForHomeTeam: true,
+    },
+  });
+  await prisma.matchEvent.create({
+    data: {
+      minute: 27,
+      matchId: semi.id,
+      playerId: randomPlayer(teams[2].id).id,
+      eventType: EventType.yellowCard,
+      isForHomeTeam: false,
+    },
+  });
+  await prisma.matchEvent.create({
+    data: {
+      minute: 31,
+      matchId: semi.id,
+      playerId: randomPlayer(teams[2].id).id,
+      eventType: EventType.redCard,
+      isForHomeTeam: false,
+    },
+  });
+  await prisma.matchEvent.create({
+    data: {
+      minute: 12,
+      matchId: semi.id,
+      playerId: randomPlayer(teams[0].id).id,
+      eventType: EventType.injury,
+      isForHomeTeam: true,
+    },
+  });
+
+  // Scenario A: playoff draw decided by shootout (FESB United wins on penalties)
+  const drawFinal = await prisma.match.create({
     data: {
       timeOfMatch: new Date('2026-03-17T20:00:00'),
       homeTeamId: teams[0].id,
       awayTeamId: teams[4].id,
-      homeGoals: 0,
-      awayGoals: 0,
+      homeGoals: 2,
+      awayGoals: 2,
       matchType: MatchType.final,
     },
   });
+
+  const drawFinalGoals: Array<{ minute: number; isHome: boolean }> = [
+    { minute: 12, isHome: true },
+    { minute: 19, isHome: false },
+    { minute: 27, isHome: false },
+    { minute: 36, isHome: true },
+  ];
+  for (const goal of drawFinalGoals) {
+    await prisma.matchEvent.create({
+      data: {
+        minute: goal.minute,
+        matchId: drawFinal.id,
+        playerId: randomPlayer(
+          (goal.isHome ? teams[0] : teams[4]).id,
+        ).id,
+        eventType: EventType.goal,
+        isForHomeTeam: goal.isHome,
+      },
+    });
+  }
+
+  // Shootout: home 4 - away 3
+  const drawFinalShootouts: Array<{ isHome: boolean; type: EventType }> = [
+    { isHome: true, type: EventType.shootoutGoal },
+    { isHome: false, type: EventType.shootoutGoal },
+    { isHome: true, type: EventType.shootoutGoal },
+    { isHome: false, type: EventType.shootoutMiss },
+    { isHome: true, type: EventType.shootoutMiss },
+    { isHome: false, type: EventType.shootoutGoal },
+    { isHome: true, type: EventType.shootoutGoal },
+    { isHome: false, type: EventType.shootoutGoal },
+    { isHome: true, type: EventType.shootoutGoal },
+  ];
+  for (const s of drawFinalShootouts) {
+    await prisma.matchEvent.create({
+      data: {
+        minute: 0,
+        matchId: drawFinal.id,
+        playerId: randomPlayer((s.isHome ? teams[0] : teams[4]).id).id,
+        eventType: s.type,
+        isForHomeTeam: s.isHome,
+      },
+    });
+  }
+
+  // Scenario D: bug-fix verification — non-draw playoff WITH seeded shootout events
+  // (synthetic state mimicking "admin retroactively broke the tie")
+  const bugFixSemi = await prisma.match.create({
+    data: {
+      timeOfMatch: new Date('2026-03-18T18:00:00'),
+      homeTeamId: teams[1].id,
+      awayTeamId: teams[5].id,
+      homeGoals: 3,
+      awayGoals: 1,
+      matchType: MatchType.semiFinal,
+    },
+  });
+
+  const bugFixGoals: Array<{ minute: number; isHome: boolean }> = [
+    { minute: 5, isHome: true },
+    { minute: 18, isHome: true },
+    { minute: 25, isHome: false },
+    { minute: 32, isHome: true },
+  ];
+  for (const goal of bugFixGoals) {
+    await prisma.matchEvent.create({
+      data: {
+        minute: goal.minute,
+        matchId: bugFixSemi.id,
+        playerId: randomPlayer((goal.isHome ? teams[1] : teams[5]).id).id,
+        eventType: EventType.goal,
+        isForHomeTeam: goal.isHome,
+      },
+    });
+  }
+
+  const bugFixShootouts: Array<{ isHome: boolean; type: EventType }> = [
+    { isHome: true, type: EventType.shootoutGoal },
+    { isHome: false, type: EventType.shootoutGoal },
+    { isHome: true, type: EventType.shootoutMiss },
+    { isHome: false, type: EventType.shootoutGoal },
+  ];
+  for (const s of bugFixShootouts) {
+    await prisma.matchEvent.create({
+      data: {
+        minute: 0,
+        matchId: bugFixSemi.id,
+        playerId: randomPlayer((s.isHome ? teams[1] : teams[5]).id).id,
+        eventType: s.type,
+        isForHomeTeam: s.isHome,
+      },
+    });
+  }
 
   // Upcoming matches (future dates)
   await prisma.match.create({
@@ -390,7 +518,7 @@ async function main() {
   console.log(`  Teams: ${teams.length}`);
   console.log(`  Players: ${players.length}`);
   console.log(`  Groups: ${groups.length}`);
-  console.log(`  Matches: 15`);
+  console.log(`  Matches: 16`);
 }
 
 main().catch((e) => {

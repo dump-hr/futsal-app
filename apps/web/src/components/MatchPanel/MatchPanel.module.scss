@@ -143,13 +143,20 @@
   position: relative;
   isolation: isolate;
 
+  > *:first-child::before {
+    display: none;
+  }
+}
+
+.eventRow,
+.addButton {
   &::before {
     content: '';
     position: absolute;
     left: 50%;
     top: -40px;
-    bottom: 0;
     width: 3px;
+    height: 40px;
     background: repeating-linear-gradient(
       to bottom,
       $white 0,
@@ -246,6 +253,20 @@
   height: 52px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+.teamLogoFallback {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: $gray-medium;
+  color: $white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  @include title-3;
 }
 
 .teamName {

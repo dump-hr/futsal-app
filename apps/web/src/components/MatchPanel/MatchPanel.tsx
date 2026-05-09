@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react';
-import clsx from 'clsx';
 import { EventType, MatchType } from '@futsal-app/types';
 import {
   useMatchGet,
@@ -8,23 +7,21 @@ import {
   useMatchEventDelete,
   useMatchEventUpdate,
 } from '@api/index';
-import { MatchEventCard, ButtonSmall } from '@components/index';
+import { ButtonSmall } from '@components/index';
 import { PlusBlack } from '@assets/index';
 import { useCloseComponent } from '@hooks/index';
 import { BackgroundColor, MatchEventSaveData } from '@types';
 import MatchHeader from './MatchHeader';
 import MatchEventRow from './MatchEventRow';
-import TeamPicker from './TeamPicker';
+import TransientEventSlot, {
+  type PendingKind,
+  type NewEventSide,
+} from './TransientEventSlot';
 import c from './MatchPanel.module.scss';
 
 type MatchPanelProps = {
   matchId: number;
   onClose: () => void;
-};
-
-type NewEventSide = {
-  isHome: boolean;
-  isPenalty: boolean;
 };
 
 const SHOOTOUT_EVENTS: `${EventType}`[] = [
@@ -39,7 +36,7 @@ const isShootoutEvent = (eventType: `${EventType}`): boolean => {
 const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
   const { data: match, isLoading } = useMatchGet(matchId);
   const { data: events = [] } = useMatchEventsGet(matchId);
-  const [showTeamPicker, setShowTeamPicker] = useState(false);
+  const [pendingKind, setPendingKind] = useState<PendingKind | null>(null);
   const [newEventSide, setNewEventSide] = useState<NewEventSide | null>(null);
 
   const panelRef = useRef<HTMLDivElement>(null);
@@ -58,8 +55,8 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
   const isDraw = match.homeGoals === match.awayGoals;
   const regularEvents = events.filter((e) => !isShootoutEvent(e.eventType));
   const penaltyEvents = events.filter((e) => isShootoutEvent(e.eventType));
-  // TODO: also check that the 30-minute timer has expired once timer is implemented
-  const showPenaltySection = isPlayoff && isDraw;
+  const hasPenaltyEvents = penaltyEvents.length > 0;
+  const showPenaltySection = (isPlayoff && isDraw) || hasPenaltyEvents;
 
   const penaltyHomeGoals = penaltyEvents.filter(
     (e) => e.isForHomeTeam && e.eventType === EventType.shootoutGoal,
@@ -69,8 +66,8 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
   ).length;
 
   const handleTeamPick = (isHome: boolean) => {
-    setNewEventSide({ isHome, isPenalty: showPenaltySection });
-    setShowTeamPicker(false);
+    setNewEventSide({ isHome, isPenalty: pendingKind === 'penalty' });
+    setPendingKind(null);
   };
 
   const handleSave = (isForHomeTeam: boolean, data: MatchEventSaveData) => {
@@ -102,6 +99,24 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
   const homePlayers = match.homeTeam?.players ?? [];
   const awayPlayers = match.awayTeam?.players ?? [];
 
+  const renderSlot = (kind: PendingKind) =>
+    match.homeTeam &&
+    match.awayTeam && (
+      <TransientEventSlot
+        kind={kind}
+        pendingKind={pendingKind}
+        newEventSide={newEventSide}
+        homeTeam={match.homeTeam}
+        awayTeam={match.awayTeam}
+        homePlayers={homePlayers}
+        awayPlayers={awayPlayers}
+        onTeamPick={handleTeamPick}
+        onPickerClose={() => setPendingKind(null)}
+        onSave={handleSave}
+        onCancel={() => setNewEventSide(null)}
+      />
+    );
+
   return (
     <div className={c.panel} ref={panelRef} role='dialog' aria-modal='true'>
       <MatchHeader
@@ -122,49 +137,19 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
         </div>
       )}
 
-      <div className={c.addButton}>
-        <div onClick={() => setShowTeamPicker(true)}>
-          <ButtonSmall
-            iconSrc={PlusBlack}
-            backgroundColor={BackgroundColor.White}
-          />
-        </div>
-      </div>
-
       <div className={c.timeline}>
-        {showTeamPicker && match.homeTeam && match.awayTeam && (
-          <div className={c.eventRow}>
-            <TeamPicker
-              homeTeam={match.homeTeam}
-              awayTeam={match.awayTeam}
-              onPick={handleTeamPick}
-              onClose={() => setShowTeamPicker(false)}
-            />
-          </div>
-        )}
-
-        {newEventSide && (
-          <div
-            className={clsx(
-              c.eventRow,
-              newEventSide.isHome ? c.eventLeft : c.eventRight,
-            )}>
-            <MatchEventCard
-              side={newEventSide.isHome ? 'left' : 'right'}
-              players={newEventSide.isHome ? homePlayers : awayPlayers}
-              isPenaltyShootout={newEventSide.isPenalty}
-              isNew
-              onSave={(data) => handleSave(newEventSide.isHome, data)}
-              onDelete={() => setNewEventSide(null)}
-              onCancel={() => setNewEventSide(null)}
-            />
-          </div>
-        )}
-
-        {showPenaltySection &&
-          [...penaltyEvents]
-            .reverse()
-            .map((event) => (
+        {showPenaltySection && (
+          <>
+            <div className={c.addButton}>
+              <div onClick={() => setPendingKind('penalty')}>
+                <ButtonSmall
+                  iconSrc={PlusBlack}
+                  backgroundColor={BackgroundColor.White}
+                />
+              </div>
+            </div>
+            {renderSlot('penalty')}
+            {[...penaltyEvents].reverse().map((event) => (
               <MatchEventRow
                 key={event.id}
                 event={event}
@@ -175,6 +160,18 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
                 onDelete={handleDelete}
               />
             ))}
+          </>
+        )}
+
+        <div className={c.addButton}>
+          <div onClick={() => setPendingKind('regular')}>
+            <ButtonSmall
+              iconSrc={PlusBlack}
+              backgroundColor={BackgroundColor.White}
+            />
+          </div>
+        </div>
+        {renderSlot('regular')}
         {[...regularEvents].reverse().map((event) => (
           <MatchEventRow
             key={event.id}
