@@ -45,7 +45,7 @@ model Tournament {
 
 model Team {
   id           Int        @id @default(autoincrement())
-  name         String     @unique
+  name         String     
   logoUrl      String?
   tournamentId Int
   Tournament   Tournament @relation(fields: [tournamentId], references: [id])
@@ -54,6 +54,7 @@ model Team {
   awayMatches  Match[]    @relation("AwayTeamMatches")
   groupId      Int?
   group        Group?      @relation(fields: [groupId], references: [id])
+  @@unique([name, tournamentId])
 }
 
 model Player {

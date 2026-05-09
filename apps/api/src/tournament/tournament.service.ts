@@ -1,17 +1,33 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { TournamentModifyDto, TournamentDto } from '@futsal-app/types';
 import { prisma } from '../../lib/prisma';
+import { Prisma } from 'generated/prisma/client';
 
 @Injectable()
 export class TournamentService {
   async create(dto: TournamentModifyDto): Promise<TournamentDto> {
-    const createdTournament = await prisma.tournament.create({
-      data: {
-        ...dto,
-      },
-    });
+    try {
+      return await prisma.tournament.create({
+        data: {
+          ...dto,
+        },
+      });
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002'
+      ) {
+        throw new ConflictException(
+          `Turnir s imenom "${dto.name}" već postoji.`,
+        );
+      }
 
-    return createdTournament;
+      throw error;
+    }
   }
 
   async getAll(): Promise<TournamentDto[]> {
