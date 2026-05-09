@@ -4,6 +4,7 @@ import { PlusBlack, XBlack } from '@assets/icons';
 import { BackgroundColor } from '@types';
 import c from './TeamFormModal.module.scss';
 import toast from 'react-hot-toast';
+import { getPlayerNameValidationError } from '@helpers/validatePlayerName';
 
 export type PlayerEntry = {
   id?: number;
@@ -31,8 +32,10 @@ const PlayerGrid: React.FC<PlayerGridProps> = ({
     const fn = newFirstName.trim();
     const ln = newLastName.trim();
 
-    if (!fn && !ln) {
-      toast.error('Unesite ime i prezime igrača');
+    const nameError = getPlayerNameValidationError(fn, ln);
+
+    if (nameError) {
+      toast.error(nameError);
       return;
     }
 
