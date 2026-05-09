@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { useCloseComponent } from '@hooks/index';
 import { XWhite } from '@assets/icons';
+import { ButtonSmall } from '@components/index';
 import c from './Modal.module.scss';
 
 type ModalProps = {
@@ -39,9 +40,7 @@ const Modal: React.FC<ModalProps> = ({
             <p className={c.subtitle}>{subtitle}</p>
           </div>
 
-          <button className={c.closeButton} onClick={onClose}>
-            <img src={XWhite} alt='close' />
-          </button>
+          <ButtonSmall iconSrc={XWhite} hasBorder onClick={onClose} />
         </div>
         {children}
       </div>

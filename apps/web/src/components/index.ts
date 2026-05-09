@@ -1,6 +1,7 @@
 export { default as Modal } from './Modal/Modal';
 export { default as Button } from './Button/Button';
 export { default as ModalConfirmation } from './ModalConfirmation/ModalConfirmation';
+export { default as ModalAddChoice } from './ModalAddChoice/ModalAddChoice';
 export { default as ButtonSmall } from './ButtonSmall/ButtonSmall';
 export { default as LogoUpload } from './LogoUpload/LogoUpload';
 export * from './Navbar/Navbar';
@@ -15,6 +16,8 @@ export { default as MatchEventCard } from './MatchEventCard/MatchEventCard';
 export { default as MatchPanel } from './MatchPanel/MatchPanel';
 export * from './ProtectedRoute/ProtectedRoute';
 export { default as ModalNewTournament } from './ModalNewTournament/ModalNewTournament';
+export { default as ModalNewGroup } from './ModalNewGroup/ModalNewGroup';
+export { default as ModalAddTeamToGroup } from './ModalAddTeamToGroup/ModalAddTeamToGroup';
 export { default as ModalTournamentHistory } from './ModalTournamentHistory/ModalTournamentHistory';
 export { default as TeamFormModal } from './TeamFormModal/TeamFormModal';
 export { default as TeamsTable } from './TeamsTable/TeamsTable';

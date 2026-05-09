@@ -1,5 +1,6 @@
 import {
   IsArray,
+  IsBoolean,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -30,4 +31,7 @@ export class TournamentDto {
   @IsOptional()
   @IsArray()
   groups?: GroupDto[];
+
+  @IsBoolean()
+  isDeleted: boolean;
 }
