@@ -54,12 +54,6 @@ export class TeamService {
       },
     });
 
-    if (!teams.length) {
-      throw new NotFoundException(
-        `No teams found for tournament with id ${tournamentId}`,
-      );
-    }
-
     return teams.map((team): TeamDto => {
       let score = 0;
       for (const match of team.homeMatches) {

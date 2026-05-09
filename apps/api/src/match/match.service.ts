@@ -49,12 +49,6 @@ export class MatchService {
       },
     });
 
-    if (!matches.length) {
-      throw new NotFoundException(
-        `No matches found for tournament with id ${tournamentId}`,
-      );
-    }
-
     return matches;
   }
 
@@ -82,12 +76,6 @@ export class MatchService {
         awayTeam: { select: teamSelect },
       },
     });
-
-    if (!matches.length) {
-      throw new NotFoundException(
-        `No matches found for team with id ${teamId}`,
-      );
-    }
 
     return matches;
   }
