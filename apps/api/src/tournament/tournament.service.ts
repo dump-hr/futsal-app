@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { TournamentModifyDto, TournamentDto } from '@futsal-app/types';
 import { prisma } from '../../lib/prisma';
-import { Prisma } from 'generated/prisma/client';
+import { Prisma } from '../../generated/prisma/client';
 
 @Injectable()
 export class TournamentService {
