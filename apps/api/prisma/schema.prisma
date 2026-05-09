@@ -36,7 +36,7 @@ enum MatchType {
 
 model Tournament {
   id        Int     @id @default(autoincrement())
-  name      String  @unique
+  name      String
   date      String  @default(dbgenerated("TO_CHAR(NOW(), 'MM/YYYY')"))
   isDeleted Boolean @default(false)
   teams     Team[]
