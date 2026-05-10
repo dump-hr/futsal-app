@@ -18,7 +18,7 @@ export const useMatchUpdate = () => {
       toast.success('Utakmica uspješno ažurirana');
     },
     onError: (error) => {
-      toast.error(`Greška pri ažuriranju utakmice - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

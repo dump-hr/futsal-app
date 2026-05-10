@@ -14,10 +14,10 @@ export const useMatchSetActive = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['match', 'active'] });
       queryClient.invalidateQueries({ queryKey: ['matches'] });
-      toast.success('Utakmica aktivirana');
+      toast.success('Utakmica uspješno aktivirana');
     },
     onError: (error) => {
-      toast.error(`Greška pri aktiviranju utakmice - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

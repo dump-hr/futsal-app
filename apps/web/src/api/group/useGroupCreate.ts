@@ -16,10 +16,10 @@ export const useGroupCreate = () => {
       queryClient.invalidateQueries({
         queryKey: ['groups'],
       });
-      toast.success('Grupa uspješno kreirana');
+      toast.success('Skupina uspješno kreirana');
     },
     onError: (error) => {
-      toast.error(`Greška pri kreiranju grupe - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

@@ -26,7 +26,7 @@ export class TeamService {
 
     if (existingTeam) {
       throw new BadRequestException(
-        `Team with name "${dto.name}" already exists in this tournament`,
+        `Ekipa s imenom "${dto.name}" već postoji u ovom turniru`,
       );
     }
 
@@ -55,9 +55,7 @@ export class TeamService {
     });
 
     if (!teams.length) {
-      throw new NotFoundException(
-        `No teams found for tournament with id ${tournamentId}`,
-      );
+      throw new NotFoundException('Nema ekipa za ovaj turnir');
     }
 
     return teams.map((team): TeamDto => {
@@ -96,7 +94,7 @@ export class TeamService {
     });
 
     if (!team) {
-      throw new NotFoundException(`Team with id ${id} not found`);
+      throw new NotFoundException('Ekipa nije pronađena');
     }
 
     return team;
@@ -171,7 +169,7 @@ export class TeamService {
     });
 
     if (!team) {
-      throw new NotFoundException(`Team with id ${teamId} not found`);
+      throw new NotFoundException('Ekipa nije pronađena');
     }
 
     const currentById = new Map(team.players.map((p) => [p.id, p]));
@@ -182,7 +180,7 @@ export class TeamService {
     for (const id of payloadIds) {
       if (!currentById.has(id)) {
         throw new BadRequestException(
-          `Player ${id} does not belong to team ${teamId}`,
+          `Igrač s ID-om ${id} ne pripada ovoj ekipi`,
         );
       }
     }

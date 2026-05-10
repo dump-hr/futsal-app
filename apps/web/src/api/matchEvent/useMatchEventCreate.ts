@@ -26,7 +26,7 @@ export const useMatchEventCreate = (
       options?.onSuccess?.();
     },
     onError: (error) => {
-      toast.error(`Greška pri kreiranju eventa - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

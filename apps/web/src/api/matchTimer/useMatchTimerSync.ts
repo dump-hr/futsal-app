@@ -14,8 +14,8 @@ export const useMatchTimerSync = (matchId: number) => {
   return useMutation({
     mutationFn: (dto: MatchTimerSyncDto) => matchTimerSync(matchId, dto),
     onError: (error) => {
-      if (error.message === 'Network error') return;
-      toast.error(`Greška pri sinkronizaciji tajmera - ${error.message}`);
+      if (error.message === 'Greška pri povezivanju s poslužiteljem') return;
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

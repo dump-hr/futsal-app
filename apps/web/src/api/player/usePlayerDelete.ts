@@ -19,7 +19,7 @@ export const usePlayerDelete = () => {
       toast.success('Igrač uspješno obrisan');
     },
     onError: (error) => {
-      toast.error(`Greška pri brisanju igrača - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

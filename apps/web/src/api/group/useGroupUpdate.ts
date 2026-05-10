@@ -17,10 +17,10 @@ export const useGroupUpdate = () => {
       queryClient.invalidateQueries({
         queryKey: ['groups'],
       });
-      toast.success('Grupa uspješno ažurirana');
+      toast.success('Skupina uspješno ažurirana');
     },
     onError: (error) => {
-      toast.error(`Greška pri ažuriranju grupe - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

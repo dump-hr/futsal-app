@@ -14,10 +14,10 @@ export const useTournamentDelete = () => {
     mutationFn: tournamentDelete,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tournaments'] });
-      toast.success('Tournament deleted successfully');
+      toast.success('Turnir uspješno obrisan');
     },
     onError: (error) => {
-      toast.error(`Error deleting tournament - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

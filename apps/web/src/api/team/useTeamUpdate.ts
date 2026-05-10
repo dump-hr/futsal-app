@@ -20,7 +20,7 @@ export const useTeamUpdate = () => {
       toast.success('Ekipa uspješno ažurirana');
     },
     onError: (error) => {
-      toast.error(`Greška pri ažuriranju ekipe - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

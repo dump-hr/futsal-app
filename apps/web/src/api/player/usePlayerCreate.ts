@@ -19,7 +19,7 @@ export const usePlayerCreate = () => {
       toast.success('Igrač uspješno kreiran');
     },
     onError: (error) => {
-      toast.error(`Greška pri kreiranju igrača - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

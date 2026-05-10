@@ -20,10 +20,10 @@ export const useGroupAddTeam = () => {
       queryClient.invalidateQueries({
         queryKey: ['teams'],
       });
-      toast.success('Ekipa uspješno dodana u grupu');
+      toast.success('Ekipa uspješno dodana u skupinu');
     },
     onError: (error) => {
-      toast.error(`Greška pri dodavanju ekipe u grupu - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

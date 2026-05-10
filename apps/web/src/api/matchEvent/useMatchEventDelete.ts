@@ -22,7 +22,7 @@ export const useMatchEventDelete = (matchId: number) => {
       toast.success('Event uspješno obrisan');
     },
     onError: (error) => {
-      toast.error(`Greška pri brisanju eventa - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

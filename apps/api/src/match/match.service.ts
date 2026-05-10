@@ -32,7 +32,7 @@ export class MatchService {
     });
 
     if (!match) {
-      throw new NotFoundException(`Match with id ${id} not found`);
+      throw new NotFoundException('Utakmica nije pronađena');
     }
 
     return match;
@@ -51,9 +51,7 @@ export class MatchService {
     });
 
     if (!matches.length) {
-      throw new NotFoundException(
-        `No matches found for tournament with id ${tournamentId}`,
-      );
+      throw new NotFoundException('Nema utakmica za ovaj turnir');
     }
 
     return matches;
@@ -85,9 +83,7 @@ export class MatchService {
     });
 
     if (!matches.length) {
-      throw new NotFoundException(
-        `No matches found for team with id ${teamId}`,
-      );
+      throw new NotFoundException('Nema utakmica za ovu ekipu');
     }
 
     return matches;
@@ -112,7 +108,7 @@ export class MatchService {
     const match = await prisma.match.findUnique({ where: { id } });
 
     if (!match) {
-      throw new NotFoundException(`Match with id ${id} not found`);
+      throw new NotFoundException('Utakmica nije pronađena');
     }
 
     return prisma.match.update({
@@ -139,7 +135,7 @@ export class MatchService {
     const match = await prisma.match.findUnique({ where: { id } });
 
     if (!match) {
-      throw new NotFoundException(`Match with id ${id} not found`);
+      throw new NotFoundException('Utakmica nije pronađena');
     }
 
     if (match.isActive) return;
@@ -147,7 +143,7 @@ export class MatchService {
     const active = await prisma.match.findFirst({ where: { isActive: true } });
     if (active) {
       throw new ConflictException(
-        'Druga utakmica je već aktivna. Najprije ju deaktivirajte.',
+        'Druga utakmica je već aktivna, najprije ju deaktivirajte',
       );
     }
 
@@ -167,7 +163,7 @@ export class MatchService {
     const active = await prisma.match.findFirst({ where: { isActive: true } });
 
     if (!active) {
-      throw new BadRequestException('No active match to deactivate');
+      throw new BadRequestException('Nema aktivne utakmice za deaktiviranje');
     }
 
     await prisma.match.update({
@@ -186,7 +182,7 @@ export class MatchService {
     const match = await prisma.match.findUnique({ where: { id } });
 
     if (!match) {
-      throw new NotFoundException(`Match with id ${id} not found`);
+      throw new NotFoundException('Utakmica nije pronađena');
     }
 
     await prisma.match.delete({ where: { id } });

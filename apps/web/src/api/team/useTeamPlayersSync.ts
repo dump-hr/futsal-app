@@ -27,7 +27,7 @@ export const useTeamPlayersSync = () => {
       queryClient.invalidateQueries({ queryKey: ['players'] });
     },
     onError: (error) => {
-      toast.error(`Greška pri spremanju igrača - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

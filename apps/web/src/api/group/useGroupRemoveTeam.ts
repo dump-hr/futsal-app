@@ -20,10 +20,10 @@ export const useGroupRemoveTeam = () => {
       queryClient.invalidateQueries({
         queryKey: ['teams'],
       });
-      toast.success('Ekipa uspješno uklonjena iz grupe');
+      toast.success('Ekipa uspješno uklonjena iz skupine');
     },
     onError: (error) => {
-      toast.error(`Greška pri uklanjanju ekipe iz grupe - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

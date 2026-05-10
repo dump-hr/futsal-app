@@ -18,7 +18,7 @@ export const useTeamDeleteLogo = () => {
       toast.success('Logo uspješno obrisan');
     },
     onError: (error) => {
-      toast.error(`Greška pri brisanju loga - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

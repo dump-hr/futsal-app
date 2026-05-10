@@ -17,7 +17,7 @@ export const useMatchCreate = () => {
       toast.success('Utakmica uspješno kreirana');
     },
     onError: (error) => {
-      toast.error(`Greška pri kreiranju utakmice - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

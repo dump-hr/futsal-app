@@ -17,10 +17,10 @@ export const useTeamUploadLogo = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['teams'] });
       queryClient.invalidateQueries({ queryKey: ['team'] });
-      toast.success('Logo uspješno uploadan');
+      toast.success('Logo uspješno učitan');
     },
     onError: (error) => {
-      toast.error(`Greška pri uploadu loga - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

@@ -16,7 +16,7 @@ export const useMatchDelete = () => {
       toast.success('Utakmica uspješno obrisana');
     },
     onError: (error) => {
-      toast.error(`Greška pri brisanju utakmice - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

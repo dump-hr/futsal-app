@@ -19,11 +19,13 @@ export class GroupService {
     });
 
     if (!tournament) {
-      throw new NotFoundException(`Tournament not found`);
+      throw new NotFoundException('Turnir nije pronađen');
     }
 
     if (tournament.isDeleted) {
-      throw new BadRequestException(`Cannot add group to a deleted tournament`);
+      throw new BadRequestException(
+        'Skupinu nije moguće dodati obrisanom turniru',
+      );
     }
 
     return prisma.group.create({
@@ -46,7 +48,7 @@ export class GroupService {
     });
 
     if (!group) {
-      throw new NotFoundException(`Group not found`);
+      throw new NotFoundException('Skupina nije pronađena');
     }
 
     return group;
@@ -78,7 +80,7 @@ export class GroupService {
 
     if (matchesCount > 0) {
       throw new BadRequestException(
-        `Cannot remove team from group: team has matches assigned`,
+        'Ekipu nije moguće ukloniti iz skupine jer ima odigrane utakmice',
       );
     }
 

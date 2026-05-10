@@ -19,7 +19,7 @@ export const useTeamDelete = () => {
       toast.success('Ekipa uspješno obrisana');
     },
     onError: (error) => {
-      toast.error(`Greška pri brisanju ekipe - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

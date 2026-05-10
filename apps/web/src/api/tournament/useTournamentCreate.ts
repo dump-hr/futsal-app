@@ -14,10 +14,10 @@ export const useTournamentCreate = () => {
     mutationFn: tournamentCreate,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tournaments'] });
-      toast.success('Tournament created successfully');
+      toast.success('Turnir uspješno kreiran');
     },
     onError: (error) => {
-      toast.error(`Error creating tournament - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

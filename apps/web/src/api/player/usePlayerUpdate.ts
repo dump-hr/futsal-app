@@ -20,7 +20,7 @@ export const usePlayerUpdate = () => {
       toast.success('Igrač uspješno ažuriran');
     },
     onError: (error) => {
-      toast.error(`Greška pri ažuriranju igrača - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

@@ -14,10 +14,10 @@ export const useMatchDeactivate = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['match', 'active'] });
       queryClient.invalidateQueries({ queryKey: ['matches'] });
-      toast.success('Utakmica deaktivirana');
+      toast.success('Utakmica uspješno deaktivirana');
     },
     onError: (error) => {
-      toast.error(`Greška pri deaktiviranju utakmice - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

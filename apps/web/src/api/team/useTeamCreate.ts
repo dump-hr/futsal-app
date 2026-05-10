@@ -18,7 +18,7 @@ export const useTeamCreate = () => {
       toast.success('Ekipa uspješno kreirana');
     },
     onError: (error) => {
-      toast.error(`Greška pri kreiranju ekipe - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

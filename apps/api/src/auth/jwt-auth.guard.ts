@@ -15,7 +15,7 @@ export class JwtAuthGuard implements CanActivate {
     const req = context.switchToHttp().getRequest<Request>();
     const token = req.headers.authorization?.split(' ')[1];
 
-    if (!token) throw new UnauthorizedException();
+    if (!token) throw new UnauthorizedException('Niste prijavljeni');
     try {
       req['user'] = this.jwtService.verify(token);
     } catch {

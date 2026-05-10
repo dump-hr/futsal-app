@@ -26,7 +26,7 @@ export const useMatchEventUpdate = (matchId: number) => {
       toast.success('Event uspješno ažuriran');
     },
     onError: (error) => {
-      toast.error(`Greška pri ažuriranju eventa - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

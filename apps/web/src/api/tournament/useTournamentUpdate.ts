@@ -15,10 +15,10 @@ export const useTournamentUpdate = () => {
       tournamentUpdate(id, dto),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tournaments'] });
-      toast.success('Tournament updated successfully');
+      toast.success('Turnir uspješno ažuriran');
     },
     onError: (error) => {
-      toast.error(`Error updating tournament - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

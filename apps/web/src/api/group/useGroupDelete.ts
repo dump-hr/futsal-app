@@ -19,10 +19,10 @@ export const useGroupDelete = () => {
       queryClient.invalidateQueries({
         queryKey: ['teams'],
       });
-      toast.success('Grupa uspješno obrisana');
+      toast.success('Skupina uspješno obrisana');
     },
     onError: (error) => {
-      toast.error(`Greška pri brisanju grupe - ${error.message}`);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };

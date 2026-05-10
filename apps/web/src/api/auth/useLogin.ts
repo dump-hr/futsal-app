@@ -22,7 +22,7 @@ export const useLogin = () => {
       navigate(routes.ADMIN_HOME);
     },
     onError: (error) => {
-      toast.error(error.message);
+      toast.error(error.message || 'Došlo je do greške');
     },
   });
 };
