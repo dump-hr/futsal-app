@@ -1,10 +1,13 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import clsx from 'clsx';
 import { EventType, PlayerDto } from '@futsal-app/types';
-import { ButtonSmall, EventDropdown, Input } from '@components/index';
+import {
+  ButtonSmall,
+  EventDropdown,
+  PlayerAutocomplete,
+} from '@components/index';
 import { TrashCanGray, CheckBlack } from '@assets/index';
 import { BackgroundColor, MatchEventSaveData } from '@types';
-import { useCloseComponent, useSuggestions } from '@hooks/index';
 import c from './MatchEventCard.module.scss';
 
 type EditFormState = {
@@ -46,40 +49,6 @@ const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
     playerName: playerName ?? '',
     playerId: undefined,
     eventType: eventType ?? null,
-  });
-
-  const {
-    suggestions,
-    showSuggestions,
-    highlightedIndex,
-    setHighlightedIndex,
-    inputProps,
-    selectItem,
-    closeSuggestions,
-  } = useSuggestions({
-    items: players,
-    initialQuery: playerName ?? '',
-    filterFn: (p, q) =>
-      p.firstName.toLowerCase().includes(q) ||
-      p.lastName.toLowerCase().includes(q),
-    getLabel: (player) =>
-      player ? `${player.firstName} ${player.lastName}` : 'Nepoznat netko',
-    onSelect: (player) => {
-      setEditForm((prev) => ({
-        ...prev,
-        playerName: player
-          ? `${player.firstName} ${player.lastName}`
-          : 'Nepoznat netko',
-        playerId: player?.id,
-      }));
-    },
-  });
-
-  const nameWrapperRef = useRef<HTMLDivElement>(null);
-
-  useCloseComponent({
-    onClose: closeSuggestions,
-    containerRef: nameWrapperRef,
   });
 
   const handleConfirm = () => {
@@ -134,38 +103,21 @@ const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
         )}
       </div>
       <div className={clsx(c.fields, !isLeft && c.fieldsRight)}>
-        <div ref={nameWrapperRef} className={c.nameInputWrapper}>
-          <Input placeholder='Ime igrača' {...inputProps} />
-          {showSuggestions && (
-            <div className={clsx(c.suggestions, !isLeft && c.suggestionsRight)}>
-              {[
-                ...suggestions.map((player) => ({
-                  key: player.id,
-                  item: player as PlayerDto | null,
-                  label: `${player.firstName} ${player.lastName}`,
-                })),
-                {
-                  key: 'unknown',
-                  item: null as PlayerDto | null,
-                  label: 'Nepoznat netko',
-                },
-              ].map((option, index) => (
-                <button
-                  key={option.key}
-                  type='button'
-                  className={clsx(
-                    c.suggestionItem,
-                    highlightedIndex === index && c.suggestionItemHighlighted,
-                    !isLeft && c.suggestionItemRight,
-                  )}
-                  onMouseEnter={() => setHighlightedIndex(index)}
-                  onClick={() => selectItem(option.item)}>
-                  {option.label}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+        <PlayerAutocomplete
+          players={players}
+          initialQuery={playerName ?? ''}
+          placeholder='Ime igrača'
+          align={isLeft ? 'left' : 'right'}
+          onSelect={(player) =>
+            setEditForm((prev) => ({
+              ...prev,
+              playerName: player
+                ? `${player.firstName} ${player.lastName}`
+                : 'Nepoznat netko',
+              playerId: player?.id,
+            }))
+          }
+        />
         <EventDropdown
           side={side}
           isPenaltyShootout={isPenaltyShootout}

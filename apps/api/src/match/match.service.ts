@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  ConflictException,
 } from '@nestjs/common';
 import { prisma } from '../../lib/prisma';
 import { MatchDto, MatchCreateDto, MatchUpdateDto } from '@futsal-app/types';
@@ -141,16 +142,25 @@ export class MatchService {
       throw new NotFoundException(`Match with id ${id} not found`);
     }
 
-    await prisma.$transaction([
-      prisma.match.updateMany({
-        where: { isActive: true },
-        data: { isActive: false },
-      }),
-      prisma.match.update({
-        where: { id },
-        data: { isActive: true },
-      }),
-    ]);
+    if (match.isActive) return;
+
+    const active = await prisma.match.findFirst({ where: { isActive: true } });
+    if (active) {
+      throw new ConflictException(
+        'Druga utakmica je već aktivna. Najprije ju deaktivirajte.',
+      );
+    }
+
+    await prisma.match.update({
+      where: { id },
+      data: {
+        isActive: true,
+        timerIsRunning: false,
+        timerStartedAt: null,
+        timerAccumulatedMs: 0,
+        timerLastSyncedAt: null,
+      },
+    });
   }
 
   async deactivate(): Promise<void> {
@@ -162,7 +172,13 @@ export class MatchService {
 
     await prisma.match.update({
       where: { id: active.id },
-      data: { isActive: false },
+      data: {
+        isActive: false,
+        timerIsRunning: false,
+        timerStartedAt: null,
+        timerAccumulatedMs: 0,
+        timerLastSyncedAt: null,
+      },
     });
   }
 

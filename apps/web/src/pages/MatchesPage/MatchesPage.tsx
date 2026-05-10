@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'wouter';
 import {
   Button,
   FilterDropdown,
@@ -15,6 +16,7 @@ import {
 } from '@api/match';
 import { useTeamsGet } from '@api/team';
 import { groupMatchesByDay } from '@helpers/matchHelpers';
+import { routes } from '@routes/routes';
 import c from './MatchesPage.module.scss';
 import {
   type MatchTypeFilter,
@@ -43,6 +45,7 @@ export const MatchesPage = () => {
   }>({ open: false });
   const [panelMatchId, setPanelMatchId] = useState<number | undefined>();
   const [panelClosing, setPanelClosing] = useState(false);
+  const [, navigate] = useLocation();
 
   const { data: matches } = useMatchGetAll(TOURNAMENT_ID);
   const { data: teams } = useTeamsGet(TOURNAMENT_ID);
@@ -113,6 +116,11 @@ export const MatchesPage = () => {
                 }
                 onActivate={(matchId) =>
                   setActivateConfirm({ open: true, matchId })
+                }
+                onTimer={(matchId) =>
+                  navigate(
+                    routes.MATCH_TIMER.replace(':matchId', String(matchId)),
+                  )
                 }
               />
             ))}

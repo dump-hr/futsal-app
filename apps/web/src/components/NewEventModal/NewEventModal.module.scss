@@ -1,0 +1,36 @@
+.overlay {
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal {
+  background-color: $background-black;
+  border-radius: 20px;
+  padding: 40px;
+  width: min(520px, calc(100vw - 40px));
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.closeButton {
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  @include body-large;
+  color: $white;
+}

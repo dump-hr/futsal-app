@@ -67,17 +67,21 @@ model Player {
 }
 
 model Match {
-  id          Int          @id @default(autoincrement())
-  timeOfMatch DateTime
-  homeTeamId  Int?
-  awayTeamId  Int?
-  homeGoals   Int          @default(0)
-  awayGoals   Int          @default(0)
-  homeTeam    Team?        @relation("HomeTeamMatches", fields: [homeTeamId], references: [id])
-  awayTeam    Team?        @relation("AwayTeamMatches", fields: [awayTeamId], references: [id])
-  events      MatchEvent[]
-  matchType   MatchType
-  isActive    Boolean      @default(false)
+  id                 Int          @id @default(autoincrement())
+  timeOfMatch        DateTime
+  homeTeamId         Int?
+  awayTeamId         Int?
+  homeGoals          Int          @default(0)
+  awayGoals          Int          @default(0)
+  homeTeam           Team?        @relation("HomeTeamMatches", fields: [homeTeamId], references: [id])
+  awayTeam           Team?        @relation("AwayTeamMatches", fields: [awayTeamId], references: [id])
+  events             MatchEvent[]
+  matchType          MatchType
+  isActive           Boolean      @default(false)
+  timerIsRunning     Boolean      @default(false)
+  timerStartedAt     DateTime?
+  timerAccumulatedMs Int          @default(0)
+  timerLastSyncedAt  DateTime?
 }
 
 model MatchEvent {

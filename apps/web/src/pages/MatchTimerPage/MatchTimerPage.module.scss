@@ -1,0 +1,228 @@
+.page {
+  height: 100vh;
+  width: 100%;
+  background-color: $background-black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 64px;
+  padding-bottom: 64px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $background-black;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $gray-dark;
+    border-radius: 8px;
+  }
+}
+
+.loading {
+  @include title-3;
+  color: $white;
+  margin-top: 80px;
+}
+
+.gradientBand {
+  width: 100%;
+  height: 160px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 57px;
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.3) 100%
+    ),
+    linear-gradient(90deg, rgb(126, 30, 0) 0%, rgb(0, 103, 76) 100%);
+}
+
+.headerTeam {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.headerLogo {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+.headerTeamName {
+  @include title-2;
+  font-weight: 600;
+  color: $white;
+  white-space: nowrap;
+}
+
+.headerSeparator {
+  @include title-2;
+  font-weight: 600;
+  color: $white;
+}
+
+.timerSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 56px;
+  flex-shrink: 0;
+}
+
+.score {
+  @include orbitron;
+  font-size: 96px;
+  line-height: 80px;
+  color: $white;
+  white-space: nowrap;
+}
+
+.clock {
+  @include orbitron;
+  display: flex;
+  align-items: center;
+  font-size: 260px;
+  line-height: 200px;
+  color: $white;
+  white-space: nowrap;
+}
+
+.clockDigits {
+  cursor: default;
+  display: inline-block;
+  min-width: 2ch;
+  text-align: center;
+}
+
+.clockDigits.clickable {
+  cursor: pointer;
+}
+
+.clockColon {
+  padding: 0 8px;
+}
+
+.clockInput {
+  @include orbitron;
+  font-size: 260px;
+  line-height: 200px;
+  color: $lime;
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 2.5ch;
+  text-align: center;
+  padding: 0;
+}
+
+.shootoutTitle {
+  @include title-1;
+  color: $white;
+  margin: 0;
+}
+
+.shootoutScore {
+  @include orbitron;
+  font-size: 180px;
+  line-height: 140px;
+  color: $white;
+}
+
+.actions {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.legend {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  @include body-normal;
+  white-space: nowrap;
+}
+
+.legendKey {
+  color: $white;
+}
+
+.legendLabel {
+  color: $gray-dark;
+}
+
+.eventsColumns {
+  display: flex;
+  align-items: flex-start;
+  gap: 100px;
+  width: 100%;
+  max-width: 900px;
+  flex-shrink: 0;
+}
+
+.eventColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.eventRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.eventLeft {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.eventRight {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.eventIcon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.eventText {
+  @include title-3;
+  color: $white;
+}
+
+.eventMinute {
+  @include title-3;
+  color: $white;
+  opacity: 0.6;
+  margin-right: 4px;
+}
