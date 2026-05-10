@@ -6,15 +6,15 @@
 // That page will be the first caller.
 
 import { useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
 import { MatchTimerStateDto } from '@futsal-app/types';
+import { TICK_INTERVAL_MS } from '@constants/timer';
 
 type LiveSnapshot = {
   isRunning: boolean;
   accumulatedMs: number;
   startedAtClientEpoch: number | null;
 };
-
-const TICK_INTERVAL_MS = 250;
 
 const computeElapsedSeconds = (snapshot: LiveSnapshot): number => {
   const elapsedMs =
@@ -54,7 +54,7 @@ export const useMatchTimerLive = (matchId: number) => {
         setSnapshot(next);
         setElapsedSeconds(computeElapsedSeconds(next));
       } catch {
-        console.error('Failed to parse timer state event', event.data);
+        toast.error('Greška pri ažuriranju tajmera');
       }
     };
     return () => source.close();
@@ -70,5 +70,3 @@ export const useMatchTimerLive = (matchId: number) => {
 
   return { elapsedSeconds, isRunning: snapshot.isRunning };
 };
-
-export default useMatchTimerLive;

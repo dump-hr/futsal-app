@@ -1,7 +1,25 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Observable, Subject, concat, defer, from, map } from 'rxjs';
+import { Observable, Subject, concat, defer, finalize, from, map } from 'rxjs';
 import { prisma } from '../../lib/prisma';
+import { Match } from '../../generated/prisma/client';
 import { MatchTimerStateDto, MatchTimerSyncDto } from '@futsal-app/types';
+
+type TimerStateRow = Pick<
+  Match,
+  | 'id'
+  | 'timerIsRunning'
+  | 'timerAccumulatedMs'
+  | 'timerStartedAt'
+  | 'timerLastSyncedAt'
+>;
+
+const toState = (match: TimerStateRow): MatchTimerStateDto => ({
+  matchId: match.id,
+  isRunning: match.timerIsRunning,
+  accumulatedMs: match.timerAccumulatedMs,
+  startedAt: match.timerStartedAt,
+  lastSyncedAt: match.timerLastSyncedAt,
+});
 
 const timerStateSelect = {
   id: true,
@@ -9,21 +27,7 @@ const timerStateSelect = {
   timerAccumulatedMs: true,
   timerStartedAt: true,
   timerLastSyncedAt: true,
-} as const;
-
-const toState = (match: {
-  id: number;
-  timerIsRunning: boolean;
-  timerAccumulatedMs: number;
-  timerStartedAt: Date | null;
-  timerLastSyncedAt: Date | null;
-}): MatchTimerStateDto => ({
-  matchId: match.id,
-  isRunning: match.timerIsRunning,
-  accumulatedMs: match.timerAccumulatedMs,
-  startedAt: match.timerStartedAt,
-  lastSyncedAt: match.timerLastSyncedAt,
-});
+};
 
 @Injectable()
 export class MatchTimerService {
@@ -75,16 +79,20 @@ export class MatchTimerService {
     });
 
     const state = toState(updated);
-    this.getStream(id).next(state);
+    this.streams.get(id)?.next(state);
     return state;
   }
 
   stream(id: number): Observable<MessageEvent> {
     const initial$ = defer(() => from(this.getState(id)));
-    const subsequent$ = this.getStream(id).asObservable();
+    const subject = this.getStream(id);
+    const subsequent$ = subject.asObservable();
 
     return concat(initial$, subsequent$).pipe(
       map((state) => ({ data: state }) as MessageEvent),
+      finalize(() => {
+        if (!subject.observed) this.streams.delete(id);
+      }),
     );
   }
 }

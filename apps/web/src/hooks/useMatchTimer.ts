@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useMatchTimerGet, useMatchTimerSync } from '@api/matchTimer';
+import { TICK_INTERVAL_MS, HEARTBEAT_INTERVAL_MS } from '@constants/timer';
 
 type StoredTimerState = {
   startedAt: number | null;
@@ -7,9 +8,6 @@ type StoredTimerState = {
   isRunning: boolean;
   lastWrittenAt: number;
 };
-
-const TICK_INTERVAL_MS = 250;
-const HEARTBEAT_INTERVAL_MS = 5000;
 
 const storageKey = (matchId: number) => `matchTimer:${matchId}`;
 

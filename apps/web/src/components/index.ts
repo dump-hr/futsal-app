@@ -24,3 +24,4 @@ export { default as MatchDayGroup } from './MatchDayGroup/MatchDayGroup';
 export { default as MatchFormModal } from './MatchFormModal/MatchFormModal';
 export { default as DateTimePicker } from './DateTimePicker/DateTimePicker';
 export { default as NewEventModal } from './NewEventModal/NewEventModal';
+export { default as PlayerAutocomplete } from './PlayerAutocomplete';

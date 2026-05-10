@@ -1,14 +1,13 @@
-import { useRef } from 'react';
-import clsx from 'clsx';
-import { EventType, type MatchDto, type PlayerDto } from '@futsal-app/types';
+import { useRef, useState } from 'react';
+import { EventType, type MatchDto } from '@futsal-app/types';
 import {
   Button,
   ButtonSmall,
   FilterDropdown,
-  Input,
+  PlayerAutocomplete,
 } from '@components/index';
 import { CheckBlack, XGray, XWhite } from '@assets/icons';
-import { useCloseComponent, useSuggestions } from '@hooks/index';
+import { useCloseComponent } from '@hooks/index';
 import { type TeamSide, useNewEventForm } from './useNewEventForm';
 import common from '../TeamFormModal/ModalCommon.module.scss';
 import c from './NewEventModal.module.scss';
@@ -52,32 +51,12 @@ const NewEventModal: React.FC<NewEventModalProps> = ({
   });
 
   const modalRef = useRef<HTMLDivElement>(null);
-  const playerWrapperRef = useRef<HTMLDivElement>(null);
   const { overlayRef } = useCloseComponent({ onClose, containerRef: modalRef });
 
-  const playerSuggestions = useSuggestions<PlayerDto>({
-    items: playerPool,
-    filterFn: (p, q) =>
-      p.firstName.toLowerCase().includes(q) ||
-      p.lastName.toLowerCase().includes(q),
-    getLabel: (p) =>
-      p ? `${p.firstName} ${p.lastName}` : 'Nepoznat netko',
-    onSelect: (player) => {
-      setSelectedPlayerId(player ? player.id : null);
-      if (player && !teamSide) {
-        const isHome = homePlayers.some((p) => p.id === player.id);
-        setTeamSide(isHome ? 'home' : 'away');
-      }
-    },
-  });
-
-  useCloseComponent({
-    onClose: playerSuggestions.closeSuggestions,
-    containerRef: playerWrapperRef,
-  });
+  const [autocompleteKey, setAutocompleteKey] = useState(0);
 
   const handleTeamChange = (side: TeamSide) => {
-    if (changeTeam(side)) playerSuggestions.setQuery('');
+    if (changeTeam(side)) setAutocompleteKey((k) => k + 1);
   };
 
   return (
@@ -121,52 +100,22 @@ const NewEventModal: React.FC<NewEventModalProps> = ({
             />
           </div>
 
-          <div className={clsx(c.field, c.playerField)} ref={playerWrapperRef}>
+          <div className={c.field}>
             <label className={c.label}>Igrač</label>
-            <Input
+            <PlayerAutocomplete
+              key={autocompleteKey}
+              players={playerPool}
               placeholder='Ime prezime'
-              {...playerSuggestions.inputProps}
-              onChange={(e) => {
-                setSelectedPlayerId(null);
-                playerSuggestions.inputProps.onChange(e);
+              selectOnFocus
+              onQueryChange={() => setSelectedPlayerId(null)}
+              onSelect={(player) => {
+                setSelectedPlayerId(player ? player.id : null);
+                if (player && !teamSide) {
+                  const isHome = homePlayers.some((p) => p.id === player.id);
+                  setTeamSide(isHome ? 'home' : 'away');
+                }
               }}
-              onFocus={(e) => {
-                playerSuggestions.inputProps.onFocus();
-                e.currentTarget.select();
-              }}
-              style={{ maxWidth: '100%' }}
             />
-            {playerSuggestions.showSuggestions && (
-              <div className={c.suggestions}>
-                {[
-                  ...playerSuggestions.suggestions.map((player) => ({
-                    key: player.id,
-                    item: player as PlayerDto | null,
-                    label: `${player.firstName} ${player.lastName}`,
-                  })),
-                  {
-                    key: 'unknown',
-                    item: null as PlayerDto | null,
-                    label: 'Nepoznat netko',
-                  },
-                ].map((option, index) => (
-                  <button
-                    key={option.key}
-                    type='button'
-                    className={clsx(
-                      c.suggestionItem,
-                      playerSuggestions.highlightedIndex === index &&
-                        c.suggestionItemHighlighted,
-                    )}
-                    onMouseEnter={() =>
-                      playerSuggestions.setHighlightedIndex(index)
-                    }
-                    onClick={() => playerSuggestions.selectItem(option.item)}>
-                    {option.label}
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
         </div>
 
