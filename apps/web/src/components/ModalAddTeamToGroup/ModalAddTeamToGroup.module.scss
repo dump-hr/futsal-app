@@ -1,0 +1,16 @@
+.teamPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 8px;
+}
+
+.emptyText {
+  @include body-normal;
+  color: $gray-dark;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}

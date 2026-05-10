@@ -16,6 +16,9 @@ export const useGroupDelete = () => {
       queryClient.invalidateQueries({
         queryKey: ['groups'],
       });
+      queryClient.invalidateQueries({
+        queryKey: ['teams'],
+      });
       toast.success('Grupa uspješno obrisana');
     },
     onError: (error) => {

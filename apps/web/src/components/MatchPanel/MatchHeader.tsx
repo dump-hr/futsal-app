@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { ButtonSmall } from '@components/index';
-import { XBlack, LinkBlack } from '@assets/index';
+import { XBlack } from '@assets/index';
 import { BackgroundColor } from '@types';
 import { MATCH_TYPE_LABELS } from '@constants/matchTypeLabels';
 import { formatMatchDate } from '@helpers/formatMatchDate';
@@ -35,18 +35,12 @@ const MatchHeader: React.FC<MatchHeaderProps> = ({
   return (
     <div className={c.header}>
       <div className={c.headerTop}>
-        <div className={c.headerTopLeft}>
-          <div
-            className={clsx(
-              c.matchTypeBadge,
-              isGroup ? c.badgeBlue : c.badgeRed,
-            )}>
-            <span>{label}</span>
-          </div>
-          <ButtonSmall
-            iconSrc={LinkBlack}
-            backgroundColor={BackgroundColor.White}
-          />
+        <div
+          className={clsx(
+            c.matchTypeBadge,
+            isGroup ? c.badgeBlue : c.badgeRed,
+          )}>
+          <span>{label}</span>
         </div>
         <div onClick={onClose}>
           <ButtonSmall

@@ -8,6 +8,7 @@ import {
   TeamsPage,
   MatchesPage,
   MatchTimerPage,
+  GroupsPage,
 } from '@pages/index';
 import { ProtectedRoute } from '@components/index';
 
@@ -25,6 +26,7 @@ export const Router = () => {
                 <Route path={routes.TEAM_DETAIL} component={TeamDetailPage} />
                 <Route path={routes.TEAMS} component={TeamsPage} />
                 <Route path={routes.MATCHES} component={MatchesPage} />
+                <Route path={routes.GROUPS} component={GroupsPage} />
               </BackgroundLayout>
             </NavbarLayout>
           </Route>

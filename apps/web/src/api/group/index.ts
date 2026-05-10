@@ -1,4 +1,4 @@
-export * from './useGroupsGet';
+export * from './useGroupsGetByTournamentId';
 export * from './useGroupGet';
 export * from './useGroupCreate';
 export * from './useGroupUpdate';
