@@ -9,18 +9,13 @@
   padding-bottom: 64px;
   overflow-y: auto;
 
-  &::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: $background-black;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: $gray-dark;
-    border-radius: 8px;
-  }
+  @include custom-scrollbar(
+    10px,
+    $background-black,
+    $gray-dark,
+    $track-radius: null,
+    $thumb-radius: 8px
+  );
 }
 
 .loading {
