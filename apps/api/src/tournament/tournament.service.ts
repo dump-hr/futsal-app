@@ -11,7 +11,7 @@ export class TournamentService {
 
     if (existing) {
       throw new ConflictException(
-        `Turnir s imenom "${dto.name}" već postoji.`,
+        `Turnir s imenom "${dto.name}" već postoji`,
       );
     }
 
@@ -31,7 +31,7 @@ export class TournamentService {
     });
 
     if (!tournament) {
-      throw new NotFoundException(`Tournament with id ${id} not found`);
+      throw new NotFoundException('Turnir nije pronađen');
     }
 
     return tournament;
@@ -44,7 +44,7 @@ export class TournamentService {
 
     if (existing) {
       throw new ConflictException(
-        `Turnir s imenom "${dto.name}" već postoji.`,
+        `Turnir s imenom "${dto.name}" već postoji`,
       );
     }
 

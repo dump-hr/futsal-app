@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { api } from '../base';
 import { PlayerDto, TeamPlayersSyncDto } from '@futsal-app/types';
+import { GENERIC_ERROR_MESSAGE } from '@constants/messages';
 
 const teamPlayersSync = (teamId: number, dto: TeamPlayersSyncDto) => {
   return api.put<TeamPlayersSyncDto, PlayerDto[]>(
@@ -27,7 +28,7 @@ export const useTeamPlayersSync = () => {
       queryClient.invalidateQueries({ queryKey: ['players'] });
     },
     onError: (error) => {
-      toast.error(`Greška pri spremanju igrača - ${error.message}`);
+      toast.error(error.message || GENERIC_ERROR_MESSAGE);
     },
   });
 };
