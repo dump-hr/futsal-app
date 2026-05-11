@@ -1,6 +1,7 @@
 import {
   IsArray,
   IsBoolean,
+  IsDate,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -31,6 +32,10 @@ export class TournamentDto {
   @IsOptional()
   @IsArray()
   groups?: GroupDto[];
+
+  @IsNotEmpty()
+  @IsString()
+  date: string;
 
   @IsBoolean()
   isDeleted: boolean;

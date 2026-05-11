@@ -13,9 +13,7 @@ import { useGroupsGetByTournamentId } from '@api/group';
 import { GroupOption } from '@constants/groupOptions';
 import { getPlayerNameValidationError } from '@helpers/validatePlayerName';
 import type { PlayerEntry } from './PlayerGrid';
-
-//TODO: Get tournament ID from URL params or context
-const TOURNAMENT_ID = 1;
+import { useTournamentContext } from '@hooks/index';
 
 type UseTeamFormArgs = {
   teamId?: number;
@@ -45,6 +43,8 @@ export const useTeamForm = ({ teamId, onClose }: UseTeamFormArgs) => {
     useTeamUploadLogo();
   const { mutateAsync: deleteLogo, isPending: isDeletingLogo } =
     useTeamDeleteLogo();
+
+  const TOURNAMENT_ID = useTournamentContext();
   const { data: groups } = useGroupsGetByTournamentId(TOURNAMENT_ID);
 
   const isSaving =

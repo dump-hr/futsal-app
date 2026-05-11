@@ -12,9 +12,7 @@ import { useTeamsGet, useTeamDelete } from '@api/team';
 import { useGroupsGetByTournamentId } from '@api/group';
 import c from './TeamsPage.module.scss';
 import { SortOrder, GroupFilter, SORT_OPTIONS } from './options';
-
-//TODO: Get tournament ID from URL params or context
-const TOURNAMENT_ID = 1;
+import { useTournamentContext } from '@hooks/index';
 
 export const TeamsPage = () => {
   const [sortOrder, setSortOrder] = useState<SortOrder>('az');
@@ -28,6 +26,8 @@ export const TeamsPage = () => {
     teamId?: number;
   }>({ open: false });
   const [, navigate] = useLocation();
+
+  const TOURNAMENT_ID = useTournamentContext();
 
   const { data: teams } = useTeamsGet(TOURNAMENT_ID);
   const { data: groups } = useGroupsGetByTournamentId(TOURNAMENT_ID);

@@ -8,15 +8,12 @@ import {
 } from '@components/index';
 import { XGray, CheckBlack, XWhite } from '@assets/icons';
 import { useMatchCreate, useTeamsGet } from '@api/index';
-import { useCloseComponent } from '@hooks/index';
+import { useCloseComponent, useTournamentContext } from '@hooks/index';
 import { MatchType } from '@futsal-app/types';
 import { MATCH_TYPE_OPTIONS, validateMatchForm } from '@helpers/matchHelpers';
 import TeamPicker from './TeamPicker';
 import common from '../TeamFormModal/ModalCommon.module.scss';
 import c from './MatchFormModal.module.scss';
-
-// TODO: Get tournament ID from URL params or context
-const TOURNAMENT_ID = 1;
 
 type MatchFormModalProps = {
   onClose: () => void;
@@ -30,6 +27,8 @@ const MatchFormModal: React.FC<MatchFormModalProps> = ({ onClose }) => {
   const [awayTeamId, setAwayTeamId] = useState('');
 
   const { mutate: createMatch, isPending: isCreating } = useMatchCreate();
+
+  const TOURNAMENT_ID = useTournamentContext();
   const { data: teams } = useTeamsGet(TOURNAMENT_ID);
 
   const modalRef = useRef<HTMLDivElement>(null);
