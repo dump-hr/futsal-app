@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { api } from '../base';
 import { GroupDto } from '@futsal-app/types';
+import { GENERIC_ERROR_MESSAGE } from '@constants/messages';
 
 const groupRemoveTeam = (id: number, teamId: number) => {
   return api.delete<never, GroupDto>(`/group/${id}/team/${teamId}`);
@@ -23,7 +24,7 @@ export const useGroupRemoveTeam = () => {
       toast.success('Ekipa uspješno uklonjena iz skupine');
     },
     onError: (error) => {
-      toast.error(error.message || 'Došlo je do greške');
+      toast.error(error.message || GENERIC_ERROR_MESSAGE);
     },
   });
 };

@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { api } from '../base';
 import { PlayerDto } from '@futsal-app/types';
+import { GENERIC_ERROR_MESSAGE } from '@constants/messages';
 
 const playerDelete = (id: number) => {
   return api.delete<never, PlayerDto>(`/player/${id}`);
@@ -19,7 +20,7 @@ export const usePlayerDelete = () => {
       toast.success('Igrač uspješno obrisan');
     },
     onError: (error) => {
-      toast.error(error.message || 'Došlo je do greške');
+      toast.error(error.message || GENERIC_ERROR_MESSAGE);
     },
   });
 };

@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { api } from '../base';
 import { MatchEventCreateDto, MatchEventDto } from '@futsal-app/types';
+import { GENERIC_ERROR_MESSAGE } from '@constants/messages';
 
 const matchEventCreate = (dto: MatchEventCreateDto) => {
   return api.post<MatchEventCreateDto, MatchEventDto>('/match-event', dto);
@@ -26,7 +27,7 @@ export const useMatchEventCreate = (
       options?.onSuccess?.();
     },
     onError: (error) => {
-      toast.error(error.message || 'Došlo je do greške');
+      toast.error(error.message || GENERIC_ERROR_MESSAGE);
     },
   });
 };

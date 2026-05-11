@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { api } from '../base';
 import { GroupCreateDto, GroupDto } from '@futsal-app/types';
+import { GENERIC_ERROR_MESSAGE } from '@constants/messages';
 
 const groupCreate = (dto: GroupCreateDto) => {
   return api.post<GroupCreateDto, GroupDto>('/group', dto);
@@ -19,7 +20,7 @@ export const useGroupCreate = () => {
       toast.success('Skupina uspješno kreirana');
     },
     onError: (error) => {
-      toast.error(error.message || 'Došlo je do greške');
+      toast.error(error.message || GENERIC_ERROR_MESSAGE);
     },
   });
 };

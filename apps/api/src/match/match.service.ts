@@ -50,10 +50,6 @@ export class MatchService {
       },
     });
 
-    if (!matches.length) {
-      throw new NotFoundException('Nema utakmica za ovaj turnir');
-    }
-
     return matches;
   }
 
@@ -81,10 +77,6 @@ export class MatchService {
         awayTeam: { select: teamSelect },
       },
     });
-
-    if (!matches.length) {
-      throw new NotFoundException('Nema utakmica za ovu ekipu');
-    }
 
     return matches;
   }

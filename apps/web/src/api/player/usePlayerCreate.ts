@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { api } from '../base';
 import { PlayerCreateDto, PlayerDto } from '@futsal-app/types';
+import { GENERIC_ERROR_MESSAGE } from '@constants/messages';
 
 const playerCreate = (dto: PlayerCreateDto) => {
   return api.post<PlayerCreateDto, PlayerDto>('/player', dto);
@@ -19,7 +20,7 @@ export const usePlayerCreate = () => {
       toast.success('Igrač uspješno kreiran');
     },
     onError: (error) => {
-      toast.error(error.message || 'Došlo je do greške');
+      toast.error(error.message || GENERIC_ERROR_MESSAGE);
     },
   });
 };

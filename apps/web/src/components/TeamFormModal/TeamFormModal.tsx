@@ -5,10 +5,10 @@ import {
   ButtonSmall,
   Input,
   LogoUpload,
+  ModalConfirmation,
 } from '@components/index';
 import { useCloseComponent } from '@hooks/index';
-import { XWhite, CheckBlack, XGray } from '@assets/icons';
-import PlayerFormModal from './PlayerFormModal';
+import { XWhite, CheckBlack, XGray, TrashCanBlack } from '@assets/icons';
 import PlayerGrid from './PlayerGrid';
 import { useTeamForm } from './useTeamForm';
 import common from './ModalCommon.module.scss';
@@ -26,8 +26,7 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
     group,
     setGroup,
     players,
-    playerModal,
-    setPlayerModal,
+    pendingDeleteIndex,
     pendingLogo,
     removeLogo,
     existingTeam,
@@ -38,7 +37,11 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
     isSaving,
     teamNameError,
     handleLogoChange,
-    handlePlayerSave,
+    updatePlayer,
+    addPlayer,
+    requestDeletePlayer,
+    cancelDeletePlayer,
+    confirmDeletePlayer,
     handleSave,
   } = useTeamForm({ teamId, onClose });
 
@@ -46,6 +49,9 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
   useCloseComponent({ onClose: handleClose });
 
   if (!ready || (isEdit && !initialized)) return null;
+
+  const playerToDelete =
+    pendingDeleteIndex !== null ? players[pendingDeleteIndex] : null;
 
   return (
     <div
@@ -111,10 +117,9 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
 
               <PlayerGrid
                 players={players}
-                onEditPlayer={(index) =>
-                  setPlayerModal({ type: 'edit', index })
-                }
-                onAddPlayer={() => setPlayerModal({ type: 'add' })}
+                onUpdatePlayer={updatePlayer}
+                onRequestDeletePlayer={requestDeletePlayer}
+                onAddPlayer={addPlayer}
               />
             </div>
           </div>
@@ -134,20 +139,17 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
         </div>
       </div>
 
-      {playerModal && (
-        <PlayerFormModal
-          firstName={
-            playerModal.type === 'edit'
-              ? players[playerModal.index].firstName
-              : undefined
+      {playerToDelete && (
+        <ModalConfirmation
+          description='Ovim postupkom izbrisat ćete igrača'
+          boldText={
+            `${playerToDelete.firstName} ${playerToDelete.lastName}`.trim() ||
+            'Igrač'
           }
-          lastName={
-            playerModal.type === 'edit'
-              ? players[playerModal.index].lastName
-              : undefined
-          }
-          onSave={handlePlayerSave}
-          onClose={() => setPlayerModal(null)}
+          icon={TrashCanBlack}
+          circleVariant='gray'
+          onCancel={cancelDeletePlayer}
+          onConfirm={confirmDeletePlayer}
         />
       )}
     </div>

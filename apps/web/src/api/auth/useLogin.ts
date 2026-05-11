@@ -4,6 +4,7 @@ import { useLocation } from 'wouter';
 import toast from 'react-hot-toast';
 import { api } from '../base';
 import { routes } from '@routes/routes';
+import { GENERIC_ERROR_MESSAGE } from '@constants/messages';
 
 const login = (dto: LoginDto) => {
   return api.post<LoginDto, JwtResponseDto>('/auth/admin/login', dto);
@@ -22,7 +23,7 @@ export const useLogin = () => {
       navigate(routes.ADMIN_HOME);
     },
     onError: (error) => {
-      toast.error(error.message || 'Došlo je do greške');
+      toast.error(error.message || GENERIC_ERROR_MESSAGE);
     },
   });
 };

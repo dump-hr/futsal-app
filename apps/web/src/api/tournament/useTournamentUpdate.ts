@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { api } from '../base';
 import { TournamentDto, TournamentModifyDto } from '@futsal-app/types';
+import { GENERIC_ERROR_MESSAGE } from '@constants/messages';
 
 const tournamentUpdate = (id: number, dto: TournamentModifyDto) => {
   return api.patch<TournamentModifyDto, TournamentDto>(`/tournament/${id}`, dto);
@@ -18,7 +19,7 @@ export const useTournamentUpdate = () => {
       toast.success('Turnir uspješno ažuriran');
     },
     onError: (error) => {
-      toast.error(error.message || 'Došlo je do greške');
+      toast.error(error.message || GENERIC_ERROR_MESSAGE);
     },
   });
 };
