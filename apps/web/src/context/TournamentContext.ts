@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
-export const TournamentContext = createContext<{
+type TournamentContextValue = {
   tournamentId: number | null;
-}>({
-  tournamentId: null,
-});
+};
+
+export const TournamentContext = createContext<TournamentContextValue | undefined>(undefined);
