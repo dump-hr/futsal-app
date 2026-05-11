@@ -83,19 +83,7 @@
   min-height: 0;
   padding-right: 12px;
 
-  &::-webkit-scrollbar {
-    width: 14px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: $black;
-    border-radius: 15px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: $gray-light;
-    border-radius: 15px;
-  }
+  @include custom-scrollbar;
 }
 
 .playerList {

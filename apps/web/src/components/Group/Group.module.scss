@@ -45,19 +45,7 @@
   -webkit-mask-image: linear-gradient(to bottom, $black 75%, transparent 100%);
   mask-image: linear-gradient(to bottom, $black 75%, transparent 100%);
 
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: $gray-dark;
-    border-radius: 15px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: $gray-light;
-    border-radius: 15px;
-  }
+  @include custom-scrollbar(6px, $gray-dark, $gray-light);
 }
 
 .team {

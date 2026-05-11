@@ -9,19 +9,7 @@
   flex-direction: column;
   align-items: center;
 
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: $black;
-    border-radius: 15px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: $gray-light;
-    border-radius: 15px;
-  }
+  @include custom-scrollbar(8px, $black, $gray-light);
 }
 
 .header {
