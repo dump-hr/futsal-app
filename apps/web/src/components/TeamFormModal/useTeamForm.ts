@@ -44,8 +44,8 @@ export const useTeamForm = ({ teamId, onClose }: UseTeamFormArgs) => {
   const { mutateAsync: deleteLogo, isPending: isDeletingLogo } =
     useTeamDeleteLogo();
 
-  const TOURNAMENT_ID = useTournamentContext();
-  const { data: groups } = useGroupsGetByTournamentId(TOURNAMENT_ID);
+  const tournamentId = useTournamentContext();
+  const { data: groups } = useGroupsGetByTournamentId(tournamentId);
 
   const isSaving =
     isCreating ||
