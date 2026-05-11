@@ -41,9 +41,9 @@ export const MatchesPage = () => {
   const [panelClosing, setPanelClosing] = useState(false);
   const [, navigate] = useLocation();
 
-  const TOURNAMENT_ID = useTournamentContext();
-  const { data: matches } = useMatchGetAll(TOURNAMENT_ID);
-  const { data: teams } = useTeamsGet(TOURNAMENT_ID);
+  const tournamentId = useTournamentContext();
+  const { data: matches } = useMatchGetAll(tournamentId);
+  const { data: teams } = useTeamsGet(tournamentId);
 
   const { mutate: deleteMatch } = useMatchDelete();
   const { mutate: setMatchActive } = useMatchSetActive();
