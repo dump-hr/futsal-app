@@ -98,45 +98,37 @@
 }
 
 .playerList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px 42px;
+  column-count: 2;
+  column-gap: 80px;
 }
 
-
 .playerRow {
+  break-inside: avoid;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  cursor: pointer;
-  flex: 1 1 calc(33% - 42px);
-  min-width: 200px;
-  max-width: 320px;
+  margin-bottom: 16px;
+}
+
+.playerFields {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  > div {
+    flex: 1;
+    min-width: 0;
+  }
 
   input {
     max-width: 100%;
+    width: 100%;
   }
 }
 
 .playerLabel {
   @include body-normal;
   color: $white;
-}
-
-.newPlayerRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.newPlayerInput {
-  flex: 1;
-  min-width: 0;
-
-  input {
-    max-width: 100%;
-  }
 }
 
 .footer {

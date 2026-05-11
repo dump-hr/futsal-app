@@ -1,17 +1,23 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { TournamentModifyDto, TournamentDto } from '@futsal-app/types';
 import { prisma } from '../../lib/prisma';
 
 @Injectable()
 export class TournamentService {
   async create(dto: TournamentModifyDto): Promise<TournamentDto> {
-    const createdTournament = await prisma.tournament.create({
-      data: {
-        ...dto,
-      },
+    const existing = await prisma.tournament.findFirst({
+      where: { name: dto.name, isDeleted: false },
     });
 
-    return createdTournament;
+    if (existing) {
+      throw new ConflictException(
+        `Turnir s imenom "${dto.name}" već postoji.`,
+      );
+    }
+
+    return await prisma.tournament.create({
+      data: { ...dto },
+    });
   }
 
   async getAll(): Promise<TournamentDto[]> {
@@ -32,6 +38,16 @@ export class TournamentService {
   }
 
   async update(id: number, dto: TournamentModifyDto): Promise<TournamentDto> {
+    const existing = await prisma.tournament.findFirst({
+      where: { name: dto.name, isDeleted: false, NOT: { id } },
+    });
+
+    if (existing) {
+      throw new ConflictException(
+        `Turnir s imenom "${dto.name}" već postoji.`,
+      );
+    }
+
     const updatedTournament = await prisma.tournament.update({
       where: { id },
       data: { ...dto },
