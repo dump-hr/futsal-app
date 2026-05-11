@@ -1,5 +1,6 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Redirect, Route, Switch, useLocation } from 'wouter';
+import toast from 'react-hot-toast';
 import { routes } from './routes/index';
 import { BackgroundLayout, NavbarLayout } from '@layouts/index';
 import {
@@ -22,6 +23,14 @@ export const Router = () => {
     tournamentId === null &&
     location !== routes.LOGIN &&
     location !== routes.ADMIN_HOME;
+
+  useEffect(() => {
+    if (needsTournament) {
+      toast.error('Prvo započnite turnir kako biste pristupili ovoj stranici', {
+        id: 'no-tournament',
+      });
+    }
+  }, [needsTournament]);
 
   return (
     <Switch>
