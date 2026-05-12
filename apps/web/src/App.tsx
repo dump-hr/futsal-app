@@ -9,9 +9,9 @@ import { TournamentProvider } from 'context/TournamentProvider';
 export const App = () => {
   return (
     <ErrorBoundary fallback={<div>Something went wrong</div>}>
+      <Toaster />
       <TournamentProvider>
         <Router />
-        <Toaster />
       </TournamentProvider>
     </ErrorBoundary>
   );

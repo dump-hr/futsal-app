@@ -16,10 +16,11 @@ import { ProtectedRoute } from '@components/index';
 import { TournamentContext } from 'context/TournamentContext';
 
 export const Router = () => {
-  const { tournamentId } = useContext(TournamentContext);
+  const { tournamentId, isLoading } = useContext(TournamentContext);
   const [location] = useLocation();
 
   const needsTournament =
+    !isLoading &&
     tournamentId === null &&
     location !== routes.LOGIN &&
     location !== routes.ADMIN_HOME;

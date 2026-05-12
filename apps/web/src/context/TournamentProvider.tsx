@@ -3,10 +3,7 @@ import { TournamentContext } from './TournamentContext';
 import { useTournamentsGet } from '@api/tournament';
 
 export const TournamentProvider: FC<PropsWithChildren> = ({ children }) => {
-  const { data, isLoading, isError } = useTournamentsGet();
-
-  if (isLoading) return <div>Učitavanje...</div>;
-  if (isError) return <div>Greška pri dohvaćanju turnira</div>;
+  const { data, isLoading } = useTournamentsGet();
 
   const parseMonthYear = (s: string) => {
     const [m, y] = s.split('/').map(Number);
@@ -20,7 +17,7 @@ export const TournamentProvider: FC<PropsWithChildren> = ({ children }) => {
     null;
 
   return (
-    <TournamentContext.Provider value={{ tournamentId }}>
+    <TournamentContext.Provider value={{ tournamentId, isLoading }}>
       {children}
     </TournamentContext.Provider>
   );
