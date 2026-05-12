@@ -28,8 +28,8 @@ const MatchFormModal: React.FC<MatchFormModalProps> = ({ onClose }) => {
 
   const { mutate: createMatch, isPending: isCreating } = useMatchCreate();
 
-  const TOURNAMENT_ID = useTournamentContext();
-  const { data: teams } = useTeamsGet(TOURNAMENT_ID);
+  const tournamentId = useTournamentContext();
+  const { data: teams } = useTeamsGet(tournamentId);
 
   const modalRef = useRef<HTMLDivElement>(null);
   const { overlayRef } = useCloseComponent({ onClose, containerRef: modalRef });

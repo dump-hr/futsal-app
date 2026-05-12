@@ -27,10 +27,10 @@ export const TeamsPage = () => {
   }>({ open: false });
   const [, navigate] = useLocation();
 
-  const TOURNAMENT_ID = useTournamentContext();
+  const tournamentId = useTournamentContext();
 
-  const { data: teams } = useTeamsGet(TOURNAMENT_ID);
-  const { data: groups } = useGroupsGetByTournamentId(TOURNAMENT_ID);
+  const { data: teams } = useTeamsGet(tournamentId);
+  const { data: groups } = useGroupsGetByTournamentId(tournamentId);
   const { mutate: deleteTeam } = useTeamDelete();
 
   const groupFilterOptions: { label: string; value: GroupFilter }[] = [
