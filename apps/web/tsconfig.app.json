@@ -34,7 +34,8 @@
       "@routes/*": ["routes/*"],
       "@types": ["types"],
       "@constants/*": ["constants/*"],
-      "@helpers/*": ["helpers/*"]
+      "@helpers/*": ["helpers/*"],
+      "@context/*": ["context/*"]
     }
   },
   "include": ["src", "../../packages/types/src/ResponseTypes/ResponseTypes.ts"]

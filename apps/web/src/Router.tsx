@@ -13,7 +13,7 @@ import {
   GroupsPage,
 } from '@pages/index';
 import { ProtectedRoute } from '@components/index';
-import { TournamentContext } from 'context/TournamentContext';
+import { TournamentContext } from '@context/index';
 
 export const Router = () => {
   const { tournamentId, isLoading } = useContext(TournamentContext) ?? {
