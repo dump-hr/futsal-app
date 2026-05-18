@@ -5,7 +5,7 @@ import editIconSvg from '../../assets/icons/pencil-gray.svg';
 import doneIconSvg from '../../assets/icons/check-black.svg';
 import timerIconSvg from '../../assets/icons/timer-gray.svg';
 import { type MatchStatus, MATCH_STATUS } from '.';
-import ButtonSmall from '@components/ButtonSmall';
+import { ButtonSmall } from '@components/ButtonSmall';
 import { BackgroundColor } from '../../types';
 
 type MatchActionsProps = {

@@ -1,3 +1,1 @@
-import ButtonSmall from './ButtonSmall';
-
-export default ButtonSmall;
+export * from './ButtonSmall';

@@ -1,14 +1,16 @@
 import { useState, useRef, useEffect } from 'react';
-import { Button, Input, Modal } from '@components/index';
+import { Button } from '@components/Button';
+import { Input } from '@components/Input';
+import { Modal } from '@components/Modal';
 import { XWhite, CheckBlack } from '@assets/icons';
-import { useTournamentCreate } from '@api/index';
+import { useTournamentCreate } from '@api/tournament';
 import c from './ModalNewTournament.module.scss';
 
 type ModalNewTournamentProps = {
   onClose: () => void;
 };
 
-const ModalNewTournament: React.FC<ModalNewTournamentProps> = ({ onClose }) => {
+export const ModalNewTournament: React.FC<ModalNewTournamentProps> = ({ onClose }) => {
   const [name, setName] = useState('');
   const { mutate: createTournament, isPending } = useTournamentCreate();
 
@@ -54,5 +56,3 @@ const ModalNewTournament: React.FC<ModalNewTournamentProps> = ({ onClose }) => {
     </Modal>
   );
 };
-
-export default ModalNewTournament;

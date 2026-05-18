@@ -1,5 +1,5 @@
-import { ButtonSmall } from '@components/index';
-import { XBlack } from '@assets/index';
+import { ButtonSmall } from '@components/ButtonSmall';
+import { XBlack } from '@assets/icons';
 import { BackgroundColor } from '@types';
 import c from './MatchPanel.module.scss';
 
@@ -15,7 +15,7 @@ type TeamPickerProps = {
   onClose: () => void;
 };
 
-const TeamPicker: React.FC<TeamPickerProps> = ({
+export const TeamPicker: React.FC<TeamPickerProps> = ({
   homeTeam,
   awayTeam,
   onPick,
@@ -66,5 +66,3 @@ const TeamPicker: React.FC<TeamPickerProps> = ({
     </div>
   );
 };
-
-export default TeamPicker;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { EventType, type MatchDto } from '@futsal-app/types';
-import { useMatchEventCreate } from '@api/index';
+import { useMatchEventCreate } from '@api/matchEvent';
 import { EVENT_LABELS } from '@types';
 import { REGULATION_EVENT_TYPES, SHOOTOUT_EVENT_TYPES } from './constants';
 

@@ -1,4 +1,4 @@
-import { FilterDropdown } from '@components/index';
+import { FilterDropdown } from '@components/Dropdown';
 import { TeamDto } from '@futsal-app/types';
 import c from './MatchFormModal.module.scss';
 
@@ -10,7 +10,7 @@ type TeamPickerProps = {
   onChange: (value: string) => void;
 };
 
-const TeamPicker: React.FC<TeamPickerProps> = ({
+export const TeamPicker: React.FC<TeamPickerProps> = ({
   label,
   team,
   value,
@@ -41,5 +41,3 @@ const TeamPicker: React.FC<TeamPickerProps> = ({
     </div>
   );
 };
-
-export default TeamPicker;

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import toast from 'react-hot-toast';
-import ButtonSmall from '@components/ButtonSmall/ButtonSmall';
+import { ButtonSmall } from '@components/ButtonSmall';
 import { UploadGray, TrashCanGray } from '@assets/icons';
 import c from './LogoUpload.module.scss';
 
@@ -23,7 +23,7 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const isValidFile = (f: File) =>
   ACCEPTED_TYPES.includes(f.type) && f.size <= MAX_FILE_SIZE;
 
-const LogoUpload: React.FC<LogoUploadProps> = ({
+export const LogoUpload: React.FC<LogoUploadProps> = ({
   logoUrl,
   file,
   removed,
@@ -111,5 +111,3 @@ const LogoUpload: React.FC<LogoUploadProps> = ({
     </div>
   );
 };
-
-export default LogoUpload;

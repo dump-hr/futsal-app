@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Button, Modal } from '@components/index';
+import { Button } from '@components/Button';
+import { Modal } from '@components/Modal';
 import { CheckBlack, CrossGray, TrashCanWhite, XWhite } from '@assets/icons';
-import { useTournamentsGet, useTournamentDelete } from '@api/index';
+import { useTournamentsGet, useTournamentDelete } from '@api/tournament';
 import clsx from 'clsx';
 import c from './ModalTournamentHistory.module.scss';
 
@@ -9,7 +10,7 @@ type ModalTournamentHistoryProps = {
   onClose: () => void;
 };
 
-const ModalTournamentHistory: React.FC<ModalTournamentHistoryProps> = ({
+export const ModalTournamentHistory: React.FC<ModalTournamentHistoryProps> = ({
   onClose,
 }) => {
   const [markedForDeletion, setMarkedForDeletion] = useState<Set<number>>(
@@ -88,5 +89,3 @@ const ModalTournamentHistory: React.FC<ModalTournamentHistoryProps> = ({
     </Modal>
   );
 };
-
-export default ModalTournamentHistory;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { CheckBlack, HistoryBlack, PlusBlack } from '@assets/icons';
-import { Button } from '@components/index';
+import { Button } from '@components/Button';
 import c from './MatchTimerPage.module.scss';
 
 type TimerViewProps = {
@@ -20,7 +20,7 @@ const clamp = (n: number, max: number) => Math.max(0, Math.min(max, n));
 
 type EditingField = 'minutes' | 'seconds' | null;
 
-const TimerView: React.FC<TimerViewProps> = ({
+export const TimerView: React.FC<TimerViewProps> = ({
   homeGoals,
   awayGoals,
   elapsedSeconds,
@@ -150,5 +150,3 @@ const TimerView: React.FC<TimerViewProps> = ({
     </div>
   );
 };
-
-export default TimerView;

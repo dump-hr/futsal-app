@@ -2,7 +2,7 @@ import { SearchWhite } from '@assets/icons';
 import c from './Search.module.scss';
 import { ChangeEvent, useRef } from 'react';
 import clsx from 'clsx';
-import { useCloseComponent } from '@hooks/index';
+import { useCloseComponent } from '@hooks/useCloseComponent';
 
 type SearchProps = {
   className?: string;
@@ -10,7 +10,7 @@ type SearchProps = {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
-const Search: React.FC<SearchProps> = ({ className, value, onChange }) => {
+export const Search: React.FC<SearchProps> = ({ className, value, onChange }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const removeFocus = () => {
@@ -32,5 +32,3 @@ const Search: React.FC<SearchProps> = ({ className, value, onChange }) => {
     </div>
   );
 };
-
-export default Search;

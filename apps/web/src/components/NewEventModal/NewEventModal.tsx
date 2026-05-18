@@ -1,13 +1,11 @@
 import { useRef, useState } from 'react';
 import { EventType, type MatchDto } from '@futsal-app/types';
-import {
-  Button,
-  ButtonSmall,
-  FilterDropdown,
-  PlayerAutocomplete,
-} from '@components/index';
+import { Button } from '@components/Button';
+import { ButtonSmall } from '@components/ButtonSmall';
+import { FilterDropdown } from '@components/Dropdown';
+import { PlayerAutocomplete } from '@components/PlayerAutocomplete';
 import { CheckBlack, XGray, XWhite } from '@assets/icons';
-import { useCloseComponent } from '@hooks/index';
+import { useCloseComponent } from '@hooks/useCloseComponent';
 import { type TeamSide, useNewEventForm } from './useNewEventForm';
 import common from '../TeamFormModal/ModalCommon.module.scss';
 import c from './NewEventModal.module.scss';
@@ -20,7 +18,7 @@ type NewEventModalProps = {
   onClose: () => void;
 };
 
-const NewEventModal: React.FC<NewEventModalProps> = ({
+export const NewEventModal: React.FC<NewEventModalProps> = ({
   match,
   mode,
   currentMinute,
@@ -135,5 +133,3 @@ const NewEventModal: React.FC<NewEventModalProps> = ({
     </div>
   );
 };
-
-export default NewEventModal;

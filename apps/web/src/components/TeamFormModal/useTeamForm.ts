@@ -13,7 +13,7 @@ import { useGroupsGetByTournamentId } from '@api/group';
 import { GroupOption } from '@constants/groupOptions';
 import { getPlayerNameValidationError } from '@helpers/validatePlayerName';
 import type { PlayerEntry } from './PlayerGrid';
-import { useTournamentContext } from '@hooks/index';
+import { useTournamentContext } from '@hooks/useTournamentContext';
 
 type UseTeamFormArgs = {
   teamId?: number;

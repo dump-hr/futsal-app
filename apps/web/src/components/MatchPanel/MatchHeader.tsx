@@ -1,6 +1,6 @@
 import clsx from 'clsx';
-import { ButtonSmall } from '@components/index';
-import { XBlack } from '@assets/index';
+import { ButtonSmall } from '@components/ButtonSmall';
+import { XBlack } from '@assets/icons';
 import { BackgroundColor } from '@types';
 import { MATCH_TYPE_LABELS } from '@constants/matchTypeLabels';
 import { formatMatchDate } from '@helpers/formatMatchDate';
@@ -18,7 +18,7 @@ type MatchHeaderProps = {
   onClose: () => void;
 };
 
-const MatchHeader: React.FC<MatchHeaderProps> = ({
+export const MatchHeader: React.FC<MatchHeaderProps> = ({
   homeTeamName,
   awayTeamName,
   homeGoals,
@@ -69,5 +69,3 @@ const MatchHeader: React.FC<MatchHeaderProps> = ({
     </div>
   );
 };
-
-export default MatchHeader;

@@ -1,14 +1,11 @@
 import { useState } from 'react';
 import { useLocation, useParams } from 'wouter';
-import {
-  Button,
-  ButtonSmall,
-  ModalConfirmation,
-  TeamFormModal,
-  PlayerList,
-  MatchList,
-} from '@components/index';
-import PlayerFormModal from '@components/TeamFormModal/PlayerFormModal';
+import { Button } from '@components/Button';
+import { ButtonSmall } from '@components/ButtonSmall';
+import { ModalConfirmation } from '@components/ModalConfirmation';
+import { TeamFormModal, PlayerFormModal } from '@components/TeamFormModal';
+import { PlayerList } from '@components/PlayerList';
+import { MatchList } from '@components/MatchList';
 import {
   ArrowLeftGray,
   PlusBlack,
@@ -18,7 +15,7 @@ import {
 import { useTeamGet } from '@api/team';
 import { useMatchGetByTeam } from '@api/match';
 import { usePlayerCreate, usePlayerUpdate, usePlayerDelete } from '@api/player';
-import { routes } from '@routes/index';
+import { routes } from '@routes/routes';
 import { PlayerModalAdd, PlayerModalEditById } from '@types';
 import c from './TeamDetailPage.module.scss';
 

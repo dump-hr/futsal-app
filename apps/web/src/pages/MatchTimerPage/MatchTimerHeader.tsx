@@ -17,7 +17,7 @@ const TeamSlot: React.FC<{ team: TeamDto | null | undefined }> = ({ team }) => (
   </div>
 );
 
-const MatchTimerHeader: React.FC<MatchTimerHeaderProps> = ({
+export const MatchTimerHeader: React.FC<MatchTimerHeaderProps> = ({
   homeTeam,
   awayTeam,
 }) => {
@@ -29,5 +29,3 @@ const MatchTimerHeader: React.FC<MatchTimerHeaderProps> = ({
     </div>
   );
 };
-
-export default MatchTimerHeader;

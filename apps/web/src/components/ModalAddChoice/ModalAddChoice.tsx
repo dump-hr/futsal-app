@@ -1,6 +1,6 @@
 import clsx from 'clsx';
-import { Button } from '@components/index';
-import { useCloseComponent } from '@hooks/index';
+import { Button } from '@components/Button';
+import { useCloseComponent } from '@hooks/useCloseComponent';
 import { PlusBlack, XWhite } from '@assets/icons';
 import c from './ModalAddChoice.module.scss';
 
@@ -13,7 +13,7 @@ type ModalAddChoiceProps = {
   onCancel: () => void;
 };
 
-const ModalAddChoice: React.FC<ModalAddChoiceProps> = ({
+export const ModalAddChoice: React.FC<ModalAddChoiceProps> = ({
   title,
   primaryLabel,
   secondaryLabel,
@@ -57,5 +57,3 @@ const ModalAddChoice: React.FC<ModalAddChoiceProps> = ({
     </div>
   );
 };
-
-export default ModalAddChoice;

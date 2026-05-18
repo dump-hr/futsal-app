@@ -1,8 +1,8 @@
 import { useRef, useState, useCallback } from 'react';
 import clsx from 'clsx';
-import { ArrowDownWhite } from '@assets/index';
+import { ArrowDownWhite } from '@assets/icons';
 import { EventType } from '@futsal-app/types';
-import { useCloseComponent } from '@hooks/index';
+import { useCloseComponent } from '@hooks/useCloseComponent';
 import { EVENT_LABELS } from '@types';
 import c from './Dropdown.module.scss';
 
@@ -29,7 +29,7 @@ type EventDropdownProps = {
   className?: string;
 };
 
-const EventDropdown: React.FC<EventDropdownProps> = ({
+export const EventDropdown: React.FC<EventDropdownProps> = ({
   side,
   isPenaltyShootout = false,
   value,
@@ -83,5 +83,3 @@ const EventDropdown: React.FC<EventDropdownProps> = ({
     </div>
   );
 };
-
-export default EventDropdown;

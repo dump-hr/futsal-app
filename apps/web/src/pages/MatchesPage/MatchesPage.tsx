@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import { useLocation } from 'wouter';
-import {
-  Button,
-  FilterDropdown,
-  MatchDayGroup,
-  MatchFormModal,
-  MatchPanel,
-  ModalConfirmation,
-} from '@components/index';
+import { Button } from '@components/Button';
+import { FilterDropdown } from '@components/Dropdown';
+import { MatchDayGroup } from '@components/MatchDayGroup';
+import { MatchFormModal } from '@components/MatchFormModal';
+import { MatchPanel } from '@components/MatchPanel';
+import { ModalConfirmation } from '@components/ModalConfirmation';
 import { PlayBlack, PlusBlack, TrashCanBlack } from '@assets/icons';
 import { useMatchGetAll, useMatchDelete, useMatchSetActive } from '@api/match';
 import { useTeamsGet } from '@api/team';
@@ -21,7 +19,7 @@ import {
   MATCH_TYPE_OPTIONS,
   DATE_SORT_OPTIONS,
 } from './options';
-import { useTournamentContext } from '@hooks/index';
+import { useTournamentContext } from '@hooks/useTournamentContext';
 
 export const MatchesPage = () => {
   const [matchTypeFilter, setMatchTypeFilter] =

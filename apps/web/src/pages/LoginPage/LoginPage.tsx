@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Button, Input } from '@components/index';
-import { useLogin } from '@api/auth/useLogin';
+import { Button } from '@components/Button';
+import { Input } from '@components/Input';
+import { useLogin } from '@api/auth';
 import arrowRightBlack from '@assets/icons/arrow-right-black.svg';
 import c from './LoginPage.module.scss';
 

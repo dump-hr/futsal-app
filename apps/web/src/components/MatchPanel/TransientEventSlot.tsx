@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import { PlayerDto } from '@futsal-app/types';
-import { MatchEventCard } from '@components/index';
+import { MatchEventCard } from '@components/MatchEventCard';
 import { MatchEventSaveData } from '@types';
-import TeamPicker from './TeamPicker';
+import { TeamPicker } from './TeamPicker';
 import c from './MatchPanel.module.scss';
 
 export type PendingKind = 'regular' | 'penalty';
@@ -31,7 +31,7 @@ type TransientEventSlotProps = {
   onCancel: () => void;
 };
 
-const TransientEventSlot: React.FC<TransientEventSlotProps> = ({
+export const TransientEventSlot: React.FC<TransientEventSlotProps> = ({
   kind,
   pendingKind,
   newEventSide,
@@ -80,5 +80,3 @@ const TransientEventSlot: React.FC<TransientEventSlotProps> = ({
     </>
   );
 };
-
-export default TransientEventSlot;

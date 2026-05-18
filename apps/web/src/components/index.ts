@@ -1,30 +1,36 @@
-export { default as Modal } from './Modal/Modal';
-export { default as Button } from './Button/Button';
-export { default as ModalConfirmation } from './ModalConfirmation/ModalConfirmation';
-export { default as ModalAddChoice } from './ModalAddChoice/ModalAddChoice';
-export { default as ButtonSmall } from './ButtonSmall/ButtonSmall';
-export { default as LogoUpload } from './LogoUpload/LogoUpload';
-export * from './Navbar/Navbar';
-export { default as EventDropdown } from './Dropdown/EventDropdown';
-export { default as FilterDropdown } from './Dropdown/FilterDropdown';
-export { default as Search } from './Search';
-export * from './MatchInfo';
-export { TeamInfo } from './TeamInfo/TeamInfo';
-export { default as Input } from './Input/Input';
-export { default as Group } from './Group/Group';
-export { default as MatchEventCard } from './MatchEventCard/MatchEventCard';
-export { default as MatchPanel } from './MatchPanel/MatchPanel';
-export * from './ProtectedRoute/ProtectedRoute';
-export { default as ModalNewTournament } from './ModalNewTournament/ModalNewTournament';
-export { default as ModalNewGroup } from './ModalNewGroup/ModalNewGroup';
-export { default as ModalAddTeamToGroup } from './ModalAddTeamToGroup/ModalAddTeamToGroup';
-export { default as ModalTournamentHistory } from './ModalTournamentHistory/ModalTournamentHistory';
-export { default as TeamFormModal } from './TeamFormModal/TeamFormModal';
-export { default as TeamsTable } from './TeamsTable/TeamsTable';
-export { default as PlayerList } from './PlayerList/PlayerList';
-export { default as MatchList } from './MatchList/MatchList';
-export { default as MatchDayGroup } from './MatchDayGroup/MatchDayGroup';
-export { default as MatchFormModal } from './MatchFormModal/MatchFormModal';
-export { default as DateTimePicker } from './DateTimePicker/DateTimePicker';
-export { default as NewEventModal } from './NewEventModal/NewEventModal';
-export { default as PlayerAutocomplete } from './PlayerAutocomplete';
+export * from './Button';
+export * from './ButtonSmall';
+export * from './DateTimePicker';
+export * from './Dropdown';
+export * from './Group';
+export * from './Input';
+export * from './LogoUpload';
+export * from './MatchDayGroup';
+export * from './MatchEventCard';
+export * from './MatchFormModal';
+export {
+  MatchInfo,
+  MatchInfoFromDto,
+  MATCH_STATUS,
+  MATCH_STAGE,
+  MATCH_STAGE_LABEL,
+} from './MatchInfo';
+export type { MatchStatus, MatchStage } from './MatchInfo';
+export * from './MatchList';
+export * from './MatchPanel';
+export * from './Modal';
+export * from './ModalAddChoice';
+export * from './ModalAddTeamToGroup';
+export * from './ModalConfirmation';
+export * from './ModalNewGroup';
+export * from './ModalNewTournament';
+export * from './ModalTournamentHistory';
+export * from './Navbar';
+export * from './NewEventModal';
+export * from './PlayerAutocomplete';
+export * from './PlayerList';
+export * from './ProtectedRoute';
+export * from './Search';
+export * from './TeamFormModal';
+export * from './TeamInfo';
+export * from './TeamsTable';

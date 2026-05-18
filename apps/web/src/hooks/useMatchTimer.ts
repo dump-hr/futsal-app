@@ -172,5 +172,3 @@ export const useMatchTimer = (matchId: number) => {
 
   return { elapsedSeconds, isRunning, toggle, setElapsed, clearTimer };
 };
-
-export default useMatchTimer;

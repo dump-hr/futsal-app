@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import toast from 'react-hot-toast';
-import { Button, Input, Modal } from '@components/index';
-import { useCloseComponent } from '@hooks/index';
+import { Button } from '@components/Button';
+import { Input } from '@components/Input';
+import { Modal } from '@components/Modal';
+import { useCloseComponent } from '@hooks/useCloseComponent';
 import { XWhite, CheckBlack } from '@assets/icons';
 import { useGroupCreate } from '@api/group';
 import c from './ModalNewGroup.module.scss';
@@ -12,7 +14,7 @@ type ModalNewGroupProps = {
   onClose: () => void;
 };
 
-const ModalNewGroup: React.FC<ModalNewGroupProps> = ({
+export const ModalNewGroup: React.FC<ModalNewGroupProps> = ({
   tournamentId,
   existingGroupNames,
   onClose,
@@ -80,5 +82,3 @@ const ModalNewGroup: React.FC<ModalNewGroupProps> = ({
     </Modal>
   );
 };
-
-export default ModalNewGroup;

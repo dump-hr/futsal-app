@@ -6,7 +6,7 @@ type MatchListProps = {
   matches: MatchDto[];
 };
 
-const MatchList: React.FC<MatchListProps> = ({ matches }) => {
+export const MatchList: React.FC<MatchListProps> = ({ matches }) => {
   if (matches.length === 0) {
     return <span className={c.empty}>Još nema utakmica za ovu ekipu</span>;
   }
@@ -19,5 +19,3 @@ const MatchList: React.FC<MatchListProps> = ({ matches }) => {
     </div>
   );
 };
-
-export default MatchList;

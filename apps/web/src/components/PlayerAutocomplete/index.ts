@@ -1,1 +1,1 @@
-export { default } from './PlayerAutocomplete';
+export * from './PlayerAutocomplete';

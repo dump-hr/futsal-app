@@ -1,19 +1,20 @@
 import { useRef, useState } from 'react';
 import { EventType, MatchType } from '@futsal-app/types';
+import { useMatchGet } from '@api/match';
 import {
-  useMatchGet,
   useMatchEventsGet,
   useMatchEventCreate,
   useMatchEventDelete,
   useMatchEventUpdate,
-} from '@api/index';
-import { ButtonSmall } from '@components/index';
-import { PlusBlack } from '@assets/index';
-import { useCloseComponent } from '@hooks/index';
+} from '@api/matchEvent';
+import { ButtonSmall } from '@components/ButtonSmall';
+import { PlusBlack } from '@assets/icons';
+import { useCloseComponent } from '@hooks/useCloseComponent';
 import { BackgroundColor, MatchEventSaveData } from '@types';
-import MatchHeader from './MatchHeader';
-import MatchEventRow from './MatchEventRow';
-import TransientEventSlot, {
+import { MatchHeader } from './MatchHeader';
+import { MatchEventRow } from './MatchEventRow';
+import {
+  TransientEventSlot,
   type PendingKind,
   type NewEventSide,
 } from './TransientEventSlot';
@@ -33,7 +34,7 @@ const isShootoutEvent = (eventType: `${EventType}`): boolean => {
   return SHOOTOUT_EVENTS.includes(eventType);
 };
 
-const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
+export const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
   const { data: match, isLoading } = useMatchGet(matchId);
   const { data: events = [] } = useMatchEventsGet(matchId);
   const [pendingKind, setPendingKind] = useState<PendingKind | null>(null);
@@ -186,5 +187,3 @@ const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
     </div>
   );
 };
-
-export default MatchPanel;

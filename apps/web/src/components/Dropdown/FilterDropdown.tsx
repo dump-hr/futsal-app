@@ -1,7 +1,7 @@
 import { useRef, useState, useCallback } from 'react';
 import clsx from 'clsx';
-import { ArrowDownWhite } from '@assets/index';
-import { useCloseComponent } from '@hooks/index';
+import { ArrowDownWhite } from '@assets/icons';
+import { useCloseComponent } from '@hooks/useCloseComponent';
 import c from './Dropdown.module.scss';
 
 type FilterOption<T extends string> = {
@@ -18,7 +18,7 @@ type FilterDropdownProps<T extends string> = {
   className?: string;
 };
 
-const FilterDropdown = <T extends string>({
+export const FilterDropdown = <T extends string>({
   value,
   options,
   onChange,
@@ -77,5 +77,3 @@ const FilterDropdown = <T extends string>({
     </div>
   );
 };
-
-export default FilterDropdown;

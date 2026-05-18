@@ -11,7 +11,7 @@ type MatchDayGroupProps = {
   onTimer?: (matchId: number) => void;
 };
 
-const MatchDayGroup: React.FC<MatchDayGroupProps> = ({
+export const MatchDayGroup: React.FC<MatchDayGroupProps> = ({
   dateLabel,
   matches,
   onEdit,
@@ -37,5 +37,3 @@ const MatchDayGroup: React.FC<MatchDayGroupProps> = ({
     </div>
   );
 };
-
-export default MatchDayGroup;

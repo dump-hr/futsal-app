@@ -1,4 +1,4 @@
-import { Navbar } from '@components/index';
+import { Navbar } from '@components/Navbar';
 import type { ReactNode } from 'react';
 import c from './NavbarLayout.module.scss';
 

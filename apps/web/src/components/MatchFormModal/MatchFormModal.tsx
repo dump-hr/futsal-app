@@ -1,17 +1,17 @@
 import { useState, useRef } from 'react';
 import toast from 'react-hot-toast';
-import {
-  Button,
-  ButtonSmall,
-  DateTimePicker,
-  FilterDropdown,
-} from '@components/index';
+import { Button } from '@components/Button';
+import { ButtonSmall } from '@components/ButtonSmall';
+import { DateTimePicker } from '@components/DateTimePicker';
+import { FilterDropdown } from '@components/Dropdown';
 import { XGray, CheckBlack, XWhite } from '@assets/icons';
-import { useMatchCreate, useTeamsGet } from '@api/index';
-import { useCloseComponent, useTournamentContext } from '@hooks/index';
+import { useMatchCreate } from '@api/match';
+import { useTeamsGet } from '@api/team';
+import { useCloseComponent } from '@hooks/useCloseComponent';
+import { useTournamentContext } from '@hooks/useTournamentContext';
 import { MatchType } from '@futsal-app/types';
 import { MATCH_TYPE_OPTIONS, validateMatchForm } from '@helpers/matchHelpers';
-import TeamPicker from './TeamPicker';
+import { TeamPicker } from './TeamPicker';
 import common from '../TeamFormModal/ModalCommon.module.scss';
 import c from './MatchFormModal.module.scss';
 
@@ -19,7 +19,7 @@ type MatchFormModalProps = {
   onClose: () => void;
 };
 
-const MatchFormModal: React.FC<MatchFormModalProps> = ({ onClose }) => {
+export const MatchFormModal: React.FC<MatchFormModalProps> = ({ onClose }) => {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [matchType, setMatchType] = useState('');
@@ -141,5 +141,3 @@ const MatchFormModal: React.FC<MatchFormModalProps> = ({ onClose }) => {
     </div>
   );
 };
-
-export default MatchFormModal;

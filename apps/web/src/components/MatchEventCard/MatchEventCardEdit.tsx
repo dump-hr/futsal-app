@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import clsx from 'clsx';
 import { EventType, PlayerDto } from '@futsal-app/types';
-import {
-  ButtonSmall,
-  EventDropdown,
-  PlayerAutocomplete,
-} from '@components/index';
-import { TrashCanGray, CheckBlack } from '@assets/index';
+import { ButtonSmall } from '@components/ButtonSmall';
+import { EventDropdown } from '@components/Dropdown';
+import { PlayerAutocomplete } from '@components/PlayerAutocomplete';
+import { TrashCanGray, CheckBlack } from '@assets/icons';
 import { BackgroundColor, MatchEventSaveData } from '@types';
 import c from './MatchEventCard.module.scss';
 
@@ -31,7 +29,7 @@ type MatchEventCardEditProps = {
   onStopEditing: () => void;
 };
 
-const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
+export const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
   minute,
   playerName,
   eventType,
@@ -130,5 +128,3 @@ const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
     </div>
   );
 };
-
-export default MatchEventCardEdit;

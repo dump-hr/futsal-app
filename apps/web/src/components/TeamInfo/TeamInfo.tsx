@@ -1,4 +1,4 @@
-import ButtonSmall from '@components/ButtonSmall';
+import { ButtonSmall } from '@components/ButtonSmall';
 import { TrashCanGray, PencilGray } from '@assets/icons';
 import c from './TeamInfo.module.scss';
 

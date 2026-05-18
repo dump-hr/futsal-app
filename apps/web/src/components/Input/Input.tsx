@@ -1,13 +1,13 @@
 import { useId, useRef } from 'react';
 import c from './Input.module.scss';
-import { useCloseComponent } from '@hooks/index';
+import { useCloseComponent } from '@hooks/useCloseComponent';
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
   error?: boolean;
 };
 
-const Input: React.FC<InputProps> = ({ label, error, ...props }) => {
+export const Input: React.FC<InputProps> = ({ label, error, ...props }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const inputId = useId();
 
@@ -34,5 +34,3 @@ const Input: React.FC<InputProps> = ({ label, error, ...props }) => {
     </div>
   );
 };
-
-export default Input;

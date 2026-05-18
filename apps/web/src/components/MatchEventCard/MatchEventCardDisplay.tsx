@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { EventType } from '@futsal-app/types';
-import { ButtonSmall } from '@components/index';
-import { TrashCanGray, PencilGray } from '@assets/index';
+import { ButtonSmall } from '@components/ButtonSmall';
+import { TrashCanGray, PencilGray } from '@assets/icons';
 import { EVENT_LABELS } from '@types';
 import c from './MatchEventCard.module.scss';
 
@@ -15,7 +15,7 @@ type MatchEventCardDisplayProps = {
   onDelete: () => void;
 };
 
-const MatchEventCardDisplay: React.FC<MatchEventCardDisplayProps> = ({
+export const MatchEventCardDisplay: React.FC<MatchEventCardDisplayProps> = ({
   minute,
   playerName,
   eventType,
@@ -50,5 +50,3 @@ const MatchEventCardDisplay: React.FC<MatchEventCardDisplayProps> = ({
     </div>
   );
 };
-
-export default MatchEventCardDisplay;

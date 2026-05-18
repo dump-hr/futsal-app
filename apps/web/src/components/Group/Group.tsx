@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import clsx from 'clsx';
-import { PlusBlack, TrashCanGray, TrashCanWhite } from '@assets/index';
+import { PlusBlack, TrashCanGray, TrashCanWhite } from '@assets/icons';
 import c from './Group.module.scss';
-import { Button, ButtonSmall } from '@components/index';
+import { Button } from '@components/Button';
+import { ButtonSmall } from '@components/ButtonSmall';
 
 type Team = {
   id?: number;
@@ -19,7 +20,7 @@ type GroupProps = {
   onDropTeam?: (teamId: number) => void;
 };
 
-const Group: React.FC<GroupProps> = ({
+export const Group: React.FC<GroupProps> = ({
   groupTitle,
   teams,
   onDelete,
@@ -87,5 +88,3 @@ const Group: React.FC<GroupProps> = ({
     </section>
   );
 };
-
-export default Group;
