@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import clsx from 'clsx';
 import { EventType, PlayerDto } from '@futsal-app/types';
-import { ButtonSmall } from '@components/ButtonSmall';
-import { EventDropdown } from '@components/Dropdown';
-import { PlayerAutocomplete } from '@components/PlayerAutocomplete';
-import { TrashCanGray, CheckBlack } from '@assets/icons';
+import {
+  ButtonSmall,
+  EventDropdown,
+  PlayerAutocomplete,
+} from '@components/index';
+import { TrashCanGray, CheckBlack } from '@assets/index';
 import { BackgroundColor, MatchEventSaveData } from '@types';
 import c from './MatchEventCard.module.scss';
 

@@ -1,5 +1,5 @@
-import { CheckBlack, PlusBlack } from '@assets/icons';
-import { Button } from '@components/Button';
+import { CheckBlack, PlusBlack } from '@assets/index';
+import { Button } from '@components/index';
 import c from './MatchTimerPage.module.scss';
 
 type ShootoutViewProps = {

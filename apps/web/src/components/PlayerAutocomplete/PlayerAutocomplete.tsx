@@ -1,9 +1,8 @@
 import { useRef } from 'react';
 import clsx from 'clsx';
 import type { PlayerDto } from '@futsal-app/types';
-import { Input } from '@components/Input';
-import { useCloseComponent } from '@hooks/useCloseComponent';
-import { useSuggestions } from '@hooks/useSuggestions';
+import { Input } from '@components/index';
+import { useCloseComponent, useSuggestions } from '@hooks/index';
 import c from './PlayerAutocomplete.module.scss';
 
 type PlayerAutocompleteProps = {

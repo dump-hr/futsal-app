@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { Button } from '@components/Button';
-import { ButtonSmall } from '@components/ButtonSmall';
-import { Input } from '@components/Input';
-import { XWhite, CheckBlack, XGray } from '@assets/icons';
+import { Button, ButtonSmall, Input } from '@components/index';
+import { XWhite, CheckBlack, XGray } from '@assets/index';
 import {
   isInvalidName,
   getPlayerNameValidationError,

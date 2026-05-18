@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
-import { useCloseComponent } from '@hooks/useCloseComponent';
-import { XWhite } from '@assets/icons';
-import { ButtonSmall } from '@components/ButtonSmall';
+import { useCloseComponent } from '@hooks/index';
+import { XWhite } from '@assets/index';
+import { ButtonSmall } from '@components/index';
 import c from './Modal.module.scss';
 
 type ModalProps = {

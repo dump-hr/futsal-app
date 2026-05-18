@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import clsx from 'clsx';
-import { PlusBlack, TrashCanGray, TrashCanWhite } from '@assets/icons';
+import { PlusBlack, TrashCanGray, TrashCanWhite } from '@assets/index';
 import c from './Group.module.scss';
-import { Button } from '@components/Button';
-import { ButtonSmall } from '@components/ButtonSmall';
+import { Button, ButtonSmall } from '@components/index';
 
 type Team = {
   id?: number;

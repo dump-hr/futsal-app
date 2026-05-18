@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { ButtonSmall } from '@components/ButtonSmall';
-import { Input } from '@components/Input';
-import { PlusBlack, XBlack } from '@assets/icons';
+import { ButtonSmall, Input } from '@components/index';
+import { PlusBlack, XBlack } from '@assets/index';
 import { BackgroundColor } from '@types';
 import c from './TeamFormModal.module.scss';
 import toast from 'react-hot-toast';

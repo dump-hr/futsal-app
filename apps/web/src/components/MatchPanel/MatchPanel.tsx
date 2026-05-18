@@ -1,15 +1,15 @@
 import { useRef, useState } from 'react';
 import { EventType, MatchType } from '@futsal-app/types';
-import { useMatchGet } from '@api/match';
 import {
+  useMatchGet,
   useMatchEventsGet,
   useMatchEventCreate,
   useMatchEventDelete,
   useMatchEventUpdate,
-} from '@api/matchEvent';
-import { ButtonSmall } from '@components/ButtonSmall';
-import { PlusBlack } from '@assets/icons';
-import { useCloseComponent } from '@hooks/useCloseComponent';
+} from '@api/index';
+import { ButtonSmall } from '@components/index';
+import { PlusBlack } from '@assets/index';
+import { useCloseComponent } from '@hooks/index';
 import { BackgroundColor, MatchEventSaveData } from '@types';
 import { MatchHeader } from './MatchHeader';
 import { MatchEventRow } from './MatchEventRow';

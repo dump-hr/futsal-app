@@ -1,5 +1,5 @@
 import { TeamDto } from '@futsal-app/types';
-import { TeamInfo } from '@components/TeamInfo';
+import { TeamInfo } from '@components/index';
 import c from './TeamsTable.module.scss';
 
 type TeamsTableProps = {

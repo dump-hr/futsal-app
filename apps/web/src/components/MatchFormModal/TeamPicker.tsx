@@ -1,4 +1,4 @@
-import { FilterDropdown } from '@components/Dropdown';
+import { FilterDropdown } from '@components/index';
 import { TeamDto } from '@futsal-app/types';
 import c from './MatchFormModal.module.scss';
 

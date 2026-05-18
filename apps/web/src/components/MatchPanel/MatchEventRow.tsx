@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { MatchEventDto, PlayerDto } from '@futsal-app/types';
-import { MatchEventCard } from '@components/MatchEventCard';
+import { MatchEventCard } from '@components/index';
 import { MatchEventSaveData } from '@types';
 import c from './MatchPanel.module.scss';
 

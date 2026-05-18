@@ -1,6 +1,6 @@
 import { PlayerDto } from '@futsal-app/types';
-import { ButtonSmall } from '@components/ButtonSmall';
-import { PencilGray, TrashCanGray } from '@assets/icons';
+import { ButtonSmall } from '@components/index';
+import { PencilGray, TrashCanGray } from '@assets/index';
 import c from './PlayerList.module.scss';
 
 type PlayerListProps = {

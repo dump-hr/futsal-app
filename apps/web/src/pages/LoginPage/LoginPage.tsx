@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { Button } from '@components/Button';
-import { Input } from '@components/Input';
-import { useLogin } from '@api/auth';
-import arrowRightBlack from '@assets/icons/arrow-right-black.svg';
+import { Button, Input } from '@components/index';
+import { useLogin } from '@api/index';
+import { ArrowRightBlack } from '@assets/index';
 import c from './LoginPage.module.scss';
 
 export const LoginPage = () => {
@@ -40,7 +39,7 @@ export const LoginPage = () => {
           />
         </div>
         <Button
-          icon={arrowRightBlack}
+          icon={ArrowRightBlack}
           variant='green'
           type='submit'
           disabled={isPending}

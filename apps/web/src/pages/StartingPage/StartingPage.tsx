@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { HistoryBlack, PlusBlack } from '@assets/icons';
+import { HistoryBlack, PlusBlack } from '@assets/index';
 import c from './StartingPage.module.scss';
-import { Button } from '@components/Button';
-import { ModalNewTournament } from '@components/ModalNewTournament';
-import { ModalTournamentHistory } from '@components/ModalTournamentHistory';
+import {
+  Button,
+  ModalNewTournament,
+  ModalTournamentHistory,
+} from '@components/index';
 
 type Modal = 'new' | 'history' | null;
 

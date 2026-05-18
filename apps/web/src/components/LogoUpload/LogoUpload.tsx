@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import toast from 'react-hot-toast';
-import { ButtonSmall } from '@components/ButtonSmall';
-import { UploadGray, TrashCanGray } from '@assets/icons';
+import { ButtonSmall } from '@components/index';
+import { UploadGray, TrashCanGray } from '@assets/index';
 import c from './LogoUpload.module.scss';
 
 type LogoUploadProps = {

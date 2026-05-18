@@ -1,8 +1,8 @@
 import { useRef, useState, useCallback } from 'react';
 import clsx from 'clsx';
-import { ArrowDownWhite } from '@assets/icons';
+import { ArrowDownWhite } from '@assets/index';
 import { EventType } from '@futsal-app/types';
-import { useCloseComponent } from '@hooks/useCloseComponent';
+import { useCloseComponent } from '@hooks/index';
 import { EVENT_LABELS } from '@types';
 import c from './Dropdown.module.scss';
 

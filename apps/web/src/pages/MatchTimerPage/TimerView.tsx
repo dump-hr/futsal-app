@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { CheckBlack, HistoryBlack, PlusBlack } from '@assets/icons';
-import { Button } from '@components/Button';
+import { CheckBlack, HistoryBlack, PlusBlack } from '@assets/index';
+import { Button } from '@components/index';
 import c from './MatchTimerPage.module.scss';
 
 type TimerViewProps = {

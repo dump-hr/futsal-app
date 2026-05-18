@@ -1,6 +1,6 @@
 import { useId, useRef } from 'react';
 import c from './Input.module.scss';
-import { useCloseComponent } from '@hooks/useCloseComponent';
+import { useCloseComponent } from '@hooks/index';
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string;

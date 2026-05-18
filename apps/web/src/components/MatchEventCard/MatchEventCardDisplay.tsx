@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { EventType } from '@futsal-app/types';
-import { ButtonSmall } from '@components/ButtonSmall';
-import { TrashCanGray, PencilGray } from '@assets/icons';
+import { ButtonSmall } from '@components/index';
+import { TrashCanGray, PencilGray } from '@assets/index';
 import { EVENT_LABELS } from '@types';
 import c from './MatchEventCard.module.scss';
 

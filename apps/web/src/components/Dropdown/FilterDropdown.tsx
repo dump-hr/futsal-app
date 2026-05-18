@@ -1,7 +1,7 @@
 import { useRef, useState, useCallback } from 'react';
 import clsx from 'clsx';
-import { ArrowDownWhite } from '@assets/icons';
-import { useCloseComponent } from '@hooks/useCloseComponent';
+import { ArrowDownWhite } from '@assets/index';
+import { useCloseComponent } from '@hooks/index';
 import c from './Dropdown.module.scss';
 
 type FilterOption<T extends string> = {

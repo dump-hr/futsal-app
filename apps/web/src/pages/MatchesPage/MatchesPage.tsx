@@ -1,16 +1,22 @@
 import { useState } from 'react';
 import { useLocation } from 'wouter';
-import { Button } from '@components/Button';
-import { FilterDropdown } from '@components/Dropdown';
-import { MatchDayGroup } from '@components/MatchDayGroup';
-import { MatchFormModal } from '@components/MatchFormModal';
-import { MatchPanel } from '@components/MatchPanel';
-import { ModalConfirmation } from '@components/ModalConfirmation';
-import { PlayBlack, PlusBlack, TrashCanBlack } from '@assets/icons';
-import { useMatchGetAll, useMatchDelete, useMatchSetActive } from '@api/match';
-import { useTeamsGet } from '@api/team';
+import {
+  Button,
+  FilterDropdown,
+  MatchDayGroup,
+  MatchFormModal,
+  MatchPanel,
+  ModalConfirmation,
+} from '@components/index';
+import { PlayBlack, PlusBlack, TrashCanBlack } from '@assets/index';
+import {
+  useMatchGetAll,
+  useMatchDelete,
+  useMatchSetActive,
+  useTeamsGet,
+} from '@api/index';
 import { groupMatchesByDay } from '@helpers/matchHelpers';
-import { routes } from '@routes/routes';
+import { routes } from '@routes/index';
 import c from './MatchesPage.module.scss';
 import {
   type MatchTypeFilter,
@@ -19,7 +25,7 @@ import {
   MATCH_TYPE_OPTIONS,
   DATE_SORT_OPTIONS,
 } from './options';
-import { useTournamentContext } from '@hooks/useTournamentContext';
+import { useTournamentContext } from '@hooks/index';
 
 export const MatchesPage = () => {
   const [matchTypeFilter, setMatchTypeFilter] =

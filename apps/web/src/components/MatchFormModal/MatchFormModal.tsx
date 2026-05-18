@@ -1,14 +1,14 @@
 import { useState, useRef } from 'react';
 import toast from 'react-hot-toast';
-import { Button } from '@components/Button';
-import { ButtonSmall } from '@components/ButtonSmall';
-import { DateTimePicker } from '@components/DateTimePicker';
-import { FilterDropdown } from '@components/Dropdown';
-import { XGray, CheckBlack, XWhite } from '@assets/icons';
-import { useMatchCreate } from '@api/match';
-import { useTeamsGet } from '@api/team';
-import { useCloseComponent } from '@hooks/useCloseComponent';
-import { useTournamentContext } from '@hooks/useTournamentContext';
+import {
+  Button,
+  ButtonSmall,
+  DateTimePicker,
+  FilterDropdown,
+} from '@components/index';
+import { XGray, CheckBlack, XWhite } from '@assets/index';
+import { useMatchCreate, useTeamsGet } from '@api/index';
+import { useCloseComponent, useTournamentContext } from '@hooks/index';
 import { MatchType } from '@futsal-app/types';
 import { MATCH_TYPE_OPTIONS, validateMatchForm } from '@helpers/matchHelpers';
 import { TeamPicker } from './TeamPicker';

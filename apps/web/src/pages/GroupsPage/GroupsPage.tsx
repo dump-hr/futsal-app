@@ -1,20 +1,22 @@
 import { useState } from 'react';
-import { Button } from '@components/Button';
-import { Group } from '@components/Group';
-import { ModalConfirmation } from '@components/ModalConfirmation';
-import { ModalAddChoice } from '@components/ModalAddChoice';
-import { ModalNewGroup } from '@components/ModalNewGroup';
-import { ModalAddTeamToGroup } from '@components/ModalAddTeamToGroup';
-import { TeamFormModal } from '@components/TeamFormModal';
-import { PlusBlack, TrashCanBlack } from '@assets/icons';
+import {
+  Button,
+  Group,
+  ModalConfirmation,
+  ModalAddChoice,
+  ModalNewGroup,
+  ModalAddTeamToGroup,
+  TeamFormModal,
+} from '@components/index';
+import { PlusBlack, TrashCanBlack } from '@assets/index';
 import {
   useGroupsGetByTournamentId,
   useGroupDelete,
   useGroupRemoveTeam,
   useGroupAddTeam,
-} from '@api/group';
-import { useTournamentsGet } from '@api/tournament';
-import { useTeamsGet } from '@api/team';
+  useTournamentsGet,
+  useTeamsGet,
+} from '@api/index';
 import c from './GroupsPage.module.scss';
 
 export const GroupsPage = () => {

@@ -1,16 +1,21 @@
 import { useState } from 'react';
 import { useLocation } from 'wouter';
-import { Button } from '@components/Button';
-import { FilterDropdown } from '@components/Dropdown';
-import { TeamFormModal } from '@components/TeamFormModal';
-import { TeamsTable } from '@components/TeamsTable';
-import { ModalConfirmation } from '@components/ModalConfirmation';
-import { PlusBlack, TrashCanBlack } from '@assets/icons';
-import { useTeamsGet, useTeamDelete } from '@api/team';
-import { useGroupsGetByTournamentId } from '@api/group';
+import {
+  Button,
+  FilterDropdown,
+  TeamFormModal,
+  TeamsTable,
+  ModalConfirmation,
+} from '@components/index';
+import { PlusBlack, TrashCanBlack } from '@assets/index';
+import {
+  useTeamsGet,
+  useTeamDelete,
+  useGroupsGetByTournamentId,
+} from '@api/index';
 import c from './TeamsPage.module.scss';
 import { SortOrder, GroupFilter, SORT_OPTIONS } from './options';
-import { useTournamentContext } from '@hooks/useTournamentContext';
+import { useTournamentContext } from '@hooks/index';
 
 export const TeamsPage = () => {
   const [sortOrder, setSortOrder] = useState<SortOrder>('az');

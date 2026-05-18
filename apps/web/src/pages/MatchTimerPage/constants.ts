@@ -5,7 +5,7 @@ import {
   GoalLime,
   TickLime,
   XRed,
-} from '@assets/icons';
+} from '@assets/index';
 
 export const REGULATION_HOTKEYS: Record<string, EventType> = {
   g: EventType.goal,

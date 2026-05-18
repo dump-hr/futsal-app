@@ -1,5 +1,5 @@
-import { ButtonSmall } from '@components/ButtonSmall';
-import { XBlack } from '@assets/icons';
+import { ButtonSmall } from '@components/index';
+import { XBlack } from '@assets/index';
 import { BackgroundColor } from '@types';
 import c from './MatchPanel.module.scss';
 

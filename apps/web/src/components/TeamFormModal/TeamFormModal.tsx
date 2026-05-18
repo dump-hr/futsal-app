@@ -1,12 +1,14 @@
 import { useCallback } from 'react';
-import { Button } from '@components/Button';
-import { ButtonSmall } from '@components/ButtonSmall';
-import { FilterDropdown } from '@components/Dropdown';
-import { Input } from '@components/Input';
-import { LogoUpload } from '@components/LogoUpload';
-import { ModalConfirmation } from '@components/ModalConfirmation';
-import { useCloseComponent } from '@hooks/useCloseComponent';
-import { XWhite, CheckBlack, XGray, TrashCanBlack } from '@assets/icons';
+import {
+  Button,
+  ButtonSmall,
+  FilterDropdown,
+  Input,
+  LogoUpload,
+  ModalConfirmation,
+} from '@components/index';
+import { useCloseComponent } from '@hooks/index';
+import { XWhite, CheckBlack, XGray, TrashCanBlack } from '@assets/index';
 import { PlayerGrid } from './PlayerGrid';
 import { useTeamForm } from './useTeamForm';
 import common from './ModalCommon.module.scss';

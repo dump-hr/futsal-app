@@ -1,8 +1,8 @@
-import { SearchWhite } from '@assets/icons';
+import { SearchWhite } from '@assets/index';
 import c from './Search.module.scss';
 import { ChangeEvent, useRef } from 'react';
 import clsx from 'clsx';
-import { useCloseComponent } from '@hooks/useCloseComponent';
+import { useCloseComponent } from '@hooks/index';
 
 type SearchProps = {
   className?: string;

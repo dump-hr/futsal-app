@@ -1,8 +1,7 @@
-import { Button } from '@components/Button';
-import { Modal } from '@components/Modal';
-import { useCloseComponent } from '@hooks/useCloseComponent';
-import { XWhite } from '@assets/icons';
-import { useGroupAddTeam } from '@api/group';
+import { Button, Modal } from '@components/index';
+import { useCloseComponent } from '@hooks/index';
+import { XWhite } from '@assets/index';
+import { useGroupAddTeam } from '@api/index';
 import { TeamDto } from '@futsal-app/types';
 import c from './ModalAddTeamToGroup.module.scss';
 

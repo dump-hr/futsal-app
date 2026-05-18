@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useMatchTimerGet, useMatchTimerSync } from '@api/matchTimer';
+import { useMatchTimerGet, useMatchTimerSync } from '@api/index';
 import { TICK_INTERVAL_MS, HEARTBEAT_INTERVAL_MS } from '@constants/timer';
 
 type StoredTimerState = {

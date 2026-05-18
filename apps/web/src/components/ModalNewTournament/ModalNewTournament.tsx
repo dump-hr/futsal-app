@@ -1,9 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { Button } from '@components/Button';
-import { Input } from '@components/Input';
-import { Modal } from '@components/Modal';
-import { XWhite, CheckBlack } from '@assets/icons';
-import { useTournamentCreate } from '@api/tournament';
+import { Button, Input, Modal } from '@components/index';
+import { XWhite, CheckBlack } from '@assets/index';
+import { useTournamentCreate } from '@api/index';
 import c from './ModalNewTournament.module.scss';
 
 type ModalNewTournamentProps = {

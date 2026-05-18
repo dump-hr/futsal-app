@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { Button } from '@components/Button';
-import { Modal } from '@components/Modal';
-import { CheckBlack, CrossGray, TrashCanWhite, XWhite } from '@assets/icons';
-import { useTournamentsGet, useTournamentDelete } from '@api/tournament';
+import { Button, Modal } from '@components/index';
+import { CheckBlack, CrossGray, TrashCanWhite, XWhite } from '@assets/index';
+import { useTournamentsGet, useTournamentDelete } from '@api/index';
 import clsx from 'clsx';
 import c from './ModalTournamentHistory.module.scss';
 

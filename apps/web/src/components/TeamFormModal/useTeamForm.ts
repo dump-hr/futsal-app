@@ -8,12 +8,12 @@ import {
   useTeamPlayersSync,
   useTeamUploadLogo,
   useTeamDeleteLogo,
-} from '@api/team';
-import { useGroupsGetByTournamentId } from '@api/group';
+  useGroupsGetByTournamentId,
+} from '@api/index';
 import { GroupOption } from '@constants/groupOptions';
 import { getPlayerNameValidationError } from '@helpers/validatePlayerName';
 import type { PlayerEntry } from './PlayerGrid';
-import { useTournamentContext } from '@hooks/useTournamentContext';
+import { useTournamentContext } from '@hooks/index';
 
 type UseTeamFormArgs = {
   teamId?: number;

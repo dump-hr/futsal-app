@@ -1,5 +1,5 @@
 import { MatchDto } from '@futsal-app/types';
-import { MatchInfoFromDto } from '@components/MatchInfo';
+import { MatchInfoFromDto } from '@components/index';
 import c from './MatchDayGroup.module.scss';
 
 type MatchDayGroupProps = {

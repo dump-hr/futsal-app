@@ -1,5 +1,5 @@
-import { ButtonSmall } from '@components/ButtonSmall';
-import { TrashCanGray, PencilGray } from '@assets/icons';
+import { ButtonSmall } from '@components/index';
+import { TrashCanGray, PencilGray } from '@assets/index';
 import c from './TeamInfo.module.scss';
 
 type TeamInfoProps = {

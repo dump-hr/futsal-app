@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import { Button } from '@components/Button';
-import { useCloseComponent } from '@hooks/useCloseComponent';
-import { XWhite, CheckBlack } from '@assets/icons';
+import { Button } from '@components/index';
+import { useCloseComponent } from '@hooks/index';
+import { XWhite, CheckBlack } from '@assets/index';
 import c from './ModalConfirmation.module.scss';
 
 type CircleVariant = 'green' | 'gray';

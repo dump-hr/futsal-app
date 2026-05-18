@@ -1,17 +1,18 @@
 import { useContext, useEffect } from 'react';
 import { Redirect, Route, Switch, useLocation } from 'wouter';
 import toast from 'react-hot-toast';
-import { routes } from '@routes/routes';
-import { BackgroundLayout } from '@layouts/BackgroundLayout';
-import { NavbarLayout } from '@layouts/NavbarLayout';
-import { LoginPage } from '@pages/LoginPage';
-import { StartingPage } from '@pages/StartingPage';
-import { TeamDetailPage } from '@pages/TeamDetailPage';
-import { TeamsPage } from '@pages/TeamsPage';
-import { MatchesPage } from '@pages/MatchesPage';
-import { MatchTimerPage } from '@pages/MatchTimerPage';
-import { GroupsPage } from '@pages/GroupsPage';
-import { ProtectedRoute } from '@components/ProtectedRoute';
+import { routes } from '@routes/index';
+import { BackgroundLayout, NavbarLayout } from '@layouts/index';
+import {
+  LoginPage,
+  StartingPage,
+  TeamDetailPage,
+  TeamsPage,
+  MatchesPage,
+  MatchTimerPage,
+  GroupsPage,
+} from '@pages/index';
+import { ProtectedRoute } from '@components/index';
 import { TournamentContext } from 'context/TournamentContext';
 
 export const Router = () => {

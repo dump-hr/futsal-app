@@ -1,6 +1,6 @@
 import { Redirect } from 'wouter';
-import { useAuthVerify } from '@api/auth/useAuthVerify';
-import { routes } from '@routes/routes';
+import { useAuthVerify } from '@api/index';
+import { routes } from '@routes/index';
 import { getJwtExpiryMs } from './jwtHelpers';
 import { useJwtExpiryWatcher } from './useJwtExpiryWatcher';
 
