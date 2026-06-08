@@ -67,7 +67,7 @@ const Group: React.FC<GroupProps> = ({
         {teams.map((team, index) => (
           <div key={index} className={c.team}>
             <div>
-              <img src={team.logo} alt={team.name} />
+              <img src={team.logo || undefined} alt={team.name} />
               <span>{team.name}</span>
             </div>
 

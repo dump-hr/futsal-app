@@ -1,0 +1,15 @@
+import { FC, PropsWithChildren } from 'react';
+import { TournamentContext } from './TournamentContext';
+import { useTournamentsGet } from '@api/tournament';
+
+export const TournamentProvider: FC<PropsWithChildren> = ({ children }) => {
+  const { data, isLoading } = useTournamentsGet();
+
+  const tournamentId = data?.[0]?.id ?? null;
+
+  return (
+    <TournamentContext.Provider value={{ tournamentId, isLoading }}>
+      {children}
+    </TournamentContext.Provider>
+  );
+};
