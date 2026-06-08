@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { TournamentModifyDto, TournamentDto } from '@futsal-app/types';
 import { prisma } from '../../lib/prisma';
 
@@ -10,9 +14,7 @@ export class TournamentService {
     });
 
     if (existing) {
-      throw new ConflictException(
-        `Turnir s imenom "${dto.name}" već postoji.`,
-      );
+      throw new ConflictException(`Turnir s imenom "${dto.name}" već postoji.`);
     }
 
     return await prisma.tournament.create({
@@ -51,9 +53,7 @@ export class TournamentService {
     });
 
     if (existing) {
-      throw new ConflictException(
-        `Turnir s imenom "${dto.name}" već postoji.`,
-      );
+      throw new ConflictException(`Turnir s imenom "${dto.name}" već postoji.`);
     }
 
     const updatedTournament = await prisma.tournament.update({

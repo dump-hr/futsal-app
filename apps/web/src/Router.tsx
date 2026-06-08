@@ -22,11 +22,13 @@ export const Router = () => {
   };
   const [location] = useLocation();
 
+  const requiresTournament =
+    location !== routes.LOGIN && location !== routes.ADMIN_HOME;
+
   const needsTournament =
-    !isLoading &&
-    tournamentId === null &&
-    location !== routes.LOGIN &&
-    location !== routes.ADMIN_HOME;
+    !isLoading && tournamentId === null && requiresTournament;
+
+  const isWaitingOnTournament = isLoading && requiresTournament;
 
   useEffect(() => {
     if (needsTournament) {
@@ -42,7 +44,7 @@ export const Router = () => {
       <ProtectedRoute>
         {needsTournament ? (
           <Redirect to={routes.ADMIN_HOME} />
-        ) : (
+        ) : isWaitingOnTournament ? null : (
           <Switch>
             <Route path={routes.MATCH_TIMER} component={MatchTimerPage} />
             <Route>
