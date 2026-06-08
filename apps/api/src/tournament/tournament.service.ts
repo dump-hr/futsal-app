@@ -21,7 +21,15 @@ export class TournamentService {
   }
 
   async getAll(): Promise<TournamentDto[]> {
-    return await prisma.tournament.findMany({ where: { isDeleted: false } });
+    const tournaments = await prisma.tournament.findMany({
+      where: { isDeleted: false },
+    });
+
+    return tournaments.sort((a, b) => {
+      const [am, ay] = a.date.split('/').map(Number);
+      const [bm, by] = b.date.split('/').map(Number);
+      return by - ay || bm - am;
+    });
   }
 
   async getById(id: number): Promise<TournamentDto> {
