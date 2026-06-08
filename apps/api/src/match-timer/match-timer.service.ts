@@ -50,7 +50,7 @@ export class MatchTimerService {
     });
 
     if (!match) {
-      throw new NotFoundException(`Match with id ${id} not found`);
+      throw new NotFoundException('Utakmica nije pronađena');
     }
 
     return toState(match);
@@ -63,7 +63,7 @@ export class MatchTimerService {
     });
 
     if (!existing) {
-      throw new NotFoundException(`Match with id ${id} not found`);
+      throw new NotFoundException('Utakmica nije pronađena');
     }
 
     const now = new Date();

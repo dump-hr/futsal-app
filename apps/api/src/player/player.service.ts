@@ -18,7 +18,7 @@ export class PlayerService {
     });
 
     if (!player) {
-      throw new NotFoundException(`Player with id ${id} not found`);
+      throw new NotFoundException('Igrač nije pronađen');
     }
 
     return player;

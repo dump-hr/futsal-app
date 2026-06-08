@@ -41,7 +41,7 @@ export class TournamentService {
     });
 
     if (!tournament) {
-      throw new NotFoundException(`Tournament with id ${id} not found`);
+      throw new NotFoundException('Turnir nije pronađen');
     }
 
     return tournament;

@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { api } from '../base';
 import { TournamentDto } from '@futsal-app/types';
+import { GENERIC_ERROR_MESSAGE } from '@constants/messages';
 
 const tournamentDelete = (id: number) => {
   return api.delete<never, TournamentDto>(`/tournament/${id}`);
@@ -14,10 +15,10 @@ export const useTournamentDelete = () => {
     mutationFn: tournamentDelete,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tournaments'] });
-      toast.success('Tournament deleted successfully');
+      toast.success('Turnir uspješno obrisan');
     },
     onError: (error) => {
-      toast.error(`Error deleting tournament - ${error.message}`);
+      toast.error(error.message || GENERIC_ERROR_MESSAGE);
     },
   });
 };
