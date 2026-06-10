@@ -17,19 +17,19 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
       switch (exception.code) {
         case 'P2002':
           throw new HttpException(
-            'Unique constraint violation',
+            'Zapis s ovom vrijednošću već postoji',
             HttpStatus.CONFLICT,
           );
 
         case 'P2025':
           throw new HttpException(
-            'No record was found for an update',
+            'Zapis nije pronađen',
             HttpStatus.NOT_FOUND,
           );
 
         case 'P2003':
           throw new HttpException(
-            'Foreign key constraint violation',
+            'Zapis je povezan s drugim podacima',
             HttpStatus.BAD_REQUEST,
           );
       }

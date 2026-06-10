@@ -67,7 +67,7 @@ export class MatchEventService {
     });
 
     if (!existing) {
-      throw new NotFoundException(`MatchEvent with id ${id} not found`);
+      throw new NotFoundException('Event nije pronađen');
     }
 
     const newEventType = dto.eventType ?? existing.eventType;
@@ -133,7 +133,7 @@ export class MatchEventService {
     });
 
     if (!existing) {
-      throw new NotFoundException(`MatchEvent with id ${id} not found`);
+      throw new NotFoundException('Event nije pronađen');
     }
 
     const deleteOp = prisma.matchEvent.delete({ where: { id } });

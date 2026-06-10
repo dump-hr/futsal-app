@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { api } from '../base';
+import { GENERIC_ERROR_MESSAGE } from '@constants/messages';
 
 const matchDeactivate = () => {
   return api.patch<never, void>('/match/deactivate');
@@ -14,10 +15,10 @@ export const useMatchDeactivate = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['match', 'active'] });
       queryClient.invalidateQueries({ queryKey: ['matches'] });
-      toast.success('Utakmica deaktivirana');
+      toast.success('Utakmica uspješno deaktivirana');
     },
     onError: (error) => {
-      toast.error(`Greška pri deaktiviranju utakmice - ${error.message}`);
+      toast.error(error.message || GENERIC_ERROR_MESSAGE);
     },
   });
 };

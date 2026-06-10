@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { TournamentModifyDto, TournamentDto } from '@futsal-app/types';
 import { prisma } from '../../lib/prisma';
 
@@ -10,9 +14,7 @@ export class TournamentService {
     });
 
     if (existing) {
-      throw new ConflictException(
-        `Turnir s imenom "${dto.name}" već postoji.`,
-      );
+      throw new ConflictException(`Turnir s imenom "${dto.name}" već postoji.`);
     }
 
     return await prisma.tournament.create({
@@ -21,7 +23,15 @@ export class TournamentService {
   }
 
   async getAll(): Promise<TournamentDto[]> {
-    return await prisma.tournament.findMany({ where: { isDeleted: false } });
+    const tournaments = await prisma.tournament.findMany({
+      where: { isDeleted: false },
+    });
+
+    return tournaments.sort((a, b) => {
+      const [am, ay] = a.date.split('/').map(Number);
+      const [bm, by] = b.date.split('/').map(Number);
+      return by - ay || bm - am;
+    });
   }
 
   async getById(id: number): Promise<TournamentDto> {
@@ -31,7 +41,7 @@ export class TournamentService {
     });
 
     if (!tournament) {
-      throw new NotFoundException(`Tournament with id ${id} not found`);
+      throw new NotFoundException('Turnir nije pronađen');
     }
 
     return tournament;
@@ -43,9 +53,7 @@ export class TournamentService {
     });
 
     if (existing) {
-      throw new ConflictException(
-        `Turnir s imenom "${dto.name}" već postoji.`,
-      );
+      throw new ConflictException(`Turnir s imenom "${dto.name}" već postoji.`);
     }
 
     const updatedTournament = await prisma.tournament.update({

@@ -1,3 +1,5 @@
+@use 'colors' as *;
+
 @mixin title-1 {
   font-family: 'Roboto', sans-serif;
   font-size: 72px;
@@ -74,4 +76,28 @@
   font-family: 'Orbitron', sans-serif;
   font-style: normal;
   font-weight: 400;
+}
+
+@mixin custom-scrollbar(
+  $width: 14px,
+  $track-color: $black,
+  $thumb-color: $gray-light,
+  $track-radius: 15px,
+  $thumb-radius: 15px,
+) {
+  &::-webkit-scrollbar {
+    width: $width;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $track-color;
+    @if $track-radius != null {
+      border-radius: $track-radius;
+    }
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-color;
+    border-radius: $thumb-radius;
+  }
 }

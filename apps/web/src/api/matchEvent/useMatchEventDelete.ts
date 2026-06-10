@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { api } from '../base';
 import { MatchEventDto } from '@futsal-app/types';
+import { GENERIC_ERROR_MESSAGE } from '@constants/messages';
 
 const matchEventDelete = (id: number) => {
   return api.delete<never, MatchEventDto>(`/match-event/${id}`);
@@ -22,7 +23,7 @@ export const useMatchEventDelete = (matchId: number) => {
       toast.success('Event uspješno obrisan');
     },
     onError: (error) => {
-      toast.error(`Greška pri brisanju eventa - ${error.message}`);
+      toast.error(error.message || GENERIC_ERROR_MESSAGE);
     },
   });
 };

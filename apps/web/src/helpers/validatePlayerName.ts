@@ -7,9 +7,9 @@ export const getPlayerNameValidationError = (
   firstName: string,
   lastName: string,
 ): string => {
-  if (!firstName && !lastName) return 'Unesite ime i prezime igrača';
-  if (!firstName) return 'Unesite ime igrača';
-  if (!lastName) return 'Unesite prezime igrača';
+  if (!firstName && !lastName) return 'Unesite ime i prezime';
+  if (!firstName) return 'Unesite ime';
+  if (!lastName) return 'Unesite prezime';
   const fnBad = isInvalidName(firstName);
   const lnBad = isInvalidName(lastName);
   if (fnBad && lnBad)

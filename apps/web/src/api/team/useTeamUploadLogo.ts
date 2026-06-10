@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { api } from '../base';
 import { TeamDto } from '@futsal-app/types';
+import { GENERIC_ERROR_MESSAGE } from '@constants/messages';
 
 const teamUploadLogo = ({ teamId, file }: { teamId: number; file: File }) => {
   const data = new FormData();
@@ -17,10 +18,10 @@ export const useTeamUploadLogo = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['teams'] });
       queryClient.invalidateQueries({ queryKey: ['team'] });
-      toast.success('Logo uspješno uploadan');
+      toast.success('Logo uspješno učitan');
     },
     onError: (error) => {
-      toast.error(`Greška pri uploadu loga - ${error.message}`);
+      toast.error(error.message || GENERIC_ERROR_MESSAGE);
     },
   });
 };

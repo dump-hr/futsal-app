@@ -31,7 +31,7 @@ export const ModalNewGroup: React.FC<ModalNewGroupProps> = ({
   const handleSave = () => {
     const trimmed = name.trim();
     if (!trimmed || !tournamentId) {
-      toast.error('Potrebno je unijeti ime skupine i imati odabrani turnir.');
+      toast.error('Unesite ime skupine i odaberite turnir');
       return;
     }
 
@@ -39,7 +39,7 @@ export const ModalNewGroup: React.FC<ModalNewGroupProps> = ({
       (n) => n.toLowerCase() === trimmed.toLowerCase(),
     );
     if (doesGroupExist) {
-      toast.error('Skupina s tim imenom već postoji.');
+      toast.error('Skupina s tim imenom već postoji');
       return;
     }
 

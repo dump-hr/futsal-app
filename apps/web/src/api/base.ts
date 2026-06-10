@@ -34,6 +34,8 @@ api.interceptors.response.use(
       );
     }
 
-    return Promise.reject(new Error('Network error'));
+    return Promise.reject(
+      new Error('Greška pri povezivanju s poslužiteljem'),
+    );
   },
 );
