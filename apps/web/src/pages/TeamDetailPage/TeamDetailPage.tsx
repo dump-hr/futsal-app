@@ -5,19 +5,23 @@ import {
   ButtonSmall,
   ModalConfirmation,
   TeamFormModal,
+  PlayerFormModal,
   PlayerList,
   MatchList,
 } from '@components/index';
-import PlayerFormModal from '@components/TeamFormModal/PlayerFormModal';
 import {
   ArrowLeftGray,
   PlusBlack,
   PencilGray,
   TrashCanBlack,
-} from '@assets/icons';
-import { useTeamGet } from '@api/team';
-import { useMatchGetByTeam } from '@api/match';
-import { usePlayerCreate, usePlayerUpdate, usePlayerDelete } from '@api/player';
+} from '@assets/index';
+import {
+  useTeamGet,
+  useMatchGetByTeam,
+  usePlayerCreate,
+  usePlayerUpdate,
+  usePlayerDelete,
+} from '@api/index';
 import { routes } from '@routes/index';
 import { PlayerModalAdd, PlayerModalEditById } from '@types';
 import c from './TeamDetailPage.module.scss';

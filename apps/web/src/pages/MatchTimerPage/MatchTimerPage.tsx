@@ -1,15 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'wouter';
 import { EventType } from '@futsal-app/types';
-import { useMatchGet, useMatchEventsGet, useMatchDeactivate } from '@api/index';
+import {
+  useMatchGet,
+  useMatchDeactivate,
+  useMatchEventsGet,
+} from '@api/index';
 import { ModalConfirmation, NewEventModal } from '@components/index';
 import { useMatchTimer } from '@hooks/index';
-import { CheckBlack, HistoryBlack } from '@assets/icons';
-import { routes } from '@routes/routes';
-import MatchTimerHeader from './MatchTimerHeader';
-import TimerView from './TimerView';
-import ShootoutView from './ShootoutView';
-import EventsColumns from './EventsColumns';
+import { CheckBlack, HistoryBlack } from '@assets/index';
+import { routes } from '@routes/index';
+import { MatchTimerHeader } from './MatchTimerHeader';
+import { TimerView } from './TimerView';
+import { ShootoutView } from './ShootoutView';
+import { EventsColumns } from './EventsColumns';
 import { REGULATION_HOTKEYS, SHOOTOUT_HOTKEYS } from './constants';
 import c from './MatchTimerPage.module.scss';
 

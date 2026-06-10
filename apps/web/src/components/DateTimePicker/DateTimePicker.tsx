@@ -7,7 +7,7 @@ type DateTimePickerProps = {
   onTimeChange: (value: string) => void;
 };
 
-const DateTimePicker: React.FC<DateTimePickerProps> = ({
+export const DateTimePicker: React.FC<DateTimePickerProps> = ({
   date,
   time,
   onDateChange,
@@ -43,5 +43,3 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
     </div>
   );
 };
-
-export default DateTimePicker;

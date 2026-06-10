@@ -7,9 +7,12 @@ import {
   TeamsTable,
   ModalConfirmation,
 } from '@components/index';
-import { PlusBlack, TrashCanBlack } from '@assets/icons';
-import { useTeamsGet, useTeamDelete } from '@api/team';
-import { useGroupsGetByTournamentId } from '@api/group';
+import { PlusBlack, TrashCanBlack } from '@assets/index';
+import {
+  useTeamsGet,
+  useTeamDelete,
+  useGroupsGetByTournamentId,
+} from '@api/index';
 import c from './TeamsPage.module.scss';
 import { SortOrder, GroupFilter, SORT_OPTIONS } from './options';
 import { useTournamentContext } from '@hooks/index';

@@ -14,8 +14,8 @@ import {
   useGroupDelete,
   useGroupRemoveTeam,
   useGroupAddTeam,
-} from '@api/group';
-import { useTeamsGet } from '@api/team';
+  useTeamsGet,
+} from '@api/index';
 import { useTournamentContext } from '@hooks/index';
 import c from './GroupsPage.module.scss';
 

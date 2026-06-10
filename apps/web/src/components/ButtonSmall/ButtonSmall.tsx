@@ -9,7 +9,7 @@ type ButtonSmallProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   hasBorder?: boolean;
 };
 
-const ButtonSmall: React.FC<ButtonSmallProps> = ({
+export const ButtonSmall: React.FC<ButtonSmallProps> = ({
   iconSrc,
   backgroundColor = BackgroundColor.Transparent,
   width = 40,
@@ -27,4 +27,3 @@ const ButtonSmall: React.FC<ButtonSmallProps> = ({
     </button>
   );
 };
-export default ButtonSmall;

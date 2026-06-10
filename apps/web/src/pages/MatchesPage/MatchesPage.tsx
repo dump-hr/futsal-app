@@ -8,11 +8,15 @@ import {
   MatchPanel,
   ModalConfirmation,
 } from '@components/index';
-import { PlayBlack, PlusBlack, TrashCanBlack } from '@assets/icons';
-import { useMatchGetAll, useMatchDelete, useMatchSetActive } from '@api/match';
-import { useTeamsGet } from '@api/team';
+import { PlayBlack, PlusBlack, TrashCanBlack } from '@assets/index';
+import {
+  useMatchGetAll,
+  useMatchDelete,
+  useMatchSetActive,
+  useTeamsGet,
+} from '@api/index';
 import { groupMatchesByDay } from '@helpers/matchHelpers';
-import { routes } from '@routes/routes';
+import { routes } from '@routes/index';
 import c from './MatchesPage.module.scss';
 import {
   type MatchTypeFilter,

@@ -15,7 +15,7 @@ type MatchEventCardDisplayProps = {
   onDelete: () => void;
 };
 
-const MatchEventCardDisplay: React.FC<MatchEventCardDisplayProps> = ({
+export const MatchEventCardDisplay: React.FC<MatchEventCardDisplayProps> = ({
   minute,
   playerName,
   eventType,
@@ -50,5 +50,3 @@ const MatchEventCardDisplay: React.FC<MatchEventCardDisplayProps> = ({
     </div>
   );
 };
-
-export default MatchEventCardDisplay;

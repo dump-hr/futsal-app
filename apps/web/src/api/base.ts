@@ -1,6 +1,6 @@
 import axios from 'axios';
 import type { ErrorResponseType } from '../types/index';
-import { routes } from '@routes/routes';
+import { routes } from '@routes/index';
 
 export const api = axios.create({
   baseURL: '/api',

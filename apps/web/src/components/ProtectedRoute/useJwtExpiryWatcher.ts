@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useLocation } from 'wouter';
-import { routes } from '@routes/routes';
+import { routes } from '@routes/index';
 import { SESSION_EXPIRED_MESSAGE } from './jwtHelpers';
 
 type UseJwtExpiryWatcherParams = {

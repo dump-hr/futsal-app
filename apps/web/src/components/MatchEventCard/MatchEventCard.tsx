@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { EventType, PlayerDto } from '@futsal-app/types';
 import { MatchEventSaveData } from '@types';
-import MatchEventCardEdit from './MatchEventCardEdit';
-import MatchEventCardDisplay from './MatchEventCardDisplay';
+import { MatchEventCardEdit } from './MatchEventCardEdit';
+import { MatchEventCardDisplay } from './MatchEventCardDisplay';
 
 type MatchEventCardProps = {
   minute?: number;
@@ -17,7 +17,7 @@ type MatchEventCardProps = {
   onCancel?: () => void;
 };
 
-const MatchEventCard: React.FC<MatchEventCardProps> = ({
+export const MatchEventCard: React.FC<MatchEventCardProps> = ({
   minute,
   playerName,
   eventType,
@@ -61,5 +61,3 @@ const MatchEventCard: React.FC<MatchEventCardProps> = ({
     />
   );
 };
-
-export default MatchEventCard;

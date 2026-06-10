@@ -13,7 +13,7 @@ type MatchEventRowProps = {
   onDelete: (eventId: number) => void;
 };
 
-const MatchEventRow: React.FC<MatchEventRowProps> = ({
+export const MatchEventRow: React.FC<MatchEventRowProps> = ({
   event,
   homePlayers,
   awayPlayers,
@@ -47,5 +47,3 @@ const MatchEventRow: React.FC<MatchEventRowProps> = ({
     </div>
   );
 };
-
-export default MatchEventRow;

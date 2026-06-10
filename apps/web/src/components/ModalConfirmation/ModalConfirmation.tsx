@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { Button } from '@components/index';
 import { useCloseComponent } from '@hooks/index';
-import { XWhite, CheckBlack } from '@assets/icons';
+import { XWhite, CheckBlack } from '@assets/index';
 import c from './ModalConfirmation.module.scss';
 
 type CircleVariant = 'green' | 'gray';
@@ -15,7 +15,7 @@ type ModalConfirmationProps = {
   onConfirm: () => void;
 };
 
-const ModalConfirmation: React.FC<ModalConfirmationProps> = ({
+export const ModalConfirmation: React.FC<ModalConfirmationProps> = ({
   description,
   boldText,
   icon,
@@ -61,5 +61,3 @@ const ModalConfirmation: React.FC<ModalConfirmationProps> = ({
     </div>
   );
 };
-
-export default ModalConfirmation;

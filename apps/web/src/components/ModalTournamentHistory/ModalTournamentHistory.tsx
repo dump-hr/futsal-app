@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Modal } from '@components/index';
-import { CheckBlack, CrossGray, TrashCanWhite, XWhite } from '@assets/icons';
+import { CheckBlack, CrossGray, TrashCanWhite, XWhite } from '@assets/index';
 import { useTournamentsGet, useTournamentDelete } from '@api/index';
 import clsx from 'clsx';
 import c from './ModalTournamentHistory.module.scss';
@@ -9,7 +9,7 @@ type ModalTournamentHistoryProps = {
   onClose: () => void;
 };
 
-const ModalTournamentHistory: React.FC<ModalTournamentHistoryProps> = ({
+export const ModalTournamentHistory: React.FC<ModalTournamentHistoryProps> = ({
   onClose,
 }) => {
   const [markedForDeletion, setMarkedForDeletion] = useState<Set<number>>(
@@ -88,5 +88,3 @@ const ModalTournamentHistory: React.FC<ModalTournamentHistoryProps> = ({
     </Modal>
   );
 };
-
-export default ModalTournamentHistory;

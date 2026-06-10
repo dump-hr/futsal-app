@@ -6,12 +6,12 @@ import {
   DateTimePicker,
   FilterDropdown,
 } from '@components/index';
-import { XGray, CheckBlack, XWhite } from '@assets/icons';
+import { XGray, CheckBlack, XWhite } from '@assets/index';
 import { useMatchCreate, useTeamsGet } from '@api/index';
 import { useCloseComponent, useTournamentContext } from '@hooks/index';
 import { MatchType } from '@futsal-app/types';
 import { MATCH_TYPE_OPTIONS, validateMatchForm } from '@helpers/matchHelpers';
-import TeamPicker from './TeamPicker';
+import { TeamPicker } from './TeamPicker';
 import common from '../TeamFormModal/ModalCommon.module.scss';
 import c from './MatchFormModal.module.scss';
 
@@ -19,7 +19,7 @@ type MatchFormModalProps = {
   onClose: () => void;
 };
 
-const MatchFormModal: React.FC<MatchFormModalProps> = ({ onClose }) => {
+export const MatchFormModal: React.FC<MatchFormModalProps> = ({ onClose }) => {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [matchType, setMatchType] = useState('');
@@ -141,5 +141,3 @@ const MatchFormModal: React.FC<MatchFormModalProps> = ({ onClose }) => {
     </div>
   );
 };
-
-export default MatchFormModal;

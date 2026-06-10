@@ -18,7 +18,7 @@ type FilterDropdownProps<T extends string> = {
   className?: string;
 };
 
-const FilterDropdown = <T extends string>({
+export const FilterDropdown = <T extends string>({
   value,
   options,
   onChange,
@@ -77,5 +77,3 @@ const FilterDropdown = <T extends string>({
     </div>
   );
 };
-
-export default FilterDropdown;

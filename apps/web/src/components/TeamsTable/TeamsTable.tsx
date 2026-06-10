@@ -1,5 +1,5 @@
 import { TeamDto } from '@futsal-app/types';
-import { TeamInfo } from '@components/TeamInfo/TeamInfo';
+import { TeamInfo } from '@components/index';
 import c from './TeamsTable.module.scss';
 
 type TeamsTableProps = {
@@ -9,7 +9,7 @@ type TeamsTableProps = {
   onRowClick: (teamId: number) => void;
 };
 
-const TeamsTable: React.FC<TeamsTableProps> = ({ teams, onDelete, onEdit, onRowClick }) => {
+export const TeamsTable: React.FC<TeamsTableProps> = ({ teams, onDelete, onEdit, onRowClick }) => {
   return (
     <div className={c.teamListSection}>
       <div className={c.columnHeaders}>
@@ -41,5 +41,3 @@ const TeamsTable: React.FC<TeamsTableProps> = ({ teams, onDelete, onEdit, onRowC
     </div>
   );
 };
-
-export default TeamsTable;

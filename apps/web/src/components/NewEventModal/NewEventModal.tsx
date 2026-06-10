@@ -6,7 +6,7 @@ import {
   FilterDropdown,
   PlayerAutocomplete,
 } from '@components/index';
-import { CheckBlack, XGray, XWhite } from '@assets/icons';
+import { CheckBlack, XGray, XWhite } from '@assets/index';
 import { useCloseComponent } from '@hooks/index';
 import { type TeamSide, useNewEventForm } from './useNewEventForm';
 import common from '../TeamFormModal/ModalCommon.module.scss';
@@ -20,7 +20,7 @@ type NewEventModalProps = {
   onClose: () => void;
 };
 
-const NewEventModal: React.FC<NewEventModalProps> = ({
+export const NewEventModal: React.FC<NewEventModalProps> = ({
   match,
   mode,
   currentMinute,
@@ -135,5 +135,3 @@ const NewEventModal: React.FC<NewEventModalProps> = ({
     </div>
   );
 };
-
-export default NewEventModal;

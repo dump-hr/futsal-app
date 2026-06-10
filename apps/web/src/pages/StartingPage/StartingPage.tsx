@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { HistoryBlack, PlusBlack } from '@assets/icons';
+import { HistoryBlack, PlusBlack } from '@assets/index';
 import c from './StartingPage.module.scss';
 import {
   Button,

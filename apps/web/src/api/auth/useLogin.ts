@@ -3,7 +3,7 @@ import { LoginDto, JwtResponseDto } from '@futsal-app/types';
 import { useLocation } from 'wouter';
 import toast from 'react-hot-toast';
 import { api } from '../base';
-import { routes } from '@routes/routes';
+import { routes } from '@routes/index';
 import { GENERIC_ERROR_MESSAGE } from '@constants/messages';
 
 const login = (dto: LoginDto) => {

@@ -18,7 +18,7 @@ type MatchHeaderProps = {
   onClose: () => void;
 };
 
-const MatchHeader: React.FC<MatchHeaderProps> = ({
+export const MatchHeader: React.FC<MatchHeaderProps> = ({
   homeTeamName,
   awayTeamName,
   homeGoals,
@@ -69,5 +69,3 @@ const MatchHeader: React.FC<MatchHeaderProps> = ({
     </div>
   );
 };
-
-export default MatchHeader;

@@ -1,6 +1,6 @@
 import { PlayerDto } from '@futsal-app/types';
-import ButtonSmall from '@components/ButtonSmall/ButtonSmall';
-import { PencilGray, TrashCanGray } from '@assets/icons';
+import { ButtonSmall } from '@components/index';
+import { PencilGray, TrashCanGray } from '@assets/index';
 import c from './PlayerList.module.scss';
 
 type PlayerListProps = {
@@ -9,7 +9,7 @@ type PlayerListProps = {
   onDelete: (player: PlayerDto) => void;
 };
 
-const PlayerList: React.FC<PlayerListProps> = ({ players, onEdit, onDelete }) => {
+export const PlayerList: React.FC<PlayerListProps> = ({ players, onEdit, onDelete }) => {
   if (players.length === 0) {
     return <span className={c.empty}>Još nema dodanih igrača</span>;
   }
@@ -39,5 +39,3 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, onEdit, onDelete }) =>
     </div>
   );
 };
-
-export default PlayerList;

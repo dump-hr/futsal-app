@@ -1,4 +1,4 @@
-import { CheckBlack, PlusBlack } from '@assets/icons';
+import { CheckBlack, PlusBlack } from '@assets/index';
 import { Button } from '@components/index';
 import c from './MatchTimerPage.module.scss';
 
@@ -9,7 +9,7 @@ type ShootoutViewProps = {
   onEndMatch: () => void;
 };
 
-const ShootoutView: React.FC<ShootoutViewProps> = ({
+export const ShootoutView: React.FC<ShootoutViewProps> = ({
   homeShootoutGoals,
   awayShootoutGoals,
   onOpenNewEvent,
@@ -44,5 +44,3 @@ const ShootoutView: React.FC<ShootoutViewProps> = ({
     </div>
   );
 };
-
-export default ShootoutView;

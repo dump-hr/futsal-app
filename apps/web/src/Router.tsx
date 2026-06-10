@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { Redirect, Route, Switch, useLocation } from 'wouter';
 import toast from 'react-hot-toast';
-import { routes } from './routes/index';
+import { routes } from '@routes/index';
 import { BackgroundLayout, NavbarLayout } from '@layouts/index';
 import {
   LoginPage,
@@ -13,7 +13,7 @@ import {
   GroupsPage,
 } from '@pages/index';
 import { ProtectedRoute } from '@components/index';
-import { TournamentContext } from 'context/TournamentContext';
+import { TournamentContext } from '@context/index';
 
 export const Router = () => {
   const { tournamentId, isLoading } = useContext(TournamentContext) ?? {

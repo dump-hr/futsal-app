@@ -1,7 +1,7 @@
-import { TournamentContext } from 'context/TournamentContext';
+import { TournamentContext } from '@context/index';
 import { useContext } from 'react';
 
-const useTournamentContext = () => {
+export const useTournamentContext = () => {
   const context = useContext(TournamentContext);
 
   if (!context) {
@@ -16,5 +16,3 @@ const useTournamentContext = () => {
 
   return context.tournamentId;
 };
-
-export default useTournamentContext;

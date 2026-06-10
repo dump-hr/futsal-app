@@ -19,7 +19,7 @@ type GroupProps = {
   onDropTeam?: (teamId: number) => void;
 };
 
-const Group: React.FC<GroupProps> = ({
+export const Group: React.FC<GroupProps> = ({
   groupTitle,
   teams,
   onDelete,
@@ -87,5 +87,3 @@ const Group: React.FC<GroupProps> = ({
     </section>
   );
 };
-
-export default Group;

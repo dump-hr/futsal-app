@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { useCloseComponent } from '@hooks/index';
-import { XWhite } from '@assets/icons';
+import { XWhite } from '@assets/index';
 import { ButtonSmall } from '@components/index';
 import c from './Modal.module.scss';
 
@@ -12,7 +12,7 @@ type ModalProps = {
   children: ReactNode;
 };
 
-const Modal: React.FC<ModalProps> = ({
+export const Modal: React.FC<ModalProps> = ({
   title,
   subtitle,
   onClose,
@@ -47,5 +47,3 @@ const Modal: React.FC<ModalProps> = ({
     </div>
   );
 };
-
-export default Modal;

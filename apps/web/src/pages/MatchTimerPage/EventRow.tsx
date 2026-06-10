@@ -14,7 +14,7 @@ type EventRowProps = {
   showMinute: boolean;
 };
 
-const EventRow: React.FC<EventRowProps> = ({ event, side, showMinute }) => {
+export const EventRow: React.FC<EventRowProps> = ({ event, side, showMinute }) => {
   const icon = EVENT_ICON[event.eventType as EventType];
   const isLeft = side === 'left';
 
@@ -31,5 +31,3 @@ const EventRow: React.FC<EventRowProps> = ({ event, side, showMinute }) => {
     </div>
   );
 };
-
-export default EventRow;
