@@ -28,6 +28,29 @@ jobs:
       - name: Run ESLint
         run: yarn workspace web run lint
 
+  eslint_app:
+    name: Run ESLint (app)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Run types build
+        run: yarn workspace @futsal-app/types build
+
+      - name: Run ESLint
+        run: yarn workspace app run lint
+
   eslint_api:
     name: Run ESLint (api)
     runs-on: ubuntu-latest

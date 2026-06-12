@@ -34,7 +34,8 @@ Before running the project, make sure you have the following installed:
 futsal-app/
 ├── apps/
 │   ├── api/          # NestJS backend
-│   └── web/          # React frontend
+│   ├── web/          # React frontend
+│   └── app/          # Second React frontend
 ├── packages/
 │   └── types/        # Shared TypeScript types
 ├── infrastructure/   # Project infrastructure
@@ -96,7 +97,7 @@ yarn db:migrate
 
 ### 3. Start the Development Servers
 
-Run both the API and Web applications in development mode:
+Run the API and both frontend applications in development mode:
 
 ```bash
 yarn dev
@@ -106,6 +107,7 @@ This will start:
 
 - **API** at `http://localhost:3000` (default NestJS port)
 - **Web** at `http://localhost:5173` (default Vite port)
+- **App** at `http://localhost:5174`
 
 ### Running Individual Apps
 
@@ -119,6 +121,12 @@ To run only the Web app:
 
 ```bash
 yarn workspace web run dev
+```
+
+To run only the App:
+
+```bash
+yarn workspace app run dev
 ```
 
 ## Database Migrations
@@ -144,7 +152,7 @@ yarn workspace web run dev
 
 ## Shared Types
 
-The project uses a shared types package (`@futsal-app/types`) located in `packages/types/` that contains DTOs and enums used by both the API and Web applications.
+The project uses a shared types package (`@futsal-app/types`) located in `packages/types/` that contains DTOs and enums used by the API, Web, and App applications.
 
 ### Adding a New Shared Type
 
