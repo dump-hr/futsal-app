@@ -31,7 +31,7 @@ type MatchEventCardEditProps = {
   onStopEditing: () => void;
 };
 
-const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
+export const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
   minute,
   playerName,
   eventType,
@@ -130,5 +130,3 @@ const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
     </div>
   );
 };
-
-export default MatchEventCardEdit;

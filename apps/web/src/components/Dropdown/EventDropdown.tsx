@@ -29,7 +29,7 @@ type EventDropdownProps = {
   className?: string;
 };
 
-const EventDropdown: React.FC<EventDropdownProps> = ({
+export const EventDropdown: React.FC<EventDropdownProps> = ({
   side,
   isPenaltyShootout = false,
   value,
@@ -83,5 +83,3 @@ const EventDropdown: React.FC<EventDropdownProps> = ({
     </div>
   );
 };
-
-export default EventDropdown;

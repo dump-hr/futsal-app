@@ -15,7 +15,7 @@ type PlayerAutocompleteProps = {
   onQueryChange?: () => void;
 };
 
-const PlayerAutocomplete: React.FC<PlayerAutocompleteProps> = ({
+export const PlayerAutocomplete: React.FC<PlayerAutocompleteProps> = ({
   players,
   onSelect,
   initialQuery,
@@ -96,5 +96,3 @@ const PlayerAutocomplete: React.FC<PlayerAutocompleteProps> = ({
     </div>
   );
 };
-
-export default PlayerAutocomplete;

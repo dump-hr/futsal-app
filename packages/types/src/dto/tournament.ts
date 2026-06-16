@@ -32,6 +32,10 @@ export class TournamentDto {
   @IsArray()
   groups?: GroupDto[];
 
+  @IsNotEmpty()
+  @IsString()
+  date: string;
+
   @IsBoolean()
   isDeleted: boolean;
 }

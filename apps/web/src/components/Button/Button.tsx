@@ -9,7 +9,7 @@ type ButtonProps = {
   variant?: ButtonVariant;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const Button: React.FC<ButtonProps> = ({
+export const Button: React.FC<ButtonProps> = ({
   children,
   icon,
   variant = 'primary',
@@ -25,5 +25,3 @@ const Button: React.FC<ButtonProps> = ({
     </button>
   );
 };
-
-export default Button;

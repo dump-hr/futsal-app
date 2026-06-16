@@ -8,7 +8,7 @@ type UseSuggestionsOptions<T> = {
   initialQuery?: string;
 };
 
-const useSuggestions = <T>({
+export const useSuggestions = <T>({
   items,
   filterFn,
   onSelect,
@@ -76,5 +76,3 @@ const useSuggestions = <T>({
     closeSuggestions,
   };
 };
-
-export default useSuggestions;

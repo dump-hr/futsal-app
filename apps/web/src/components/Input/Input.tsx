@@ -7,7 +7,7 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   error?: boolean;
 };
 
-const Input: React.FC<InputProps> = ({ label, error, ...props }) => {
+export const Input: React.FC<InputProps> = ({ label, error, ...props }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const inputId = useId();
 
@@ -34,5 +34,3 @@ const Input: React.FC<InputProps> = ({ label, error, ...props }) => {
     </div>
   );
 };
-
-export default Input;

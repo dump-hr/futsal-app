@@ -1,15 +1,15 @@
 import { useCallback } from 'react';
 import {
   Button,
-  FilterDropdown,
   ButtonSmall,
+  FilterDropdown,
   Input,
   LogoUpload,
   ModalConfirmation,
 } from '@components/index';
 import { useCloseComponent } from '@hooks/index';
-import { XWhite, CheckBlack, XGray, TrashCanBlack } from '@assets/icons';
-import PlayerGrid from './PlayerGrid';
+import { XWhite, CheckBlack, XGray, TrashCanBlack } from '@assets/index';
+import { PlayerGrid } from './PlayerGrid';
 import { useTeamForm } from './useTeamForm';
 import common from './ModalCommon.module.scss';
 import c from './TeamFormModal.module.scss';
@@ -19,7 +19,7 @@ type TeamFormModalProps = {
   onClose: () => void;
 };
 
-const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
+export const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
   const {
     teamName,
     setTeamName,
@@ -155,5 +155,3 @@ const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
     </div>
   );
 };
-
-export default TeamFormModal;

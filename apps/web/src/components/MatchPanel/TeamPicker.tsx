@@ -15,7 +15,7 @@ type TeamPickerProps = {
   onClose: () => void;
 };
 
-const TeamPicker: React.FC<TeamPickerProps> = ({
+export const TeamPicker: React.FC<TeamPickerProps> = ({
   homeTeam,
   awayTeam,
   onPick,
@@ -66,5 +66,3 @@ const TeamPicker: React.FC<TeamPickerProps> = ({
     </div>
   );
 };
-
-export default TeamPicker;

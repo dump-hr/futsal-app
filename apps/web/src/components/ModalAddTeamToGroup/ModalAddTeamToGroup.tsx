@@ -1,7 +1,7 @@
 import { Button, Modal } from '@components/index';
 import { useCloseComponent } from '@hooks/index';
-import { XWhite } from '@assets/icons';
-import { useGroupAddTeam } from '@api/group';
+import { XWhite } from '@assets/index';
+import { useGroupAddTeam } from '@api/index';
 import { TeamDto } from '@futsal-app/types';
 import c from './ModalAddTeamToGroup.module.scss';
 
@@ -11,7 +11,7 @@ type ModalAddTeamToGroupProps = {
   onClose: () => void;
 };
 
-const ModalAddTeamToGroup: React.FC<ModalAddTeamToGroupProps> = ({
+export const ModalAddTeamToGroup: React.FC<ModalAddTeamToGroupProps> = ({
   groupId,
   unassignedTeams,
   onClose,
@@ -54,5 +54,3 @@ const ModalAddTeamToGroup: React.FC<ModalAddTeamToGroupProps> = ({
     </Modal>
   );
 };
-
-export default ModalAddTeamToGroup;

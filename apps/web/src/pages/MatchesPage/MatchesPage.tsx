@@ -8,15 +8,15 @@ import {
   MatchPanel,
   ModalConfirmation,
 } from '@components/index';
-import { PlayBlack, PlusBlack, TrashCanBlack } from '@assets/icons';
+import { PlayBlack, PlusBlack, TrashCanBlack } from '@assets/index';
 import {
   useMatchGetAll,
   useMatchDelete,
   useMatchSetActive,
-} from '@api/match';
-import { useTeamsGet } from '@api/team';
+  useTeamsGet,
+} from '@api/index';
 import { groupMatchesByDay } from '@helpers/matchHelpers';
-import { routes } from '@routes/routes';
+import { routes } from '@routes/index';
 import c from './MatchesPage.module.scss';
 import {
   type MatchTypeFilter,
@@ -25,9 +25,7 @@ import {
   MATCH_TYPE_OPTIONS,
   DATE_SORT_OPTIONS,
 } from './options';
-
-// TODO: Get tournament ID from URL params or context
-const TOURNAMENT_ID = 1;
+import { useTournamentContext } from '@hooks/index';
 
 export const MatchesPage = () => {
   const [matchTypeFilter, setMatchTypeFilter] =
@@ -47,8 +45,10 @@ export const MatchesPage = () => {
   const [panelClosing, setPanelClosing] = useState(false);
   const [, navigate] = useLocation();
 
-  const { data: matches } = useMatchGetAll(TOURNAMENT_ID);
-  const { data: teams } = useTeamsGet(TOURNAMENT_ID);
+  const tournamentId = useTournamentContext();
+  const { data: matches } = useMatchGetAll(tournamentId);
+  const { data: teams } = useTeamsGet(tournamentId);
+
   const { mutate: deleteMatch } = useMatchDelete();
   const { mutate: setMatchActive } = useMatchSetActive();
 

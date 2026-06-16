@@ -1,5 +1,5 @@
 import { MatchDto } from '@futsal-app/types';
-import { MatchInfoFromDto } from '@components/MatchInfo';
+import { MatchInfoFromDto } from '@components/index';
 import c from './MatchDayGroup.module.scss';
 
 type MatchDayGroupProps = {
@@ -11,7 +11,7 @@ type MatchDayGroupProps = {
   onTimer?: (matchId: number) => void;
 };
 
-const MatchDayGroup: React.FC<MatchDayGroupProps> = ({
+export const MatchDayGroup: React.FC<MatchDayGroupProps> = ({
   dateLabel,
   matches,
   onEdit,
@@ -37,5 +37,3 @@ const MatchDayGroup: React.FC<MatchDayGroupProps> = ({
     </div>
   );
 };
-
-export default MatchDayGroup;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Button, ButtonSmall, Input } from '@components/index';
-import { XWhite, CheckBlack, XGray } from '@assets/icons';
+import { XWhite, CheckBlack, XGray } from '@assets/index';
 import {
   isInvalidName,
   getPlayerNameValidationError,
@@ -16,7 +16,7 @@ type PlayerFormModalProps = {
   onClose: () => void;
 };
 
-const PlayerFormModal: React.FC<PlayerFormModalProps> = ({
+export const PlayerFormModal: React.FC<PlayerFormModalProps> = ({
   firstName: initialFirst = '',
   lastName: initialLast = '',
   onSave,
@@ -98,5 +98,3 @@ const PlayerFormModal: React.FC<PlayerFormModalProps> = ({
     </div>
   );
 };
-
-export default PlayerFormModal;

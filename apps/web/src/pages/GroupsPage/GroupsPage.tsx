@@ -14,9 +14,9 @@ import {
   useGroupDelete,
   useGroupRemoveTeam,
   useGroupAddTeam,
-} from '@api/group';
-import { useTournamentsGet } from '@api/tournament';
-import { useTeamsGet } from '@api/team';
+  useTeamsGet,
+} from '@api/index';
+import { useTournamentContext } from '@hooks/index';
 import c from './GroupsPage.module.scss';
 
 export const GroupsPage = () => {
@@ -26,10 +26,7 @@ export const GroupsPage = () => {
   const [addTeamGroupId, setAddTeamGroupId] = useState<number | null>(null);
   const [showCreateTeamModal, setShowCreateTeamModal] = useState(false);
 
-  // TODO: remove get all tournaments and get tournamentId from global state (selected tournament)
-  const { data: tournaments = [] } = useTournamentsGet();
-  // TODO: get tournamentId from global state (selected tournament) instead of assuming the first one
-  const tournamentId = tournaments[0]?.id ?? 1;
+  const tournamentId = useTournamentContext();
   const { data: groups = [] } = useGroupsGetByTournamentId(tournamentId);
   const { data: allTeams = [] } = useTeamsGet(tournamentId);
 

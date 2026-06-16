@@ -5,7 +5,7 @@ type UseCloseComponentProps = {
   containerRef?: RefObject<HTMLElement | null>;
 };
 
-const useCloseComponent = ({
+export const useCloseComponent = ({
   onClose,
   containerRef,
 }: UseCloseComponentProps) => {
@@ -48,5 +48,3 @@ const useCloseComponent = ({
 
   return { overlayRef };
 };
-
-export default useCloseComponent;

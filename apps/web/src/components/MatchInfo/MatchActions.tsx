@@ -6,7 +6,7 @@ import doneIconSvg from '../../assets/icons/check-black.svg';
 import timerIconSvg from '../../assets/icons/timer-gray.svg';
 import { MATCH_STATUS } from './constants';
 import type { MatchStatus } from './types';
-import ButtonSmall from '@components/ButtonSmall';
+import { ButtonSmall } from '@components/index';
 import { BackgroundColor } from '../../types';
 
 type MatchActionsProps = {

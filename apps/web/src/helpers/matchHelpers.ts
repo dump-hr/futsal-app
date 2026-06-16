@@ -1,6 +1,6 @@
 import { MatchDto, MatchType } from '@futsal-app/types';
-import { MATCH_STATUS, MATCH_STAGE } from '@components/MatchInfo';
-import type { MatchStage, MatchStatus } from '@components/MatchInfo';
+import { MATCH_STATUS, MATCH_STAGE } from '@components/index';
+import type { MatchStage, MatchStatus } from '@components/index';
 import { validateTime } from './formatMatchDate';
 
 const CROATIAN_DAY_NAMES = [

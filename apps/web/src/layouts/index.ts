@@ -1,2 +1,2 @@
-export * from './NavbarLayout/NavbarLayout';
-export * from './BackgroundLayout/BackgroundLayout';
+export * from './BackgroundLayout';
+export * from './NavbarLayout';

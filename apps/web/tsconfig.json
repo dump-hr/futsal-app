@@ -11,7 +11,8 @@
       "@routes/*": ["routes/*"],
       "@types": ["types"],
       "@constants/*": ["constants/*"],
-      "@helpers/*": ["helpers/*"]
+      "@helpers/*": ["helpers/*"],
+      "@context/*": ["context/*"]
     }
   },
   "files": [],

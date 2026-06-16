@@ -1,8 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { Link, useLocation } from 'wouter';
-import { routes } from '@routes/routes';
-import { ExitBlack, Logo } from '@assets/icons';
-import ButtonSmall from '@components/ButtonSmall';
+import { routes } from '@routes/index';
+import { ExitBlack, Logo } from '@assets/index';
+import { ButtonSmall } from '@components/index';
 import { BackgroundColor } from '../../types';
 import c from './Navbar.module.scss';
 

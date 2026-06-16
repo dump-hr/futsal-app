@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ButtonSmall, Input } from '@components/index';
-import { PlusBlack, XBlack } from '@assets/icons';
+import { PlusBlack, XBlack } from '@assets/index';
 import { BackgroundColor } from '@types';
 import c from './TeamFormModal.module.scss';
 import toast from 'react-hot-toast';
@@ -19,7 +19,7 @@ type PlayerGridProps = {
   onAddPlayer: (player: { firstName: string; lastName: string }) => void;
 };
 
-const PlayerGrid: React.FC<PlayerGridProps> = ({
+export const PlayerGrid: React.FC<PlayerGridProps> = ({
   players,
   onUpdatePlayer,
   onRequestDeletePlayer,
@@ -96,5 +96,3 @@ const PlayerGrid: React.FC<PlayerGridProps> = ({
     </div>
   );
 };
-
-export default PlayerGrid;

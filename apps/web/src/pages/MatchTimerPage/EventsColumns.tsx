@@ -1,5 +1,5 @@
 import { EventType, type MatchEventDto } from '@futsal-app/types';
-import EventRow from './EventRow';
+import { EventRow } from './EventRow';
 import { REGULATION_EVENTS, SHOOTOUT_EVENTS } from './constants';
 import c from './MatchTimerPage.module.scss';
 
@@ -8,7 +8,7 @@ type EventsColumnsProps = {
   mode: 'regulation' | 'shootout';
 };
 
-const EventsColumns: React.FC<EventsColumnsProps> = ({ events, mode }) => {
+export const EventsColumns: React.FC<EventsColumnsProps> = ({ events, mode }) => {
   const allowedTypes =
     mode === 'shootout' ? SHOOTOUT_EVENTS : REGULATION_EVENTS;
   const filtered = events.filter((e) =>
@@ -43,5 +43,3 @@ const EventsColumns: React.FC<EventsColumnsProps> = ({ events, mode }) => {
     </div>
   );
 };
-
-export default EventsColumns;

@@ -7,14 +7,15 @@ import {
   TeamsTable,
   ModalConfirmation,
 } from '@components/index';
-import { PlusBlack, TrashCanBlack } from '@assets/icons';
-import { useTeamsGet, useTeamDelete } from '@api/team';
-import { useGroupsGetByTournamentId } from '@api/group';
+import { PlusBlack, TrashCanBlack } from '@assets/index';
+import {
+  useTeamsGet,
+  useTeamDelete,
+  useGroupsGetByTournamentId,
+} from '@api/index';
 import c from './TeamsPage.module.scss';
 import { SortOrder, GroupFilter, SORT_OPTIONS } from './options';
-
-//TODO: Get tournament ID from URL params or context
-const TOURNAMENT_ID = 1;
+import { useTournamentContext } from '@hooks/index';
 
 export const TeamsPage = () => {
   const [sortOrder, setSortOrder] = useState<SortOrder>('az');
@@ -29,8 +30,10 @@ export const TeamsPage = () => {
   }>({ open: false });
   const [, navigate] = useLocation();
 
-  const { data: teams } = useTeamsGet(TOURNAMENT_ID);
-  const { data: groups } = useGroupsGetByTournamentId(TOURNAMENT_ID);
+  const tournamentId = useTournamentContext();
+
+  const { data: teams } = useTeamsGet(tournamentId);
+  const { data: groups } = useGroupsGetByTournamentId(tournamentId);
   const { mutate: deleteTeam } = useTeamDelete();
 
   const groupFilterOptions: { label: string; value: GroupFilter }[] = [
