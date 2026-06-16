@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { type TeamInfo } from '.';
+import { type TeamInfo } from './types';
 import c from './MatchInfo.module.scss';
 
 type TeamInfoProps = {

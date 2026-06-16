@@ -1,5 +1,3 @@
-import { type MatchStage } from '.';
-
 export const MATCH_STATUS = {
   UPCOMING: 'UPCOMING',
   LIVE: 'LIVE',
@@ -12,6 +10,9 @@ export const MATCH_STAGE = {
   SEMI_FINALS: 'SEMI_FINALS',
   FINAL: 'FINAL',
 } as const;
+
+export type MatchStatus = (typeof MATCH_STATUS)[keyof typeof MATCH_STATUS];
+export type MatchStage = (typeof MATCH_STAGE)[keyof typeof MATCH_STAGE];
 
 export const MATCH_STAGE_LABEL: Record<MatchStage, string> = {
   [MATCH_STAGE.GROUP_STAGE]: 'Grupa',

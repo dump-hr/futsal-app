@@ -4,7 +4,8 @@ import trashCanIconSvg from '../../assets/icons/trash-can-gray.svg';
 import editIconSvg from '../../assets/icons/pencil-gray.svg';
 import doneIconSvg from '../../assets/icons/check-black.svg';
 import timerIconSvg from '../../assets/icons/timer-gray.svg';
-import { type MatchStatus, MATCH_STATUS } from '.';
+import { MATCH_STATUS } from './constants';
+import type { MatchStatus } from './types';
 import ButtonSmall from '@components/ButtonSmall';
 import { BackgroundColor } from '../../types';
 

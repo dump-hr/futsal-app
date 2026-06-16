@@ -4,12 +4,8 @@ import { StageBadge } from './StageBadge';
 import { TeamSummary } from './TeamSummary';
 import { ScorePill } from './ScorePill';
 import { MatchActions } from './MatchActions';
-import {
-  type MatchStatus,
-  type MatchStage,
-  type TeamInfo,
-  MATCH_STATUS,
-} from '.';
+import { MATCH_STATUS } from './constants';
+import type { MatchStatus, MatchStage, TeamInfo } from './types';
 
 type MatchInfoProps = {
   teamA: TeamInfo;
