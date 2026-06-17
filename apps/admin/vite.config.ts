@@ -5,6 +5,9 @@ import path from 'path';
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Admin SPA is served under /admin in production (NestJS ServeStaticModule),
+  // so built asset URLs must be prefixed to avoid colliding with the public app at /.
+  base: '/admin/',
   plugins: [
     react(),
     tsconfigPaths({

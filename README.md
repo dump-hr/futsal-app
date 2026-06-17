@@ -34,8 +34,8 @@ Before running the project, make sure you have the following installed:
 futsal-app/
 ├── apps/
 │   ├── api/          # NestJS backend
-│   ├── web/          # React frontend
-│   └── app/          # Second React frontend
+│   ├── admin/        # Admin React frontend (served at /admin)
+│   └── app/          # Public React frontend (served at /)
 ├── packages/
 │   └── types/        # Shared TypeScript types
 ├── infrastructure/   # Project infrastructure
@@ -117,10 +117,10 @@ To run only the API:
 yarn workspace api run dev
 ```
 
-To run only the Web app:
+To run only the Admin app:
 
 ```bash
-yarn workspace web run dev
+yarn workspace admin run dev
 ```
 
 To run only the App:
@@ -152,7 +152,7 @@ yarn workspace app run dev
 
 ## Shared Types
 
-The project uses a shared types package (`@futsal-app/types`) located in `packages/types/` that contains DTOs and enums used by the API, Web, and App applications.
+The project uses a shared types package (`@futsal-app/types`) located in `packages/types/` that contains DTOs and enums used by the API, Admin, and App applications.
 
 ### Adding a New Shared Type
 

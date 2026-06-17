@@ -5,8 +5,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  eslint_web:
-    name: Run ESLint (web)
+  eslint_admin:
+    name: Run ESLint (admin)
     runs-on: ubuntu-latest
 
     steps:
@@ -26,7 +26,7 @@ jobs:
         run: yarn workspace @futsal-app/types build
 
       - name: Run ESLint
-        run: yarn workspace web run lint
+        run: yarn workspace admin run lint
 
   eslint_app:
     name: Run ESLint (app)

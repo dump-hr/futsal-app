@@ -5003,6 +5003,37 @@ __metadata:
   languageName: node
   linkType: hard
 
+"admin@workspace:apps/admin":
+  version: 0.0.0-use.local
+  resolution: "admin@workspace:apps/admin"
+  dependencies:
+    "@eslint/js": ^9.30.1
+    "@futsal-app/types": "*"
+    "@tanstack/react-query": ^5.84.1
+    "@types/react": ^19.1.8
+    "@types/react-dom": ^19.1.6
+    "@vitejs/plugin-react": ^4.6.0
+    axios: ^1.11.0
+    clsx: ^2.1.1
+    eslint: ^9.30.1
+    eslint-plugin-react-hooks: ^5.2.0
+    eslint-plugin-react-refresh: ^0.4.20
+    globals: ^16.3.0
+    react: ^19.1.0
+    react-dom: ^19.1.0
+    react-error-boundary: ^6.0.0
+    react-hook-form: ^7.62.0
+    react-hot-toast: ^2.5.2
+    reflect-metadata: ^0.2.2
+    sass: ^1.97.3
+    typescript: ~5.8.3
+    typescript-eslint: ^8.35.1
+    vite: ^7.0.4
+    vite-tsconfig-paths: ^6.0.1
+    wouter: ^3.7.1
+  languageName: unknown
+  linkType: soft
+
 "agent-base@npm:6":
   version: 6.0.2
   resolution: "agent-base@npm:6.0.2"
@@ -11883,37 +11914,6 @@ __metadata:
   checksum: 814e9d1ddcc9798f7377ffa448a5a3892232b9275ebb30a41b529607691c0491de47cba426e917a4d08ded3ee7e9ba2f3fe32e62ee3cd9c7d3bafb7754bd553c
   languageName: node
   linkType: hard
-
-"web@workspace:apps/web":
-  version: 0.0.0-use.local
-  resolution: "web@workspace:apps/web"
-  dependencies:
-    "@eslint/js": ^9.30.1
-    "@futsal-app/types": "*"
-    "@tanstack/react-query": ^5.84.1
-    "@types/react": ^19.1.8
-    "@types/react-dom": ^19.1.6
-    "@vitejs/plugin-react": ^4.6.0
-    axios: ^1.11.0
-    clsx: ^2.1.1
-    eslint: ^9.30.1
-    eslint-plugin-react-hooks: ^5.2.0
-    eslint-plugin-react-refresh: ^0.4.20
-    globals: ^16.3.0
-    react: ^19.1.0
-    react-dom: ^19.1.0
-    react-error-boundary: ^6.0.0
-    react-hook-form: ^7.62.0
-    react-hot-toast: ^2.5.2
-    reflect-metadata: ^0.2.2
-    sass: ^1.97.3
-    typescript: ~5.8.3
-    typescript-eslint: ^8.35.1
-    vite: ^7.0.4
-    vite-tsconfig-paths: ^6.0.1
-    wouter: ^3.7.1
-  languageName: unknown
-  linkType: soft
 
 "webpack-node-externals@npm:3.0.0":
   version: 3.0.0

@@ -37,6 +37,7 @@ RUN addgroup --system --gid 1001 nestjs
 RUN adduser --system --uid 1001 nestjs
 USER nestjs
 COPY --from=installer --chown=nestjs:nestjs /app .
-COPY --chown=nestjs:nestjs apps/web/dist ./apps/web/dist
+COPY --chown=nestjs:nestjs apps/admin/dist ./apps/admin/dist
+COPY --chown=nestjs:nestjs apps/app/dist ./apps/app/dist
 
 CMD node apps/api/dist/src/main.js

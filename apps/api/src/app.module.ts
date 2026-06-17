@@ -18,7 +18,13 @@ import { BlobModule } from './blob/blob.module';
     ...(process.env.NODE_ENV !== 'dev'
       ? [
           ServeStaticModule.forRoot({
-            rootPath: join(__dirname, '..', '..', '..', 'web', 'dist'),
+            rootPath: join(__dirname, '..', '..', '..', 'admin', 'dist'),
+            serveRoot: '/admin',
+            exclude: ['/api/{*path}'],
+          }),
+          ServeStaticModule.forRoot({
+            rootPath: join(__dirname, '..', '..', '..', 'app', 'dist'),
+            serveRoot: '/',
             exclude: ['/api/{*path}'],
           }),
         ]
