@@ -20,7 +20,7 @@ export const EventCard: React.FC<EventCardProps> = ({
 
   return (
     <div className={clsx(c.card, isRight && c.cardRight)}>
-      <img src={icon} alt='' aria-hidden className={c.icon} />
+      <img src={icon} alt='' aria-hidden data-event={eventType} className={c.icon} />
       <p className={c.label}>{label}</p>
       <div className={c.info}>
         <span>{playerName}</span>

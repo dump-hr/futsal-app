@@ -24,7 +24,6 @@ export const EVENT_CONFIG: Record<EventCardType, { label: string; icon: string }
   redCard: { label: 'CRVENI KARTON', icon: CardRed },
   yellowCard: { label: 'ŽUTI KARTON', icon: CardYellow },
   penaltyGoal: { label: 'PENAL', icon: PenaltyLime },
-  // Not in the Figma design yet — placeholder icons for now.
   penaltyMiss: { label: 'PROMAŠAJ (PENAL)', icon: XRed },
   injury: { label: 'OZLJEDA', icon: CrossGray },
 };

@@ -22,10 +22,7 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
           );
 
         case 'P2025':
-          throw new HttpException(
-            'Zapis nije pronađen',
-            HttpStatus.NOT_FOUND,
-          );
+          throw new HttpException('Zapis nije pronađen', HttpStatus.NOT_FOUND);
 
         case 'P2003':
           throw new HttpException(
