@@ -1,9 +1,17 @@
 import c from './HomePage.module.scss';
-import { EventCard } from '@components/index';
+import { Button, EventCard } from '@components/index';
 
 export const HomePage = () => {
   return (
     <div className={c.page}>
+      <section className={c.section}>
+        <h2 className={c.title}>Button</h2>
+        <div className={c.row}>
+          <Button variant='primary'>Nova utakmica</Button>
+          <Button variant='secondary'>Više</Button>
+        </div>
+      </section>
+
       <section className={c.section}>
         <h2 className={c.title}>EventCard</h2>
         <div className={c.row}>
