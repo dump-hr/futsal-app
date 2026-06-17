@@ -4,4 +4,5 @@ interface RouteType {
 
 export const routes: RouteType = {
   HOME: '/',
+  DRAW: '/draw',
 };
