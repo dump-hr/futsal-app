@@ -5,7 +5,7 @@
       "@assets/*": ["assets/*"],
       "@api/*": ["api/*"],
       "@components/*": ["components/*"],
-      "@hooks/": ["hooks/*"],
+      "@hooks/*": ["hooks/*"],
       "@layouts/*": ["layouts/*"],
       "@pages/*": ["pages/*"],
       "@routes/*": ["routes/*"],

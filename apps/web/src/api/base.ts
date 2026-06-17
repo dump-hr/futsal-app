@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { ErrorResponseType } from '../types/index';
+import type { ErrorResponseType } from '@futsal-app/types';
 import { routes } from '@routes/index';
 
 export const api = axios.create({
@@ -34,8 +34,6 @@ api.interceptors.response.use(
       );
     }
 
-    return Promise.reject(
-      new Error('Greška pri povezivanju s poslužiteljem'),
-    );
+    return Promise.reject(new Error('Greška pri povezivanju s poslužiteljem'));
   },
 );

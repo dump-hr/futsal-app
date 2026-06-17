@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { ErrorResponseType } from '../types/index';
+import type { ErrorResponseType } from '@futsal-app/types';
 
 export const api = axios.create({
   baseURL: '/api',

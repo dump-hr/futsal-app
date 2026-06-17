@@ -37,6 +37,5 @@
       "@helpers/*": ["helpers/*"],
       "@context/*": ["context/*"]
     }
-  },
-  "include": ["src", "../../packages/types/src/ResponseTypes/ResponseTypes.ts"]
+  }
 }

@@ -7,3 +7,4 @@ export * from './dto/matchEvent';
 export * from './dto/group';
 export * from './dto/auth';
 export * from './enum';
+export * from './response/response';
