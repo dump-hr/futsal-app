@@ -1,0 +1,30 @@
+.button {
+  @include body-normal-bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 38px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.primary {
+  background-color: $lime;
+  color: $background-black;
+}
+
+.secondary {
+  background-color: transparent;
+  color: $white;
+  border: 1px solid $white;
+}
