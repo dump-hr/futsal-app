@@ -1,4 +1,3 @@
-export * from './ResponseTypes';
 export * from './backgroundColor';
 export * from './eventLabels';
 export * from './matchEventSaveData';
