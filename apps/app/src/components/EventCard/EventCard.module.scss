@@ -1,0 +1,52 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 320px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background-color: $background-black;
+  overflow: hidden;
+}
+
+.icon {
+  position: absolute;
+  top: -28px;
+  right: -8px;
+  width: 100px;
+  height: auto;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.label {
+  @include title-3;
+  margin: 0;
+  color: $white;
+  opacity: 0.5;
+}
+
+.info {
+  @include body-normal;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  color: $white;
+}
+
+.cardRight {
+  .icon {
+    right: auto;
+    left: -8px;
+    transform: scaleX(-1);
+  }
+
+  .label {
+    text-align: right;
+  }
+
+  .info {
+    flex-direction: row-reverse;
+  }
+}
