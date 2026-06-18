@@ -32,11 +32,14 @@ export { default as MenuWhite } from './menu-white.svg';
 export { default as Logo } from './logo.svg';
 
 export { default as GoalLime } from './goal-lime.svg';
+export { default as OwnGoalRed } from './own-goal-red.svg';
 export { default as CardRed } from './card-red.svg';
 export { default as CardYellow } from './card-yellow.svg';
+export { default as PenaltyLime } from './penalty-lime.svg';
 export { default as XRed } from './x-red.svg';
 export { default as TickLime } from './tick-lime.svg';
 export { default as TimerGray } from './timer-gray.svg';
+export { default as WhistleWhite } from './whistle-white.svg';
 
 export { default as EndavaLogo } from './temp-teams-logos/endava.svg';
 export { default as InfobipLogo } from './temp-teams-logos/infobip.svg';
