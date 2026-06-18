@@ -6,7 +6,6 @@ type Team = {
   logoUrl?: string | null;
 };
 
-// todo: add match status and scores when match is active
 type DrawRoundProps = {
   teamA: Team;
   teamB: Team;
