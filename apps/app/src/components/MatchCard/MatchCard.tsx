@@ -53,62 +53,39 @@ export const MatchCard: React.FC<MatchCardProps> = ({
 
   return (
     <article className={clsx(c.card, className)}>
-      {/* Mobile version */}
-      <div className={c.mobile}>
-        <div className={c.summary}>
-          <span className={clsx(c.summaryLabel, isLive && c.summaryLabelLive)}>
-            {isLive ? liveLabel : metaLabel}
-          </span>
-          <span className={c.summaryValue}>
-            {isUpcoming ? startTime : score}
-          </span>
-        </div>
-
-        <span className={c.divider} />
-
-        <div className={clsx(c.teams, isLive && c.teamsLive)}>
-          <div className={c.team}>
-            <TeamLogo name={homeName} logoUrl={homeLogo} className={c.logo} />
-            <span className={c.teamName}>{homeName}</span>
-          </div>
-          <div className={c.team}>
-            <TeamLogo name={awayName} logoUrl={awayLogo} className={c.logo} />
-            <span className={c.teamName}>{awayName}</span>
-          </div>
-        </div>
-
-        {isLive && <img className={c.liveDot} src={LiveRed} alt='' />}
+      <div className={c.summary}>
+        <span className={clsx(c.summaryLabel, isLive && c.summaryLabelLive)}>
+          {isLive ? liveLabel : metaLabel}
+        </span>
+        <span className={c.summaryValue}>{isUpcoming ? startTime : score}</span>
       </div>
 
-      {/* Desktop version */}
-      <div className={c.desktop}>
-        <div className={c.desktopTeams}>
-          <span className={clsx(c.desktopTeamName, c.alignEnd)}>{homeName}</span>
-          <TeamLogo
-            name={homeName}
-            logoUrl={homeLogo}
-            className={c.desktopLogo}
-          />
-          <span className={c.badge}>{score ?? 'VS'}</span>
-          <TeamLogo
-            name={awayName}
-            logoUrl={awayLogo}
-            className={c.desktopLogo}
-          />
-          <span className={c.desktopTeamName}>{awayName}</span>
-        </div>
+      <span className={c.divider} />
 
-        <div className={c.meta}>
-          {isLive ? (
-            <span className={c.metaLive}>{liveLabel}</span>
-          ) : (
-            <>
-              <span className={c.metaText}>{dateLabel}</span>
-              <span className={c.metaText}>{metaLabel}</span>
-            </>
-          )}
+      <div className={clsx(c.teams, isLive && c.teamsLive)}>
+        <div className={clsx(c.team, c.homeTeam)}>
+          <TeamLogo name={homeName} logoUrl={homeLogo} className={c.logo} />
+          <span className={c.teamName}>{homeName}</span>
+        </div>
+        <span className={c.badge}>{score ?? 'VS'}</span>
+        <div className={c.team}>
+          <TeamLogo name={awayName} logoUrl={awayLogo} className={c.logo} />
+          <span className={c.teamName}>{awayName}</span>
         </div>
       </div>
+
+      <div className={c.meta}>
+        {isLive ? (
+          <span className={c.metaLive}>{liveLabel}</span>
+        ) : (
+          <>
+            <span className={c.metaText}>{dateLabel}</span>
+            <span className={c.metaText}>{metaLabel}</span>
+          </>
+        )}
+      </div>
+
+      {isLive && <img className={c.liveDot} src={LiveRed} alt='' />}
     </article>
   );
 };
