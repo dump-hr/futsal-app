@@ -36,9 +36,7 @@ export class BlobService {
       return `${this.url}/${key}`;
     } catch (error) {
       console.error(error);
-      throw new InternalServerErrorException(
-        'Greška pri učitavanju datoteke',
-      );
+      throw new InternalServerErrorException('Greška pri učitavanju datoteke');
     }
   }
 }
