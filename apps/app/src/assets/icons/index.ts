@@ -39,6 +39,7 @@ export { default as PenaltyLime } from './penalty-lime.svg';
 export { default as XRed } from './x-red.svg';
 export { default as TickLime } from './tick-lime.svg';
 export { default as TimerGray } from './timer-gray.svg';
+export { default as LiveRed } from './live-red.svg';
 export { default as WhistleWhite } from './whistle-white.svg';
 
 export { default as EndavaLogo } from './temp-teams-logos/endava.svg';
