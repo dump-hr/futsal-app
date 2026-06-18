@@ -1,0 +1,159 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+  padding: 32px 24px;
+  border-radius: 12px;
+  background-color: rgba($background-black, 0.75);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.stage {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1;
+  color: $white;
+  opacity: 0.5;
+  white-space: nowrap;
+}
+
+.live {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1;
+  color: $red;
+}
+
+.date {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1;
+  color: $white;
+  opacity: 0.5;
+  white-space: nowrap;
+}
+
+.dateMobile {
+  display: inline;
+}
+
+.dateDesktop {
+  display: none;
+}
+
+.teams {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 82px;
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: drop-shadow(2.6px 1.3px 2px rgba(0, 0, 0, 0.15));
+}
+
+.logoFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: $gray-dark;
+  color: $white;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.teamName {
+  width: 72px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  color: $white;
+}
+
+.score {
+  display: flex;
+  align-items: center;
+  padding: 12px 8px 8px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1;
+  color: $white;
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .card {
+    gap: 48px;
+    padding: 40px 32px;
+    border-radius: 16px;
+  }
+
+  .stage {
+    @include body-normal;
+  }
+
+  .live {
+    @include title-3-bold;
+  }
+
+  .dateMobile {
+    display: none;
+  }
+
+  .dateDesktop {
+    display: inline;
+    @include body-normal;
+  }
+
+  .teams {
+    align-items: center;
+  }
+
+  .team {
+    height: auto;
+    gap: 8px;
+  }
+
+  .logo {
+    width: 64px;
+    height: 64px;
+  }
+
+  .logoFallback {
+    font-size: 24px;
+  }
+
+  .teamName {
+    @include body-normal;
+    width: 96px;
+  }
+
+  .score {
+    @include title-2;
+  }
+}
