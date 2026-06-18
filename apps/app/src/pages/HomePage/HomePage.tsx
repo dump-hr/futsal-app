@@ -1,5 +1,13 @@
+import { useState } from 'react';
 import c from './HomePage.module.scss';
-import { MatchCard } from '@components/index';
+import {
+  Button,
+  EventCard,
+  Filter,
+  MatchCard,
+  NoEventsCard,
+  type FilterOption,
+} from '@components/index';
 import { MatchDto, MatchTimerStateDto } from '@futsal-app/types';
 import { getElapsedMinutes } from '@helpers/index';
 import {
@@ -8,6 +16,22 @@ import {
   EndavaLogo,
   InfobipLogo,
 } from '@assets/index';
+
+type Group = 'A' | 'B' | 'C' | 'D';
+type Status = 'UPCOMING' | 'LIVE' | 'FINISHED';
+
+const groupOptions: FilterOption<Group>[] = [
+  { label: 'Skupina A', value: 'A' },
+  { label: 'Skupina B', value: 'B' },
+  { label: 'Skupina C', value: 'C' },
+  { label: 'Skupina D', value: 'D' },
+];
+
+const statusOptions: FilterOption<Status>[] = [
+  { label: 'Nadolazeće', value: 'UPCOMING' },
+  { label: 'Uživo', value: 'LIVE' },
+  { label: 'Završene', value: 'FINISHED' },
+];
 
 const groupA = { id: 1, name: 'A', tournamentId: 1 };
 
@@ -72,8 +96,32 @@ const liveTimer: MatchTimerStateDto = {
 };
 
 export const HomePage = () => {
+  const [status, setStatus] = useState<Status | null>(null);
+  const [group, setGroup] = useState<Group | null>(null);
+
   return (
     <div className={c.page}>
+      <section className={c.section}>
+        <div className={c.row}>
+          <Button variant='primary'>Nova utakmica</Button>
+          <Button variant='secondary'>Više</Button>
+        </div>
+        <div className={c.row}>
+          <Filter
+            label='Status'
+            value={status}
+            options={statusOptions}
+            onChange={setStatus}
+          />
+          <Filter
+            label='Skupina'
+            value={group}
+            options={groupOptions}
+            onChange={setGroup}
+          />
+        </div>
+      </section>
+
       <section className={c.list}>
         {matches.map((match) => (
           <MatchCard
@@ -84,6 +132,51 @@ export const HomePage = () => {
             }
           />
         ))}
+      </section>
+
+      <section className={c.section}>
+        <div className={c.row}>
+          <EventCard eventType='goal' playerName='Ivo Jovanović' minute={12} />
+          <EventCard
+            eventType='ownGoal'
+            playerName='Ivo Jovanović'
+            minute={12}
+            side='right'
+          />
+          <EventCard
+            eventType='redCard'
+            playerName='Ivo Jovanović'
+            minute={12}
+          />
+          <EventCard
+            eventType='yellowCard'
+            playerName='Ivo Jovanović'
+            minute={12}
+            side='right'
+          />
+          <EventCard
+            eventType='penaltyGoal'
+            playerName='Ivo Jovanović'
+            minute={12}
+          />
+          <EventCard
+            eventType='penaltyMiss'
+            playerName='Ivo Jovanović'
+            minute={12}
+            side='right'
+          />
+          <EventCard
+            eventType='injury'
+            playerName='Ivo Jovanović'
+            minute={12}
+          />
+        </div>
+      </section>
+
+      <section className={c.section}>
+        <div className={c.row}>
+          <NoEventsCard />
+        </div>
       </section>
     </div>
   );

@@ -1,0 +1,192 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 320px;
+  height: 108px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background-color: $background-black;
+  overflow: hidden;
+}
+
+.icon {
+  position: absolute;
+  --flip: 1;
+  --rot: 0deg;
+  opacity: 0.5;
+  pointer-events: none;
+  transform-origin: center;
+  transform: scaleX(var(--flip)) rotate(var(--rot));
+
+  &[data-event='goal'] {
+    --rot: -17.87deg;
+    width: 80px;
+    top: -23px;
+    right: -12px;
+  }
+
+  &[data-event='ownGoal'] {
+    width: 86px;
+    top: -30px;
+    right: -12px;
+  }
+
+  &[data-event='redCard'],
+  &[data-event='yellowCard'] {
+    width: 100.56px;
+    top: -45px;
+    right: -24px;
+  }
+
+  &[data-event='penaltyGoal'] {
+    --flip: -1;
+    width: 79px;
+    top: -24px;
+    right: -12px;
+  }
+
+  &[data-event='penaltyMiss'],
+  &[data-event='injury'] {
+    width: 40px;
+    top: 14px;
+    right: 16px;
+  }
+}
+
+.cardRight {
+  .label {
+    text-align: right;
+  }
+
+  .info {
+    flex-direction: row-reverse;
+  }
+
+  .icon {
+    --flip: -1;
+    right: auto;
+
+    &[data-event='goal'] {
+      left: -1px;
+    }
+    &[data-event='ownGoal'] {
+      left: -10px;
+    }
+    &[data-event='redCard'],
+    &[data-event='yellowCard'] {
+      left: -24px;
+    }
+    &[data-event='penaltyGoal'] {
+      --flip: 1;
+      left: 0;
+    }
+    &[data-event='penaltyMiss'],
+    &[data-event='injury'] {
+      left: 16px;
+    }
+  }
+}
+
+.label {
+  @include title-3;
+  margin: 0;
+  color: $white;
+  opacity: 0.5;
+}
+
+.info {
+  @include body-normal;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: auto;
+  color: $white;
+}
+
+@media (max-width: 767px) {
+  .card {
+    width: 182px;
+    height: 102px;
+    gap: 0;
+  }
+
+  .label {
+    max-width: 120px;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .cardRight .label {
+    align-self: flex-end;
+  }
+
+  .info {
+    font-size: 12px;
+    line-height: normal;
+
+    span:last-child {
+      font-weight: 700;
+    }
+  }
+
+  .icon {
+    &[data-event='goal'] {
+      width: 70px;
+      top: -19px;
+      right: -10px;
+    }
+
+    &[data-event='ownGoal'] {
+      width: 69px;
+      top: -18px;
+      right: -10px;
+    }
+
+    &[data-event='redCard'],
+    &[data-event='yellowCard'] {
+      width: 70px;
+      top: -17px;
+      right: -23px;
+    }
+
+    &[data-event='penaltyGoal'] {
+      width: 63px;
+      top: -14px;
+      right: -9px;
+    }
+
+    &[data-event='penaltyMiss'],
+    &[data-event='injury'] {
+      width: 32px;
+      top: 10px;
+      right: 11px;
+    }
+  }
+
+  .cardRight .icon {
+    &[data-event='goal'] {
+      left: -10px;
+    }
+
+    &[data-event='ownGoal'] {
+      left: -10px;
+    }
+
+    &[data-event='redCard'],
+    &[data-event='yellowCard'] {
+      left: -23px;
+    }
+
+    &[data-event='penaltyGoal'] {
+      left: -9px;
+    }
+
+    &[data-event='penaltyMiss'],
+    &[data-event='injury'] {
+      left: 11px;
+    }
+  }
+}

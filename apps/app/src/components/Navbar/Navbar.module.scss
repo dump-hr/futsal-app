@@ -1,0 +1,186 @@
+.navbar {
+  width: 100%;
+  height: 72px;
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  background-color: $background-black;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.logoWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8.33px;
+  background-color: $black;
+  flex-shrink: 0;
+
+  img {
+    width: 16px;
+    height: auto;
+  }
+}
+
+.desktopList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  @include body-large;
+
+  a {
+    cursor: pointer;
+    text-decoration: none;
+    color: $white-transparent;
+    position: relative;
+    transition: color 0.2s ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0;
+      height: 2px;
+      background-color: $lime;
+      transition: width 0.3s ease;
+    }
+
+    &:hover {
+      color: $white;
+    }
+
+    &:hover::after,
+    &.active::after {
+      width: 100%;
+    }
+
+    &.active {
+      color: $white;
+    }
+  }
+}
+
+.menuButton {
+  display: none;
+  margin-left: auto;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: transparent;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.overlayOpen {
+  pointer-events: auto;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: min(243px, 80vw);
+  padding: 24px 32px;
+  background-color: rgba(13, 13, 13, 0.9);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+  backdrop-filter: blur(12.5px);
+  -webkit-backdrop-filter: blur(12.5px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 1001;
+}
+
+.drawerOpen {
+  transform: translateX(0);
+  box-shadow: 0 0 250px 0 rgba(0, 0, 0, 0.75);
+}
+
+.closeButton {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.drawerList {
+  list-style: none;
+  margin: 64px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 24px;
+  text-align: right;
+  @include title-3-bold;
+
+  a {
+    cursor: pointer;
+    text-decoration: none;
+    color: $white;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $lime;
+    }
+
+    &.active {
+      color: $lime;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 16px 20px;
+    justify-content: space-between;
+  }
+
+  .desktopList {
+    display: none;
+  }
+
+  .menuButton {
+    display: flex;
+  }
+}
