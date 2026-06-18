@@ -1,0 +1,50 @@
+import { useEffect, useRef, type RefObject } from 'react';
+
+type UseCloseComponentProps = {
+  onClose: () => void;
+  containerRef?: RefObject<HTMLElement | null>;
+};
+
+export const useCloseComponent = ({
+  onClose,
+  containerRef,
+}: UseCloseComponentProps) => {
+  const overlayRef = useRef<HTMLDivElement | null>(null);
+  const firstRenderRef = useRef(true);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' || e.key === 'Esc') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
+  useEffect(() => {
+    if (!containerRef?.current) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [onClose, containerRef]);
+
+  useEffect(() => {
+    if (overlayRef.current && firstRenderRef.current) {
+      const dialog = overlayRef.current.querySelector(
+        '[role="dialog"]',
+      ) as HTMLElement | null;
+      if (dialog) dialog.focus();
+      firstRenderRef.current = false;
+    }
+  }, []);
+
+  return { overlayRef };
+};
