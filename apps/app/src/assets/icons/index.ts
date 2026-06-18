@@ -1,3 +1,4 @@
+export { default as ArrowDownBlack } from './arrow-down-black.svg';
 export { default as ArrowDownWhite } from './arrow-down-white.svg';
 export { default as ArrowLeftGray } from './arrow-left-gray.svg';
 export { default as ArrowRightBlack } from './arrow-right-black.svg';
