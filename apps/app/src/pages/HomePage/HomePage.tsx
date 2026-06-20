@@ -5,6 +5,7 @@ import {
   EventCard,
   Filter,
   MatchCard,
+  MatchCardLarge,
   NoEventsCard,
   type FilterOption,
 } from '@components/index';
@@ -150,6 +151,18 @@ export const HomePage = () => {
       <section className={c.list}>
         {matches.map((match) => (
           <MatchCard
+            key={match.id}
+            match={match}
+            elapsedMinutes={
+              match.isActive ? getElapsedMinutes(liveTimer) : undefined
+            }
+          />
+        ))}
+      </section>
+
+      <section className={c.cards}>
+        {matches.map((match) => (
+          <MatchCardLarge
             key={match.id}
             match={match}
             elapsedMinutes={
