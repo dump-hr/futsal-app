@@ -22,7 +22,11 @@ export const useMatchTimerLive = (matchId: number) => {
   stateRef.current = state;
 
   useEffect(() => {
-    if (!matchId) return;
+    if (!matchId) {
+      setState(IDLE_STATE);
+      setElapsedSeconds(0);
+      return;
+    }
 
     const source = new EventSource(`/api/match/${matchId}/timer/stream`);
     source.onmessage = (event) => {
