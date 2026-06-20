@@ -1,13 +1,7 @@
 import clsx from 'clsx';
 import { MatchDto } from '@futsal-app/types';
 import { LiveRed } from '@assets/index';
-import { MATCH_STATUS } from '@constants/index';
-import {
-  formatMatchDateLong,
-  formatMatchTime,
-  getMatchMetaLabel,
-  getMatchStatus,
-} from '@helpers/index';
+import { getMatchCardView } from './utils';
 import c from './MatchCard.module.scss';
 
 export type MatchCardProps = {
@@ -36,20 +30,19 @@ export const MatchCard: React.FC<MatchCardProps> = ({
   elapsedMinutes,
   className,
 }) => {
-  const status = getMatchStatus(match);
-  const isLive = status === MATCH_STATUS.LIVE;
-  const isUpcoming = status === MATCH_STATUS.UPCOMING;
-
-  const homeName = match.homeTeam?.name ?? 'TBD';
-  const awayName = match.awayTeam?.name ?? 'TBD';
-  const homeLogo = match.homeTeam?.logoUrl;
-  const awayLogo = match.awayTeam?.logoUrl;
-
-  const score = isUpcoming ? null : `${match.homeGoals} - ${match.awayGoals}`;
-  const metaLabel = getMatchMetaLabel(match);
-  const dateLabel = formatMatchDateLong(match.timeOfMatch);
-  const startTime = formatMatchTime(match.timeOfMatch);
-  const liveLabel = elapsedMinutes != null ? `${elapsedMinutes}'` : '';
+  const {
+    isLive,
+    isUpcoming,
+    homeName,
+    awayName,
+    homeLogo,
+    awayLogo,
+    score,
+    metaLabel,
+    dateLabel,
+    startTime,
+    liveLabel,
+  } = getMatchCardView(match, elapsedMinutes);
 
   return (
     <article className={clsx(c.card, className)}>

@@ -5,6 +5,7 @@ import {
   EventCard,
   Filter,
   MatchCard,
+  MatchCardLarge,
   NoEventsCard,
   type FilterOption,
 } from '@components/index';
@@ -16,6 +17,9 @@ import {
   EndavaLogo,
   InfobipLogo,
 } from '@assets/index';
+import { Team } from '@components/Team';
+import InfobipLogo2 from '@assets/test-logos/infobip.png';
+import OtpLogo from '@assets/test-logos/otp.svg';
 
 type Group = 'A' | 'B' | 'C' | 'D';
 type Status = 'UPCOMING' | 'LIVE' | 'FINISHED';
@@ -101,6 +105,28 @@ export const HomePage = () => {
 
   return (
     <div className={c.page}>
+      <Team
+        team={{
+          name: 'Maurer Electronics',
+          logoUrl: InfobipLogo2,
+        }}
+      />
+      <Team
+        team={{
+          name: 'Team A',
+          logoUrl: OtpLogo,
+        }}
+      />
+      <Team team={{ name: 'Team A' }} />
+
+      <Team
+        team={{
+          name: 'Remote',
+          logoUrl:
+            'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg',
+        }}
+      />
+
       <section className={c.section}>
         <div className={c.row}>
           <Button variant='primary'>Nova utakmica</Button>
@@ -125,6 +151,18 @@ export const HomePage = () => {
       <section className={c.list}>
         {matches.map((match) => (
           <MatchCard
+            key={match.id}
+            match={match}
+            elapsedMinutes={
+              match.isActive ? getElapsedMinutes(liveTimer) : undefined
+            }
+          />
+        ))}
+      </section>
+
+      <section className={c.cards}>
+        {matches.map((match) => (
+          <MatchCardLarge
             key={match.id}
             match={match}
             elapsedMinutes={

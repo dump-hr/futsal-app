@@ -124,7 +124,7 @@
   }
 
   .info {
-    font-size: 12px;
+    @include body-extra-small;
     line-height: normal;
 
     span:last-child {
