@@ -10,5 +10,6 @@ export const useMatchGetAll = (tournamentId: number) => {
   return useQuery({
     queryFn: () => getMatches(tournamentId),
     queryKey: ['matches', tournamentId],
+    enabled: !!tournamentId,
   });
 };

@@ -1,6 +1,6 @@
 import { Route, Switch } from 'wouter';
 import { routes } from '@routes/index';
-import { HomePage, UtakmicePage } from '@pages/index';
+import { HomePage, UtakmicePage, DrawPage } from '@pages/index';
 import { NavbarLayout } from '@layouts/index';
 
 export const Router = () => {
@@ -9,6 +9,7 @@ export const Router = () => {
       <Switch>
         <Route path={routes.HOME} component={HomePage} />
         <Route path={routes.MATCHES} component={UtakmicePage} />
+        <Route path={routes.DRAW} component={DrawPage} />
       </Switch>
     </NavbarLayout>
   );
