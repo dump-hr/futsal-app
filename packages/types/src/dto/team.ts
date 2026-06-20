@@ -93,6 +93,10 @@ export class TeamDto {
   teamScore?: number;
 
   @IsOptional()
+  @IsInt()
+  goalDifference?: number;
+
+  @IsOptional()
   players?: PlayerDto[];
 }
 

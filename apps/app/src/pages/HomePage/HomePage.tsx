@@ -8,7 +8,8 @@ import {
   NoEventsCard,
   type FilterOption,
 } from '@components/index';
-import { MatchDto, MatchTimerStateDto } from '@futsal-app/types';
+import { Group } from '@components/index';
+import { GroupDto, MatchDto, MatchTimerStateDto } from '@futsal-app/types';
 import { getElapsedMinutes } from '@helpers/index';
 import {
   EricssonLogo,
@@ -95,6 +96,47 @@ const liveTimer: MatchTimerStateDto = {
   lastSyncedAt: null,
 };
 
+const reactLogoUrl =
+  'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg';
+
+const mockGroup: GroupDto = {
+  id: 1,
+  name: 'Skupina A',
+  tournamentId: 1,
+  teams: [
+    {
+      id: 1,
+      name: 'React United',
+      logoUrl: reactLogoUrl,
+      groupId: 1,
+      tournamentId: 1,
+      numberOfMatchesPlayed: 3,
+      teamScore: 7,
+      goalDifference: 5,
+    },
+    {
+      id: 2,
+      name: 'Hooks FC',
+      logoUrl: reactLogoUrl,
+      groupId: 1,
+      tournamentId: 1,
+      numberOfMatchesPlayed: 3,
+      teamScore: 4,
+      goalDifference: 1,
+    },
+    {
+      id: 3,
+      name: 'Fiber City',
+      logoUrl: reactLogoUrl,
+      groupId: 1,
+      tournamentId: 1,
+      numberOfMatchesPlayed: 3,
+      teamScore: 1,
+      goalDifference: -60,
+    },
+  ],
+};
+
 export const HomePage = () => {
   const [status, setStatus] = useState<Status | null>(null);
   const [group, setGroup] = useState<Group | null>(null);
@@ -132,6 +174,10 @@ export const HomePage = () => {
             }
           />
         ))}
+      </section>
+
+      <section className={c.section}>
+        <Group group={mockGroup} />
       </section>
 
       <section className={c.section}>

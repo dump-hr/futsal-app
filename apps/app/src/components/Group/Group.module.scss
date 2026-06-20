@@ -1,0 +1,121 @@
+.container {
+  width: 600px;
+  padding: 32px 40px;
+  border-radius: 20px;
+  background-color: $background-black;
+}
+
+.name {
+  @include title-3;
+  color: $white;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.labelsContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.labelsLeft {
+  display: flex;
+  gap: 24px;
+}
+.labelsRight {
+  display: flex;
+  gap: 12px;
+}
+
+.labelText {
+  color: $gray-medium;
+  @include body-large;
+}
+
+.teamRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &:not(:last-child) {
+    margin-bottom: 24px;
+  }
+}
+
+.teamRowLeft {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.teamRowRight {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.statCell {
+  width: 32px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.mr26 {
+  margin-right: 26px;
+}
+
+.text {
+  color: $white;
+  @include body-large;
+}
+
+.teamName {
+  min-width: 0;
+}
+
+.logo {
+  width: 15px;
+  height: 15px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 343px;
+    max-width: 100vw;
+    padding: 24px 20px;
+  }
+
+  .name {
+    font-size: 16px;
+    line-height: normal;
+  }
+
+  .labelText {
+    font-size: 16px;
+    line-height: normal;
+  }
+
+  .text {
+    font-size: 12px;
+    line-height: normal;
+  }
+
+  .teamRowLeft {
+    min-width: 0;
+  }
+
+  .teamName {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .teamRowRight {
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .statCell {
+    width: 24px;
+  }
+}
