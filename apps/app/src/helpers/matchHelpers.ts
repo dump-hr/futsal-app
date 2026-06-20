@@ -83,28 +83,35 @@ type MatchFilters = {
   teamId: number | null;
 };
 
+const matchPassesFilters = (
+  match: MatchDto,
+  { status, group, teamId }: MatchFilters,
+): boolean => {
+  if (status && getMatchStatus(match) !== status) return false;
+  if (
+    group &&
+    match.homeTeam?.group?.name !== group &&
+    match.awayTeam?.group?.name !== group
+  )
+    return false;
+  if (
+    teamId != null &&
+    match.homeTeam?.id !== teamId &&
+    match.awayTeam?.id !== teamId
+  )
+    return false;
+  return true;
+};
+
 export const groupMatchesByDay = (
   matches: MatchDto[] | undefined,
-  { status, group, teamId }: MatchFilters,
+  filters: MatchFilters,
 ): MatchDayGroup[] => {
   if (!matches) return [];
 
-  const filtered = matches.filter((match) => {
-    if (status && getMatchStatus(match) !== status) return false;
-    if (
-      group &&
-      match.homeTeam?.group?.name !== group &&
-      match.awayTeam?.group?.name !== group
-    )
-      return false;
-    if (
-      teamId != null &&
-      match.homeTeam?.id !== teamId &&
-      match.awayTeam?.id !== teamId
-    )
-      return false;
-    return true;
-  });
+  const filtered = matches.filter((match) =>
+    matchPassesFilters(match, filters),
+  );
 
   const sorted = [...filtered].sort(
     (a, b) => toDate(a.timeOfMatch).getTime() - toDate(b.timeOfMatch).getTime(),

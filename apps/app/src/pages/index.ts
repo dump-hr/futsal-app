@@ -1,3 +1,3 @@
 export * from './HomePage';
-export * from './UtakmicePage';
+export * from './MatchesPage';
 export * from './DrawPage';

@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { Filter, MatchCard, type FilterOption } from '@components/index';
 import { useMatchGetAll, useMatchTimerLive } from '@api/index';
 import { groupMatchesByDay } from '@helpers/index';
+import { useTournamentContext } from '@hooks/index';
 import { MATCH_STATUS, type MatchStatus } from '@constants/index';
 import { PageLayout } from '@layouts/index';
-import c from './UtakmicePage.module.scss';
+import c from './MatchesPage.module.scss';
 
 const statusOptions: FilterOption<MatchStatus>[] = [
   { label: 'Nadolazeće', value: MATCH_STATUS.UPCOMING },
@@ -12,14 +13,13 @@ const statusOptions: FilterOption<MatchStatus>[] = [
   { label: 'Završene', value: MATCH_STATUS.FINISHED },
 ];
 
-export const UtakmicePage = () => {
+export const MatchesPage = () => {
   const [status, setStatus] = useState<MatchStatus | null>(null);
   const [group, setGroup] = useState<string | null>(null);
   const [teamId, setTeamId] = useState<string | null>(null);
-  //TODO: tournamentId should come from context or route param, not be hardcoded
-  const TOURNAMENT_ID = 1;
+  const tournamentId = useTournamentContext();
 
-  const { data: matches, isLoading, isError } = useMatchGetAll(TOURNAMENT_ID);
+  const { data: matches, isLoading, isError } = useMatchGetAll(tournamentId);
 
   const activeMatch = matches?.find((match) => match.isActive);
   const { elapsedSeconds } = useMatchTimerLive(activeMatch?.id ?? 0);
