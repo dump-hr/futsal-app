@@ -43,7 +43,14 @@ export const getDominantLogoColor = (image: HTMLImageElement) => {
   canvas.height = size;
   context.drawImage(image, 0, 0, size, size);
 
-  const { data } = context.getImageData(0, 0, size, size);
+  let data: Uint8ClampedArray;
+
+  try {
+    data = context.getImageData(0, 0, size, size).data;
+  } catch (error) {
+    console.warn('Unable to read logo pixels', error);
+    return null;
+  }
   const colorScores = new Map<string, number>();
 
   for (let index = 0; index < data.length; index += 4) {
