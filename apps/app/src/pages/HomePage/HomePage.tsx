@@ -127,7 +127,7 @@ const mockGroup: GroupDto = {
     {
       id: 3,
       name: 'Fiber City',
-      logoUrl: reactLogoUrl,
+      logoUrl: undefined,
       groupId: 1,
       tournamentId: 1,
       numberOfMatchesPlayed: 3,

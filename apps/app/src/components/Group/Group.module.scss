@@ -73,9 +73,21 @@
   min-width: 0;
 }
 
-.logo {
+.logo,
+.logoPlaceholder {
   width: 15px;
   height: 15px;
+}
+
+.logoPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $white;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 15px;
 }
 
 @media (max-width: 768px) {
