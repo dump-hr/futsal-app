@@ -16,9 +16,7 @@
 }
 
 .stage {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 400;
-  font-size: 12px;
+  @include body-extra-small;
   line-height: 1;
   color: $white;
   opacity: 0.5;
@@ -26,17 +24,13 @@
 }
 
 .live {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  font-size: 16px;
+  @include title-4-mobile;
   line-height: 1;
   color: $red;
 }
 
 .date {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 400;
-  font-size: 12px;
+  @include body-extra-small;
   line-height: 1;
   color: $white;
   opacity: 0.5;
@@ -85,11 +79,8 @@
 }
 
 .teamName {
+  @include body-extra-small;
   width: 72px;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
   text-align: center;
   color: $white;
 }
