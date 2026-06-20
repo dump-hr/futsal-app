@@ -1,0 +1,75 @@
+.page {
+  height: calc(100vh - 72px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px 0 0;
+}
+
+.title {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 16px;
+  color: $white;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1.1;
+}
+
+.panel {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 16px;
+  border-radius: 24px 24px 0 0;
+  background:
+    url('../../assets/images/panel-gradient-mobile.svg') center / 100% 100%
+      no-repeat,
+    $background-black;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (min-width: 1100px) {
+  .page {
+    overflow-y: auto;
+    gap: 40px;
+    padding: 60px;
+    padding-bottom: 0px;
+    @include custom-scrollbar(
+      $width: 8px,
+      $track-color: transparent,
+      $thumb-color: $gray-dark
+    );
+  }
+
+  .title {
+    @include title-1;
+    padding: 0;
+  }
+
+  .panel {
+    flex: none;
+    min-height: auto;
+    overflow: visible;
+    gap: 48px;
+    padding: 40px;
+    border-radius: 24px;
+    background:
+      url('../../assets/images/panel-gradient-desktop.svg') center / 100% 100%
+        no-repeat fixed,
+      $background-black;
+  }
+}

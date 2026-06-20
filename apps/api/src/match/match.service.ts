@@ -18,6 +18,7 @@ const teamSelect = {
   id: true,
   name: true,
   logoUrl: true,
+  group: { select: { id: true, name: true, tournamentId: true } },
 };
 
 @Injectable()
