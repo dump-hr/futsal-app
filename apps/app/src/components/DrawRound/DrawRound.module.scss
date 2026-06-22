@@ -1,0 +1,101 @@
+.card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 360px;
+  height: 96px;
+  padding: 20px 24px;
+  gap: 27px;
+  border-radius: 10px;
+  background-color: rgba(13, 13, 13, 0.75);
+
+  @media (max-width: 768px) {
+    width: 260px;
+    height: 88px;
+    padding: 14px 16px;
+    gap: 0;
+    justify-content: space-between;
+  }
+}
+
+.teams {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  align-self: stretch;
+  min-width: 0;
+}
+
+.teamRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+
+  @media (max-width: 768px) {
+    gap: 8px;
+  }
+}
+
+.logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.teamName {
+  @include body-normal;
+  color: $white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @media (max-width: 768px) {
+    @include body-small;
+  }
+}
+
+.scores {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  align-self: stretch;
+  flex-shrink: 0;
+}
+
+.score {
+  @include body-normal;
+  color: $white;
+
+  @media (max-width: 768px) {
+    @include body-small;
+  }
+}
+
+.dateTime {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  align-self: stretch;
+  color: $white-transparent;
+  flex-shrink: 0;
+}
+
+.date,
+.time {
+  @include body-normal;
+
+  @media (max-width: 768px) {
+    @include body-small;
+  }
+}

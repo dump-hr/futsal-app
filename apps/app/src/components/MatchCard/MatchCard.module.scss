@@ -21,9 +21,7 @@
 }
 
 .summaryLabel {
-  font-family: 'Roboto', sans-serif;
-  font-size: 12px;
-  font-weight: 400;
+  @include body-extra-small;
   line-height: 1;
   text-transform: uppercase;
   opacity: 0.5;
@@ -35,9 +33,7 @@
 }
 
 .summaryValue {
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
-  font-weight: 500;
+  @include title-4-mobile;
   line-height: 1;
 }
 
