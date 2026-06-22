@@ -49,6 +49,35 @@ export const MatchesPage = () => {
     teamId: teamId ? Number(teamId) : null,
   });
 
+  const renderContent = () => {
+    if (isLoading) return <p className={c.message}>Učitavanje…</p>;
+    if (isError)
+      return <p className={c.message}>Greška pri učitavanju utakmica</p>;
+    if (dayGroups.length === 0)
+      return <p className={c.message}>Nema utakmica</p>;
+
+    return (
+      <div className={c.groups}>
+        {dayGroups.map((day) => (
+          <section key={day.dateKey} className={c.group}>
+            <h2 className={c.groupHeader}>{day.dateLabel}</h2>
+            <div className={c.groupList}>
+              {day.matches.map((match) => (
+                <MatchCard
+                  key={match.id}
+                  match={match}
+                  elapsedMinutes={
+                    match.id === activeMatch?.id ? liveElapsedMinutes : undefined
+                  }
+                />
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <PageLayout title='Utakmice'>
       <div className={c.filters}>
@@ -72,34 +101,7 @@ export const MatchesPage = () => {
         />
       </div>
 
-      {isLoading ? (
-        <p className={c.message}>Učitavanje…</p>
-      ) : isError ? (
-        <p className={c.message}>Greška pri učitavanju utakmica</p>
-      ) : dayGroups.length === 0 ? (
-        <p className={c.message}>Nema utakmica</p>
-      ) : (
-        <div className={c.groups}>
-          {dayGroups.map((day) => (
-            <section key={day.dateKey} className={c.group}>
-              <h2 className={c.groupHeader}>{day.dateLabel}</h2>
-              <div className={c.groupList}>
-                {day.matches.map((match) => (
-                  <MatchCard
-                    key={match.id}
-                    match={match}
-                    elapsedMinutes={
-                      match.id === activeMatch?.id
-                        ? liveElapsedMinutes
-                        : undefined
-                    }
-                  />
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
-      )}
+      {renderContent()}
     </PageLayout>
   );
 };
