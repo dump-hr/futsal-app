@@ -1,0 +1,28 @@
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.message {
+  margin: 0;
+  color: $white-transparent;
+  @include body-normal;
+}
+
+@media (min-width: 1100px) {
+  .filters {
+    gap: 24px;
+  }
+
+  .groups {
+    gap: 32px;
+  }
+}
