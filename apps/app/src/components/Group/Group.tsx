@@ -8,6 +8,16 @@ type GroupProps = {
 };
 
 export const Group: React.FC<GroupProps> = ({ group }) => {
+  const sortedTeams = [...(group.teams ?? [])].sort((teamA, teamB) => {
+    const pointsDiff = (teamB.teamScore ?? 0) - (teamA.teamScore ?? 0);
+
+    if (pointsDiff !== 0) {
+      return pointsDiff;
+    }
+
+    return (teamB.goalDifference ?? 0) - (teamA.goalDifference ?? 0);
+  });
+
   return (
     <div className={c.container}>
       <div className={c.name}>{group.name}</div>
@@ -24,7 +34,7 @@ export const Group: React.FC<GroupProps> = ({ group }) => {
           </div>
         </div>
         <div>
-          {group.teams?.map((team, i) => (
+          {sortedTeams.map((team, i) => (
             <TeamRow key={team.id} team={team} position={i + 1} />
           ))}
         </div>

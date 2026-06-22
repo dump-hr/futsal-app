@@ -16,7 +16,7 @@ export const TeamRow: React.FC<TeamRowProps> = ({ team, position }) => {
           <img className={c.logo} src={team.logoUrl} alt={team.name} />
         ) : (
           <span className={c.logoPlaceholder} aria-hidden>
-            ?
+            {team.name[0]}
           </span>
         )}
         <div className={clsx(c.text, c.teamName)}>{team.name}</div>
