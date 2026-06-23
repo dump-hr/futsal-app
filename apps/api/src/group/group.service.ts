@@ -10,6 +10,10 @@ import {
   GroupAddTeamDto,
 } from '@futsal-app/types';
 import { prisma } from '../../lib/prisma';
+import {
+  buildTeamDtoWithStats,
+  teamWithStatsInclude,
+} from '../team/team.helpers';
 
 @Injectable()
 export class GroupService {
@@ -44,14 +48,19 @@ export class GroupService {
   async findOne(id: number): Promise<GroupDto> {
     const group = await prisma.group.findUnique({
       where: { id },
-      include: { teams: true },
+      include: { teams: { include: teamWithStatsInclude } },
     });
 
     if (!group) {
       throw new NotFoundException('Skupina nije pronađena');
     }
 
-    return group;
+    return {
+      id: group.id,
+      name: group.name,
+      tournamentId: group.tournamentId,
+      teams: group.teams.map(buildTeamDtoWithStats),
+    };
   }
 
   async update(id: number, dto: GroupUpdateDto): Promise<GroupDto> {
