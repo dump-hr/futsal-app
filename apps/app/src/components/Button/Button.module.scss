@@ -1,10 +1,13 @@
 .button {
-  @include body-normal-bold;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: normal;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 16px;
-  border-radius: 38px;
+  padding: 10px 15px;
+  border-radius: 24px;
   border: none;
   cursor: pointer;
   transition: transform 0.2s ease;
@@ -27,4 +30,12 @@
   background-color: transparent;
   color: $white;
   border: 1px solid $white;
+}
+
+@media (min-width: 1100px) {
+  .button {
+    @include body-normal-bold;
+    padding: 8px 16px;
+    border-radius: 38px;
+  }
 }
