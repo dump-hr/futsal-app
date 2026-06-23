@@ -27,6 +27,8 @@
   display: flex;
   gap: 16px;
   overflow-x: auto;
+  cursor: grab;
+  user-select: none;
   scrollbar-width: none;
 
   &::-webkit-scrollbar {

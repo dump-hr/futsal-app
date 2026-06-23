@@ -2,7 +2,7 @@ import { useLocation } from 'wouter';
 import { Button, MatchCard, MatchCardLarge } from '@components/index';
 import { useMatchGetAll, useMatchTimerLive } from '@api/index';
 import { getTodayMatches, getUpcomingAndLiveMatches } from '@helpers/index';
-import { useTournamentContext } from '@hooks/index';
+import { useTournamentContext, useDragScroll } from '@hooks/index';
 import { PageLayout } from '@layouts/index';
 import { routes } from '@routes/index';
 import c from './HomePage.module.scss';
@@ -18,6 +18,8 @@ export const HomePage = () => {
   const liveElapsedMinutes = Math.floor(elapsedSeconds / 60);
   const elapsedFor = (id: number) =>
     id === activeMatch?.id ? liveElapsedMinutes : undefined;
+
+  const todayRowRef = useDragScroll<HTMLDivElement>();
 
   const todayMatches = getTodayMatches(matches);
   const upcomingMatches = getUpcomingAndLiveMatches(matches);
@@ -37,7 +39,7 @@ export const HomePage = () => {
       );
 
     return (
-      <div className={c.todayRow}>
+      <div className={c.todayRow} ref={todayRowRef}>
         {todayMatches.map((match) => (
           <MatchCardLarge
             key={match.id}
