@@ -1,4 +1,26 @@
-import { TeamDto, GroupDto } from '@futsal-app/types';
+import { TeamDto, GroupDto, PlayerDto } from '@futsal-app/types';
+import { EventType } from '../../generated/prisma/client';
+
+export const PLAYER_GOAL_EVENT_TYPES: EventType[] = [
+  EventType.goal,
+  EventType.penaltyGoal,
+];
+
+type PlayerWithGoalCount = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  _count: { events: number };
+};
+
+export const buildPlayerDtoWithGoals = (
+  player: PlayerWithGoalCount,
+): PlayerDto => ({
+  id: player.id,
+  firstName: player.firstName,
+  lastName: player.lastName,
+  goals: player._count.events,
+});
 
 export const teamWithStatsInclude = {
   group: true,

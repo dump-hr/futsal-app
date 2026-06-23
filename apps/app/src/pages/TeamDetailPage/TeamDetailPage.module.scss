@@ -1,0 +1,141 @@
+.header {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.backIcon {
+  width: 13px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.logoFallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: $gray-dark;
+  color: $white;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.name {
+  margin: 0;
+  color: $white;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1.15;
+  word-break: break-word;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.playersSection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+.matchesSection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.matchesTitle {
+  margin: 0;
+  color: $white;
+  @include title-3-bold;
+}
+
+.matchList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.message {
+  margin: 0;
+  color: $white-transparent;
+  @include body-normal;
+}
+
+@media (min-width: 1100px) {
+  .header {
+    padding: 0;
+    gap: 24px;
+  }
+
+  .backIcon {
+    width: 18px;
+    height: 30px;
+  }
+
+  .logo,
+  .logoFallback {
+    width: 64px;
+    height: 64px;
+  }
+
+  .logoFallback {
+    font-size: 28px;
+  }
+
+  .name {
+    @include title-1;
+  }
+
+  .content {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 48px;
+  }
+
+  .playersSection {
+    flex: 1;
+  }
+
+  .matchesSection {
+    flex: 0 0 480px;
+  }
+}
