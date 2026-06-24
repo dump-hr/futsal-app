@@ -56,7 +56,7 @@ export const HomePage = () => {
     if (isError)
       return <p className={c.message}>Greška pri učitavanju utakmica</p>;
     if (upcomingMatches.length === 0)
-      return <p className={c.message}>Nema utakmica</p>;
+      return <p className={c.emptyText}>Nema nadolazećih utakmica</p>;
 
     return (
       <div className={c.list}>
