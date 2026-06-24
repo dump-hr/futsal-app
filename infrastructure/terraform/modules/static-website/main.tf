@@ -48,6 +48,29 @@ resource "aws_s3_bucket_versioning" "website" {
 #####################
 # cdn
 
+resource "aws_cloudfront_response_headers_policy" "cors" {
+  count = length(var.cors_allowed_origins) > 0 ? 1 : 0
+  name  = "${var.bucket_name}-cors"
+
+  cors_config {
+    access_control_allow_credentials = false
+
+    access_control_allow_headers {
+      items = ["*"]
+    }
+
+    access_control_allow_methods {
+      items = ["GET", "HEAD"]
+    }
+
+    access_control_allow_origins {
+      items = var.cors_allowed_origins
+    }
+
+    origin_override = true
+  }
+}
+
 resource "aws_cloudfront_distribution" "website" {
   origin {
     domain_name = aws_s3_bucket.website.bucket_regional_domain_name
@@ -68,10 +91,11 @@ resource "aws_cloudfront_distribution" "website" {
   wait_for_deployment = var.wait_for_cdn_deployment
 
   default_cache_behavior {
-    allowed_methods  = ["GET", "HEAD"]
-    cached_methods   = ["GET", "HEAD"]
-    target_origin_id = aws_s3_bucket.website.bucket
-    compress         = true
+    allowed_methods            = ["GET", "HEAD"]
+    cached_methods             = ["GET", "HEAD"]
+    target_origin_id           = aws_s3_bucket.website.bucket
+    compress                   = true
+    response_headers_policy_id = length(var.cors_allowed_origins) > 0 ? aws_cloudfront_response_headers_policy.cors[0].id : null
 
     forwarded_values {
       query_string = true
