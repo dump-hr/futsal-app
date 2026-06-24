@@ -1,5 +1,6 @@
+import { Fragment } from 'react';
 import { Link, useParams } from 'wouter';
-import { MatchCard, TeamPlayersTable } from '@components/index';
+import { MatchCard, MatchCardLarge, TeamPlayersTable } from '@components/index';
 import { useTeamGet, useMatchGetByTeam } from '@api/index';
 import { PageLayout } from '@layouts/index';
 import { routes } from '@routes/index';
@@ -53,7 +54,14 @@ export const TeamDetailPage = () => {
     return (
       <div className={c.matchList}>
         {matches.map((match) => (
-          <MatchCard key={match.id} match={match} />
+          <Fragment key={match.id}>
+            <div className={c.matchCompact}>
+              <MatchCard match={match} />
+            </div>
+            <div className={c.matchLarge}>
+              <MatchCardLarge match={match} />
+            </div>
+          </Fragment>
         ))}
       </div>
     );

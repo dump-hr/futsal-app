@@ -66,7 +66,7 @@
 .content {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 48px;
 }
 
 .playersSection {
@@ -91,7 +91,11 @@
 .matchList {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
+}
+
+.matchLarge {
+  display: none;
 }
 
 .message {
@@ -100,7 +104,7 @@
   @include body-normal;
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 768px) {
   .header {
     padding: 0;
     gap: 24px;
@@ -137,5 +141,21 @@
 
   .matchesSection {
     flex: 0 0 480px;
+  }
+
+  .matchCompact {
+    display: none;
+  }
+
+  .matchLarge {
+    display: block;
+  }
+
+  .matchList {
+    gap: 24px;
+    max-height: 632px;
+    overflow-y: auto;
+    padding-right: 12px;
+    @include custom-scrollbar($width: 10px);
   }
 }
