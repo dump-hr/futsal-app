@@ -1,4 +1,4 @@
-import { ButtonSmall } from '@components/index';
+import { ButtonSmall, TeamLogo } from '@components/index';
 import { TrashCanGray, PencilGray } from '@assets/index';
 import c from './TeamInfo.module.scss';
 
@@ -28,13 +28,11 @@ export const TeamInfo: React.FC<TeamInfoProps> = ({
   return (
     <div className={c.team} onClick={onClick} style={onClick ? { cursor: 'pointer' } : undefined}>
       <div className={c.teamInfo}>
-        {teamLogoUrl ? (
-          <img src={teamLogoUrl} alt={teamName} className={c.teamLogo} />
-        ) : (
-          <div className={c.teamLogoFallback} aria-label={teamName}>
-            {teamName.charAt(0)}
-          </div>
-        )}
+        <TeamLogo
+          name={teamName}
+          logoUrl={teamLogoUrl}
+          className={c.teamLogo}
+        />
         <span className={c.teamName}>{teamName}</span>
       </div>
       <div className={c.teamStatsWrapper}>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import clsx from 'clsx';
 import { PlusBlack, TrashCanGray, TrashCanWhite } from '@assets/index';
 import c from './Group.module.scss';
-import { Button, ButtonSmall } from '@components/index';
+import { Button, ButtonSmall, TeamLogo } from '@components/index';
 
 type Team = {
   id?: number;
@@ -67,8 +67,12 @@ export const Group: React.FC<GroupProps> = ({
         {teams.map((team, index) => (
           <div key={index} className={c.team}>
             <div>
-              <img src={team.logo || undefined} alt={team.name} />
-              <span>{team.name}</span>
+              <TeamLogo
+                name={team.name}
+                logoUrl={team.logo}
+                className={c.logo}
+              />
+              <span className={c.teamName}>{team.name}</span>
             </div>
 
             <ButtonSmall

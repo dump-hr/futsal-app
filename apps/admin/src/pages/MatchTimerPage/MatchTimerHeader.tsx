@@ -1,4 +1,5 @@
 import type { TeamDto } from '@futsal-app/types';
+import { TeamLogo } from '@components/index';
 import c from './MatchTimerPage.module.scss';
 
 type MatchTimerHeaderProps = {
@@ -8,11 +9,11 @@ type MatchTimerHeaderProps = {
 
 const TeamSlot: React.FC<{ team: TeamDto | null | undefined }> = ({ team }) => (
   <div className={c.headerTeam}>
-    {team?.logoUrl && (
-      <div className={c.headerLogo}>
-        <img src={team.logoUrl} alt={team?.name ?? ''} />
-      </div>
-    )}
+    <TeamLogo
+      name={team?.name ?? 'TBD'}
+      logoUrl={team?.logoUrl}
+      className={c.headerLogo}
+    />
     <span className={c.headerTeamName}>{team?.name ?? 'TBD'}</span>
   </div>
 );
