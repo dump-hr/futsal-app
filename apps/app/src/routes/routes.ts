@@ -8,4 +8,5 @@ export const routes: RouteType = {
   DRAW: '/zdrijeb',
   MATCHES: '/utakmice',
   TEAMS: '/ekipe',
+  TEAM_DETAIL: '/ekipe/:teamId',
 };

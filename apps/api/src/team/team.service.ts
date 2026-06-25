@@ -12,7 +12,12 @@ import {
 } from '@futsal-app/types';
 import { BlobService } from '../blob/blob.service';
 import { prisma } from '../../lib/prisma';
-import { buildTeamDtoWithStats, teamWithStatsInclude } from './team.helpers';
+import {
+  buildTeamDtoWithStats,
+  buildPlayerDtoWithGoals,
+  teamWithStatsInclude,
+  PLAYER_GOAL_EVENT_TYPES,
+} from './team.helpers';
 
 @Injectable()
 export class TeamService {
@@ -58,7 +63,20 @@ export class TeamService {
       where: { id },
       include: {
         group: true,
-        players: { select: { id: true, firstName: true, lastName: true } },
+        players: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            _count: {
+              select: {
+                events: {
+                  where: { eventType: { in: PLAYER_GOAL_EVENT_TYPES } },
+                },
+              },
+            },
+          },
+        },
       },
     });
 
@@ -66,7 +84,7 @@ export class TeamService {
       throw new NotFoundException('Ekipa nije pronađena');
     }
 
-    return team;
+    return { ...team, players: team.players.map(buildPlayerDtoWithGoals) };
   }
 
   async update(id: number, dto: TeamUpdateDto): Promise<TeamDto> {

@@ -6,4 +6,5 @@ export * from './MatchCard';
 export * from './Navbar';
 export * from './Group';
 export * from './Team';
+export * from './TeamPlayersTable';
 export * from './TeamLogo';

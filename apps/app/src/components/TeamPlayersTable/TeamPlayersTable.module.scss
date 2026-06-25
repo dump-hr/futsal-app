@@ -1,0 +1,61 @@
+.table {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: $white;
+  @include body-normal;
+}
+
+.headerRow {
+  opacity: 0.5;
+}
+
+.headerLabel {
+  @include body-normal;
+}
+
+.goalIcon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.playerName {
+  min-width: 0;
+  word-break: break-word;
+}
+
+.goals {
+  flex: 0 0 24px;
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+  .table {
+    gap: 24px;
+  }
+
+  .row {
+    @include title-3;
+  }
+
+  .headerLabel {
+    @include title-3;
+  }
+
+  .goalIcon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .goals {
+    flex-basis: 32px;
+  }
+}

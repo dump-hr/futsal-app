@@ -8,6 +8,7 @@ import {
   IsPositive,
   IsString,
   Length,
+  Min,
 } from 'class-validator';
 
 export class PlayerCreateDto {
@@ -79,4 +80,9 @@ export class PlayerDto {
   @IsOptional()
   @IsPositive()
   teamId?: number | null;
+
+  @IsInt()
+  @IsOptional()
+  @Min(0)
+  goals?: number;
 }
