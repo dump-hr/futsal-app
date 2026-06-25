@@ -33,4 +33,5 @@ export * from './ProtectedRoute';
 export * from './Search';
 export * from './TeamFormModal';
 export * from './TeamInfo';
+export * from './TeamLogo';
 export * from './TeamsTable';

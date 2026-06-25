@@ -69,19 +69,7 @@
   width: 24px;
   height: 24px;
   object-fit: contain;
-}
-
-.logoFallback {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: $gray-dark;
-  border-radius: 50%;
-  color: $white;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 700;
   font-size: 12px;
-  text-transform: uppercase;
 }
 
 .teamName {
@@ -163,9 +151,6 @@
     width: 42px;
     height: 42px;
     object-fit: contain;
-  }
-
-  .logoFallback {
     font-size: 18px;
   }
 

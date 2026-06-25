@@ -8,6 +8,7 @@ import {
   PlayerFormModal,
   PlayerList,
   MatchList,
+  TeamLogo,
 } from '@components/index';
 import {
   ArrowLeftGray,
@@ -69,13 +70,11 @@ export const TeamDetailPage = () => {
           hasBorder
         />
         <div className={c.teamIdentity}>
-          {team?.logoUrl ? (
-            <img src={team.logoUrl} alt={team.name} className={c.teamLogo} />
-          ) : (
-            <div className={c.teamLogoFallback} aria-label={team?.name}>
-              {team?.name?.charAt(0)}
-            </div>
-          )}
+          <TeamLogo
+            name={team?.name ?? ''}
+            logoUrl={team?.logoUrl}
+            className={c.teamLogo}
+          />
           <h1 className={c.teamName}>{team?.name}</h1>
         </div>
         <ButtonSmall

@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { MatchDto } from '@futsal-app/types';
 import { LiveRed } from '@assets/index';
+import { TeamLogo } from '@components/TeamLogo';
 import { getMatchCardView } from './utils';
 import c from './MatchCard.module.scss';
 
@@ -9,21 +10,6 @@ export type MatchCardProps = {
   elapsedMinutes?: number;
   className?: string;
 };
-
-type TeamLogoProps = {
-  name: string;
-  logoUrl?: string | null;
-  className: string;
-};
-
-const TeamLogo: React.FC<TeamLogoProps> = ({ name, logoUrl, className }) =>
-  logoUrl ? (
-    <img className={className} src={logoUrl} alt='' />
-  ) : (
-    <span className={clsx(className, c.logoFallback)} aria-hidden>
-      {name.charAt(0)}
-    </span>
-  );
 
 export const MatchCard: React.FC<MatchCardProps> = ({
   match,
