@@ -12,6 +12,7 @@ import {
 } from '@futsal-app/types';
 import { BlobService } from '../blob/blob.service';
 import { prisma } from '../../lib/prisma';
+import { buildTeamDtoWithStats, teamWithStatsInclude } from './team.helpers';
 
 @Injectable()
 export class TeamService {
@@ -46,38 +47,10 @@ export class TeamService {
   async getByTournamentId(tournamentId: number): Promise<TeamDto[]> {
     const teams = await prisma.team.findMany({
       where: { tournamentId },
-      include: {
-        group: true,
-        players: { select: { id: true } },
-        homeMatches: { select: { homeGoals: true, awayGoals: true } },
-        awayMatches: { select: { homeGoals: true, awayGoals: true } },
-      },
+      include: teamWithStatsInclude,
     });
 
-    return teams.map((team): TeamDto => {
-      let score = 0;
-      for (const match of team.homeMatches) {
-        if (match.homeGoals > match.awayGoals) score += 3;
-        else if (match.homeGoals === match.awayGoals) score += 1;
-      }
-      for (const match of team.awayMatches) {
-        if (match.awayGoals > match.homeGoals) score += 3;
-        else if (match.awayGoals === match.homeGoals) score += 1;
-      }
-
-      return {
-        id: team.id,
-        name: team.name,
-        logoUrl: team.logoUrl,
-        groupId: team.groupId,
-        group: team.group,
-        tournamentId: team.tournamentId,
-        numberOfPlayers: team.players.length,
-        numberOfMatchesPlayed:
-          team.homeMatches.length + team.awayMatches.length,
-        teamScore: score,
-      };
-    });
+    return teams.map(buildTeamDtoWithStats);
   }
 
   async getById(id: number): Promise<TeamDto> {

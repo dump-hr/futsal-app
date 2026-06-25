@@ -20,6 +20,12 @@ variable "single_page_app" {
   default     = false
 }
 
+variable "cors_allowed_origins" {
+  description = "Origins allowed to read objects via CORS (set on CloudFront responses). Empty disables CORS headers."
+  type        = list(string)
+  default     = []
+}
+
 variable "wait_for_cdn_deployment" {
   description = "Wait for CDN deployment."
   type        = bool
