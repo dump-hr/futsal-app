@@ -112,7 +112,7 @@
   }
 
   .teams {
-    align-items: center;
+    align-items: flex-start;
   }
 
   .team {
@@ -133,5 +133,7 @@
 
   .score {
     @include title-2;
+    height: 64px;
+    padding: 0 8px;
   }
 }
