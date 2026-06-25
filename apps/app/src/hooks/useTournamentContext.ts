@@ -9,7 +9,6 @@ export const useTournamentContext = () => {
       'useTournamentContext mora biti korišten unutar TournamentProvider-a',
     );
   }
-  console.log('useTournamentContext context:', context);
   if (context.tournamentId == null) {
     throw new Error('Nema aktivnog turnira');
   }
