@@ -114,6 +114,8 @@
   top: calc(100% + 8px);
   left: 0;
   width: 100%;
+  max-height: 240px;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -124,6 +126,8 @@
   box-shadow: 16px 16px 40px 0px #00000040;
   z-index: 10;
   animation: dropdownIn 0.2s ease forwards;
+
+  @include custom-scrollbar(6px, $black, $gray-medium);
 }
 
 @keyframes dropdownIn {
