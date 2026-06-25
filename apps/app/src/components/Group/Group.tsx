@@ -24,7 +24,7 @@ export const Group: React.FC<GroupProps> = ({ group }) => {
       <div>
         <div className={c.labelsContainer}>
           <div className={c.labelsLeft}>
-            <div className={c.labelText}>#</div>
+            <div className={clsx(c.labelText, c.indexCell)}>#</div>
             <div className={c.labelText}>Tim</div>
           </div>
           <div className={c.labelsRight}>

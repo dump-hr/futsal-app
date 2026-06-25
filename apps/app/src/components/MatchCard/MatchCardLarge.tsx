@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { MatchDto } from '@futsal-app/types';
+import { TeamLogo } from '@components/TeamLogo';
 import { getMatchCardLargeView } from './utils';
 import c from './MatchCardLarge.module.scss';
 
@@ -8,20 +9,6 @@ export type MatchCardLargeProps = {
   elapsedMinutes?: number;
   className?: string;
 };
-
-type TeamLogoProps = {
-  name: string;
-  logoUrl?: string | null;
-};
-
-const TeamLogo: React.FC<TeamLogoProps> = ({ name, logoUrl }) =>
-  logoUrl ? (
-    <img className={c.logo} src={logoUrl} alt='' />
-  ) : (
-    <span className={clsx(c.logo, c.logoFallback)} aria-hidden>
-      {name.charAt(0)}
-    </span>
-  );
 
 export const MatchCardLarge: React.FC<MatchCardLargeProps> = ({
   match,
@@ -57,14 +44,14 @@ export const MatchCardLarge: React.FC<MatchCardLargeProps> = ({
 
       <div className={c.teams}>
         <div className={c.team}>
-          <TeamLogo name={homeName} logoUrl={homeLogo} />
+          <TeamLogo name={homeName} logoUrl={homeLogo} className={c.logo} />
           <span className={c.teamName}>{homeName}</span>
         </div>
 
         <span className={c.score}>{score}</span>
 
         <div className={c.team}>
-          <TeamLogo name={awayName} logoUrl={awayLogo} />
+          <TeamLogo name={awayName} logoUrl={awayLogo} className={c.logo} />
           <span className={c.teamName}>{awayName}</span>
         </div>
       </div>

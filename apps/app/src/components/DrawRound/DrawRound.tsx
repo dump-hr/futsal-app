@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { TeamLogo } from '@components/TeamLogo';
 import c from './DrawRound.module.scss';
 
 type Team = {
@@ -30,19 +31,11 @@ export const DrawRound: React.FC<DrawRoundProps> = (props) => {
     <div className={clsx(c.card, className)}>
       <div className={c.teams}>
         <div className={c.teamRow}>
-          {teamA.logoUrl ? (
-            <img src={teamA.logoUrl} alt={teamA.name} className={c.logo} />
-          ) : (
-            <div className={c.logo} />
-          )}
+          <TeamLogo name={teamA.name} logoUrl={teamA.logoUrl} className={c.logo} />
           <span className={c.teamName}>{teamA.name}</span>
         </div>
         <div className={c.teamRow}>
-          {teamB.logoUrl ? (
-            <img src={teamB.logoUrl} alt={teamB.name} className={c.logo} />
-          ) : (
-            <div className={c.logo} />
-          )}
+          <TeamLogo name={teamB.name} logoUrl={teamB.logoUrl} className={c.logo} />
           <span className={c.teamName}>{teamB.name}</span>
         </div>
       </div>
