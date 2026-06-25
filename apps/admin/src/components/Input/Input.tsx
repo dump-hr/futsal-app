@@ -7,7 +7,12 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   error?: boolean;
 };
 
-export const Input: React.FC<InputProps> = ({ label, error, ...props }) => {
+export const Input: React.FC<InputProps> = ({
+  label,
+  error,
+  autoComplete = 'off',
+  ...props
+}) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const inputId = useId();
 
@@ -29,6 +34,7 @@ export const Input: React.FC<InputProps> = ({ label, error, ...props }) => {
         id={inputId}
         type='text'
         className={error ? `${c.input} ${c.error}` : c.input}
+        autoComplete={autoComplete}
         {...props}
       />
     </div>
