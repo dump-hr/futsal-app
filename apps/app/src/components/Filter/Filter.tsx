@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { ArrowDownBlack, ArrowDownWhite } from '@assets/index';
 import { useCloseComponent } from '@hooks/index';
@@ -25,10 +25,21 @@ export const Filter = <T extends string>({
   className,
 }: FilterProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [alignRight, setAlignRight] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const closeDropdown = useCallback(() => setIsOpen(false), []);
   useCloseComponent({ onClose: closeDropdown, containerRef: wrapperRef });
+
+  useLayoutEffect(() => {
+    if (!isOpen) {
+      setAlignRight(false);
+      return;
+    }
+    const rect = dropdownRef.current?.getBoundingClientRect();
+    if (rect) setAlignRight(rect.right > window.innerWidth - 8);
+  }, [isOpen]);
 
   const isActive = value !== null;
   const selectedLabel = isActive
@@ -55,7 +66,9 @@ export const Filter = <T extends string>({
       </button>
 
       {isOpen && (
-        <div className={c.dropdown}>
+        <div
+          ref={dropdownRef}
+          className={clsx(c.dropdown, alignRight && c.dropdownRight)}>
           {options.map((option) => (
             <button
               key={option.value}

@@ -241,20 +241,7 @@
   height: 52px;
   border-radius: 50%;
   object-fit: cover;
-}
-
-.teamLogoFallback {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background-color: $gray-medium;
-  color: $white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  text-transform: uppercase;
-  @include title-3;
+  font-size: 24px;
 }
 
 .teamName {

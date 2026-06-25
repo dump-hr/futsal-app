@@ -93,21 +93,7 @@
     height: 42px;
     width: 42px;
     object-fit: contain;
-    flex-shrink: 0;
-  }
-
-  &LogoFallback {
-    height: 42px;
-    width: 42px;
-    border-radius: 50%;
-    background-color: $gray-medium;
-    color: $white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    text-transform: uppercase;
-    @include body-normal-bold;
+    font-size: 16px;
   }
 }
 
