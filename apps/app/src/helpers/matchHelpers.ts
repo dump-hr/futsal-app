@@ -133,3 +133,31 @@ export const groupMatchesByDay = (
 
   return Array.from(groups.values());
 };
+
+export const getTodayMatches = (
+  matches: MatchDto[] | undefined,
+): MatchDto[] => {
+  if (!matches) return [];
+
+  const todayKey = getDateKey(new Date());
+
+  return matches
+    .filter((match) => getDateKey(toDate(match.timeOfMatch)) === todayKey)
+    .sort((a, b) => {
+      if (a.isActive !== b.isActive) return a.isActive ? -1 : 1;
+      return toDate(a.timeOfMatch).getTime() - toDate(b.timeOfMatch).getTime();
+    });
+};
+
+export const getUpcomingAndLiveMatches = (
+  matches: MatchDto[] | undefined,
+): MatchDto[] => {
+  if (!matches) return [];
+
+  return matches
+    .filter((match) => getMatchStatus(match) !== MATCH_STATUS.FINISHED)
+    .sort(
+      (a, b) =>
+        toDate(a.timeOfMatch).getTime() - toDate(b.timeOfMatch).getTime(),
+    );
+};

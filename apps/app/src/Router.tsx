@@ -1,11 +1,13 @@
 import { Route, Switch } from 'wouter';
 import { routes } from '@routes/index';
+
 import {
   HomePage,
   MatchesPage,
   DrawPage,
   TeamsPage,
   TeamDetailPage,
+  GroupsPage,
 } from '@pages/index';
 import { NavbarLayout } from '@layouts/index';
 
@@ -18,6 +20,7 @@ export const Router = () => {
         <Route path={routes.DRAW} component={DrawPage} />
         <Route path={routes.TEAM_DETAIL} component={TeamDetailPage} />
         <Route path={routes.TEAMS} component={TeamsPage} />
+        <Route path={routes.GROUPS} component={GroupsPage} />
       </Switch>
     </NavbarLayout>
   );

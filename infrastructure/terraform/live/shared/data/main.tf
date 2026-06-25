@@ -53,10 +53,10 @@ data "sops_file" "secrets" {
 module "uploads" {
   source = "../../../modules/static-website"
 
-  bucket_name          = "futsal-app-uploads"
-  bucket_versioning    = true
-  website_domain       = "futsal-app-uploads.dump.hr"
-  cloudflare_zone_id   = data.cloudflare_zone.dump_hr.id
+  bucket_name        = "futsal-app-uploads"
+  bucket_versioning  = true
+  website_domain     = "futsal-app-uploads.dump.hr"
+  cloudflare_zone_id = data.cloudflare_zone.dump_hr.id
   cors_allowed_origins = [
     "https://malonogometni.dump.hr",
     "http://localhost:5174",
