@@ -137,6 +137,10 @@
 
   .playersSection {
     flex: 1;
+    max-height: 692px;
+    overflow-y: auto;
+    padding-right: 12px;
+    @include custom-scrollbar($width: 8px);
   }
 
   .matchesSection {
@@ -157,5 +161,11 @@
     overflow-y: auto;
     padding-right: 12px;
     @include custom-scrollbar($width: 10px);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .matchesSection {
+    flex: 0 0 360px;
   }
 }

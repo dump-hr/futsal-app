@@ -1,6 +1,7 @@
 .grid {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 16px;
 }
 
@@ -8,6 +9,11 @@
   display: flex;
   border-radius: 22px;
   text-decoration: none;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
 }
 
 .message {
