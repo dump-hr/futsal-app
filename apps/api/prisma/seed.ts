@@ -401,7 +401,7 @@ async function main() {
     });
   }
 
-  // Upcoming matches (future dates)
+  // Quarter-finals: 4 upcoming matches to populate the bracket cleanly
   await prisma.match.create({
     data: {
       timeOfMatch: new Date('2026-06-10T18:00:00'),
@@ -426,90 +426,23 @@ async function main() {
 
   await prisma.match.create({
     data: {
-      timeOfMatch: new Date('2026-06-12T19:00:00'),
+      timeOfMatch: new Date('2026-06-11T18:00:00'),
       homeTeamId: teams[0].id,
       awayTeamId: teams[7].id,
       homeGoals: 0,
       awayGoals: 0,
-      matchType: MatchType.semiFinal,
-    },
-  });
-
-  await prisma.match.create({
-    data: {
-      timeOfMatch: new Date('2026-06-14T20:00:00'),
-      homeTeamId: teams[2].id,
-      awayTeamId: teams[5].id,
-      homeGoals: 0,
-      awayGoals: 0,
-      matchType: MatchType.semiFinal,
-    },
-  });
-
-  // Extra matches for Ekonomski FC (teams[2]) to test scrolling
-  await prisma.match.create({
-    data: {
-      timeOfMatch: new Date('2026-06-16T18:00:00'),
-      homeTeamId: teams[2].id,
-      awayTeamId: teams[0].id,
-      homeGoals: 2,
-      awayGoals: 1,
-      matchType: MatchType.group,
-    },
-  });
-
-  await prisma.match.create({
-    data: {
-      timeOfMatch: new Date('2026-06-17T19:00:00'),
-      homeTeamId: teams[7].id,
-      awayTeamId: teams[2].id,
-      homeGoals: 0,
-      awayGoals: 3,
-      matchType: MatchType.group,
-    },
-  });
-
-  await prisma.match.create({
-    data: {
-      timeOfMatch: new Date('2026-06-18T20:00:00'),
-      homeTeamId: teams[2].id,
-      awayTeamId: teams[4].id,
-      homeGoals: 1,
-      awayGoals: 1,
       matchType: MatchType.quarterFinal,
     },
   });
 
   await prisma.match.create({
     data: {
-      timeOfMatch: new Date('2026-07-01T18:00:00'),
+      timeOfMatch: new Date('2026-06-11T20:00:00'),
       homeTeamId: teams[2].id,
-      awayTeamId: teams[1].id,
+      awayTeamId: teams[5].id,
       homeGoals: 0,
       awayGoals: 0,
-      matchType: MatchType.semiFinal,
-    },
-  });
-
-  await prisma.match.create({
-    data: {
-      timeOfMatch: new Date('2026-07-05T20:00:00'),
-      homeTeamId: teams[6].id,
-      awayTeamId: teams[2].id,
-      homeGoals: 0,
-      awayGoals: 0,
-      matchType: MatchType.final,
-    },
-  });
-
-  await prisma.match.create({
-    data: {
-      timeOfMatch: new Date('2026-07-06T20:00:00'),
-      homeTeamId: teams[6].id,
-      awayTeamId: teams[2].id,
-      homeGoals: 0,
-      awayGoals: 0,
-      matchType: MatchType.final,
+      matchType: MatchType.quarterFinal,
     },
   });
 
@@ -518,7 +451,7 @@ async function main() {
   console.log(`  Teams: ${teams.length}`);
   console.log(`  Players: ${players.length}`);
   console.log(`  Groups: ${groups.length}`);
-  console.log(`  Matches: 16`);
+  console.log(`  Matches: 4 group + 4 QF + 2 SF + 1 F = 11`);
 }
 
 main().catch((e) => {
