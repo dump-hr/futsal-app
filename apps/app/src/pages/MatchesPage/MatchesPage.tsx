@@ -32,7 +32,7 @@ export const MatchesPage = () => {
   });
   const groupOptions: FilterOption<string>[] = [...names]
     .sort()
-    .map((name) => ({ label: `Skupina ${name}`, value: name }));
+    .map((name) => ({ label: `${name}`, value: name }));
 
   const namesById = new Map<number, string>();
   matches?.forEach((match) => {
@@ -67,7 +67,9 @@ export const MatchesPage = () => {
                   key={match.id}
                   match={match}
                   elapsedMinutes={
-                    match.id === activeMatch?.id ? liveElapsedMinutes : undefined
+                    match.id === activeMatch?.id
+                      ? liveElapsedMinutes
+                      : undefined
                   }
                 />
               ))}
