@@ -9,7 +9,7 @@ export const MATCH_STATUS = {
 export type MatchStatus = (typeof MATCH_STATUS)[keyof typeof MATCH_STATUS];
 
 export const MATCH_TYPE_LABELS: Record<`${MatchType}`, string> = {
-  group: 'SKUPINA',
+  group: '',
   quarterFinal: 'ČETVRTFINALE',
   semiFinal: 'POLUFINALE',
   final: 'FINALE',
