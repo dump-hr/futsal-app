@@ -6,8 +6,10 @@ import { useTournamentContext } from '@hooks/index';
 import { DrawRound } from '@components/index';
 import { PageLayout } from '@layouts/index';
 import {
+  formatMatchDateShort,
   formatMatchTime,
   getMatchStatus,
+  sortMatchesByTime,
 } from '@helpers/index';
 import { MATCH_STATUS } from '@constants/index';
 import c from './DrawPage.module.scss';
@@ -22,17 +24,6 @@ const ROUND_DEFS: { value: KnockoutRound; label: string }[] = [
   { value: MatchType.semiFinal, label: 'Polufinale' },
   { value: MatchType.final, label: 'Finale' },
 ];
-
-const sortByTime = (matches: MatchDto[]) =>
-  [...matches].sort(
-    (a, b) =>
-      new Date(a.timeOfMatch).getTime() - new Date(b.timeOfMatch).getTime(),
-  );
-
-const formatDate = (value: string | Date) => {
-  const d = value instanceof Date ? value : new Date(value);
-  return `${d.getDate()}.${d.getMonth() + 1}.`;
-};
 
 const renderMatch = (match: MatchDto) => {
   const teamA = {
@@ -51,7 +42,7 @@ const renderMatch = (match: MatchDto) => {
         status='UPCOMING'
         teamA={teamA}
         teamB={teamB}
-        matchDate={formatDate(match.timeOfMatch)}
+        matchDate={formatMatchDateShort(match.timeOfMatch)}
         matchTime={formatMatchTime(match.timeOfMatch)}
       />
     );
@@ -69,21 +60,20 @@ const renderMatch = (match: MatchDto) => {
 };
 
 export const DrawPage = () => {
+  const [activeRound, setActiveRound] = useState<KnockoutRound | null>(null);
   const tournamentId = useTournamentContext();
-  const { data: matches, isLoading, isError } = useMatchGetAll(tournamentId);
   const bracketRef = useRef<HTMLDivElement | null>(null);
   const columnRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const [activeRound, setActiveRound] = useState<KnockoutRound | null>(null);
+  const { data: matches, isLoading, isError } = useMatchGetAll(tournamentId);
 
-  const knockoutMatches = useMemo(
-    () => (matches ?? []).filter((m) => m.matchType !== MatchType.group),
-    [matches],
+  const knockoutMatches = (matches ?? []).filter(
+    (m) => m.matchType !== MatchType.group,
   );
 
   const rounds = useMemo(() => {
     return ROUND_DEFS.map((def) => ({
       ...def,
-      matches: sortByTime(
+      matches: sortMatchesByTime(
         knockoutMatches.filter((m) => m.matchType === def.value),
       ),
     })).filter((round) => round.matches.length > 0);
@@ -113,6 +103,7 @@ export const DrawPage = () => {
     if (isError) {
       return <p className={c.message}>Greška pri učitavanju ždrijeba</p>;
     }
+
     if (rounds.length === 0) {
       return (
         <p className={c.message}>
@@ -134,8 +125,7 @@ export const DrawPage = () => {
                 role='tab'
                 aria-selected={isActive}
                 className={clsx(c.tab, isActive && c.tabActive)}
-                onClick={() => handleTabClick(round.value)}
-              >
+                onClick={() => handleTabClick(round.value)}>
                 {round.label}
               </button>
             );
@@ -152,13 +142,11 @@ export const DrawPage = () => {
                   className={clsx(c.column, !isActiveCol && c.columnDim)}
                   ref={(node) => {
                     columnRefs.current[round.value] = node;
-                  }}
-                >
+                  }}>
                   {round.matches.map((match, matchIdx) => {
                     const isTopOfPair = matchIdx % 2 === 0;
                     const hasPairPartner =
-                      matchIdx % 2 === 1 ||
-                      matchIdx + 1 < round.matches.length;
+                      matchIdx % 2 === 1 || matchIdx + 1 < round.matches.length;
                     const drawConnector = !isLastRound && hasPairPartner;
                     return (
                       <div
@@ -167,8 +155,7 @@ export const DrawPage = () => {
                           c.matchSlot,
                           drawConnector &&
                             (isTopOfPair ? c.pairTop : c.pairBottom),
-                        )}
-                      >
+                        )}>
                         <div className={c.matchInner}>{renderMatch(match)}</div>
                         {drawConnector && (
                           <>

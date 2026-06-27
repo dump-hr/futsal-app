@@ -37,6 +37,16 @@ export const formatMatchTime = (value: string | Date): string => {
   return `${pad(date.getHours())}:${pad(date.getMinutes())}`;
 };
 
+export const formatMatchDateShort = (value: string | Date): string => {
+  const date = toDate(value);
+  return `${date.getDate()}.${date.getMonth() + 1}.`;
+};
+
+export const sortMatchesByTime = (matches: MatchDto[]): MatchDto[] =>
+  [...matches].sort(
+    (a, b) => toDate(a.timeOfMatch).getTime() - toDate(b.timeOfMatch).getTime(),
+  );
+
 export const formatMatchDateLong = (value: string | Date): string => {
   const date = toDate(value);
   return `${date.getDate()}. ${CROATIAN_MONTHS_GENITIVE[date.getMonth()]}, ${formatMatchTime(date)}`;
@@ -113,9 +123,7 @@ export const groupMatchesByDay = (
     matchPassesFilters(match, filters),
   );
 
-  const sorted = [...filtered].sort(
-    (a, b) => toDate(a.timeOfMatch).getTime() - toDate(b.timeOfMatch).getTime(),
-  );
+  const sorted = sortMatchesByTime(filtered);
 
   const groups = new Map<string, MatchDayGroup>();
   for (const match of sorted) {
@@ -154,10 +162,7 @@ export const getUpcomingAndLiveMatches = (
 ): MatchDto[] => {
   if (!matches) return [];
 
-  return matches
-    .filter((match) => getMatchStatus(match) !== MATCH_STATUS.FINISHED)
-    .sort(
-      (a, b) =>
-        toDate(a.timeOfMatch).getTime() - toDate(b.timeOfMatch).getTime(),
-    );
+  return sortMatchesByTime(
+    matches.filter((match) => getMatchStatus(match) !== MATCH_STATUS.FINISHED),
+  );
 };
