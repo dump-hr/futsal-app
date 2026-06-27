@@ -42,8 +42,3 @@ export { default as TickLime } from './tick-lime.svg';
 export { default as TimerGray } from './timer-gray.svg';
 export { default as LiveRed } from './live-red.svg';
 export { default as WhistleWhite } from './whistle-white.svg';
-
-export { default as EndavaLogo } from './temp-teams-logos/endava.svg';
-export { default as InfobipLogo } from './temp-teams-logos/infobip.svg';
-export { default as EricssonLogo } from './temp-teams-logos/ericsson-nikola-tesla.svg';
-export { default as OtpBankaLogo } from './temp-teams-logos/otp-banka.svg';
