@@ -144,6 +144,7 @@ export class MatchService {
       where: { id },
       data: {
         isActive: true,
+        isFinished: false,
         timerIsRunning: false,
         timerStartedAt: null,
         timerAccumulatedMs: 0,
@@ -163,6 +164,7 @@ export class MatchService {
       where: { id: active.id },
       data: {
         isActive: false,
+        isFinished: true,
         timerIsRunning: false,
         timerStartedAt: null,
         timerAccumulatedMs: 0,

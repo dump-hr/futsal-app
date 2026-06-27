@@ -27,9 +27,7 @@ const toDate = (value: string | Date): Date =>
 
 export const getMatchStatus = (match: MatchDto): MatchStatus => {
   if (match.isActive) return MATCH_STATUS.LIVE;
-  return toDate(match.timeOfMatch) < new Date()
-    ? MATCH_STATUS.FINISHED
-    : MATCH_STATUS.UPCOMING;
+  return match.isFinished ? MATCH_STATUS.FINISHED : MATCH_STATUS.UPCOMING;
 };
 
 export const formatMatchTime = (value: string | Date): string => {

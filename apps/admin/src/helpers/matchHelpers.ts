@@ -31,8 +31,7 @@ export const MATCH_TYPE_TO_STAGE: Record<string, MatchStage> = {
 
 export const getMatchStatus = (match: MatchDto): MatchStatus => {
   if (match.isActive) return MATCH_STATUS.LIVE;
-  const matchTime = new Date(match.timeOfMatch);
-  return matchTime < new Date() ? MATCH_STATUS.FINISHED : MATCH_STATUS.UPCOMING;
+  return match.isFinished ? MATCH_STATUS.FINISHED : MATCH_STATUS.UPCOMING;
 };
 
 export const getDateKey = (date: Date): string => {
