@@ -25,6 +25,12 @@ const ROUND_DEFS: { value: KnockoutRound; label: string }[] = [
   { value: MatchType.final, label: 'Finale' },
 ];
 
+const scrollColumnIntoCenter = (container: HTMLElement, node: HTMLElement) => {
+  const targetLeft =
+    node.offsetLeft - (container.clientWidth - node.clientWidth) / 2;
+  container.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
+};
+
 const renderMatch = (match: MatchDto) => {
   const teamA = {
     name: match.homeTeam?.name ?? 'TBD',
@@ -89,13 +95,11 @@ export const DrawPage = () => {
 
   const handleTabClick = (round: KnockoutRound) => {
     setActiveRound(round);
+
     const node = columnRefs.current[round];
     const container = bracketRef.current;
-    if (node && container) {
-      const targetLeft =
-        node.offsetLeft - (container.clientWidth - node.clientWidth) / 2;
-      container.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
-    }
+
+    if (node && container) scrollColumnIntoCenter(container, node);
   };
 
   const renderContent = () => {
