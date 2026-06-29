@@ -24,7 +24,6 @@ import { BlobModule } from './blob/blob.module';
           }),
           ServeStaticModule.forRoot({
             rootPath: join(__dirname, '..', '..', '..', 'app', 'dist'),
-            serveRoot: '/',
             exclude: ['/api/{*path}'],
           }),
         ]
