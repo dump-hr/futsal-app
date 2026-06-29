@@ -79,6 +79,7 @@ model Match {
   events             MatchEvent[]
   matchType          MatchType
   isActive           Boolean      @default(false)
+  isFinished         Boolean      @default(false)
   timerIsRunning     Boolean      @default(false)
   timerStartedAt     DateTime?
   timerAccumulatedMs Int          @default(0)

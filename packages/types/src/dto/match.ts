@@ -35,6 +35,10 @@ export class MatchDto {
   @IsNotEmpty()
   isActive: boolean;
 
+  @IsBoolean()
+  @IsNotEmpty()
+  isFinished: boolean;
+
   @IsOptional()
   homeTeam: TeamDto | null;
 
