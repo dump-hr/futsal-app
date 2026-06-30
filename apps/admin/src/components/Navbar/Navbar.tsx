@@ -3,7 +3,7 @@ import { Link, useLocation } from 'wouter';
 import { routes } from '@routes/index';
 import { ExitBlack, Logo } from '@assets/index';
 import { ButtonSmall } from '@components/index';
-import { BackgroundColor } from '../../types';
+import { BackgroundColor } from '@types';
 import c from './Navbar.module.scss';
 
 export const Navbar = () => {

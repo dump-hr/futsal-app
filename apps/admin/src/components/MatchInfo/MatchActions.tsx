@@ -9,7 +9,7 @@ import {
 import { MATCH_STATUS } from './constants';
 import type { MatchStatus } from './types';
 import { ButtonSmall } from '@components/index';
-import { BackgroundColor } from '../../types';
+import { BackgroundColor } from '@types';
 
 type MatchActionsProps = {
   status: MatchStatus;

@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import c from './ButtonSmall.module.scss';
-import { BackgroundColor } from '../../types';
+import { BackgroundColor } from '@types';
 
 type ButtonSmallProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   iconSrc: string;
