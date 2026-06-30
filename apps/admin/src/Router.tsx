@@ -11,6 +11,7 @@ import {
   MatchesPage,
   MatchTimerPage,
   GroupsPage,
+  NotFoundPage,
 } from '@pages/index';
 import { ProtectedRoute } from '@components/index';
 import { TournamentContext } from '@context/index';
@@ -50,11 +51,17 @@ export const Router = () => {
             <Route>
               <NavbarLayout>
                 <BackgroundLayout>
-                  <Route path={routes.ADMIN_HOME} component={StartingPage} />
-                  <Route path={routes.TEAM_DETAIL} component={TeamDetailPage} />
-                  <Route path={routes.TEAMS} component={TeamsPage} />
-                  <Route path={routes.MATCHES} component={MatchesPage} />
-                  <Route path={routes.GROUPS} component={GroupsPage} />
+                  <Switch>
+                    <Route path={routes.ADMIN_HOME} component={StartingPage} />
+                    <Route
+                      path={routes.TEAM_DETAIL}
+                      component={TeamDetailPage}
+                    />
+                    <Route path={routes.TEAMS} component={TeamsPage} />
+                    <Route path={routes.MATCHES} component={MatchesPage} />
+                    <Route path={routes.GROUPS} component={GroupsPage} />
+                    <Route component={NotFoundPage} />
+                  </Switch>
                 </BackgroundLayout>
               </NavbarLayout>
             </Route>

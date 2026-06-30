@@ -5,3 +5,4 @@ export * from './TeamsPage';
 export * from './MatchesPage';
 export * from './MatchTimerPage';
 export * from './GroupsPage';
+export * from './NotFoundPage';
