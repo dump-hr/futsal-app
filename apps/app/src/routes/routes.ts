@@ -4,9 +4,9 @@ interface RouteType {
 
 export const routes: RouteType = {
   HOME: '/',
-  GROUPS: '/skupine',
-  DRAW: '/zdrijeb',
-  MATCHES: '/utakmice',
-  TEAMS: '/ekipe',
-  TEAM_DETAIL: '/ekipe/:teamId',
+  GROUPS: '/groups',
+  DRAW: '/draw',
+  MATCHES: '/matches',
+  TEAMS: '/teams',
+  TEAM_DETAIL: '/teams/:teamId',
 };
