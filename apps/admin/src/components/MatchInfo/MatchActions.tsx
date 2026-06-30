@@ -1,13 +1,15 @@
 import c from './MatchInfo.module.scss';
-import playIconSvg from '../../assets/icons/play-black.svg';
-import trashCanIconSvg from '../../assets/icons/trash-can-gray.svg';
-import editIconSvg from '../../assets/icons/pencil-gray.svg';
-import doneIconSvg from '../../assets/icons/check-black.svg';
-import timerIconSvg from '../../assets/icons/timer-gray.svg';
+import {
+  PlayBlack,
+  TrashCanGray,
+  PencilGray,
+  CheckBlack,
+  TimerGray,
+} from '@assets/index';
 import { MATCH_STATUS } from './constants';
 import type { MatchStatus } from './types';
 import { ButtonSmall } from '@components/index';
-import { BackgroundColor } from '../../types';
+import { BackgroundColor } from '@types';
 
 type MatchActionsProps = {
   status: MatchStatus;
@@ -29,19 +31,19 @@ export const MatchActions: React.FC<MatchActionsProps> = ({
       return (
         <div className={c.matchActionWrapper}>
           <ButtonSmall
-            iconSrc={playIconSvg}
+            iconSrc={PlayBlack}
             hasBorder
             backgroundColor={BackgroundColor.White}
             onClick={onActivate}
           />
-          <ButtonSmall iconSrc={trashCanIconSvg} hasBorder onClick={onDelete} />
-          <ButtonSmall iconSrc={editIconSvg} hasBorder onClick={onEdit} />
+          <ButtonSmall iconSrc={TrashCanGray} hasBorder onClick={onDelete} />
+          <ButtonSmall iconSrc={PencilGray} hasBorder onClick={onEdit} />
         </div>
       );
     case MATCH_STATUS.LIVE:
       return (
         <div className={c.matchActionWrapper}>
-          <ButtonSmall iconSrc={timerIconSvg} hasBorder onClick={onTimer} />
+          <ButtonSmall iconSrc={TimerGray} hasBorder onClick={onTimer} />
           <div className={c.redDotIndicator}>
             <div className={c.redDotIndicatorInner} />
           </div>
@@ -51,11 +53,11 @@ export const MatchActions: React.FC<MatchActionsProps> = ({
       return (
         <div className={c.matchActionWrapper}>
           <ButtonSmall
-            iconSrc={doneIconSvg}
+            iconSrc={CheckBlack}
             backgroundColor={BackgroundColor.Lime}
           />
-          <ButtonSmall iconSrc={trashCanIconSvg} hasBorder onClick={onDelete} />
-          <ButtonSmall iconSrc={editIconSvg} hasBorder onClick={onEdit} />
+          <ButtonSmall iconSrc={TrashCanGray} hasBorder onClick={onDelete} />
+          <ButtonSmall iconSrc={PencilGray} hasBorder onClick={onEdit} />
         </div>
       );
     default:

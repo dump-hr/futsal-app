@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { MatchTimerStateDto } from '@futsal-app/types';
 import { getElapsedMs } from '@helpers/index';
-import { TICK_INTERVAL_MS } from '@constants/timer';
+import { TICK_INTERVAL_MS } from '@constants/index';
 
 const IDLE_STATE: MatchTimerStateDto = {
   matchId: 0,
