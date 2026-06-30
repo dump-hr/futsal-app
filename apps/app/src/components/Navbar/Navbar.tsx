@@ -32,9 +32,9 @@ export const Navbar = () => {
 
   return (
     <nav className={c.navbar}>
-      <div className={c.logoWrapper}>
+      <Link to={routes.HOME} className={c.logoWrapper}>
         <img src={Logo} alt='Logo' />
-      </div>
+      </Link>
 
       <ul className={c.desktopList}>
         {navLinks.map(({ to, label }) => (
