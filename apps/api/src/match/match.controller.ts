@@ -30,11 +30,6 @@ export class MatchController {
     return await this.matchService.getNextMatch();
   }
 
-  @Get('active')
-  async getActive(): Promise<MatchDto | null> {
-    return await this.matchService.getActive();
-  }
-
   @Patch('deactivate')
   @UseGuards(JwtAuthGuard)
   async deactivate(): Promise<void> {

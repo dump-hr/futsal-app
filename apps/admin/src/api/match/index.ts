@@ -1,7 +1,6 @@
 export * from './useMatchGet';
 export * from './useMatchGetAll';
 export * from './useMatchGetNext';
-export * from './useMatchGetActive';
 export * from './useMatchGetByTeam';
 export * from './useMatchCreate';
 export * from './useMatchUpdate';
