@@ -10,18 +10,43 @@
   justify-content: space-between;
   border-radius: 8px;
   padding: 6px 8px;
+  cursor: pointer;
   transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.listItemSelected .tournamentName {
+  color: $white;
 }
 
 .listItemMarked {
+  cursor: default;
   background-color: rgba(255, 60, 60, 0.12);
+
+  &:hover {
+    background-color: rgba(255, 60, 60, 0.12);
+  }
+}
+
+.tournamentInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.selectedIcon {
+  width: 16px;
+  height: 16px;
 }
 
 .tournamentName {
   @include body-normal;
-  color: $white;
+  color: $white-transparent;
   margin: 0;
-  transition: opacity 0.15s ease, text-decoration 0.15s ease;
+  transition: color 0.15s ease, opacity 0.15s ease, text-decoration 0.15s ease;
 }
 
 .tournamentNameMarked {
