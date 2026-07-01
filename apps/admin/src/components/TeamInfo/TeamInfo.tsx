@@ -26,7 +26,10 @@ export const TeamInfo: React.FC<TeamInfoProps> = ({
   onClick,
 }) => {
   return (
-    <div className={c.team} onClick={onClick} style={onClick ? { cursor: 'pointer' } : undefined}>
+    <div
+      className={c.team}
+      onClick={onClick}
+      style={onClick ? { cursor: 'pointer' } : undefined}>
       <div className={c.teamInfo}>
         <TeamLogo
           name={teamName}
@@ -38,7 +41,7 @@ export const TeamInfo: React.FC<TeamInfoProps> = ({
       <div className={c.teamStatsWrapper}>
         <div className={c.teamStats}>
           <span className={c.teamStat}>{teamScore}</span>
-          <span className={c.teamStat}>Skupina {teamGroup}</span>
+          <span className={c.teamStat}>{teamGroup}</span>
           <span className={c.teamStat}>{numberOfPlayers} igrača</span>
           <span className={c.teamStat}>{numberOfMatchesPlayed} utakmice</span>
         </div>
