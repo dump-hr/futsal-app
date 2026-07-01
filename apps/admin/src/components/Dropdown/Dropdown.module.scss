@@ -126,8 +126,11 @@
   box-shadow: 16px 16px 40px 0px #00000040;
   z-index: 10;
   animation: dropdownIn 0.2s ease forwards;
+  scrollbar-width: none;
 
-  @include custom-scrollbar(6px, $black, $gray-medium);
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @keyframes dropdownIn {
