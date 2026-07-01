@@ -19,9 +19,9 @@ export const Navbar = () => {
   return (
     <nav className={c.navbar}>
       <div className={c.listWrapper}>
-        <div className={c.imageWrapper}>
+        <Link to={routes.ADMIN_HOME} className={c.imageWrapper}>
           <img src={Logo} alt='Logo' />
-        </div>
+        </Link>
 
         <ul className={c.navbarList}>
           <Link

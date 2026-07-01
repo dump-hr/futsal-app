@@ -18,8 +18,11 @@
   flex-direction: column;
   box-shadow: 16px 16px 40px 0px #00000040;
   animation: suggestionsIn 0.2s ease forwards;
+  scrollbar-width: none;
 
-  @include custom-scrollbar(6px, $black, $gray-medium);
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .suggestionsRight {
