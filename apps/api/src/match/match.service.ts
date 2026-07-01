@@ -114,16 +114,6 @@ export class MatchService {
     });
   }
 
-  async getActive(): Promise<MatchDto | null> {
-    return prisma.match.findFirst({
-      where: { isActive: true },
-      include: {
-        homeTeam: { select: teamWithPlayersSelect },
-        awayTeam: { select: teamWithPlayersSelect },
-      },
-    });
-  }
-
   async setActive(id: number): Promise<void> {
     const match = await prisma.match.findUnique({ where: { id } });
 
