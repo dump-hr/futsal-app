@@ -37,6 +37,7 @@ export const MatchEventRow: React.FC<MatchEventRowProps> = ({
             ? `${event.player.firstName} ${event.player.lastName}`
             : ''
         }
+        playerId={event.playerId}
         eventType={event.eventType}
         side={side}
         players={players}
