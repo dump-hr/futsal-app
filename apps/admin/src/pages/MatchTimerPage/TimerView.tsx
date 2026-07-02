@@ -16,6 +16,13 @@ type TimerViewProps = {
 };
 
 const pad = (n: number) => String(n).padStart(2, '0');
+
+const renderDigits = (value: string) =>
+  value.split('').map((digit, index) => (
+    <span key={index} className={c.clockDigit}>
+      {digit}
+    </span>
+  ));
 const clamp = (n: number, max: number) => Math.max(0, Math.min(max, n));
 
 type EditingField = 'minutes' | 'seconds' | null;
@@ -89,7 +96,7 @@ export const TimerView: React.FC<TimerViewProps> = ({
           <span
             className={clsx(c.clockDigits, !isRunning && c.clickable)}
             onClick={() => startEdit('minutes', minutes)}>
-            {pad(minutes)}
+            {renderDigits(pad(minutes))}
           </span>
         )}
         <span className={c.clockColon}>:</span>
@@ -108,7 +115,7 @@ export const TimerView: React.FC<TimerViewProps> = ({
           <span
             className={clsx(c.clockDigits, !isRunning && c.clickable)}
             onClick={() => startEdit('seconds', seconds)}>
-            {pad(seconds)}
+            {renderDigits(pad(seconds))}
           </span>
         )}
       </div>
