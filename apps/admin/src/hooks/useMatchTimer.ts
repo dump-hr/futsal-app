@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { MatchTimerSyncDto } from '@futsal-app/types';
 import { useMatchTimerGet, useMatchTimerSync } from '@api/index';
 import { TICK_INTERVAL_MS, HEARTBEAT_INTERVAL_MS } from '@constants/timer';
 
@@ -61,12 +62,36 @@ export const useMatchTimer = (matchId: number) => {
   const syncMutateRef = useRef(syncMutate);
   syncMutateRef.current = syncMutate;
 
-  const pushSync = useCallback((state: StoredTimerState) => {
-    syncMutateRef.current({
-      isRunning: state.isRunning,
-      accumulatedMs: Math.max(0, Math.floor(elapsedMsFromState(state))),
+  // At most one PATCH in flight — a newer state waits for the current request
+  // to settle, so the server always receives syncs in intent order.
+  const inFlightRef = useRef(false);
+  const pendingRef = useRef<MatchTimerSyncDto | null>(null);
+
+  const sendSync = useCallback(function send(dto: MatchTimerSyncDto) {
+    if (inFlightRef.current) {
+      pendingRef.current = dto;
+      return;
+    }
+    inFlightRef.current = true;
+    syncMutateRef.current(dto, {
+      onSettled: () => {
+        inFlightRef.current = false;
+        const pending = pendingRef.current;
+        pendingRef.current = null;
+        if (pending) send(pending);
+      },
     });
   }, []);
+
+  const pushSync = useCallback(
+    (state: StoredTimerState) => {
+      sendSync({
+        isRunning: state.isRunning,
+        accumulatedMs: Math.max(0, Math.floor(elapsedMsFromState(state))),
+      });
+    },
+    [sendSync],
+  );
 
   const { data: backendState } = useMatchTimerGet(matchId);
   useEffect(() => {
@@ -122,7 +147,6 @@ export const useMatchTimer = (matchId: number) => {
     return () => clearInterval(interval);
   }, [isRunning, pushSync]);
 
-  // Listen to localStorage changes to sync across tabs
   const toggle = useCallback(() => {
     const now = Date.now();
     const current = stateRef.current;

@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { prisma } from '../../lib/prisma';
 import { MatchDto, MatchCreateDto, MatchUpdateDto } from '@futsal-app/types';
+import { MatchTimerService } from '../match-timer/match-timer.service';
 
 const teamWithPlayersSelect = {
   id: true,
@@ -23,6 +24,8 @@ const teamSelect = {
 
 @Injectable()
 export class MatchService {
+  constructor(private readonly matchTimerService: MatchTimerService) {}
+
   async getById(id: number): Promise<MatchDto> {
     const match = await prisma.match.findUnique({
       where: { id },
@@ -141,6 +144,8 @@ export class MatchService {
         timerLastSyncedAt: null,
       },
     });
+
+    this.matchTimerService.emitReset(id);
   }
 
   async deactivate(): Promise<void> {
@@ -161,6 +166,8 @@ export class MatchService {
         timerLastSyncedAt: null,
       },
     });
+
+    this.matchTimerService.emitReset(active.id);
   }
 
   async delete(id: number): Promise<void> {
