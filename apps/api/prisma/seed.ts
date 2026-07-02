@@ -179,6 +179,7 @@ async function main() {
         homeGoals,
         awayGoals,
         matchType: MatchType.group,
+        isFinished: true,
       },
     });
 
@@ -231,6 +232,7 @@ async function main() {
       homeGoals: 3,
       awayGoals: 1,
       matchType: MatchType.semiFinal,
+      isFinished: true,
     },
   });
 
@@ -305,6 +307,7 @@ async function main() {
       homeGoals: 2,
       awayGoals: 2,
       matchType: MatchType.final,
+      isFinished: true,
     },
   });
 
@@ -362,6 +365,7 @@ async function main() {
       homeGoals: 3,
       awayGoals: 1,
       matchType: MatchType.semiFinal,
+      isFinished: true,
     },
   });
 
