@@ -16,10 +16,15 @@ import c from './TeamFormModal.module.scss';
 
 type TeamFormModalProps = {
   teamId?: number;
+  initialGroupId?: number;
   onClose: () => void;
 };
 
-export const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose }) => {
+export const TeamFormModal: React.FC<TeamFormModalProps> = ({
+  teamId,
+  initialGroupId,
+  onClose,
+}) => {
   const {
     teamName,
     setTeamName,
@@ -43,7 +48,7 @@ export const TeamFormModal: React.FC<TeamFormModalProps> = ({ teamId, onClose })
     cancelDeletePlayer,
     confirmDeletePlayer,
     handleSave,
-  } = useTeamForm({ teamId, onClose });
+  } = useTeamForm({ teamId, initialGroupId, onClose });
 
   const handleClose = useCallback(() => onClose(), [onClose]);
   useCloseComponent({ onClose: handleClose });
