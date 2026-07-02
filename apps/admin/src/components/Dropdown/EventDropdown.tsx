@@ -42,7 +42,11 @@ export const EventDropdown: React.FC<EventDropdownProps> = ({
   const events = isPenaltyShootout ? PENALTY_SHOOTOUT_EVENTS : REGULAR_EVENTS;
 
   const closeDropdown = useCallback(() => setIsOpen(false), []);
-  useCloseComponent({ onClose: closeDropdown, containerRef: wrapperRef });
+  useCloseComponent({
+    onClose: closeDropdown,
+    containerRef: wrapperRef,
+    enabled: isOpen,
+  });
 
   const handleSelect = (event: EventType) => {
     onChange(event);

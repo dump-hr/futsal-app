@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { Button, Input, Modal } from '@components/index';
-import { useCloseComponent } from '@hooks/index';
 import { XWhite, CheckBlack } from '@assets/index';
 import { useGroupCreate } from '@api/index';
 import c from './ModalNewGroup.module.scss';
@@ -21,8 +20,6 @@ export const ModalNewGroup: React.FC<ModalNewGroupProps> = ({
   const { mutate: createGroup, isPending } = useGroupCreate();
 
   const inputWrapperRef = useRef<HTMLDivElement>(null);
-
-  useCloseComponent({ onClose });
 
   useEffect(() => {
     inputWrapperRef.current?.querySelector('input')?.focus();
