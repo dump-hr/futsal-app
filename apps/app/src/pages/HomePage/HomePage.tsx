@@ -1,4 +1,4 @@
-import { useLocation } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { Button, MatchCard, MatchCardLarge } from '@components/index';
 import { useMatchGetAll, useMatchTimerLive } from '@api/index';
 import { getTodayMatches, getUpcomingAndLiveMatches } from '@helpers/index';
@@ -41,11 +41,15 @@ export const HomePage = () => {
     return (
       <div className={c.todayRow} ref={todayRowRef}>
         {todayMatches.map((match) => (
-          <MatchCardLarge
+          <Link
             key={match.id}
-            match={match}
-            elapsedMinutes={elapsedFor(match.id)}
-          />
+            href={`${routes.MATCHES}/${match.id}`}
+            className={c.matchLink}>
+            <MatchCardLarge
+              match={match}
+              elapsedMinutes={elapsedFor(match.id)}
+            />
+          </Link>
         ))}
       </div>
     );
@@ -61,11 +65,12 @@ export const HomePage = () => {
     return (
       <div className={c.list}>
         {upcomingMatches.map((match) => (
-          <MatchCard
+          <Link
             key={match.id}
-            match={match}
-            elapsedMinutes={elapsedFor(match.id)}
-          />
+            href={`${routes.MATCHES}/${match.id}`}
+            className={c.matchLink}>
+            <MatchCard match={match} elapsedMinutes={elapsedFor(match.id)} />
+          </Link>
         ))}
       </div>
     );

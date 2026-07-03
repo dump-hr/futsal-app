@@ -1,5 +1,6 @@
 import type { RefObject } from 'react';
 import clsx from 'clsx';
+import { Link } from 'wouter';
 import { MatchDto, MatchType } from '@futsal-app/types';
 import { DrawRound } from '@components/DrawRound';
 import {
@@ -9,6 +10,7 @@ import {
   sortMatchesByTime,
 } from '@helpers/index';
 import { MATCH_STATUS } from '@constants/index';
+import { routes } from '@routes/index';
 import c from './Bracket.module.scss';
 
 export type KnockoutRound = Exclude<
@@ -49,8 +51,8 @@ const renderMatch = (match: MatchDto) => {
   };
 
   const status = getMatchStatus(match);
-  if (status === MATCH_STATUS.UPCOMING) {
-    return (
+  const round =
+    status === MATCH_STATUS.UPCOMING ? (
       <DrawRound
         status='UPCOMING'
         teamA={teamA}
@@ -58,17 +60,20 @@ const renderMatch = (match: MatchDto) => {
         matchDate={formatMatchDateShort(match.timeOfMatch)}
         matchTime={formatMatchTime(match.timeOfMatch)}
       />
+    ) : (
+      <DrawRound
+        status='ACTIVE'
+        teamA={teamA}
+        teamB={teamB}
+        teamAScore={match.homeGoals}
+        teamBScore={match.awayGoals}
+      />
     );
-  }
 
   return (
-    <DrawRound
-      status='ACTIVE'
-      teamA={teamA}
-      teamB={teamB}
-      teamAScore={match.homeGoals}
-      teamBScore={match.awayGoals}
-    />
+    <Link href={`${routes.MATCHES}/${match.id}`} className={c.matchLink}>
+      {round}
+    </Link>
   );
 };
 

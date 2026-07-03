@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'wouter';
 import clsx from 'clsx';
 import { MatchType } from '@futsal-app/types';
@@ -14,6 +14,8 @@ import { MatchStanding } from './MatchStanding';
 import { MatchDraw } from './MatchDraw';
 import { useTeamColors } from './useTeamColors';
 import c from './MatchDetailPage.module.scss';
+import InfobipLogo from '@assets/icons/infobip.svg';
+import OtpLogo from '@assets/icons/otp.svg';
 
 type TabValue = 'details' | 'players' | 'standings';
 
@@ -25,6 +27,10 @@ export const MatchDetailPage = () => {
   const matchId = Number.isNaN(parsed) ? undefined : parsed;
 
   const [activeTab, setActiveTab] = useState<TabValue>('details');
+
+  useEffect(() => {
+    setActiveTab('details');
+  }, [matchId]);
 
   const { data: match, isLoading, isError } = useMatchGet(matchId);
   const {
@@ -81,6 +87,7 @@ export const MatchDetailPage = () => {
       return isGroupMatch ? <MatchStanding match={match} /> : <MatchDraw />;
     return (
       <MatchTimeline
+        match={match}
         events={events}
         isLoading={areEventsLoading}
         isError={isEventsError}
@@ -131,7 +138,7 @@ export const MatchDetailPage = () => {
           <div className={c.team}>
             <TeamLogo
               name={match?.homeTeam?.name ?? 'TBD'}
-              logoUrl={match?.homeTeam?.logoUrl}
+              logoUrl={InfobipLogo}
               className={c.teamLogo}
             />
             <span className={c.teamName}>{match?.homeTeam?.name ?? 'TBD'}</span>
@@ -144,7 +151,7 @@ export const MatchDetailPage = () => {
           <div className={c.team}>
             <TeamLogo
               name={match?.awayTeam?.name ?? 'TBD'}
-              logoUrl={match?.awayTeam?.logoUrl}
+              logoUrl={OtpLogo}
               className={c.teamLogo}
             />
             <span className={c.teamName}>{match?.awayTeam?.name ?? 'TBD'}</span>
