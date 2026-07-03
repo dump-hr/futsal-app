@@ -1,1 +1,1 @@
-export const TICK_INTERVAL_MS = 250;
+export const TICK_INTERVAL_MS = 1000;
