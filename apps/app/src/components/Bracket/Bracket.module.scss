@@ -43,6 +43,13 @@
   flex: 0 0 auto;
 }
 
+.matchLink {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
 .lineIn,
 .lineOut {
   position: absolute;

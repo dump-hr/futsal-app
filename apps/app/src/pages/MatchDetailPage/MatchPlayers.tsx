@@ -2,13 +2,8 @@ import { useState } from 'react';
 import clsx from 'clsx';
 import { EventType, MatchDto, MatchEventDto } from '@futsal-app/types';
 import { Button } from '@components/index';
-import { CardWhite, GoalWhite } from '@assets/index';
+import { GoalWhite } from '@assets/index';
 import c from './MatchPlayers.module.scss';
-
-const CARD_EVENT_TYPES: ReadonlySet<string> = new Set([
-  EventType.yellowCard,
-  EventType.redCard,
-]);
 
 const GOAL_EVENT_TYPES: ReadonlySet<string> = new Set([
   EventType.goal,
@@ -28,9 +23,10 @@ export const MatchPlayers = ({ match, events }: MatchPlayersProps) => {
     a.lastName.localeCompare(b.lastName),
   );
 
-  const countEvents = (playerId: number, types: ReadonlySet<string>) =>
+  const countGoals = (playerId: number) =>
     (events ?? []).filter(
-      (event) => event.playerId === playerId && types.has(event.eventType),
+      (event) =>
+        event.playerId === playerId && GOAL_EVENT_TYPES.has(event.eventType),
     ).length;
 
   return (
@@ -54,7 +50,6 @@ export const MatchPlayers = ({ match, events }: MatchPlayersProps) => {
         <div className={c.table}>
           <div className={clsx(c.row, c.headerRow)}>
             <span className={c.playerName}>Ime i Prezime</span>
-            <img className={c.statIcon} src={CardWhite} alt='Kartoni' />
             <img className={c.statIcon} src={GoalWhite} alt='Golovi' />
           </div>
 
@@ -63,12 +58,7 @@ export const MatchPlayers = ({ match, events }: MatchPlayersProps) => {
               <span className={c.playerName}>
                 {player.firstName} {player.lastName}
               </span>
-              <span className={c.stat}>
-                {countEvents(player.id, CARD_EVENT_TYPES)}
-              </span>
-              <span className={c.stat}>
-                {countEvents(player.id, GOAL_EVENT_TYPES)}
-              </span>
+              <span className={c.stat}>{countGoals(player.id)}</span>
             </div>
           ))}
         </div>

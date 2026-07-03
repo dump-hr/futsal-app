@@ -35,6 +35,15 @@
   justify-content: flex-start;
 }
 
+.notStarted {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  padding: 24px 0;
+}
+
 .message {
   margin: 0;
   padding: 24px 0;

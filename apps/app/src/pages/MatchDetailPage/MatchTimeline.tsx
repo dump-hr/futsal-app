@@ -1,6 +1,12 @@
 import clsx from 'clsx';
-import { EventType, MatchEventDto } from '@futsal-app/types';
-import { EventCard, type EventCardType } from '@components/index';
+import { EventType, MatchDto, MatchEventDto } from '@futsal-app/types';
+import {
+  EventCard,
+  NoEventsCard,
+  type EventCardType,
+} from '@components/index';
+import { MATCH_STATUS } from '@constants/index';
+import { getMatchStatus } from '@helpers/index';
 import c from './MatchTimeline.module.scss';
 
 const TIMELINE_EVENT_TYPES: ReadonlySet<string> = new Set([
@@ -14,12 +20,14 @@ const TIMELINE_EVENT_TYPES: ReadonlySet<string> = new Set([
 ]);
 
 type MatchTimelineProps = {
+  match: MatchDto;
   events: MatchEventDto[] | undefined;
   isLoading: boolean;
   isError: boolean;
 };
 
 export const MatchTimeline = ({
+  match,
   events,
   isLoading,
   isError,
@@ -28,12 +36,19 @@ export const MatchTimeline = ({
   if (isError)
     return <p className={c.message}>Greška pri učitavanju događaja</p>;
 
+  if (getMatchStatus(match) === MATCH_STATUS.UPCOMING) {
+    return (
+      <div className={c.notStarted}>
+        <NoEventsCard />
+      </div>
+    );
+  }
+
   const timelineEvents = (events ?? [])
     .filter((event) => TIMELINE_EVENT_TYPES.has(event.eventType))
     .sort((a, b) => a.minute - b.minute || a.id - b.id);
 
-  if (timelineEvents.length === 0)
-    return <p className={c.message}>Nema događaja</p>;
+  if (timelineEvents.length === 0) return null;
 
   return (
     <div className={c.timeline}>
