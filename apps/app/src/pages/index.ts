@@ -1,5 +1,6 @@
 export * from './HomePage';
 export * from './MatchesPage';
+export * from './MatchDetailPage';
 export * from './DrawPage';
 export * from './TeamsPage';
 export * from './TeamDetailPage';

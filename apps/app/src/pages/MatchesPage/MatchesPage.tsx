@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { Link } from 'wouter';
 import { Filter, MatchCard, type FilterOption } from '@components/index';
 import { useMatchGetAll, useMatchTimerLive } from '@api/index';
 import { groupMatchesByDay } from '@helpers/index';
 import { useTournamentContext } from '@hooks/index';
 import { MATCH_STATUS, type MatchStatus } from '@constants/index';
 import { PageLayout } from '@layouts/index';
+import { routes } from '@routes/index';
 import c from './MatchesPage.module.scss';
 
 const statusOptions: FilterOption<MatchStatus>[] = [
@@ -63,15 +65,19 @@ export const MatchesPage = () => {
             <h2 className={c.groupHeader}>{day.dateLabel}</h2>
             <div className={c.groupList}>
               {day.matches.map((match) => (
-                <MatchCard
+                <Link
                   key={match.id}
-                  match={match}
-                  elapsedMinutes={
-                    match.id === activeMatch?.id
-                      ? liveElapsedMinutes
-                      : undefined
-                  }
-                />
+                  href={`${routes.MATCHES}/${match.id}`}
+                  className={c.matchLink}>
+                  <MatchCard
+                    match={match}
+                    elapsedMinutes={
+                      match.id === activeMatch?.id
+                        ? liveElapsedMinutes
+                        : undefined
+                    }
+                  />
+                </Link>
               ))}
             </div>
           </section>

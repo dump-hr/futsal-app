@@ -4,6 +4,7 @@ import { routes } from '@routes/index';
 import {
   HomePage,
   MatchesPage,
+  MatchDetailPage,
   DrawPage,
   TeamsPage,
   TeamDetailPage,
@@ -17,6 +18,7 @@ export const Router = () => {
     <NavbarLayout>
       <Switch>
         <Route path={routes.HOME} component={HomePage} />
+        <Route path={routes.MATCH_DETAIL} component={MatchDetailPage} />
         <Route path={routes.MATCHES} component={MatchesPage} />
         <Route path={routes.DRAW} component={DrawPage} />
         <Route path={routes.TEAM_DETAIL} component={TeamDetailPage} />
