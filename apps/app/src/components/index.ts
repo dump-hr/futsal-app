@@ -1,3 +1,4 @@
+export * from './Bracket';
 export * from './Button';
 export * from './DrawRound';
 export * from './EventCard';

@@ -81,10 +81,18 @@ export const TeamDetailPage = () => {
         {matches.map((match) => (
           <Fragment key={match.id}>
             <div className={c.matchCompact}>
-              <MatchCard match={match} />
+              <Link
+                href={`${routes.MATCHES}/${match.id}`}
+                className={c.matchLink}>
+                <MatchCard match={match} />
+              </Link>
             </div>
             <div className={c.matchLarge}>
-              <MatchCardLarge match={match} />
+              <Link
+                href={`${routes.MATCHES}/${match.id}`}
+                className={c.matchLink}>
+                <MatchCardLarge match={match} />
+              </Link>
             </div>
           </Fragment>
         ))}

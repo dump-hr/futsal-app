@@ -1,0 +1,7 @@
+.message {
+  margin: 0;
+  padding: 24px 0;
+  color: $white-transparent;
+  text-align: center;
+  @include body-normal;
+}
