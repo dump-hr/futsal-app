@@ -9,7 +9,7 @@ const getMatch = (matchId: number) => {
 export const useMatchGet = (matchId: number | undefined) => {
   return useQuery({
     queryFn: () => getMatch(matchId!),
-    queryKey: ['matches', matchId],
+    queryKey: ['match', matchId],
     enabled: !!matchId,
   });
 };

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'wouter';
 import clsx from 'clsx';
 import { MatchType } from '@futsal-app/types';
@@ -27,10 +27,15 @@ export const MatchDetailPage = () => {
   const matchId = Number.isNaN(parsed) ? undefined : parsed;
 
   const [activeTab, setActiveTab] = useState<TabValue>('details');
+  const panelRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     setActiveTab('details');
   }, [matchId]);
+
+  useEffect(() => {
+    panelRef.current?.scrollTo({ top: 0 });
+  }, [activeTab]);
 
   const { data: match, isLoading, isError } = useMatchGet(matchId);
   const {
@@ -159,7 +164,9 @@ export const MatchDetailPage = () => {
         </div>
       </header>
 
-      <div className={c.panel}>{renderPanelContent()}</div>
+      <div className={c.panel} ref={panelRef}>
+        {renderPanelContent()}
+      </div>
     </div>
   );
 };

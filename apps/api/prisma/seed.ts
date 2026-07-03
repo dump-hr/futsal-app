@@ -446,12 +446,113 @@ async function main() {
     },
   });
 
+  // Stress-test: beef up teams 0 and 1 with extra players, then a LIVE
+  // group match packed with events so every tab has lots of content.
+  const extraPlayerNames: Array<[string, string]> = [
+    ['Ivo', 'Jovanović'],
+    ['Kristian', 'Ivanović'],
+    ['Mario', 'Šimunović'],
+    ['Dario', 'Antunović'],
+    ['Zoran', 'Marinović'],
+    ['Igor', 'Belić'],
+    ['Slaven', 'Puljić'],
+    ['Duje', 'Vlašić'],
+    ['Ivor', 'Đurić'],
+    ['Bojan', 'Đikić'],
+    ['Alen', 'Marković'],
+    ['Boris', 'Cvitković'],
+    ['Rene', 'Jelić'],
+    ['Ratko', 'Milić'],
+    ['Krešimir', 'Ćorić'],
+    ['Dražen', 'Kelava'],
+    ['Josef', 'Renić'],
+    ['Mateo', 'Nogalo'],
+    ['Toma', 'Delić'],
+    ['Šime', 'Bogdan'],
+  ];
+
+  const stressTeams = [teams[0], teams[1]];
+  for (let t = 0; t < stressTeams.length; t++) {
+    for (let j = 0; j < 10; j++) {
+      const name = extraPlayerNames[t * 10 + j];
+      const player = await prisma.player.create({
+        data: {
+          firstName: name[0],
+          lastName: name[1],
+          dateOfBirth: new Date(
+            1998 + Math.floor(Math.random() * 6),
+            Math.floor(Math.random() * 12),
+            1 + Math.floor(Math.random() * 28),
+          ),
+          teamId: stressTeams[t].id,
+        },
+      });
+      players.push({ id: player.id, teamId: stressTeams[t].id });
+    }
+  }
+
+  const liveMatch = await prisma.match.create({
+    data: {
+      timeOfMatch: new Date(),
+      homeTeamId: teams[0].id,
+      awayTeamId: teams[1].id,
+      homeGoals: 5,
+      awayGoals: 3,
+      matchType: MatchType.group,
+      isActive: true,
+      isFinished: false,
+      timerIsRunning: true,
+      timerStartedAt: new Date(),
+      timerAccumulatedMs: 25 * 60 * 1000,
+      timerLastSyncedAt: new Date(),
+    },
+  });
+
+  const liveEvents: Array<{
+    minute: number;
+    type: EventType;
+    isHome: boolean;
+  }> = [
+    { minute: 3, type: EventType.goal, isHome: true },
+    { minute: 5, type: EventType.yellowCard, isHome: false },
+    { minute: 8, type: EventType.goal, isHome: false },
+    { minute: 12, type: EventType.penaltyGoal, isHome: true },
+    { minute: 14, type: EventType.injury, isHome: true },
+    { minute: 15, type: EventType.goal, isHome: true },
+    { minute: 17, type: EventType.yellowCard, isHome: true },
+    { minute: 19, type: EventType.goal, isHome: false },
+    { minute: 21, type: EventType.penaltyMiss, isHome: false },
+    { minute: 24, type: EventType.goal, isHome: true },
+    { minute: 26, type: EventType.redCard, isHome: false },
+    { minute: 28, type: EventType.goal, isHome: false },
+    { minute: 30, type: EventType.yellowCard, isHome: true },
+    { minute: 32, type: EventType.goal, isHome: true },
+    { minute: 34, type: EventType.injury, isHome: false },
+    { minute: 36, type: EventType.yellowCard, isHome: false },
+    { minute: 38, type: EventType.penaltyGoal, isHome: true },
+    { minute: 40, type: EventType.injury, isHome: true },
+  ];
+
+  for (const e of liveEvents) {
+    await prisma.matchEvent.create({
+      data: {
+        minute: e.minute,
+        matchId: liveMatch.id,
+        playerId: randomPlayer((e.isHome ? teams[0] : teams[1]).id).id,
+        eventType: e.type,
+        isForHomeTeam: e.isHome,
+      },
+    });
+  }
+
   console.log('Seed complete!');
   console.log(`  Tournament: ${tournament.name}`);
   console.log(`  Teams: ${teams.length}`);
   console.log(`  Players: ${players.length}`);
   console.log(`  Groups: ${groups.length}`);
-  console.log(`  Matches: 4 group + 4 QF + 2 SF + 1 F = 11`);
+  console.log(
+    `  Matches: 4 group + 1 LIVE group + 4 QF + 2 SF + 1 F = 12 (live = match #${liveMatch.id})`,
+  );
 }
 
 main().catch((e) => {
