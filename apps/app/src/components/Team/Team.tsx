@@ -25,10 +25,7 @@ export const Team: React.FC<TeamProps> = ({ team }) => {
       ? dominantColorState.color
       : PLACEHOLDER_DOMINANT_COLOR;
   const containerGradientStyle = {
-    background: `linear-gradient(180deg, rgba(0, 0, 0, 0.80) 0%, ${hexToRgba(
-      dominantColor,
-      0.8,
-    )} 100%)`,
+    '--team-dominant-color': hexToRgba(dominantColor, 0.8),
   } as CSSProperties;
 
   const handleLogoLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
