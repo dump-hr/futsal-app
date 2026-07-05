@@ -2,7 +2,7 @@
 - name: Create node exporter docker container
   docker_container:
     name: node-exporter
-    image: quay.io/prometheus/node-exporter:latest
+    image: quay.io/prometheus/node-exporter:v1.11.1
     restart_policy: unless-stopped
     network_mode: host
     pid_mode: host
