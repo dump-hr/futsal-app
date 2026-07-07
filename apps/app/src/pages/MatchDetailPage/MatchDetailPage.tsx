@@ -18,16 +18,12 @@ import { MatchPlayers } from './MatchPlayers';
 import { MatchStanding } from './MatchStanding';
 import { MatchDraw } from './MatchDraw';
 import c from './MatchDetailPage.module.scss';
-import hajduk from '@assets/icons/hajduk.png';
-import google from '@assets/icons/google.svg';
-import infobip from '@assets/icons/infobip.svg';
-import otp from '@assets/icons/otp.svg';
 
 type TabValue = 'details' | 'players' | 'standings';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
-const GRADIENT_MAX_BRIGHTNESS = 95;
+const GRADIENT_MAX_BRIGHTNESS = 125;
 
 const darkenHexColor = (hex: string) => {
   const red = parseInt(hex.slice(1, 3), 16);
@@ -74,8 +70,8 @@ export const MatchDetailPage = () => {
     isError: isEventsError,
   } = useMatchEventsGet(matchId);
   const { elapsedSeconds } = useMatchTimerLive(match?.isActive ? match.id : 0);
-  const homeLogoUrl = infobip;
-  const awayLogoUrl = infobip;
+  const homeLogoUrl = match?.homeTeam?.logoUrl;
+  const awayLogoUrl = match?.awayTeam?.logoUrl;
 
   const [homeColor, setHomeColor] = useState(
     darkenHexColor(PLACEHOLDER_DOMINANT_COLOR),
@@ -88,8 +84,12 @@ export const MatchDetailPage = () => {
     let cancelled = false;
 
     Promise.all([
-      loadDominantColor(homeLogoUrl),
-      loadDominantColor(awayLogoUrl),
+      homeLogoUrl
+        ? loadDominantColor(homeLogoUrl)
+        : Promise.resolve(PLACEHOLDER_DOMINANT_COLOR),
+      awayLogoUrl
+        ? loadDominantColor(awayLogoUrl)
+        : Promise.resolve(PLACEHOLDER_DOMINANT_COLOR),
     ]).then(([home, away]) => {
       if (cancelled) return;
       setHomeColor(darkenHexColor(home));
