@@ -1,44 +1,17 @@
 import type { RefObject } from 'react';
 import clsx from 'clsx';
 import { Link } from 'wouter';
-import { MatchDto, MatchType } from '@futsal-app/types';
+import { MatchDto } from '@futsal-app/types';
 import { DrawRound } from '@components/DrawRound';
 import {
   formatMatchDateShort,
   formatMatchTime,
   getMatchStatus,
-  sortMatchesByTime,
 } from '@helpers/index';
 import { MATCH_STATUS } from '@constants/index';
 import { routes } from '@routes/index';
+import type { BracketRound, KnockoutRound } from './utils';
 import c from './Bracket.module.scss';
-
-export type KnockoutRound = Exclude<
-  `${MatchType}`,
-  `${MatchType.group}` | `${MatchType.thirdPlace}`
->;
-
-export type BracketRound = {
-  value: KnockoutRound;
-  label: string;
-  matches: MatchDto[];
-};
-
-const ROUND_DEFS: { value: KnockoutRound; label: string }[] = [
-  { value: MatchType.quarterFinal, label: '1/4' },
-  { value: MatchType.semiFinal, label: 'Polufinale' },
-  { value: MatchType.final, label: 'Finale' },
-];
-
-export const buildBracketRounds = (
-  matches: MatchDto[] | undefined,
-): BracketRound[] =>
-  ROUND_DEFS.map((def) => ({
-    ...def,
-    matches: sortMatchesByTime(
-      (matches ?? []).filter((match) => match.matchType === def.value),
-    ),
-  })).filter((round) => round.matches.length > 0);
 
 const renderMatch = (match: MatchDto) => {
   const teamA = {

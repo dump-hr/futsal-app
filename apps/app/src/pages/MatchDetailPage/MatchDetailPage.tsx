@@ -3,7 +3,14 @@ import { Link, useParams } from 'wouter';
 import clsx from 'clsx';
 import { MatchType } from '@futsal-app/types';
 import { useMatchGet, useMatchEventsGet, useMatchTimerLive } from '@api/index';
-import { Navbar, TeamLogo } from '@components/index';
+import {
+  MatchDraw,
+  MatchPlayers,
+  MatchStanding,
+  MatchTimeline,
+  Navbar,
+  TeamLogo,
+} from '@components/index';
 import {
   getDominantLogoColor,
   PLACEHOLDER_DOMINANT_COLOR,
@@ -13,10 +20,6 @@ import { MATCH_STATUS, MATCH_TYPE_LABELS } from '@constants/index';
 import { formatMatchDateLong, getMatchStatus } from '@helpers/index';
 import { routes } from '@routes/index';
 import { ArrowLeftWhite } from '@assets/index';
-import { MatchTimeline } from './MatchTimeline';
-import { MatchPlayers } from './MatchPlayers';
-import { MatchStanding } from './MatchStanding';
-import { MatchDraw } from './MatchDraw';
 import c from './MatchDetailPage.module.scss';
 
 type TabValue = 'details' | 'players' | 'standings';
