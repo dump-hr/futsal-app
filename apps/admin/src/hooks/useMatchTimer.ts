@@ -113,8 +113,6 @@ export const useMatchTimer = (matchId: number) => {
       const state = stateRef.current;
       const elapsedMs = elapsedMsFromState(state);
 
-      // auto-stop only for runs started below the cap, so a manual
-      // restart from 30:00 can keep counting (added time)
       if (
         state.accumulatedMs < MATCH_DURATION_MS &&
         elapsedMs >= MATCH_DURATION_MS
@@ -139,7 +137,6 @@ export const useMatchTimer = (matchId: number) => {
     return () => clearInterval(interval);
   }, [isRunning, matchId, pushSync]);
 
-  // Heartbeat to ensure other clients get updates even if the tab is inactive
   useEffect(() => {
     if (!isRunning) return;
     const interval = setInterval(() => {
@@ -148,7 +145,6 @@ export const useMatchTimer = (matchId: number) => {
     return () => clearInterval(interval);
   }, [isRunning, pushSync]);
 
-  // Listen to localStorage changes to sync across tabs
   const toggle = useCallback(() => {
     const now = Date.now();
     const current = stateRef.current;
