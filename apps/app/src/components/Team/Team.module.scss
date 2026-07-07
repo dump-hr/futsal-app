@@ -56,20 +56,21 @@
 
 @media (max-width: 767px) {
   .container {
-    width: 163px;
-    height: 163px;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
     padding: 16px;
   }
 
   .logo,
   .logoPlaceholder {
-    width: 52px;
-    height: 52px;
+    width: 48px;
+    height: 48px;
   }
 
   .logoPlaceholder {
-    font-size: 52px;
-    line-height: 52px;
+    font-size: 48px;
+    line-height: 48px;
   }
 
   .name {
