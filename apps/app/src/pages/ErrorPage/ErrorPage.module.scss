@@ -1,0 +1,139 @@
+.background {
+  position: relative;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: $black;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -72px 0 0;
+    background: url('@assets/images/pitch.webp') center top / cover no-repeat;
+  }
+
+  > div {
+    position: relative;
+    height: 100dvh;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  height: 100%;
+  padding: 24px 0;
+  text-align: center;
+}
+
+.scene {
+  position: relative;
+  width: 120px;
+  height: 160px;
+}
+
+.ball {
+  position: absolute;
+  left: 50%;
+  bottom: 26px;
+  width: 90px;
+  height: 90px;
+  margin-left: -45px;
+  transform-origin: center bottom;
+  animation: bounce 1.1s cubic-bezier(0.5, 0.05, 0.6, 1) infinite alternate;
+}
+
+.shadow {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  width: 64px;
+  height: 12px;
+  margin-left: -32px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  filter: blur(2px);
+  animation: shadow 1.1s cubic-bezier(0.5, 0.05, 0.6, 1) infinite alternate;
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(-80px) scaleX(0.97) scaleY(1.03);
+  }
+  to {
+    transform: translateY(0) scaleX(1.1) scaleY(0.9);
+  }
+}
+
+@keyframes shadow {
+  from {
+    transform: scale(0.6);
+    opacity: 0.25;
+  }
+  to {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+}
+
+.heading {
+  margin: 0;
+  color: $lime;
+  @include title-3-bold;
+}
+
+.message {
+  margin: 0;
+  max-width: 420px;
+  color: $white-transparent;
+  @include body-normal;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .background::before {
+    inset: 0;
+    background: url('@assets/images/pitch-mobile.webp') center top / cover
+      no-repeat;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ball,
+  .shadow {
+    animation: none;
+  }
+
+  .ball {
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 1100px) {
+  .container {
+    gap: 28px;
+  }
+
+  .scene {
+    margin-bottom: 32px;
+    transform: scale(1.4);
+  }
+
+  .heading {
+    @include title-2;
+  }
+
+  .message {
+    max-width: 520px;
+    @include body-large;
+  }
+}
