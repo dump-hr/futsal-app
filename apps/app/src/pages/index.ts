@@ -5,3 +5,4 @@ export * from './TeamsPage';
 export * from './TeamDetailPage';
 export * from './GroupsPage';
 export * from './NotFoundPage';
+export * from './ErrorPage';
