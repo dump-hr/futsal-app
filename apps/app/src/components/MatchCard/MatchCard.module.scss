@@ -7,6 +7,18 @@
   color: $white;
   display: flex;
   align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: rgba($background-black-light, 0.75);
+    }
+  }
+
+  &:active {
+    background-color: rgba($gray-dark, 0.75);
+  }
 }
 
 .summary {

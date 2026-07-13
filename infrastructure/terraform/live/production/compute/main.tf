@@ -44,6 +44,14 @@ data "sops_file" "secrets" {
   source_file = "secrets.enc.json"
 }
 
+resource "cloudflare_record" "search_console_verification" {
+  zone_id = data.cloudflare_zone.dump_hr.id
+  name    = "turnir"
+  value   = "google-site-verification=VFnQZXmVzgSittrBRiU_4aydaQSqMAtylqE1ICRCEEc"
+  type    = "TXT"
+  comment = "Managed by terraform"
+}
+
 module "web" {
   source = "../../../modules/ec2"
 
@@ -54,7 +62,7 @@ module "web" {
   subnets                   = data.aws_subnets.public_subnets.ids
   security_groups           = data.aws_security_groups.public_sg.ids
   ssh_public_key            = file("../../../../ssh-keys/production.pub")
-  website_domain            = "malonogometni.dump.hr"
+  website_domain            = "turnir.dump.hr"
   cloudflare_zone_id        = data.cloudflare_zone.dump_hr.id
 
   tags = {

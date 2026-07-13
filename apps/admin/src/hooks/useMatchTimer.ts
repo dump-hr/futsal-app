@@ -1,7 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { MatchTimerSyncDto } from '@futsal-app/types';
 import { useMatchTimerGet, useMatchTimerSync } from '@api/index';
-import { TICK_INTERVAL_MS, HEARTBEAT_INTERVAL_MS } from '@constants/timer';
+import {
+  TICK_INTERVAL_MS,
+  HEARTBEAT_INTERVAL_MS,
+  MATCH_DURATION_MS,
+  MATCH_DURATION_SECONDS,
+} from '@constants/timer';
+import { playMatchEndSound } from '@helpers/playMatchEndSound';
 
 type StoredTimerState = {
   startedAt: number | null;
@@ -129,16 +135,33 @@ export const useMatchTimer = (matchId: number) => {
     if (!isRunning) return;
 
     const tick = () => {
-      setElapsedSeconds(
-        Math.floor(elapsedMsFromState(stateRef.current) / 1000),
-      );
+      const state = stateRef.current;
+      const elapsedMs = elapsedMsFromState(state);
+
+      if (
+        state.accumulatedMs < MATCH_DURATION_MS &&
+        elapsedMs >= MATCH_DURATION_MS
+      ) {
+        const next = writeState(matchId, {
+          startedAt: null,
+          accumulatedMs: MATCH_DURATION_MS,
+          isRunning: false,
+        });
+        stateRef.current = next;
+        setIsRunning(false);
+        setElapsedSeconds(MATCH_DURATION_SECONDS);
+        pushSync(next);
+        playMatchEndSound();
+        return;
+      }
+
+      setElapsedSeconds(Math.floor(elapsedMs / 1000));
     };
     tick();
     const interval = setInterval(tick, TICK_INTERVAL_MS);
     return () => clearInterval(interval);
-  }, [isRunning]);
+  }, [isRunning, matchId, pushSync]);
 
-  // Heartbeat to ensure other clients get updates even if the tab is inactive
   useEffect(() => {
     if (!isRunning) return;
     const interval = setInterval(() => {
@@ -175,7 +198,10 @@ export const useMatchTimer = (matchId: number) => {
   }, [matchId, pushSync]);
 
   const setElapsed = (seconds: number) => {
-    const safe = Math.max(0, Math.floor(seconds));
+    const safe = Math.min(
+      MATCH_DURATION_SECONDS,
+      Math.max(0, Math.floor(seconds)),
+    );
     const current = stateRef.current;
     const next = writeState(matchId, {
       startedAt: current.isRunning ? Date.now() : null,

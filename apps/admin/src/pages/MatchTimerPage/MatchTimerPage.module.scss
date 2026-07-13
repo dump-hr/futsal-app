@@ -38,7 +38,7 @@
       rgba(0, 0, 0, 0.3) 0%,
       rgba(0, 0, 0, 0.3) 100%
     ),
-    linear-gradient(90deg, rgb(126, 30, 0) 0%, rgb(0, 103, 76) 100%);
+    linear-gradient(90deg, var(--home-color) 0%, var(--away-color) 100%);
 }
 
 .headerTeam {
@@ -96,7 +96,11 @@
 .clockDigits {
   cursor: default;
   display: inline-block;
-  min-width: 2ch;
+}
+
+.clockDigit {
+  display: inline-block;
+  width: 1ch;
   text-align: center;
 }
 

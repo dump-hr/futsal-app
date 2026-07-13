@@ -1,5 +1,5 @@
 FROM node:22.12-alpine AS base
-LABEL org.opencontainers.image.source https://github.com/dump-hr/futsal-app
+LABEL org.opencontainers.image.source=https://github.com/dump-hr/futsal-app
 
 FROM base AS builder
 RUN apk add --no-cache libc6-compat
@@ -30,8 +30,6 @@ RUN yarn turbo run build --filter=api...
 FROM base AS runner
 WORKDIR /app
 EXPOSE 3000
-HEALTHCHECK CMD curl -f http://localhost:3000/api/healthz || exit 1
-RUN apk add --no-cache curl
 
 RUN addgroup --system --gid 1001 nestjs
 RUN adduser --system --uid 1001 nestjs
@@ -40,4 +38,7 @@ COPY --from=installer --chown=nestjs:nestjs /app .
 COPY --chown=nestjs:nestjs apps/admin/dist ./apps/admin/dist
 COPY --chown=nestjs:nestjs apps/app/dist ./apps/app/dist
 
-CMD node apps/api/dist/src/main.js
+HEALTHCHECK --interval=5s --timeout=3s --start-period=10s --retries=3 \
+  CMD wget -q --spider http://127.0.0.1:3000/api/healthz || exit 1
+
+CMD ["node", "apps/api/dist/src/main.js"]
