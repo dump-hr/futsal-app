@@ -44,6 +44,14 @@ data "sops_file" "secrets" {
   source_file = "secrets.enc.json"
 }
 
+resource "cloudflare_record" "search_console_verification" {
+  zone_id = data.cloudflare_zone.dump_hr.id
+  name    = "turnir"
+  value   = "google-site-verification=VFnQZXmVzgSittrBRiU_4aydaQSqMAtylqE1ICRCEEc"
+  type    = "TXT"
+  comment = "Managed by terraform"
+}
+
 module "web" {
   source = "../../../modules/ec2"
 
