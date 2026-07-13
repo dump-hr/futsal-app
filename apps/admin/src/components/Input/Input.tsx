@@ -15,6 +15,14 @@ export const Input: React.FC<InputProps> = ({
   const inputRef = useRef<HTMLInputElement | null>(null);
   const inputId = useId();
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    props.onKeyDown?.(e);
+    if (e.key === 'Escape') {
+      inputRef.current?.blur();
+      e.stopPropagation();
+    }
+  };
+
   return (
     <div className={c.inputContainer}>
       {label && (
@@ -29,13 +37,7 @@ export const Input: React.FC<InputProps> = ({
         className={error ? `${c.input} ${c.error}` : c.input}
         autoComplete={autoComplete}
         {...props}
-        onKeyDown={(e) => {
-          props.onKeyDown?.(e);
-          if (e.key === 'Escape') {
-            inputRef.current?.blur();
-            e.stopPropagation();
-          }
-        }}
+        onKeyDown={handleKeyDown}
       />
     </div>
   );

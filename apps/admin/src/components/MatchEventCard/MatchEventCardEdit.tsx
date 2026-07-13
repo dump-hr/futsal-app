@@ -74,6 +74,16 @@ export const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
     }
   };
 
+  const handlePlayerSelect = (player: PlayerDto | null) => {
+    setEditForm((prev) => ({
+      ...prev,
+      playerName: player
+        ? `${player.firstName} ${player.lastName}`
+        : 'Nepoznat netko',
+      playerId: player?.id ?? null,
+    }));
+  };
+
   const isLeft = side === 'left';
 
   return (
@@ -110,15 +120,7 @@ export const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
           initialQuery={playerName ?? ''}
           placeholder='Ime igrača'
           align={isLeft ? 'left' : 'right'}
-          onSelect={(player) =>
-            setEditForm((prev) => ({
-              ...prev,
-              playerName: player
-                ? `${player.firstName} ${player.lastName}`
-                : 'Nepoznat netko',
-              playerId: player?.id ?? null,
-            }))
-          }
+          onSelect={handlePlayerSelect}
         />
         <EventDropdown
           side={side}

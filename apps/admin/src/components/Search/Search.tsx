@@ -12,6 +12,13 @@ type SearchProps = {
 export const Search: React.FC<SearchProps> = ({ className, value, onChange }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Escape') {
+      inputRef.current?.blur();
+      e.stopPropagation();
+    }
+  };
+
   return (
     <div className={clsx(c.search, className)}>
       <input
@@ -20,12 +27,7 @@ export const Search: React.FC<SearchProps> = ({ className, value, onChange }) =>
         value={value}
         onChange={onChange}
         ref={inputRef}
-        onKeyDown={(e) => {
-          if (e.key === 'Escape') {
-            inputRef.current?.blur();
-            e.stopPropagation();
-          }
-        }}
+        onKeyDown={handleKeyDown}
       />
       <img src={SearchWhite} alt='search' className={c.searchIcon} />
     </div>
