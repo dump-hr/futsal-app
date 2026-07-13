@@ -30,7 +30,11 @@ export const FilterDropdown = <T extends string>({
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const closeDropdown = useCallback(() => setIsOpen(false), []);
-  useCloseComponent({ onClose: closeDropdown, containerRef: wrapperRef });
+  useCloseComponent({
+    onClose: closeDropdown,
+    containerRef: wrapperRef,
+    enabled: isOpen,
+  });
 
   const selectedLabel =
     options.find((o) => o.value === value)?.label ?? placeholder ?? '';

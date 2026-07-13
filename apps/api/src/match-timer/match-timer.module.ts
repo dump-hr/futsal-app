@@ -7,5 +7,6 @@ import { MatchTimerService } from './match-timer.service';
   imports: [AuthModule],
   controllers: [MatchTimerController],
   providers: [MatchTimerService],
+  exports: [MatchTimerService],
 })
 export class MatchTimerModule {}

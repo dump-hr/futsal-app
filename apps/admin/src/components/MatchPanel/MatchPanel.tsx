@@ -76,7 +76,7 @@ export const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
     createEvent.mutate({
       minute: isPenalty ? 0 : data.minute,
       matchId,
-      playerId: data.playerId ?? null,
+      playerId: data.playerId,
       eventType: data.eventType,
       isForHomeTeam,
     });

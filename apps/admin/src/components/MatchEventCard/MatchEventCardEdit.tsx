@@ -13,13 +13,14 @@ import c from './MatchEventCard.module.scss';
 type EditFormState = {
   minute: string;
   playerName: string;
-  playerId?: number;
+  playerId: number | null;
   eventType: `${EventType}` | null;
 };
 
 type MatchEventCardEditProps = {
   minute?: number;
   playerName?: string;
+  playerId?: number | null;
   eventType?: `${EventType}`;
   side: 'left' | 'right';
   players: PlayerDto[];
@@ -34,6 +35,7 @@ type MatchEventCardEditProps = {
 export const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
   minute,
   playerName,
+  playerId,
   eventType,
   side,
   players,
@@ -47,7 +49,7 @@ export const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
   const [editForm, setEditForm] = useState<EditFormState>({
     minute: minute != null ? String(minute) : '',
     playerName: playerName ?? '',
-    playerId: undefined,
+    playerId: playerId ?? null,
     eventType: eventType ?? null,
   });
 
@@ -70,6 +72,16 @@ export const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
     } else {
       onStopEditing();
     }
+  };
+
+  const handlePlayerSelect = (player: PlayerDto | null) => {
+    setEditForm((prev) => ({
+      ...prev,
+      playerName: player
+        ? `${player.firstName} ${player.lastName}`
+        : 'Nepoznat netko',
+      playerId: player?.id ?? null,
+    }));
   };
 
   const isLeft = side === 'left';
@@ -108,15 +120,7 @@ export const MatchEventCardEdit: React.FC<MatchEventCardEditProps> = ({
           initialQuery={playerName ?? ''}
           placeholder='Ime igrača'
           align={isLeft ? 'left' : 'right'}
-          onSelect={(player) =>
-            setEditForm((prev) => ({
-              ...prev,
-              playerName: player
-                ? `${player.firstName} ${player.lastName}`
-                : 'Nepoznat netko',
-              playerId: player?.id,
-            }))
-          }
+          onSelect={handlePlayerSelect}
         />
         <EventDropdown
           side={side}

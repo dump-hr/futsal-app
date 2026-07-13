@@ -2,7 +2,6 @@ import { SearchWhite } from '@assets/index';
 import c from './Search.module.scss';
 import { ChangeEvent, useRef } from 'react';
 import clsx from 'clsx';
-import { useCloseComponent } from '@hooks/index';
 
 type SearchProps = {
   className?: string;
@@ -13,11 +12,12 @@ type SearchProps = {
 export const Search: React.FC<SearchProps> = ({ className, value, onChange }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const removeFocus = () => {
-    inputRef.current?.blur();
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Escape') {
+      inputRef.current?.blur();
+      e.stopPropagation();
+    }
   };
-
-  useCloseComponent({ onClose: removeFocus });
 
   return (
     <div className={clsx(c.search, className)}>
@@ -27,6 +27,7 @@ export const Search: React.FC<SearchProps> = ({ className, value, onChange }) =>
         value={value}
         onChange={onChange}
         ref={inputRef}
+        onKeyDown={handleKeyDown}
       />
       <img src={SearchWhite} alt='search' className={c.searchIcon} />
     </div>
