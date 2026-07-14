@@ -104,6 +104,47 @@
   @include body-normal;
 }
 
+.skeletonLogo {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 50%;
+
+  @media (min-width: 768px) {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+.skeletonName {
+  width: 180px;
+  height: 28px;
+
+  @media (min-width: 768px) {
+    width: 280px;
+    height: 56px;
+  }
+}
+
+.skeletonRows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeletonRowsHeader {
+  margin-bottom: 16px;
+}
+
+.skeletonCard {
+  height: 80px;
+
+  @media (min-width: 768px) {
+    height: 240px;
+    border-radius: 16px;
+  }
+}
+
 @media (min-width: 768px) {
   .header {
     padding: 0;

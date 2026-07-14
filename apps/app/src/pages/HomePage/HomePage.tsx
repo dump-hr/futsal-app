@@ -1,5 +1,5 @@
 import { useLocation } from 'wouter';
-import { Button, MatchCard, MatchCardLarge } from '@components/index';
+import { Button, MatchCard, MatchCardLarge, Skeleton } from '@components/index';
 import { useMatchGetAll, useMatchTimerLive } from '@api/index';
 import { getTodayMatches, getUpcomingAndLiveMatches } from '@helpers/index';
 import { useTournamentContext, useDragScroll } from '@hooks/index';
@@ -25,7 +25,12 @@ export const HomePage = () => {
   const upcomingMatches = getUpcomingAndLiveMatches(matches);
 
   const renderToday = () => {
-    if (isLoading) return <p className={c.message}>Učitavanje…</p>;
+    if (isLoading)
+      return (
+        <div className={c.todayRow}>
+          <Skeleton count={3} className={c.skeletonCardLarge} />
+        </div>
+      );
     if (isError)
       return <p className={c.message}>Greška pri učitavanju utakmica</p>;
     if (todayMatches.length === 0)
@@ -52,7 +57,12 @@ export const HomePage = () => {
   };
 
   const renderUpcoming = () => {
-    if (isLoading) return <p className={c.message}>Učitavanje…</p>;
+    if (isLoading)
+      return (
+        <div className={c.list}>
+          <Skeleton count={4} className={c.skeletonCard} />
+        </div>
+      );
     if (isError)
       return <p className={c.message}>Greška pri učitavanju utakmica</p>;
     if (upcomingMatches.length === 0)

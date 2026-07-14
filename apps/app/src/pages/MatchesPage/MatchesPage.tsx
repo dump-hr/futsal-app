@@ -1,5 +1,10 @@
 import { useState } from 'react';
-import { Filter, MatchCard, type FilterOption } from '@components/index';
+import {
+  Filter,
+  MatchCard,
+  Skeleton,
+  type FilterOption,
+} from '@components/index';
 import { useMatchGetAll, useMatchTimerLive } from '@api/index';
 import { groupMatchesByDay } from '@helpers/index';
 import { useTournamentContext } from '@hooks/index';
@@ -50,7 +55,17 @@ export const MatchesPage = () => {
   });
 
   const renderContent = () => {
-    if (isLoading) return <p className={c.message}>Učitavanje…</p>;
+    if (isLoading)
+      return (
+        <div className={c.groups}>
+          <section className={c.group}>
+            <Skeleton width={160} height={24} />
+            <div className={c.groupList}>
+              <Skeleton count={5} className={c.skeletonCard} />
+            </div>
+          </section>
+        </div>
+      );
     if (isError)
       return <p className={c.message}>Greška pri učitavanju utakmica</p>;
     if (dayGroups.length === 0)

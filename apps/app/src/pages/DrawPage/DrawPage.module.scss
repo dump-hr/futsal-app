@@ -130,6 +130,22 @@
   @include body-normal;
 }
 
+.skeletonTabs {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  padding-bottom: 12px;
+}
+
+.skeletonRound {
+  width: var(--match-w);
+  height: 88px;
+
+  @media (max-width: 768px) {
+    height: 80px;
+  }
+}
+
 @media (max-width: 768px) {
   .bracket {
     --match-w: 220px;

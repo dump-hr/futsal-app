@@ -1,5 +1,5 @@
 import { Link } from 'wouter';
-import { Team } from '@components/index';
+import { Skeleton, Team } from '@components/index';
 import { useTeamsGet } from '@api/index';
 import { useTournamentContext } from '@hooks/index';
 import { PageLayout } from '@layouts/index';
@@ -11,7 +11,12 @@ export const TeamsPage = () => {
   const { data: teams, isLoading, isError } = useTeamsGet(tournamentId);
 
   const renderContent = () => {
-    if (isLoading) return <p className={c.message}>Učitavanje…</p>;
+    if (isLoading)
+      return (
+        <div className={c.grid}>
+          <Skeleton count={8} className={c.skeletonTeam} />
+        </div>
+      );
     if (isError)
       return <p className={c.message}>Greška pri učitavanju ekipa</p>;
     if (!teams?.length) return <p className={c.message}>Nema ekipa</p>;
