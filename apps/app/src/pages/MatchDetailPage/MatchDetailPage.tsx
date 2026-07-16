@@ -9,6 +9,7 @@ import {
   MatchStanding,
   MatchTimeline,
   Navbar,
+  Skeleton,
   TeamLogo,
 } from '@components/index';
 import {
@@ -16,15 +17,14 @@ import {
   PLACEHOLDER_DOMINANT_COLOR,
   toHex,
 } from '@components/Team/utils';
-import { MATCH_STATUS, MATCH_TYPE_LABELS } from '@constants/index';
-import { formatMatchDateLong, getMatchStatus } from '@helpers/index';
+import { getMatchStatus } from '@helpers/index';
 import { routes } from '@routes/index';
 import { ArrowLeftWhite } from '@assets/index';
 import c from './MatchDetailPage.module.scss';
+import { NotFoundPage } from '@pages/NotFoundPage';
+import { getScoreLabel, getStageLabel, getTimeLabel } from './helper';
 
 type TabValue = 'details' | 'players' | 'standings';
-
-const pad = (n: number) => String(n).padStart(2, '0');
 
 const GRADIENT_MAX_BRIGHTNESS = 125;
 
@@ -51,20 +51,17 @@ const loadDominantColor = (url: string) =>
   });
 
 export const MatchDetailPage = () => {
+  const [homeColor, setHomeColor] = useState(
+    darkenHexColor(PLACEHOLDER_DOMINANT_COLOR),
+  );
+  const [awayColor, setAwayColor] = useState(
+    darkenHexColor(PLACEHOLDER_DOMINANT_COLOR),
+  );
+  const [activeTab, setActiveTab] = useState<TabValue>('details');
+
   const params = useParams<{ matchId: string }>();
   const parsed = Number(params.matchId);
   const matchId = Number.isNaN(parsed) ? undefined : parsed;
-
-  const [activeTab, setActiveTab] = useState<TabValue>('details');
-  const panelRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    setActiveTab('details');
-  }, [matchId]);
-
-  useEffect(() => {
-    panelRef.current?.scrollTo({ top: 0 });
-  }, [activeTab]);
 
   const { data: match, isLoading, isError } = useMatchGet(matchId);
   const {
@@ -73,15 +70,11 @@ export const MatchDetailPage = () => {
     isError: isEventsError,
   } = useMatchEventsGet(matchId);
   const { elapsedSeconds } = useMatchTimerLive(match?.isActive ? match.id : 0);
+
+  const panelRef = useRef<HTMLDivElement | null>(null);
+
   const homeLogoUrl = match?.homeTeam?.logoUrl;
   const awayLogoUrl = match?.awayTeam?.logoUrl;
-
-  const [homeColor, setHomeColor] = useState(
-    darkenHexColor(PLACEHOLDER_DOMINANT_COLOR),
-  );
-  const [awayColor, setAwayColor] = useState(
-    darkenHexColor(PLACEHOLDER_DOMINANT_COLOR),
-  );
 
   useEffect(() => {
     let cancelled = false;
@@ -104,34 +97,26 @@ export const MatchDetailPage = () => {
     };
   }, [homeLogoUrl, awayLogoUrl]);
 
-  if (!matchId) return null;
+  useEffect(() => {
+    setActiveTab('details');
+  }, [matchId]);
+
+  useEffect(() => {
+    panelRef.current?.scrollTo({ top: 0 });
+  }, [activeTab]);
+
+  if (!matchId) return <NotFoundPage />;
 
   const status = match ? getMatchStatus(match) : null;
   const isGroupMatch = match?.matchType === MatchType.group;
   const groupName =
     match?.homeTeam?.group?.name ?? match?.awayTeam?.group?.name;
 
-  const stageLabel = !match
-    ? ''
-    : isGroupMatch
-      ? groupName
-        ? `SKUPINA ${groupName}`
-        : ''
-      : MATCH_TYPE_LABELS[match.matchType];
+  const stageLabel = getStageLabel(match, isGroupMatch, groupName);
 
-  const scoreLabel = !match
-    ? ''
-    : status === MATCH_STATUS.UPCOMING
-      ? '-'
-      : `${match.homeGoals} - ${match.awayGoals}`;
+  const scoreLabel = getScoreLabel(match, status);
 
-  const timeLabel = !match
-    ? ''
-    : status === MATCH_STATUS.LIVE
-      ? `${pad(Math.floor(elapsedSeconds / 60))}:${pad(elapsedSeconds % 60)}`
-      : status === MATCH_STATUS.UPCOMING
-        ? formatMatchDateLong(match.timeOfMatch)
-        : '';
+  const timeLabel = getTimeLabel(match, status, elapsedSeconds);
 
   const tabs: { value: TabValue; label: string }[] = [
     { value: 'details', label: 'Detalji' },
@@ -156,7 +141,7 @@ export const MatchDetailPage = () => {
   };
 
   const renderPanelContent = () => {
-    if (isLoading) return <p className={c.message}>Učitavanje…</p>;
+    if (isLoading) return <Skeleton />;
     if (isError || !match)
       return <p className={c.message}>Greška pri učitavanju utakmice</p>;
 

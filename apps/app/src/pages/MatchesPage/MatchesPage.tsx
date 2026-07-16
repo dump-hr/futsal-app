@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'wouter';
-import { Link } from 'wouter';
 import {
   Filter,
   MatchCard,
