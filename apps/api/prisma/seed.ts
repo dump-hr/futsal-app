@@ -450,12 +450,172 @@ async function main() {
     },
   });
 
+  // Second, past tournament so the tournament selector has something to switch to
+  const tournament2 = await prisma.tournament.create({
+    data: { name: 'DUMP Futsal 2025', date: '11/2025' },
+  });
+
+  const groups2 = await Promise.all(
+    ['A', 'B'].map((name) =>
+      prisma.group.create({
+        data: { name, tournamentId: tournament2.id },
+      }),
+    ),
+  );
+
+  const teams2Data = [
+    { name: 'Splitski Val', groupId: groups2[0].id },
+    { name: 'Riva Boys', groupId: groups2[0].id },
+    { name: 'Marjan Runners', groupId: groups2[1].id },
+    { name: 'Adriatic FC', groupId: groups2[1].id },
+  ];
+
+  const teams2 = await Promise.all(
+    teams2Data.map((t) =>
+      prisma.team.create({
+        data: {
+          name: t.name,
+          groupId: t.groupId,
+          tournamentId: tournament2.id,
+        },
+      }),
+    ),
+  );
+
+  const player2Names = [
+    ['Šime', 'Bulat'],
+    ['Ivano', 'Delić'],
+    ['Mislav', 'Buljan'],
+    ['Duje', 'Skoko'],
+    ['Frane', 'Vukas'],
+    ['Nino', 'Kaleb'],
+    ['Ivor', 'Maras'],
+    ['Bože', 'Runje'],
+    ['Zoran', 'Šola'],
+    ['Vinko', 'Ćaleta'],
+    ['Ranko', 'Despot'],
+    ['Ljubo', 'Miloš'],
+    ['Srećko', 'Jelavić'],
+    ['Krešo', 'Banić'],
+    ['Ante', 'Modrić'],
+    ['Ivica', 'Šuker'],
+    ['Slaven', 'Bilić'],
+    ['Zvone', 'Boban'],
+    ['Robert', 'Prosinečki'],
+    ['Davor', 'Šola'],
+  ];
+
+  const players2: Array<{ id: number; teamId: number }> = [];
+
+  for (let i = 0; i < teams2.length; i++) {
+    for (let j = 0; j < 5; j++) {
+      const nameIndex = i * 5 + j;
+      const player = await prisma.player.create({
+        data: {
+          firstName: player2Names[nameIndex][0],
+          lastName: player2Names[nameIndex][1],
+          dateOfBirth: new Date(
+            1998 + Math.floor(Math.random() * 6),
+            Math.floor(Math.random() * 12),
+            1 + Math.floor(Math.random() * 28),
+          ),
+          teamId: teams2[i].id,
+        },
+      });
+      players2.push({ id: player.id, teamId: teams2[i].id });
+    }
+  }
+
+  const randomPlayer2 = (teamId: number) => {
+    const teamPlayers = players2.filter((p) => p.teamId === teamId);
+    return teamPlayers[Math.floor(Math.random() * teamPlayers.length)];
+  };
+
+  const tournament2Matches: Array<{
+    homeIdx: number;
+    awayIdx: number;
+    homeGoals: number;
+    awayGoals: number;
+    matchType: MatchType;
+    time: string;
+  }> = [
+    {
+      homeIdx: 0,
+      awayIdx: 1,
+      homeGoals: 2,
+      awayGoals: 1,
+      matchType: MatchType.group,
+      time: '2025-11-08T18:00:00',
+    },
+    {
+      homeIdx: 2,
+      awayIdx: 3,
+      homeGoals: 0,
+      awayGoals: 3,
+      matchType: MatchType.group,
+      time: '2025-11-08T20:00:00',
+    },
+    {
+      homeIdx: 0,
+      awayIdx: 3,
+      homeGoals: 1,
+      awayGoals: 2,
+      matchType: MatchType.final,
+      time: '2025-11-09T20:00:00',
+    },
+  ];
+
+  for (const m of tournament2Matches) {
+    const homeTeam = teams2[m.homeIdx];
+    const awayTeam = teams2[m.awayIdx];
+
+    const match = await prisma.match.create({
+      data: {
+        timeOfMatch: new Date(m.time),
+        homeTeamId: homeTeam.id,
+        awayTeamId: awayTeam.id,
+        homeGoals: m.homeGoals,
+        awayGoals: m.awayGoals,
+        matchType: m.matchType,
+      },
+    });
+
+    for (let g = 0; g < m.homeGoals; g++) {
+      await prisma.matchEvent.create({
+        data: {
+          minute: 1 + Math.floor(Math.random() * 40),
+          matchId: match.id,
+          playerId: randomPlayer2(homeTeam.id).id,
+          eventType: EventType.goal,
+          isForHomeTeam: true,
+        },
+      });
+    }
+
+    for (let g = 0; g < m.awayGoals; g++) {
+      await prisma.matchEvent.create({
+        data: {
+          minute: 1 + Math.floor(Math.random() * 40),
+          matchId: match.id,
+          playerId: randomPlayer2(awayTeam.id).id,
+          eventType: EventType.goal,
+          isForHomeTeam: false,
+        },
+      });
+    }
+  }
+
   console.log('Seed complete!');
   console.log(`  Tournament: ${tournament.name}`);
   console.log(`  Teams: ${teams.length}`);
   console.log(`  Players: ${players.length}`);
   console.log(`  Groups: ${groups.length}`);
   console.log(`  Matches: 4 group + 4 QF + 2 SF + 1 F = 11`);
+  console.log(`  Tournament: ${tournament2.name}`);
+  console.log(`  Teams: ${teams2.length}`);
+  console.log(`  Players: ${players2.length}`);
+  console.log(`  Groups: ${groups2.length}`);
+  console.log(`  Matches: 2 group + 1 F = 3`);
 }
 
 main().catch((e) => {
