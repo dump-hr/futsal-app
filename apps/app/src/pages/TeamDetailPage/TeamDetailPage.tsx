@@ -1,6 +1,11 @@
 import { Fragment } from 'react';
 import { Link, useParams } from 'wouter';
-import { MatchCard, MatchCardLarge, TeamPlayersTable } from '@components/index';
+import {
+  MatchCard,
+  MatchCardLarge,
+  Skeleton,
+  TeamPlayersTable,
+} from '@components/index';
 import { useTeamGet, useMatchGetByTeam } from '@api/index';
 import { PageLayout } from '@layouts/index';
 import { routes } from '@routes/index';
@@ -27,27 +32,47 @@ export const TeamDetailPage = () => {
         <img className={c.backIcon} src={ArrowLeftLime} alt='' />
       </Link>
       <div className={c.identity}>
-        {team?.logoUrl ? (
-          <img className={c.logo} src={team.logoUrl} alt='' />
+        {isTeamLoading ? (
+          <>
+            <Skeleton className={c.skeletonLogo} />
+            <Skeleton className={c.skeletonName} />
+          </>
         ) : (
-          <span className={c.logoFallback} aria-hidden>
-            {team?.name?.charAt(0)}
-          </span>
+          <>
+            {team?.logoUrl ? (
+              <img className={c.logo} src={team.logoUrl} alt='' />
+            ) : (
+              <span className={c.logoFallback} aria-hidden>
+                {team?.name?.charAt(0)}
+              </span>
+            )}
+            <h1 className={c.name}>{team?.name}</h1>
+          </>
         )}
-        <h1 className={c.name}>{team?.name}</h1>
       </div>
     </div>
   );
 
   const renderPlayers = () => {
-    if (isTeamLoading) return <p className={c.message}>Učitavanje…</p>;
+    if (isTeamLoading)
+      return (
+        <div className={c.skeletonRows}>
+          <Skeleton className={c.skeletonRowsHeader} width={180} height={28} />
+          <Skeleton count={10} height={40} />
+        </div>
+      );
     if (!team?.players?.length)
       return <p className={c.message}>Nema igrača</p>;
     return <TeamPlayersTable players={team.players} />;
   };
 
   const renderMatches = () => {
-    if (areMatchesLoading) return <p className={c.message}>Učitavanje…</p>;
+    if (areMatchesLoading)
+      return (
+        <div className={c.matchList}>
+          <Skeleton count={3} className={c.skeletonCard} />
+        </div>
+      );
     if (isMatchesError)
       return <p className={c.message}>Greška pri učitavanju utakmica</p>;
     if (!matches?.length) return <p className={c.message}>Nema utakmica</p>;

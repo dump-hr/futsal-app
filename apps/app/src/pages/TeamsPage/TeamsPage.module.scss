@@ -22,6 +22,18 @@
   @include body-normal;
 }
 
+.skeletonTeam {
+  width: 224px;
+  height: 224px;
+  border-radius: 22px;
+
+  @media (max-width: 767px) {
+    width: min(150px, calc(50% - 8px));
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+}
+
 @media (max-width: 767px) {
   .cardLink {
     width: min(150px, calc(50% - 8px));

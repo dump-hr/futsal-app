@@ -35,6 +35,15 @@
   @include body-normal;
 }
 
+.skeletonCard {
+  height: 80px;
+
+  @media (min-width: 1100px) {
+    height: 96px;
+    border-radius: 20px;
+  }
+}
+
 @media (min-width: 1100px) {
   .filters {
     gap: 24px;

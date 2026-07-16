@@ -8,3 +8,4 @@ export * from './Group';
 export * from './Team';
 export * from './TeamPlayersTable';
 export * from './TeamLogo';
+export * from './Skeleton';

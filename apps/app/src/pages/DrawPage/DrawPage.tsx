@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { MatchDto, MatchType } from '@futsal-app/types';
 import { useMatchGetAll } from '@api/index';
 import { useTournamentContext } from '@hooks/index';
-import { DrawRound } from '@components/index';
+import { DrawRound, Skeleton } from '@components/index';
 import { PageLayout } from '@layouts/index';
 import {
   formatMatchDateShort,
@@ -103,7 +103,25 @@ export const DrawPage = () => {
   };
 
   const renderContent = () => {
-    if (isLoading) return <p className={c.message}>Učitavanje…</p>;
+    if (isLoading)
+      return (
+        <>
+          <div className={c.skeletonTabs}>
+            <Skeleton count={3} width={80} height={20} />
+          </div>
+          <div className={c.bracket}>
+            {[4, 2, 1].map((count, round) => (
+              <div key={round} className={c.column}>
+                {Array.from({ length: count }, (_, i) => (
+                  <div key={i} className={c.matchSlot}>
+                    <Skeleton className={c.skeletonRound} />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </>
+      );
     if (isError) {
       return <p className={c.message}>Greška pri učitavanju ždrijeba</p>;
     }
