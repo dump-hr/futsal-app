@@ -1,10 +1,13 @@
 .tabs {
   display: flex;
-  width: 100%;
+  width: calc(100% + 32px);
   gap: 0;
   position: sticky;
-  top: 0;
+  top: -16px;
+  margin: -16px -16px 0;
+  padding: 16px 0 0;
   z-index: 2;
+  border-radius: 24px 24px 0 0;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -63,6 +66,14 @@
 }
 
 @media (min-width: 1100px) {
+  .tabs {
+    width: 100%;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+  }
+
   .tab {
     padding-bottom: 16px;
     @include body-large;
