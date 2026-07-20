@@ -2,7 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'wouter';
 import clsx from 'clsx';
 import { MatchType } from '@futsal-app/types';
-import { useMatchGet, useMatchEventsGet, useMatchTimerLive } from '@api/index';
+import {
+  useMatchGet,
+  useMatchEventsGet,
+  useMatchEventsLive,
+  useMatchTimerLive,
+} from '@api/index';
 import {
   MatchDraw,
   MatchPlayers,
@@ -70,6 +75,7 @@ export const MatchDetailPage = () => {
     isError: isEventsError,
   } = useMatchEventsGet(matchId);
   const { elapsedSeconds } = useMatchTimerLive(match?.isActive ? match.id : 0);
+  useMatchEventsLive(match?.isActive ? match.id : 0);
 
   const panelRef = useRef<HTMLDivElement | null>(null);
 
@@ -114,7 +120,7 @@ export const MatchDetailPage = () => {
 
   const stageLabel = getStageLabel(match, isGroupMatch, groupName);
 
-  const scoreLabel = getScoreLabel(match, status);
+  const scoreLabel = getScoreLabel(match, status, events);
 
   const timeLabel = getTimeLabel(match, status, elapsedSeconds);
 

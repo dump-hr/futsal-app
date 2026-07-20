@@ -7,10 +7,13 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Sse,
   UseGuards,
 } from '@nestjs/common';
+import { Observable } from 'rxjs';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { MatchEventService } from './match-event.service';
+import { MatchEventStreamService } from './match-event-stream.service';
 import {
   MatchEventCreateDto,
   MatchEventUpdateDto,
@@ -19,7 +22,17 @@ import {
 
 @Controller('match-event')
 export class MatchEventController {
-  constructor(private readonly matchEventService: MatchEventService) {}
+  constructor(
+    private readonly matchEventService: MatchEventService,
+    private readonly streamService: MatchEventStreamService,
+  ) {}
+
+  @Sse('match/:matchId/stream')
+  stream(
+    @Param('matchId', ParseIntPipe) matchId: number,
+  ): Observable<MessageEvent> {
+    return this.streamService.stream(matchId);
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post()

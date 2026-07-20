@@ -84,12 +84,12 @@ export const MatchTimeline = ({
         </div>
       )}
       {shootoutEvents.length > 0 && (
-        <div className={c.shootoutSection}>
+        <>
           <h3 className={c.shootoutHeading}>Raspucavanje</h3>
           <div className={c.timeline}>
             {shootoutEvents.map((event) => renderEvent(event, false))}
           </div>
-        </div>
+        </>
       )}
     </>
   );

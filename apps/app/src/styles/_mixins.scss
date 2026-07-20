@@ -88,6 +88,22 @@
   line-height: 16px;
 }
 
+@mixin mobile-body-medium-bold {
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+@mixin mobile-score {
+  font-family: 'Roboto', sans-serif;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
 @mixin legal-text {
   font-family: 'Roboto', sans-serif;
   font-size: 10px;

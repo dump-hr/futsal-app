@@ -52,14 +52,9 @@
   @include body-normal;
 }
 
-.shootoutSection {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
 .shootoutHeading {
-  margin: 0;
+  width: min(576px, 100%);
+  margin: 0 auto;
   color: $white;
   text-align: center;
   text-transform: uppercase;

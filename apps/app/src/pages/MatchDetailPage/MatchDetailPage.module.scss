@@ -82,23 +82,20 @@
   color: $white;
   opacity: 0.8;
   text-align: center;
-  @include body-extra-small;
+  @include mobile-body-medium-bold;
 }
 
 .score {
   color: $white;
-  font-family: 'Roboto', sans-serif;
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 1.1;
   white-space: nowrap;
+  @include mobile-score;
 }
 
 .time {
   color: $white;
   text-align: center;
   font-variant-numeric: tabular-nums;
-  @include body-small;
+  @include mobile-body-medium-bold;
 }
 
 .panel {
@@ -237,6 +234,7 @@
 
   .score {
     font-size: 64px;
+    line-height: 1.1;
   }
 
   .time {

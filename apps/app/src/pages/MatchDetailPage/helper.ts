@@ -1,3 +1,4 @@
+import { EventType, MatchEventDto } from '@futsal-app/types';
 import { MATCH_STATUS, MATCH_TYPE_LABELS } from '@constants/index';
 import { formatMatchDateLong } from '@helpers/index';
 
@@ -17,12 +18,29 @@ export const getStageLabel = (
       : MATCH_TYPE_LABELS[match.matchType];
 };
 
-export const getScoreLabel = (match: any, status: string | null) => {
-  return !match
-    ? ''
-    : status === MATCH_STATUS.UPCOMING
-      ? '-'
-      : `${match.homeGoals} - ${match.awayGoals}`;
+const getShootoutCounts = (events: MatchEventDto[] | undefined) => {
+  const counts = { home: 0, away: 0 };
+  for (const event of events ?? []) {
+    if (event.eventType !== EventType.shootoutGoal) continue;
+    if (event.isForHomeTeam) counts.home += 1;
+    else counts.away += 1;
+  }
+  return counts;
+};
+
+export const getScoreLabel = (
+  match: any,
+  status: string | null,
+  events?: MatchEventDto[],
+) => {
+  if (!match) return '';
+  if (status === MATCH_STATUS.UPCOMING) return '-';
+
+  const base = `${match.homeGoals} - ${match.awayGoals}`;
+  const shootout = getShootoutCounts(events);
+  if (shootout.home === 0 && shootout.away === 0) return base;
+
+  return `(${shootout.home}) ${base} (${shootout.away})`;
 };
 
 export const getTimeLabel = (
