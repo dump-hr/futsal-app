@@ -27,7 +27,12 @@ import { routes } from '@routes/index';
 import { ArrowLeftWhite } from '@assets/index';
 import c from './MatchDetailPage.module.scss';
 import { NotFoundPage } from '@pages/NotFoundPage';
-import { getScoreLabel, getStageLabel, getTimeLabel } from './helper';
+import {
+  getScoreLabel,
+  getShootoutLabel,
+  getStageLabel,
+  getTimeLabel,
+} from './helper';
 
 type TabValue = 'details' | 'players' | 'standings';
 
@@ -122,6 +127,8 @@ export const MatchDetailPage = () => {
 
   const scoreLabel = getScoreLabel(match, status, events);
 
+  const shootoutLabel = getShootoutLabel(events);
+
   const timeLabel = getTimeLabel(match, status, elapsedSeconds);
 
   const tabs: { value: TabValue; label: string }[] = [
@@ -147,7 +154,7 @@ export const MatchDetailPage = () => {
   };
 
   const renderPanelContent = () => {
-    if (isLoading) return <Skeleton />;
+    if (isLoading) return <Skeleton className={c.panelSkeleton} />;
     if (isError || !match)
       return <p className={c.message}>Greška pri učitavanju utakmice</p>;
 
@@ -191,29 +198,60 @@ export const MatchDetailPage = () => {
           </Link>
           <div className={c.scoreboard}>
             <div className={c.team}>
-              <TeamLogo
-                name={match?.homeTeam?.name ?? 'TBD'}
-                logoUrl={homeLogoUrl}
-                className={c.teamLogo}
-              />
-              <span className={c.teamName}>
-                {match?.homeTeam?.name ?? 'TBD'}
-              </span>
+              {isLoading ? (
+                <>
+                  <Skeleton className={c.teamLogo} />
+                  <Skeleton className={c.teamNameSkeleton} />
+                </>
+              ) : (
+                <>
+                  <TeamLogo
+                    name={match?.homeTeam?.name ?? 'TBD'}
+                    logoUrl={homeLogoUrl}
+                    className={c.teamLogo}
+                  />
+                  <span className={c.teamName}>
+                    {match?.homeTeam?.name ?? 'TBD'}
+                  </span>
+                </>
+              )}
             </div>
             <div className={c.center}>
-              {stageLabel && <span className={c.stage}>{stageLabel}</span>}
-              <span className={c.score}>{scoreLabel}</span>
-              {timeLabel && <span className={c.time}>{timeLabel}</span>}
+              {isLoading ? (
+                <>
+                  <Skeleton className={c.stageSkeleton} />
+                  <Skeleton className={c.scoreSkeleton} />
+                  <Skeleton className={c.timeSkeleton} />
+                </>
+              ) : (
+                <>
+                  {stageLabel && <span className={c.stage}>{stageLabel}</span>}
+                  <span className={c.score}>{scoreLabel}</span>
+                  {shootoutLabel && (
+                    <span className={c.shootout}>{shootoutLabel}</span>
+                  )}
+                  {timeLabel && <span className={c.time}>{timeLabel}</span>}
+                </>
+              )}
             </div>
             <div className={c.team}>
-              <TeamLogo
-                name={match?.awayTeam?.name ?? 'TBD'}
-                logoUrl={awayLogoUrl}
-                className={c.teamLogo}
-              />
-              <span className={c.teamName}>
-                {match?.awayTeam?.name ?? 'TBD'}
-              </span>
+              {isLoading ? (
+                <>
+                  <Skeleton className={c.teamLogo} />
+                  <Skeleton className={c.teamNameSkeleton} />
+                </>
+              ) : (
+                <>
+                  <TeamLogo
+                    name={match?.awayTeam?.name ?? 'TBD'}
+                    logoUrl={awayLogoUrl}
+                    className={c.teamLogo}
+                  />
+                  <span className={c.teamName}>
+                    {match?.awayTeam?.name ?? 'TBD'}
+                  </span>
+                </>
+              )}
             </div>
           </div>
         </header>

@@ -91,6 +91,15 @@
   @include mobile-score;
 }
 
+.shootout {
+  color: $white;
+  white-space: nowrap;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: normal;
+}
+
 .time {
   color: $white;
   text-align: center;
@@ -167,6 +176,36 @@
   @include body-normal;
 }
 
+.teamNameSkeleton {
+  width: 96px;
+  height: 14px;
+  border-radius: 6px;
+}
+
+.stageSkeleton {
+  width: 100px;
+  height: 12px;
+  border-radius: 6px;
+}
+
+.scoreSkeleton {
+  width: 160px;
+  height: 36px;
+  border-radius: 8px;
+}
+
+.timeSkeleton {
+  width: 72px;
+  height: 12px;
+  border-radius: 6px;
+}
+
+.panelSkeleton {
+  width: 100%;
+  height: 240px;
+  border-radius: 16px;
+}
+
 @media (min-width: 768px) {
   .desktopNav {
     display: block;
@@ -237,8 +276,32 @@
     line-height: 1.1;
   }
 
+  .shootout {
+    font-size: 32px;
+  }
+
   .time {
     @include body-normal;
+  }
+
+  .teamNameSkeleton {
+    width: 140px;
+    height: 20px;
+  }
+
+  .stageSkeleton {
+    width: 140px;
+    height: 16px;
+  }
+
+  .scoreSkeleton {
+    width: 240px;
+    height: 64px;
+  }
+
+  .timeSkeleton {
+    width: 96px;
+    height: 16px;
   }
 }
 

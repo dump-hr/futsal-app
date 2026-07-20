@@ -43,10 +43,13 @@ export const getScoreLabel = (
   const shootout = getShootoutCounts(events);
   const homeTotal = match.homeGoals + shootout.home;
   const awayTotal = match.awayGoals + shootout.away;
-  const base = `${homeTotal} - ${awayTotal}`;
-  if (shootout.home === 0 && shootout.away === 0) return base;
+  return `${homeTotal} - ${awayTotal}`;
+};
 
-  return `(${shootout.home}) ${base} (${shootout.away})`;
+export const getShootoutLabel = (events?: MatchEventDto[]) => {
+  const shootout = getShootoutCounts(events);
+  if (shootout.home === 0 && shootout.away === 0) return '';
+  return `(${shootout.home} - ${shootout.away})`;
 };
 
 export const getTimeLabel = (
