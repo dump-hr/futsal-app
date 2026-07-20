@@ -11,11 +11,7 @@ type MatchStandingProps = {
 
 export const MatchStanding = ({ match }: MatchStandingProps) => {
   const [, setLocation] = useLocation();
-  const groupId =
-    match.homeTeam?.groupId ??
-    match.homeTeam?.group?.id ??
-    match.awayTeam?.groupId ??
-    match.awayTeam?.group?.id;
+  const groupId = match.homeTeam?.groupId ?? match.awayTeam?.groupId;
 
   const { data: group, isLoading, isError } = useGroupGet(groupId ?? 0);
 

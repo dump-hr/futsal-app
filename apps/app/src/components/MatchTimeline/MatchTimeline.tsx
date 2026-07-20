@@ -19,12 +19,34 @@ const TIMELINE_EVENT_TYPES: ReadonlySet<string> = new Set([
   EventType.injury,
 ]);
 
+const SHOOTOUT_EVENT_TYPES: ReadonlySet<string> = new Set([
+  EventType.shootoutGoal,
+  EventType.shootoutMiss,
+]);
+
 type MatchTimelineProps = {
   match: MatchDto;
   events: MatchEventDto[] | undefined;
   isLoading: boolean;
   isError: boolean;
 };
+
+const renderEvent = (event: MatchEventDto, showMinute: boolean) => (
+  <div
+    key={event.id}
+    className={clsx(c.event, event.isForHomeTeam ? c.eventHome : c.eventAway)}>
+    <EventCard
+      playerName={
+        event.player
+          ? `${event.player.firstName} ${event.player.lastName}`
+          : ''
+      }
+      eventType={event.eventType as EventCardType}
+      minute={showMinute ? event.minute : undefined}
+      side={event.isForHomeTeam ? 'left' : 'right'}
+    />
+  </div>
+);
 
 export const MatchTimeline = ({
   match,
@@ -48,29 +70,27 @@ export const MatchTimeline = ({
     .filter((event) => TIMELINE_EVENT_TYPES.has(event.eventType))
     .sort((a, b) => a.minute - b.minute || a.id - b.id);
 
-  if (timelineEvents.length === 0) return null;
+  const shootoutEvents = (events ?? [])
+    .filter((event) => SHOOTOUT_EVENT_TYPES.has(event.eventType))
+    .sort((a, b) => a.id - b.id);
+
+  if (timelineEvents.length === 0 && shootoutEvents.length === 0) return null;
 
   return (
-    <div className={c.timeline}>
-      {timelineEvents.map((event) => (
-        <div
-          key={event.id}
-          className={clsx(
-            c.event,
-            event.isForHomeTeam ? c.eventHome : c.eventAway,
-          )}>
-          <EventCard
-            playerName={
-              event.player
-                ? `${event.player.firstName} ${event.player.lastName}`
-                : ''
-            }
-            eventType={event.eventType as EventCardType}
-            minute={event.minute}
-            side={event.isForHomeTeam ? 'left' : 'right'}
-          />
+    <>
+      {timelineEvents.length > 0 && (
+        <div className={c.timeline}>
+          {timelineEvents.map((event) => renderEvent(event, true))}
         </div>
-      ))}
-    </div>
+      )}
+      {shootoutEvents.length > 0 && (
+        <div className={c.shootoutSection}>
+          <h3 className={c.shootoutHeading}>Raspucavanje</h3>
+          <div className={c.timeline}>
+            {shootoutEvents.map((event) => renderEvent(event, false))}
+          </div>
+        </div>
+      )}
+    </>
   );
 };

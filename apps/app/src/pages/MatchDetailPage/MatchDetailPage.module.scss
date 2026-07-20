@@ -186,10 +186,14 @@
     align-items: flex-start;
     gap: 4px;
     padding: 0;
+    position: relative;
   }
 
   .backButton {
     align-self: auto;
+    position: absolute;
+    left: 0;
+    top: 0;
   }
 
   .backIcon {

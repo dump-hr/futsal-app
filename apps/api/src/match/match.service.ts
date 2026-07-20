@@ -21,6 +21,7 @@ const teamSelect = {
   id: true,
   name: true,
   logoUrl: true,
+  groupId: true,
   group: { select: { id: true, name: true, tournamentId: true } },
 };
 

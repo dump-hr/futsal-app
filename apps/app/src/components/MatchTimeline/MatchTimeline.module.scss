@@ -51,3 +51,18 @@
   text-align: center;
   @include body-normal;
 }
+
+.shootoutSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.shootoutHeading {
+  margin: 0;
+  color: $white;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  @include title-3;
+}
