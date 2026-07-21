@@ -35,21 +35,17 @@ const getShootoutCounts = (events: MatchEventDto[] | undefined) => {
 export const getScoreLabel = (
   match: MatchDto | undefined,
   status: MatchStatus | null,
-  events?: MatchEventDto[],
 ) => {
   if (!match) return '';
   if (status === MATCH_STATUS.UPCOMING) return '-';
 
-  const shootout = getShootoutCounts(events);
-  const homeTotal = match.homeGoals + shootout.home;
-  const awayTotal = match.awayGoals + shootout.away;
-  return `${homeTotal} - ${awayTotal}`;
+  return `${match.homeGoals} - ${match.awayGoals}`;
 };
 
 export const getShootoutLabel = (events?: MatchEventDto[]) => {
   const shootout = getShootoutCounts(events);
   if (shootout.home === 0 && shootout.away === 0) return '';
-  return `(${shootout.home} - ${shootout.away})`;
+  return `PEN ${shootout.home} - ${shootout.away}`;
 };
 
 export const getTimeLabel = (

@@ -94,10 +94,7 @@
 .shootout {
   color: $white;
   white-space: nowrap;
-  font-family: 'Roboto', sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  line-height: normal;
+  @include mobile-body-medium-bold;
 }
 
 .time {
@@ -277,7 +274,7 @@
   }
 
   .shootout {
-    font-size: 32px;
+    @include body-normal-bold;
   }
 
   .time {

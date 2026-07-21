@@ -125,7 +125,7 @@ export const MatchDetailPage = () => {
 
   const stageLabel = getStageLabel(match, isGroupMatch, groupName);
 
-  const scoreLabel = getScoreLabel(match, status, events);
+  const scoreLabel = getScoreLabel(match, status);
 
   const shootoutLabel = getShootoutLabel(events);
 
