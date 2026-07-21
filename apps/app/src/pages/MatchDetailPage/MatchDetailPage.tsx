@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useParams } from 'wouter';
+import { useParams } from 'wouter';
 import clsx from 'clsx';
 import { MatchType } from '@futsal-app/types';
 import {
@@ -15,7 +15,6 @@ import {
   MatchTimeline,
   Navbar,
   Skeleton,
-  TeamLogo,
 } from '@components/index';
 import {
   getDominantLogoColor,
@@ -23,8 +22,6 @@ import {
   toHex,
 } from '@components/Team/utils';
 import { getMatchStatus } from '@helpers/index';
-import { routes } from '@routes/index';
-import { ArrowLeftWhite } from '@assets/index';
 import c from './MatchDetailPage.module.scss';
 import { NotFoundPage } from '@pages/NotFoundPage';
 import {
@@ -33,6 +30,7 @@ import {
   getStageLabel,
   getTimeLabel,
 } from './helper';
+import { MatchDetailHeader } from './MatchDetailHeader';
 
 type TabValue = 'details' | 'players' | 'standings';
 
@@ -189,72 +187,16 @@ export const MatchDetailPage = () => {
         style={{
           background: `linear-gradient(90deg, ${homeColor} 0%, ${awayColor} 100%)`,
         }}>
-        <header className={c.header}>
-          <Link
-            href={routes.MATCHES}
-            className={c.backButton}
-            aria-label='Natrag'>
-            <img className={c.backIcon} src={ArrowLeftWhite} alt='' />
-          </Link>
-          <div className={c.scoreboard}>
-            <div className={c.team}>
-              {isLoading ? (
-                <>
-                  <Skeleton className={c.teamLogo} />
-                  <Skeleton className={c.teamNameSkeleton} />
-                </>
-              ) : (
-                <>
-                  <TeamLogo
-                    name={match?.homeTeam?.name ?? 'TBD'}
-                    logoUrl={homeLogoUrl}
-                    className={c.teamLogo}
-                  />
-                  <span className={c.teamName}>
-                    {match?.homeTeam?.name ?? 'TBD'}
-                  </span>
-                </>
-              )}
-            </div>
-            <div className={c.center}>
-              {isLoading ? (
-                <>
-                  <Skeleton className={c.stageSkeleton} />
-                  <Skeleton className={c.scoreSkeleton} />
-                  <Skeleton className={c.timeSkeleton} />
-                </>
-              ) : (
-                <>
-                  {stageLabel && <span className={c.stage}>{stageLabel}</span>}
-                  <span className={c.score}>{scoreLabel}</span>
-                  {shootoutLabel && (
-                    <span className={c.shootout}>{shootoutLabel}</span>
-                  )}
-                  {timeLabel && <span className={c.time}>{timeLabel}</span>}
-                </>
-              )}
-            </div>
-            <div className={c.team}>
-              {isLoading ? (
-                <>
-                  <Skeleton className={c.teamLogo} />
-                  <Skeleton className={c.teamNameSkeleton} />
-                </>
-              ) : (
-                <>
-                  <TeamLogo
-                    name={match?.awayTeam?.name ?? 'TBD'}
-                    logoUrl={awayLogoUrl}
-                    className={c.teamLogo}
-                  />
-                  <span className={c.teamName}>
-                    {match?.awayTeam?.name ?? 'TBD'}
-                  </span>
-                </>
-              )}
-            </div>
-          </div>
-        </header>
+        <MatchDetailHeader
+          match={match}
+          isLoading={isLoading}
+          stageLabel={stageLabel}
+          scoreLabel={scoreLabel}
+          shootoutLabel={shootoutLabel}
+          timeLabel={timeLabel}
+          homeLogoUrl={homeLogoUrl}
+          awayLogoUrl={awayLogoUrl}
+        />
 
         <div className={c.panel} ref={panelRef}>
           {renderPanelContent()}
