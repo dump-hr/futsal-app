@@ -40,7 +40,8 @@
     right: -24px;
   }
 
-  &[data-event='penaltyGoal'] {
+  &[data-event='penaltyGoal'],
+  &[data-event='shootoutGoal'] {
     --flip: -1;
     width: 79px;
     top: -24px;
@@ -48,6 +49,7 @@
   }
 
   &[data-event='penaltyMiss'],
+  &[data-event='shootoutMiss'],
   &[data-event='injury'] {
     width: 40px;
     top: 14px;
@@ -78,11 +80,13 @@
     &[data-event='yellowCard'] {
       left: -24px;
     }
-    &[data-event='penaltyGoal'] {
+    &[data-event='penaltyGoal'],
+    &[data-event='shootoutGoal'] {
       --flip: 1;
       left: 0;
     }
     &[data-event='penaltyMiss'],
+    &[data-event='shootoutMiss'],
     &[data-event='injury'] {
       left: 16px;
     }
@@ -152,13 +156,15 @@
       right: -23px;
     }
 
-    &[data-event='penaltyGoal'] {
+    &[data-event='penaltyGoal'],
+    &[data-event='shootoutGoal'] {
       width: 63px;
       top: -14px;
       right: -9px;
     }
 
     &[data-event='penaltyMiss'],
+    &[data-event='shootoutMiss'],
     &[data-event='injury'] {
       width: 32px;
       top: 10px;
@@ -180,11 +186,13 @@
       left: -23px;
     }
 
-    &[data-event='penaltyGoal'] {
+    &[data-event='penaltyGoal'],
+    &[data-event='shootoutGoal'] {
       left: -9px;
     }
 
     &[data-event='penaltyMiss'],
+    &[data-event='shootoutMiss'],
     &[data-event='injury'] {
       left: 11px;
     }

@@ -12,6 +12,8 @@ const teamWithPlayersSelect = {
   id: true,
   name: true,
   logoUrl: true,
+  groupId: true,
+  group: { select: { id: true, name: true, tournamentId: true } },
   players: { select: { id: true, firstName: true, lastName: true } },
 };
 
@@ -19,6 +21,7 @@ const teamSelect = {
   id: true,
   name: true,
   logoUrl: true,
+  groupId: true,
   group: { select: { id: true, name: true, tournamentId: true } },
 };
 

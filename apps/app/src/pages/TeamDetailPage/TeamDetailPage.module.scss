@@ -98,6 +98,13 @@
   display: none;
 }
 
+.matchLink {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
 .message {
   margin: 0;
   color: $white-transparent;
