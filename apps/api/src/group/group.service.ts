@@ -3,12 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import {
-  GroupCreateDto,
-  GroupUpdateDto,
-  GroupDto,
-  GroupAddTeamDto,
-} from '@futsal-app/types';
+import { GroupCreateDto, GroupDto, GroupAddTeamDto } from '@futsal-app/types';
 import { prisma } from '../../lib/prisma';
 import {
   buildTeamDtoWithStats,
@@ -68,14 +63,6 @@ export class GroupService {
       tournamentId: group.tournamentId,
       teams: group.teams.map(buildTeamDtoWithStats),
     };
-  }
-
-  async update(id: number, dto: GroupUpdateDto): Promise<GroupDto> {
-    return prisma.group.update({
-      where: { id },
-      data: dto,
-      include: { teams: true },
-    });
   }
 
   async addTeam(groupId: number, dto: GroupAddTeamDto): Promise<GroupDto> {

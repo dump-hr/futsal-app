@@ -4,7 +4,7 @@ import { TeamLogo } from '@components/TeamLogo';
 import { getMatchCardLargeView } from './utils';
 import c from './MatchCardLarge.module.scss';
 
-export type MatchCardLargeProps = {
+type MatchCardLargeProps = {
   match: MatchDto;
   elapsedMinutes?: number;
   className?: string;

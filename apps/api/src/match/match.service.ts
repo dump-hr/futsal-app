@@ -60,19 +60,6 @@ export class MatchService {
     return matches;
   }
 
-  async getNextMatch(): Promise<MatchDto | null> {
-    const match = await prisma.match.findFirst({
-      where: { timeOfMatch: { gt: new Date() } },
-      orderBy: { timeOfMatch: 'asc' },
-      include: {
-        homeTeam: { select: teamWithPlayersSelect },
-        awayTeam: { select: teamWithPlayersSelect },
-      },
-    });
-
-    return match;
-  }
-
   async getByTeamId(teamId: number): Promise<MatchDto[]> {
     const matches = await prisma.match.findMany({
       where: {
