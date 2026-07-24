@@ -2,7 +2,6 @@ import {
   IsArray,
   IsInt,
   IsNotEmpty,
-  IsOptional,
   IsPositive,
   IsString,
 } from 'class-validator';
@@ -16,12 +15,6 @@ export class GroupCreateDto {
   @IsInt()
   @IsPositive()
   tournamentId: number;
-}
-
-export class GroupUpdateDto {
-  @IsOptional()
-  @IsString()
-  name?: string;
 }
 
 export class GroupDto {

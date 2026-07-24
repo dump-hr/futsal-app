@@ -2402,23 +2402,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/mapped-types@npm:*":
-  version: 2.1.1
-  resolution: "@nestjs/mapped-types@npm:2.1.1"
-  peerDependencies:
-    "@nestjs/common": ^10.0.0 || ^11.0.0
-    class-transformer: ^0.4.0 || ^0.5.0
-    class-validator: ^0.13.0 || ^0.14.0 || ^0.15.0
-    reflect-metadata: ^0.1.12 || ^0.2.0
-  peerDependenciesMeta:
-    class-transformer:
-      optional: true
-    class-validator:
-      optional: true
-  checksum: 4c149f2c91435b57e0d18d9f90fe038b8465f92cb8b719b458e87d4440198f05a20b9632e8b29cd6fdfb630ec44da448b131bee05f790677a176b2710c548175
-  languageName: node
-  linkType: hard
-
 "@nestjs/platform-express@npm:^11.0.1":
   version: 11.1.17
   resolution: "@nestjs/platform-express@npm:11.1.17"
@@ -5022,7 +5005,6 @@ __metadata:
     react: ^19.1.0
     react-dom: ^19.1.0
     react-error-boundary: ^6.0.0
-    react-hook-form: ^7.62.0
     react-hot-toast: ^2.5.2
     reflect-metadata: ^0.2.2
     sass: ^1.97.3
@@ -5197,7 +5179,6 @@ __metadata:
     "@nestjs/common": ^11.0.1
     "@nestjs/core": ^11.0.1
     "@nestjs/jwt": ^11.0.2
-    "@nestjs/mapped-types": "*"
     "@nestjs/platform-express": ^11.0.1
     "@nestjs/schematics": ^11.0.0
     "@nestjs/serve-static": ^5.0.3
@@ -5263,7 +5244,6 @@ __metadata:
     react: ^19.1.0
     react-dom: ^19.1.0
     react-error-boundary: ^6.0.0
-    react-hook-form: ^7.62.0
     react-hot-toast: ^2.5.2
     reflect-metadata: ^0.2.2
     sass: ^1.97.3
@@ -10218,15 +10198,6 @@ __metadata:
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
   checksum: 16b30785b774b5699db56c780ced560210135184d04af922166d8d2ef5748abde334fb339e290bdd4d1287ab016538c9cf92a4d0e7de6ea19b251100e0f425c3
-  languageName: node
-  linkType: hard
-
-"react-hook-form@npm:^7.62.0":
-  version: 7.72.0
-  resolution: "react-hook-form@npm:7.72.0"
-  peerDependencies:
-    react: ^16.8.0 || ^17 || ^18 || ^19
-  checksum: e3978067c53e4ff5578ab7b99f18f7662375e014eb674d33db88f3b262fefa68bd58f689474ef5d2245e5453ddea8320eac56958d80c0c6c2abd98fb00e23193
   languageName: node
   linkType: hard
 
