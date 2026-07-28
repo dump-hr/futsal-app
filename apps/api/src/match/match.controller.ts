@@ -25,11 +25,6 @@ export class MatchController {
     return await this.matchService.getAll(tournamentId);
   }
 
-  @Get('next')
-  async getNextMatch(): Promise<MatchDto | null> {
-    return await this.matchService.getNextMatch();
-  }
-
   @Patch('deactivate')
   @UseGuards(JwtAuthGuard)
   async deactivate(): Promise<void> {

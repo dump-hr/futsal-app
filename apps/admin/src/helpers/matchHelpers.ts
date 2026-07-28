@@ -34,14 +34,14 @@ export const getMatchStatus = (match: MatchDto): MatchStatus => {
   return match.isFinished ? MATCH_STATUS.FINISHED : MATCH_STATUS.UPCOMING;
 };
 
-export const getDateKey = (date: Date): string => {
+const getDateKey = (date: Date): string => {
   const y = date.getFullYear();
   const m = String(date.getMonth() + 1).padStart(2, '0');
   const d = String(date.getDate()).padStart(2, '0');
   return `${y}-${m}-${d}`;
 };
 
-export const formatMatchDayHeader = (date: Date): string => {
+const formatMatchDayHeader = (date: Date): string => {
   const day = CROATIAN_DAY_NAMES[date.getDay()];
   return `${day}, ${date.getDate()}/${date.getMonth() + 1}`;
 };

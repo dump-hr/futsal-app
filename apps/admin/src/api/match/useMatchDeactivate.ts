@@ -13,7 +13,6 @@ export const useMatchDeactivate = () => {
   return useMutation({
     mutationFn: matchDeactivate,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['match', 'active'] });
       queryClient.invalidateQueries({ queryKey: ['matches'] });
       toast.success('Utakmica uspješno deaktivirana');
     },

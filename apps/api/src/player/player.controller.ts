@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
   Param,
   ParseIntPipe,
   Patch,
@@ -21,11 +20,6 @@ export class PlayerController {
   @Post()
   async create(@Body() dto: PlayerCreateDto): Promise<PlayerDto> {
     return await this.playerService.create(dto);
-  }
-
-  @Get(':id')
-  async getById(@Param('id', ParseIntPipe) id: number): Promise<PlayerDto> {
-    return await this.playerService.getById(id);
   }
 
   @UseGuards(JwtAuthGuard)

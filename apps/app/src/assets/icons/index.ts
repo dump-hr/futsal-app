@@ -11,7 +11,6 @@ export { default as Logo } from './logo.svg';
 
 export { default as GoalLime } from './goal-lime.svg';
 export { default as GoalWhite } from './goal-white.svg';
-export { default as CardWhite } from './card-white.svg';
 export { default as OwnGoalRed } from './own-goal-red.svg';
 export { default as CardRed } from './card-red.svg';
 export { default as CardYellow } from './card-yellow.svg';

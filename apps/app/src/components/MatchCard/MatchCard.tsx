@@ -5,7 +5,7 @@ import { TeamLogo } from '@components/TeamLogo';
 import { getMatchCardView } from './utils';
 import c from './MatchCard.module.scss';
 
-export type MatchCardProps = {
+type MatchCardProps = {
   match: MatchDto;
   elapsedMinutes?: number;
   className?: string;

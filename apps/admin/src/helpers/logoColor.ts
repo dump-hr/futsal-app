@@ -1,5 +1,5 @@
 export const PLACEHOLDER_DOMINANT_COLOR = '#8C8A8A';
-export const COLOR_BUCKET_SIZE = 8;
+const COLOR_BUCKET_SIZE = 8;
 
 const toHex = (value: number) => value.toString(16).padStart(2, '0');
 
