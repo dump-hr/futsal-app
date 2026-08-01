@@ -1,7 +1,13 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Button, ButtonSmall, Input } from '@components/index';
-import { XWhite, CheckBlack, XGray } from '@assets/index';
+import {
+  Button,
+  ButtonSmall,
+  Input,
+  ModalConfirmation,
+} from '@components/index';
+import { useCloseComponent } from '@hooks/index';
+import { XWhite, CheckBlack, XGray, ExitBlack } from '@assets/index';
 import {
   isInvalidName,
   getPlayerNameValidationError,
@@ -26,9 +32,24 @@ export const PlayerFormModal: React.FC<PlayerFormModalProps> = ({
   const [firstName, setFirstName] = useState(initialFirst);
   const [lastName, setLastName] = useState(initialLast);
   const [submitAttempted, setSubmitAttempted] = useState(false);
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
 
   const firstNameError = submitAttempted && isInvalidName(firstName);
   const lastNameError = submitAttempted && isInvalidName(lastName);
+
+  const isDirty =
+    firstName.trim() !== initialFirst.trim() ||
+    lastName.trim() !== initialLast.trim();
+
+  const requestClose = useCallback(() => {
+    if (isDirty) {
+      setShowCancelConfirm(true);
+    } else {
+      onClose();
+    }
+  }, [isDirty, onClose]);
+
+  useCloseComponent({ onClose: requestClose });
 
   const handleSave = () => {
     const fn = firstName.trim();
@@ -48,7 +69,7 @@ export const PlayerFormModal: React.FC<PlayerFormModalProps> = ({
     <div
       className={`${common.overlay} ${c.overlay}`}
       onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target === e.currentTarget) requestClose();
       }}>
       <div className={c.modal} role='dialog' aria-modal='true'>
         <div className={common.header}>
@@ -62,7 +83,7 @@ export const PlayerFormModal: React.FC<PlayerFormModalProps> = ({
                 : 'Unesi ime i prezime novog igrača'}
             </p>
           </div>
-          <ButtonSmall iconSrc={XGray} onClick={onClose} hasBorder />
+          <ButtonSmall iconSrc={XGray} onClick={requestClose} hasBorder />
         </div>
 
         <div className={c.fields}>
@@ -87,7 +108,7 @@ export const PlayerFormModal: React.FC<PlayerFormModalProps> = ({
         </div>
 
         <div className={common.footer}>
-          <Button icon={XWhite} variant='secondary' onClick={onClose}>
+          <Button icon={XWhite} variant='secondary' onClick={requestClose}>
             Odustani
           </Button>
           <Button icon={CheckBlack} variant='primary' onClick={handleSave}>
@@ -95,6 +116,25 @@ export const PlayerFormModal: React.FC<PlayerFormModalProps> = ({
           </Button>
         </div>
       </div>
+
+      {showCancelConfirm && (
+        <ModalConfirmation
+          description={
+            isEdit
+              ? 'Ovim postupkom odbacit ćete sve promjene igrača'
+              : 'Ovim postupkom izgubit ćete unesene podatke o igraču'
+          }
+          boldText={
+            isEdit
+              ? `${initialFirst} ${initialLast}`.trim() || 'Igrač'
+              : 'Novi igrač'
+          }
+          icon={ExitBlack}
+          circleVariant='gray'
+          onCancel={() => setShowCancelConfirm(false)}
+          onConfirm={onClose}
+        />
+      )}
     </div>
   );
 };

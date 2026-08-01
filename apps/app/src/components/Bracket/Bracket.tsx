@@ -1,7 +1,7 @@
 import type { RefObject } from 'react';
 import clsx from 'clsx';
 import { Link } from 'wouter';
-import { MatchDto } from '@futsal-app/types';
+import { MatchDto, MatchType } from '@futsal-app/types';
 import { DrawRound } from '@components/DrawRound';
 import {
   formatMatchDateShort,
@@ -63,27 +63,49 @@ export const Bracket: React.FC<BracketProps> = ({
   bracketRef,
   onColumnRef,
 }) => {
+  const thirdPlaceRound = rounds.find(
+    (r) => r.value === MatchType.thirdPlace,
+  );
+  const hasMergedFinal =
+    !!thirdPlaceRound && thirdPlaceRound.matches.length > 0;
+  const mainRounds = hasMergedFinal
+    ? rounds.filter((r) => r.value !== MatchType.thirdPlace)
+    : rounds;
+
   return (
     <div className={c.bracket} ref={bracketRef}>
-      {rounds.map((round, roundIdx) => {
-        const isLastRound = roundIdx === rounds.length - 1;
-        const isDim = activeRound != null && round.value !== activeRound;
+      {mainRounds.map((round, roundIdx) => {
+        const isLastMainRound = roundIdx === mainRounds.length - 1;
+        const isMergedColumn = isLastMainRound && hasMergedFinal;
+        const isSemiBeforeMerged =
+          hasMergedFinal && roundIdx === mainRounds.length - 2;
+        const columnDim =
+          activeRound != null && round.value !== activeRound;
+
         return (
           <div
             key={round.value}
-            className={clsx(c.column, isDim && c.columnDim)}
-            ref={(node) => onColumnRef?.(round.value, node)}>
+            className={clsx(c.column, columnDim && c.columnDim)}
+            ref={(node) => {
+              onColumnRef?.(round.value, node);
+              if (isMergedColumn) {
+                onColumnRef?.(MatchType.thirdPlace, node);
+              }
+            }}>
             {round.matches.map((match, matchIdx) => {
               const isTopOfPair = matchIdx % 2 === 0;
               const hasPairPartner =
                 matchIdx % 2 === 1 || matchIdx + 1 < round.matches.length;
-              const drawConnector = !isLastRound && hasPairPartner;
+              const drawConnector =
+                !isLastMainRound && hasPairPartner;
               return (
                 <div
                   key={match.id}
                   className={clsx(
                     c.matchSlot,
                     drawConnector && (isTopOfPair ? c.pairTop : c.pairBottom),
+                    isSemiBeforeMerged && c.mergedNext,
+                    isMergedColumn && c.mergedTop,
                   )}>
                   <div className={c.matchInner}>{renderMatch(match)}</div>
                   {drawConnector && (
@@ -95,9 +117,29 @@ export const Bracket: React.FC<BracketProps> = ({
                       )}
                     </>
                   )}
+                  {isMergedColumn && (
+                    <>
+                      <span
+                        className={c.mergedIncoming}
+                        aria-hidden='true'
+                      />
+                      <span className={c.mergedLineIn} aria-hidden='true' />
+                      <span className={c.mergedLineV} aria-hidden='true' />
+                    </>
+                  )}
                 </div>
               );
             })}
+            {isMergedColumn &&
+              thirdPlaceRound!.matches.map((match) => (
+                <div
+                  key={match.id}
+                  className={clsx(c.matchSlot, c.mergedBottom)}>
+                  <div className={c.matchInner}>{renderMatch(match)}</div>
+                  <span className={c.mergedLineIn} aria-hidden='true' />
+                  <span className={c.mergedLineV} aria-hidden='true' />
+                </div>
+              ))}
           </div>
         );
       })}

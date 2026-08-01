@@ -322,9 +322,7 @@ async function main() {
       data: {
         minute: goal.minute,
         matchId: drawFinal.id,
-        playerId: randomPlayer(
-          (goal.isHome ? teams[0] : teams[4]).id,
-        ).id,
+        playerId: randomPlayer((goal.isHome ? teams[0] : teams[4]).id).id,
         eventType: EventType.goal,
         isForHomeTeam: goal.isHome,
       },
@@ -404,6 +402,46 @@ async function main() {
       },
     });
   }
+
+  // Third place match: losers of the two semi-finals (teams[2] vs teams[5])
+  const thirdPlace = await prisma.match.create({
+    data: {
+      timeOfMatch: new Date('2026-03-19T18:00:00'),
+      homeTeamId: teams[2].id,
+      awayTeamId: teams[5].id,
+      homeGoals: 2,
+      awayGoals: 1,
+      matchType: MatchType.thirdPlace,
+      isFinished: true,
+    },
+  });
+
+  const thirdPlaceGoals: Array<{ minute: number; isHome: boolean }> = [
+    { minute: 9, isHome: true },
+    { minute: 21, isHome: false },
+    { minute: 34, isHome: true },
+  ];
+  for (const goal of thirdPlaceGoals) {
+    await prisma.matchEvent.create({
+      data: {
+        minute: goal.minute,
+        matchId: thirdPlace.id,
+        playerId: randomPlayer((goal.isHome ? teams[2] : teams[5]).id).id,
+        eventType: EventType.goal,
+        isForHomeTeam: goal.isHome,
+      },
+    });
+  }
+
+  await prisma.matchEvent.create({
+    data: {
+      minute: 16,
+      matchId: thirdPlace.id,
+      playerId: randomPlayer(teams[5].id).id,
+      eventType: EventType.yellowCard,
+      isForHomeTeam: false,
+    },
+  });
 
   // Quarter-finals: 4 upcoming matches to populate the bracket cleanly
   await prisma.match.create({
@@ -555,7 +593,7 @@ async function main() {
   console.log(`  Players: ${players.length}`);
   console.log(`  Groups: ${groups.length}`);
   console.log(
-    `  Matches: 4 group + 1 LIVE group + 4 QF + 2 SF + 1 F = 12 (live = match #${liveMatch.id})`,
+    `  Matches: 4 group + 1 LIVE group + 4 QF + 2 SF + 1 3rd + 1 F = 13 (live = match #${liveMatch.id})`,
   );
 }
 

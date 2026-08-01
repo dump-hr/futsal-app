@@ -89,6 +89,49 @@
   bottom: 0;
 }
 
+.mergedNext.pairTop .lineOut {
+  width: calc(50% - var(--match-w) / 2 - var(--line-in));
+}
+
+.mergedIncoming,
+.mergedLineIn {
+  position: absolute;
+  height: 0;
+  border-top: 2px solid var(--line-color);
+  pointer-events: none;
+}
+
+.mergedLineV {
+  position: absolute;
+  width: 0;
+  border-left: 2px solid var(--line-color);
+  pointer-events: none;
+  left: calc(50% - var(--match-w) / 2 - var(--line-in));
+}
+
+.mergedTop .mergedIncoming {
+  left: 0;
+  width: calc(50% - var(--match-w) / 2 - var(--line-in));
+  bottom: 0;
+  top: auto;
+}
+
+.mergedLineIn {
+  top: 50%;
+  left: calc(50% - var(--match-w) / 2 - var(--line-in));
+  width: var(--line-in);
+}
+
+.mergedTop .mergedLineV {
+  top: 50%;
+  bottom: 0;
+}
+
+.mergedBottom .mergedLineV {
+  top: 0;
+  bottom: 50%;
+}
+
 @media (max-width: 768px) {
   .bracket {
     --match-w: 220px;
