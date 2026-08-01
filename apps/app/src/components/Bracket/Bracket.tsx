@@ -77,8 +77,6 @@ export const Bracket: React.FC<BracketProps> = ({
       {mainRounds.map((round, roundIdx) => {
         const isLastMainRound = roundIdx === mainRounds.length - 1;
         const isMergedColumn = isLastMainRound && hasMergedFinal;
-        const isSemiBeforeMerged =
-          hasMergedFinal && roundIdx === mainRounds.length - 2;
         const columnDim =
           activeRound != null && round.value !== activeRound;
 
@@ -104,8 +102,6 @@ export const Bracket: React.FC<BracketProps> = ({
                   className={clsx(
                     c.matchSlot,
                     drawConnector && (isTopOfPair ? c.pairTop : c.pairBottom),
-                    isSemiBeforeMerged && c.mergedNext,
-                    isMergedColumn && c.mergedTop,
                   )}>
                   <div className={c.matchInner}>{renderMatch(match)}</div>
                   {drawConnector && (
@@ -117,29 +113,19 @@ export const Bracket: React.FC<BracketProps> = ({
                       )}
                     </>
                   )}
-                  {isMergedColumn && (
-                    <>
-                      <span
-                        className={c.mergedIncoming}
-                        aria-hidden='true'
-                      />
-                      <span className={c.mergedLineIn} aria-hidden='true' />
-                      <span className={c.mergedLineV} aria-hidden='true' />
-                    </>
-                  )}
                 </div>
               );
             })}
-            {isMergedColumn &&
-              thirdPlaceRound!.matches.map((match) => (
-                <div
-                  key={match.id}
-                  className={clsx(c.matchSlot, c.mergedBottom)}>
-                  <div className={c.matchInner}>{renderMatch(match)}</div>
-                  <span className={c.mergedLineIn} aria-hidden='true' />
-                  <span className={c.mergedLineV} aria-hidden='true' />
-                </div>
-              ))}
+            {isMergedColumn && (
+              <div className={c.thirdPlace}>
+                <span className={c.thirdPlaceTitle}>Treće mjesto</span>
+                {thirdPlaceRound!.matches.map((match) => (
+                  <div key={match.id} className={c.matchInner}>
+                    {renderMatch(match)}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         );
       })}

@@ -16,6 +16,7 @@
 }
 
 .column {
+  position: relative;
   flex: 1 1 0;
   display: flex;
   flex-direction: column;
@@ -89,47 +90,21 @@
   bottom: 0;
 }
 
-.mergedNext.pairTop .lineOut {
-  width: calc(50% - var(--match-w) / 2 - var(--line-in));
-}
-
-.mergedIncoming,
-.mergedLineIn {
+.thirdPlace {
   position: absolute;
-  height: 0;
-  border-top: 2px solid var(--line-color);
-  pointer-events: none;
+  top: calc(50% + 120px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--match-w);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.mergedLineV {
-  position: absolute;
-  width: 0;
-  border-left: 2px solid var(--line-color);
-  pointer-events: none;
-  left: calc(50% - var(--match-w) / 2 - var(--line-in));
-}
-
-.mergedTop .mergedIncoming {
-  left: 0;
-  width: calc(50% - var(--match-w) / 2 - var(--line-in));
-  bottom: 0;
-  top: auto;
-}
-
-.mergedLineIn {
-  top: 50%;
-  left: calc(50% - var(--match-w) / 2 - var(--line-in));
-  width: var(--line-in);
-}
-
-.mergedTop .mergedLineV {
-  top: 50%;
-  bottom: 0;
-}
-
-.mergedBottom .mergedLineV {
-  top: 0;
-  bottom: 50%;
+.thirdPlaceTitle {
+  @include body-normal-bold;
+  color: $white;
+  text-transform: uppercase;
 }
 
 @media (max-width: 768px) {
@@ -140,6 +115,16 @@
 
   .column {
     min-width: calc(var(--match-w) + 40px);
+  }
+
+  .thirdPlace {
+    top: calc(50% + 110px);
+    gap: 12px;
+  }
+
+  .thirdPlaceTitle {
+    @include mobile-body-medium-bold;
+    font-size: 14px;
   }
 }
 
