@@ -45,7 +45,7 @@ export const MatchTimerPage = () => {
   const { elapsedSeconds, isRunning, toggle, setElapsed, clearTimer } =
     useMatchTimer(matchId);
 
-  const currentMinute = Math.floor(elapsedSeconds / 60);
+  const currentMinute = Math.floor(elapsedSeconds / 60) + 1;
 
   const shootoutCounts = { home: 0, away: 0 };
   for (const event of events) {
