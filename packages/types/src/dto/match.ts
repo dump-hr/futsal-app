@@ -67,10 +67,6 @@ export class MatchCreateDto {
   @IsEnum(MatchType)
   @IsNotEmpty()
   matchType: `${MatchType}`;
-
-  @IsInt()
-  @IsOptional()
-  bracketOrder?: number | null;
 }
 
 export class MatchUpdateDto {

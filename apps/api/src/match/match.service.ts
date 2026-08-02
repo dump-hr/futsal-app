@@ -30,13 +30,6 @@ const teamSelect = {
   group: { select: { id: true, name: true, tournamentId: true } },
 };
 
-const BRACKET_ORDER_LIMITS: Partial<Record<`${MatchType}`, number>> = {
-  [MatchType.quarterFinal]: 4,
-  [MatchType.semiFinal]: 2,
-  [MatchType.final]: 1,
-  [MatchType.thirdPlace]: 1,
-};
-
 const GROUP_MATCH_TYPE: `${MatchType}` = MatchType.group;
 
 @Injectable()
@@ -49,47 +42,38 @@ export class MatchService {
   ): number | null {
     if (matchType === GROUP_MATCH_TYPE) return null;
 
-    const maxOrder = BRACKET_ORDER_LIMITS[matchType];
-
-    if (!maxOrder) return null;
-
     if (typeof bracketOrder !== 'number' || !Number.isInteger(bracketOrder)) {
       throw new BadRequestException(
         'Pozicija u ždrijebu je obavezna za utakmice nokaut faze',
       );
     }
 
-    if (bracketOrder < 1 || bracketOrder > maxOrder) {
-      throw new BadRequestException(
-        `Pozicija u ždrijebu za ovaj tip utakmice mora biti između 1 i ${maxOrder}`,
-      );
+    if (bracketOrder < 1) {
+      throw new BadRequestException('Pozicija u ždrijebu mora biti veća od 0');
     }
 
     return bracketOrder;
   }
 
-  private async validateBracketOrderIsAvailable(
+  private async getNextBracketOrder(
     tournamentId: number,
     matchType: `${MatchType}`,
-    bracketOrder: number | null,
-    excludeMatchId?: number,
-  ): Promise<void> {
-    if (bracketOrder === null) return;
+  ): Promise<number | null> {
+    if (matchType === GROUP_MATCH_TYPE) return null;
 
-    const duplicate = await prisma.match.findFirst({
+    const latestMatch = await prisma.match.findFirst({
       where: {
-        ...(excludeMatchId ? { id: { not: excludeMatchId } } : {}),
         matchType,
-        bracketOrder,
+        bracketOrder: { not: null },
         homeTeam: { tournamentId },
       },
+      orderBy: { bracketOrder: 'desc' },
+      select: { bracketOrder: true },
     });
 
-    if (duplicate) {
-      throw new ConflictException(
-        'Utakmica s tom pozicijom u ždrijebu već postoji',
-      );
-    }
+    const nextOrder = (latestMatch?.bracketOrder ?? 0) + 1;
+
+    return this.normalizeBracketOrder(matchType, nextOrder);
   }
 
   private async getTournamentIdForHomeTeam(
@@ -154,15 +138,10 @@ export class MatchService {
   }
 
   async create(dto: MatchCreateDto): Promise<MatchDto> {
-    const bracketOrder = this.normalizeBracketOrder(
-      dto.matchType,
-      dto.bracketOrder,
-    );
     const tournamentId = await this.getTournamentIdForHomeTeam(dto.homeTeamId);
-    await this.validateBracketOrderIsAvailable(
+    const bracketOrder = await this.getNextBracketOrder(
       tournamentId,
       dto.matchType,
-      bracketOrder,
     );
 
     return prisma.match.create({
@@ -191,20 +170,6 @@ export class MatchService {
     const bracketOrder = this.normalizeBracketOrder(
       matchType,
       dto.bracketOrder === undefined ? match.bracketOrder : dto.bracketOrder,
-    );
-
-    if (!match.homeTeamId) {
-      throw new BadRequestException('Domaća ekipa nije pronađena');
-    }
-
-    const tournamentId = await this.getTournamentIdForHomeTeam(
-      match.homeTeamId,
-    );
-    await this.validateBracketOrderIsAvailable(
-      tournamentId,
-      matchType,
-      bracketOrder,
-      id,
     );
 
     return prisma.match.update({
