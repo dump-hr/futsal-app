@@ -37,6 +37,8 @@ const BRACKET_ORDER_LIMITS: Partial<Record<`${MatchType}`, number>> = {
   [MatchType.thirdPlace]: 1,
 };
 
+const GROUP_MATCH_TYPE: `${MatchType}` = MatchType.group;
+
 @Injectable()
 export class MatchService {
   constructor(private readonly matchTimerService: MatchTimerService) {}
@@ -45,7 +47,7 @@ export class MatchService {
     matchType: `${MatchType}`,
     bracketOrder: number | null | undefined,
   ): number | null {
-    if (matchType === MatchType.group) return null;
+    if (matchType === GROUP_MATCH_TYPE) return null;
 
     const maxOrder = BRACKET_ORDER_LIMITS[matchType];
 
@@ -90,7 +92,9 @@ export class MatchService {
     }
   }
 
-  private async getTournamentIdForHomeTeam(homeTeamId: number): Promise<number> {
+  private async getTournamentIdForHomeTeam(
+    homeTeamId: number,
+  ): Promise<number> {
     const team = await prisma.team.findUnique({
       where: { id: homeTeamId },
       select: { tournamentId: true },
@@ -193,7 +197,9 @@ export class MatchService {
       throw new BadRequestException('Domaća ekipa nije pronađena');
     }
 
-    const tournamentId = await this.getTournamentIdForHomeTeam(match.homeTeamId);
+    const tournamentId = await this.getTournamentIdForHomeTeam(
+      match.homeTeamId,
+    );
     await this.validateBracketOrderIsAvailable(
       tournamentId,
       matchType,
