@@ -5,7 +5,12 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { prisma } from '../../lib/prisma';
-import { MatchDto, MatchCreateDto, MatchUpdateDto } from '@futsal-app/types';
+import {
+  MatchDto,
+  MatchCreateDto,
+  MatchUpdateDto,
+  MatchType,
+} from '@futsal-app/types';
 import { MatchTimerService } from '../match-timer/match-timer.service';
 
 const teamWithPlayersSelect = {
@@ -25,9 +30,78 @@ const teamSelect = {
   group: { select: { id: true, name: true, tournamentId: true } },
 };
 
+const BRACKET_ORDER_LIMITS: Partial<Record<`${MatchType}`, number>> = {
+  [MatchType.quarterFinal]: 4,
+  [MatchType.semiFinal]: 2,
+  [MatchType.final]: 1,
+  [MatchType.thirdPlace]: 1,
+};
+
 @Injectable()
 export class MatchService {
   constructor(private readonly matchTimerService: MatchTimerService) {}
+
+  private normalizeBracketOrder(
+    matchType: `${MatchType}`,
+    bracketOrder: number | null | undefined,
+  ): number | null {
+    if (matchType === MatchType.group) return null;
+
+    const maxOrder = BRACKET_ORDER_LIMITS[matchType];
+
+    if (!maxOrder) return null;
+
+    if (typeof bracketOrder !== 'number' || !Number.isInteger(bracketOrder)) {
+      throw new BadRequestException(
+        'Pozicija u ždrijebu je obavezna za utakmice nokaut faze',
+      );
+    }
+
+    if (bracketOrder < 1 || bracketOrder > maxOrder) {
+      throw new BadRequestException(
+        `Pozicija u ždrijebu za ovaj tip utakmice mora biti između 1 i ${maxOrder}`,
+      );
+    }
+
+    return bracketOrder;
+  }
+
+  private async validateBracketOrderIsAvailable(
+    tournamentId: number,
+    matchType: `${MatchType}`,
+    bracketOrder: number | null,
+    excludeMatchId?: number,
+  ): Promise<void> {
+    if (bracketOrder === null) return;
+
+    const duplicate = await prisma.match.findFirst({
+      where: {
+        ...(excludeMatchId ? { id: { not: excludeMatchId } } : {}),
+        matchType,
+        bracketOrder,
+        homeTeam: { tournamentId },
+      },
+    });
+
+    if (duplicate) {
+      throw new ConflictException(
+        'Utakmica s tom pozicijom u ždrijebu već postoji',
+      );
+    }
+  }
+
+  private async getTournamentIdForHomeTeam(homeTeamId: number): Promise<number> {
+    const team = await prisma.team.findUnique({
+      where: { id: homeTeamId },
+      select: { tournamentId: true },
+    });
+
+    if (!team) {
+      throw new BadRequestException('Domaća ekipa nije pronađena');
+    }
+
+    return team.tournamentId;
+  }
 
   async getById(id: number): Promise<MatchDto> {
     const match = await prisma.match.findUnique({
@@ -76,12 +150,24 @@ export class MatchService {
   }
 
   async create(dto: MatchCreateDto): Promise<MatchDto> {
+    const bracketOrder = this.normalizeBracketOrder(
+      dto.matchType,
+      dto.bracketOrder,
+    );
+    const tournamentId = await this.getTournamentIdForHomeTeam(dto.homeTeamId);
+    await this.validateBracketOrderIsAvailable(
+      tournamentId,
+      dto.matchType,
+      bracketOrder,
+    );
+
     return prisma.match.create({
       data: {
         timeOfMatch: dto.timeOfMatch,
         homeTeamId: dto.homeTeamId,
         awayTeamId: dto.awayTeamId,
         matchType: dto.matchType,
+        bracketOrder,
       },
       include: {
         homeTeam: { select: teamSelect },
@@ -97,9 +183,30 @@ export class MatchService {
       throw new NotFoundException('Utakmica nije pronađena');
     }
 
+    const matchType = dto.matchType ?? match.matchType;
+    const bracketOrder = this.normalizeBracketOrder(
+      matchType,
+      dto.bracketOrder === undefined ? match.bracketOrder : dto.bracketOrder,
+    );
+
+    if (!match.homeTeamId) {
+      throw new BadRequestException('Domaća ekipa nije pronađena');
+    }
+
+    const tournamentId = await this.getTournamentIdForHomeTeam(match.homeTeamId);
+    await this.validateBracketOrderIsAvailable(
+      tournamentId,
+      matchType,
+      bracketOrder,
+      id,
+    );
+
     return prisma.match.update({
       where: { id },
-      data: dto,
+      data: {
+        ...dto,
+        bracketOrder,
+      },
       include: {
         homeTeam: { select: teamSelect },
         awayTeam: { select: teamSelect },
