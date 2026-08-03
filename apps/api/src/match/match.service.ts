@@ -108,7 +108,13 @@ export class MatchService {
   }
 
   async setActive(id: number): Promise<void> {
-    const match = await prisma.match.findUnique({ where: { id } });
+    const match = await prisma.match.findUnique({
+      where: { id },
+      include: {
+        homeTeam: { select: { tournamentId: true } },
+        awayTeam: { select: { tournamentId: true } },
+      },
+    });
 
     if (!match) {
       throw new NotFoundException('Utakmica nije pronađena');
@@ -116,7 +122,20 @@ export class MatchService {
 
     if (match.isActive) return;
 
-    const active = await prisma.match.findFirst({ where: { isActive: true } });
+    const tournamentId =
+      match.homeTeam?.tournamentId ?? match.awayTeam?.tournamentId;
+
+    if (!tournamentId) {
+      throw new BadRequestException('Utakmica nije povezana s turnirom');
+    }
+
+    const active = await prisma.match.findFirst({
+      where: {
+        isActive: true,
+        OR: [{ homeTeam: { tournamentId } }, { awayTeam: { tournamentId } }],
+      },
+    });
+
     if (active) {
       throw new ConflictException(
         'Druga utakmica je već aktivna, najprije ju deaktivirajte',
