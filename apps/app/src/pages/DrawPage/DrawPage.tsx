@@ -86,22 +86,23 @@ export const DrawPage = () => {
     return (
       <>
         <div className={c.tabs} role='tablist'>
-          {rounds
-            .filter((round) => round.value !== MatchType.thirdPlace)
-            .map((round) => {
-              const isActive = round.value === activeTab;
-              return (
-                <button
-                  key={round.value}
-                  type='button'
-                  role='tab'
-                  aria-selected={isActive}
-                  className={clsx(c.tab, isActive && c.tabActive)}
-                  onClick={() => handleTabClick(round.value)}>
-                  {round.label}
-                </button>
-              );
-            })}
+          {(rounds.some((r) => r.value !== MatchType.thirdPlace)
+            ? rounds.filter((r) => r.value !== MatchType.thirdPlace)
+            : rounds
+          ).map((round) => {
+            const isActive = round.value === activeTab;
+            return (
+              <button
+                key={round.value}
+                type='button'
+                role='tab'
+                aria-selected={isActive}
+                className={clsx(c.tab, isActive && c.tabActive)}
+                onClick={() => handleTabClick(round.value)}>
+                {round.label}
+              </button>
+            );
+          })}
         </div>
 
         <Bracket
