@@ -6,9 +6,14 @@ import c from './MatchTimerPage.module.scss';
 type EventsColumnsProps = {
   events: MatchEventDto[];
   mode: 'regulation' | 'shootout';
+  onDeleteEvent: (event: MatchEventDto) => void;
 };
 
-export const EventsColumns: React.FC<EventsColumnsProps> = ({ events, mode }) => {
+export const EventsColumns: React.FC<EventsColumnsProps> = ({
+  events,
+  mode,
+  onDeleteEvent,
+}) => {
   const allowedTypes =
     mode === 'shootout' ? SHOOTOUT_EVENTS : REGULATION_EVENTS;
   const filtered = events.filter((e) =>
@@ -27,6 +32,7 @@ export const EventsColumns: React.FC<EventsColumnsProps> = ({ events, mode }) =>
             event={event}
             side='left'
             showMinute={showMinute}
+            onDelete={() => onDeleteEvent(event)}
           />
         ))}
       </div>
@@ -37,6 +43,7 @@ export const EventsColumns: React.FC<EventsColumnsProps> = ({ events, mode }) =>
             event={event}
             side='right'
             showMinute={showMinute}
+            onDelete={() => onDeleteEvent(event)}
           />
         ))}
       </div>

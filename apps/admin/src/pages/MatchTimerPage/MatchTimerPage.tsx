@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'wouter';
-import { EventType } from '@futsal-app/types';
+import { EventType, type MatchEventDto } from '@futsal-app/types';
 import {
   useMatchGet,
   useMatchDeactivate,
   useMatchEventsGet,
+  useMatchEventDelete,
 } from '@api/index';
 import { ModalConfirmation, NewEventModal } from '@components/index';
 import { useMatchTimer } from '@hooks/index';
-import { CheckBlack, HistoryBlack } from '@assets/index';
+import { CheckBlack, HistoryBlack, TrashCanBlack } from '@assets/index';
 import { routes } from '@routes/index';
 import { MatchTimerHeader } from './MatchTimerHeader';
 import { TimerView } from './TimerView';
@@ -33,6 +34,9 @@ export const MatchTimerPage = () => {
   const [modalState, setModalState] = useState<ModalState>(null);
   const [endConfirmOpen, setEndConfirmOpen] = useState(false);
   const [penaltyConfirmOpen, setPenaltyConfirmOpen] = useState(false);
+  const [eventToDelete, setEventToDelete] = useState<MatchEventDto | null>(
+    null,
+  );
 
   const params = useParams<{ matchId: string }>();
   const matchId = Number(params.matchId);
@@ -41,6 +45,7 @@ export const MatchTimerPage = () => {
   const { data: match, isLoading } = useMatchGet(matchId);
   const { data: events = [] } = useMatchEventsGet(matchId);
   const { mutate: deactivate } = useMatchDeactivate();
+  const { mutate: deleteEvent } = useMatchEventDelete(matchId);
 
   const { elapsedSeconds, isRunning, toggle, setElapsed, clearTimer } =
     useMatchTimer(matchId);
@@ -56,7 +61,8 @@ export const MatchTimerPage = () => {
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (modalState || endConfirmOpen || penaltyConfirmOpen) return;
+      if (modalState || endConfirmOpen || penaltyConfirmOpen || eventToDelete)
+        return;
       if (isTypingTarget(e.target)) return;
 
       if (e.key === ' ' && !isShootoutView) {
@@ -76,7 +82,14 @@ export const MatchTimerPage = () => {
 
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [isShootoutView, modalState, endConfirmOpen, penaltyConfirmOpen, toggle]);
+  }, [
+    isShootoutView,
+    modalState,
+    endConfirmOpen,
+    penaltyConfirmOpen,
+    eventToDelete,
+    toggle,
+  ]);
 
   if (isLoading) {
     return (
@@ -130,6 +143,7 @@ export const MatchTimerPage = () => {
       <EventsColumns
         events={events}
         mode={isShootoutView ? 'shootout' : 'regulation'}
+        onDeleteEvent={setEventToDelete}
       />
 
       {modalState && (
@@ -167,6 +181,20 @@ export const MatchTimerPage = () => {
             if (isRunning) toggle();
             setIsShootoutView(true);
             setPenaltyConfirmOpen(false);
+          }}
+        />
+      )}
+
+      {eventToDelete && (
+        <ModalConfirmation
+          description='Želite li obrisati ovaj događaj?'
+          boldText='Ova akcija je nepovratna.'
+          icon={TrashCanBlack}
+          circleVariant='gray'
+          onCancel={() => setEventToDelete(null)}
+          onConfirm={() => {
+            deleteEvent(eventToDelete.id);
+            setEventToDelete(null);
           }}
         />
       )}
