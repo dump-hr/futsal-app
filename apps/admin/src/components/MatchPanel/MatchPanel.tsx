@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { EventType, MatchType } from '@futsal-app/types';
 import {
   useMatchGet,
@@ -7,8 +7,8 @@ import {
   useMatchEventDelete,
   useMatchEventUpdate,
 } from '@api/index';
-import { ButtonSmall } from '@components/index';
-import { PlusBlack } from '@assets/index';
+import { ButtonSmall, ModalConfirmation } from '@components/index';
+import { ExitBlack, PlusBlack } from '@assets/index';
 import { useCloseComponent } from '@hooks/index';
 import { BackgroundColor, MatchEventSaveData } from '@types';
 import { MatchHeader } from './MatchHeader';
@@ -39,9 +39,20 @@ export const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
   const { data: events = [] } = useMatchEventsGet(matchId);
   const [pendingKind, setPendingKind] = useState<PendingKind | null>(null);
   const [newEventSide, setNewEventSide] = useState<NewEventSide | null>(null);
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+
+  const hasPendingEvent = pendingKind !== null || newEventSide !== null;
+
+  const requestClose = useCallback(() => {
+    if (hasPendingEvent) {
+      setShowCancelConfirm(true);
+    } else {
+      onClose();
+    }
+  }, [hasPendingEvent, onClose]);
 
   const panelRef = useRef<HTMLDivElement>(null);
-  useCloseComponent({ onClose, containerRef: panelRef });
+  useCloseComponent({ onClose: requestClose, containerRef: panelRef });
 
   const createEvent = useMatchEventCreate(matchId, {
     onSuccess: () => setNewEventSide(null),
@@ -129,7 +140,7 @@ export const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
         timeOfMatch={match.timeOfMatch}
         penaltyHomeGoals={showPenaltySection ? penaltyHomeGoals : undefined}
         penaltyAwayGoals={showPenaltySection ? penaltyAwayGoals : undefined}
-        onClose={onClose}
+        onClose={requestClose}
       />
 
       {showPenaltySection && (
@@ -184,6 +195,21 @@ export const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
           />
         ))}
       </div>
+
+      {showCancelConfirm && (
+        <ModalConfirmation
+          description='Ovim postupkom izgubit ćete unesene podatke o novom događaju'
+          boldText={
+            pendingKind === 'penalty' || newEventSide?.isPenalty
+              ? 'Novi penal'
+              : 'Novi događaj'
+          }
+          icon={ExitBlack}
+          circleVariant='gray'
+          onCancel={() => setShowCancelConfirm(false)}
+          onConfirm={onClose}
+        />
+      )}
     </div>
   );
 };

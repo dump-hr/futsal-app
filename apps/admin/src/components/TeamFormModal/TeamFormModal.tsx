@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import {
   Button,
   ButtonSmall,
@@ -8,7 +8,13 @@ import {
   ModalConfirmation,
 } from '@components/index';
 import { useCloseComponent } from '@hooks/index';
-import { XWhite, CheckBlack, XGray, TrashCanBlack } from '@assets/index';
+import {
+  XWhite,
+  CheckBlack,
+  XGray,
+  TrashCanBlack,
+  ExitBlack,
+} from '@assets/index';
 import { PlayerGrid } from './PlayerGrid';
 import { useTeamForm } from './useTeamForm';
 import common from './ModalCommon.module.scss';
@@ -50,8 +56,25 @@ export const TeamFormModal: React.FC<TeamFormModalProps> = ({
     handleSave,
   } = useTeamForm({ teamId, initialGroupId, onClose });
 
-  const handleClose = useCallback(() => onClose(), [onClose]);
-  useCloseComponent({ onClose: handleClose });
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+
+  const isDirty =
+    isEdit ||
+    !!teamName.trim() ||
+    group !== 'none' ||
+    players.length > 0 ||
+    !!pendingLogo ||
+    removeLogo;
+
+  const requestClose = useCallback(() => {
+    if (isDirty) {
+      setShowCancelConfirm(true);
+    } else {
+      onClose();
+    }
+  }, [isDirty, onClose]);
+
+  useCloseComponent({ onClose: requestClose });
 
   if (!ready || (isEdit && !initialized)) return null;
 
@@ -62,7 +85,7 @@ export const TeamFormModal: React.FC<TeamFormModalProps> = ({
     <div
       className={`${common.overlay} ${c.overlay}`}
       onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target === e.currentTarget) requestClose();
       }}>
       <div className={c.modal} role='dialog' aria-modal='true'>
         <div className={c.scrollContent}>
@@ -77,7 +100,7 @@ export const TeamFormModal: React.FC<TeamFormModalProps> = ({
                   : 'Kreiraj ime, importaj logo i unesi igrače nove ekipe'}
               </p>
             </div>
-            <ButtonSmall iconSrc={XGray} onClick={onClose} hasBorder />
+            <ButtonSmall iconSrc={XGray} onClick={requestClose} hasBorder />
           </div>
 
           <div className={c.main}>
@@ -131,7 +154,7 @@ export const TeamFormModal: React.FC<TeamFormModalProps> = ({
         </div>
 
         <div className={`${common.footer} ${c.footer}`}>
-          <Button icon={XWhite} variant='secondary' onClick={onClose}>
+          <Button icon={XWhite} variant='secondary' onClick={requestClose}>
             Odustani
           </Button>
           <Button
@@ -155,6 +178,21 @@ export const TeamFormModal: React.FC<TeamFormModalProps> = ({
           circleVariant='gray'
           onCancel={cancelDeletePlayer}
           onConfirm={confirmDeletePlayer}
+        />
+      )}
+
+      {showCancelConfirm && !playerToDelete && (
+        <ModalConfirmation
+          description={
+            isEdit
+              ? 'Ovim postupkom odbacit ćete sve promjene ekipe'
+              : 'Ovim postupkom izgubit ćete unesene podatke o ekipi'
+          }
+          boldText={isEdit ? existingTeam?.name ?? 'Ekipa' : 'Nova ekipa'}
+          icon={ExitBlack}
+          circleVariant='gray'
+          onCancel={() => setShowCancelConfirm(false)}
+          onConfirm={onClose}
         />
       )}
     </div>

@@ -3,6 +3,7 @@ import { useLocation, useParams } from 'wouter';
 import {
   Button,
   ButtonSmall,
+  MatchPanel,
   ModalConfirmation,
   TeamFormModal,
   PlayerFormModal,
@@ -36,6 +37,8 @@ export const TeamDetailPage = () => {
     name: string;
   } | null>(null);
   const [showTeamEdit, setShowTeamEdit] = useState(false);
+  const [panelMatchId, setPanelMatchId] = useState<number | undefined>();
+  const [panelClosing, setPanelClosing] = useState(false);
   const [, navigate] = useLocation();
 
   const params = useParams<{ teamId: string }>();
@@ -120,7 +123,7 @@ export const TeamDetailPage = () => {
         <section className={c.matchesSection}>
           <span className={c.sectionTitle}>Utakmice</span>
           <div className={c.matchList}>
-            <MatchList matches={matches ?? []} />
+            <MatchList matches={matches ?? []} onEdit={setPanelMatchId} />
           </div>
         </section>
       </div>
@@ -154,6 +157,24 @@ export const TeamDetailPage = () => {
 
       {showTeamEdit && (
         <TeamFormModal teamId={teamId} onClose={() => setShowTeamEdit(false)} />
+      )}
+
+      {panelMatchId !== undefined && (
+        <div
+          className={
+            panelClosing ? `${c.panelOverlay} ${c.closing}` : c.panelOverlay
+          }
+          onAnimationEnd={(e) => {
+            if (e.target === e.currentTarget && panelClosing) {
+              setPanelMatchId(undefined);
+              setPanelClosing(false);
+            }
+          }}>
+          <MatchPanel
+            matchId={panelMatchId}
+            onClose={() => setPanelClosing(true)}
+          />
+        </div>
       )}
     </div>
   );

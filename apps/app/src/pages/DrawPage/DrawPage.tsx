@@ -86,7 +86,10 @@ export const DrawPage = () => {
     return (
       <>
         <div className={c.tabs} role='tablist'>
-          {rounds.map((round) => {
+          {(rounds.some((r) => r.value !== MatchType.thirdPlace)
+            ? rounds.filter((r) => r.value !== MatchType.thirdPlace)
+            : rounds
+          ).map((round) => {
             const isActive = round.value === activeTab;
             return (
               <button

@@ -2,6 +2,7 @@ import { EventType } from '@futsal-app/types';
 import {
   CardRed,
   CardYellow,
+  CrossGray,
   GoalLime,
   TickLime,
   XRed,
@@ -24,8 +25,10 @@ export const REGULATION_EVENTS: EventType[] = [
   EventType.goal,
   EventType.ownGoal,
   EventType.penaltyGoal,
+  EventType.penaltyMiss,
   EventType.yellowCard,
   EventType.redCard,
+  EventType.injury,
 ];
 
 export const SHOOTOUT_EVENTS: EventType[] = [
@@ -37,8 +40,10 @@ export const EVENT_ICON: Partial<Record<EventType, string>> = {
   [EventType.goal]: GoalLime,
   [EventType.ownGoal]: GoalLime,
   [EventType.penaltyGoal]: GoalLime,
+  [EventType.penaltyMiss]: XRed,
   [EventType.yellowCard]: CardYellow,
   [EventType.redCard]: CardRed,
+  [EventType.injury]: CrossGray,
   [EventType.shootoutGoal]: TickLime,
   [EventType.shootoutMiss]: XRed,
 };
