@@ -5,7 +5,12 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { prisma } from '../../lib/prisma';
-import { MatchDto, MatchCreateDto, MatchUpdateDto } from '@futsal-app/types';
+import {
+  MatchDto,
+  MatchCreateDto,
+  MatchUpdateDto,
+  MatchType,
+} from '@futsal-app/types';
 import { MatchTimerService } from '../match-timer/match-timer.service';
 
 const teamWithPlayersSelect = {
@@ -76,6 +81,10 @@ export class MatchService {
   }
 
   async create(dto: MatchCreateDto): Promise<MatchDto> {
+    if (dto.matchType === MatchType.group) {
+      await this.assertSameGroup(dto.homeTeamId, dto.awayTeamId);
+    }
+
     return prisma.match.create({
       data: {
         timeOfMatch: dto.timeOfMatch,
@@ -97,6 +106,10 @@ export class MatchService {
       throw new NotFoundException('Utakmica nije pronađena');
     }
 
+    if (dto.matchType === MatchType.group) {
+      await this.assertSameGroup(match.homeTeamId, match.awayTeamId);
+    }
+
     return prisma.match.update({
       where: { id },
       data: dto,
@@ -105,6 +118,33 @@ export class MatchService {
         awayTeam: { select: teamSelect },
       },
     });
+  }
+
+  private async assertSameGroup(
+    homeTeamId: number,
+    awayTeamId: number,
+  ): Promise<void> {
+    const teams = await prisma.team.findMany({
+      where: { id: { in: [homeTeamId, awayTeamId] } },
+      select: { id: true, groupId: true },
+    });
+
+    const homeTeam = teams.find((t) => t.id === homeTeamId);
+    const awayTeam = teams.find((t) => t.id === awayTeamId);
+
+    if (!homeTeam || !awayTeam) {
+      throw new NotFoundException('Ekipa nije pronađena');
+    }
+
+    if (
+      homeTeam.groupId === null ||
+      awayTeam.groupId === null ||
+      homeTeam.groupId !== awayTeam.groupId
+    ) {
+      throw new BadRequestException(
+        'Utakmica grupne faze mora biti između ekipa iz iste skupine',
+      );
+    }
   }
 
   async setActive(id: number): Promise<void> {
