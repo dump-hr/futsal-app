@@ -81,7 +81,7 @@ export class MatchService {
   }
 
   async create(dto: MatchCreateDto): Promise<MatchDto> {
-    if (dto.matchType === MatchType.group) {
+    if ((dto.matchType as MatchType) === MatchType.group) {
       await this.assertSameGroup(dto.homeTeamId, dto.awayTeamId);
     }
 
@@ -106,7 +106,13 @@ export class MatchService {
       throw new NotFoundException('Utakmica nije pronađena');
     }
 
-    if (dto.matchType === MatchType.group) {
+    if ((dto.matchType as MatchType) === MatchType.group) {
+      if (match.homeTeamId === null || match.awayTeamId === null) {
+        throw new BadRequestException(
+          'Utakmica grupne faze mora imati obje ekipe',
+        );
+      }
+
       await this.assertSameGroup(match.homeTeamId, match.awayTeamId);
     }
 
