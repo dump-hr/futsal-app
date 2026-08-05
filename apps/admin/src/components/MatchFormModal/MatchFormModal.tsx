@@ -63,6 +63,8 @@ export const MatchFormModal: React.FC<MatchFormModalProps> = ({ onClose }) => {
       matchType,
       homeTeamId,
       awayTeamId,
+      homeTeam,
+      awayTeam,
     });
 
     if (error) {
