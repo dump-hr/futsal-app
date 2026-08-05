@@ -186,6 +186,33 @@
   display: flex;
   align-items: center;
   gap: 8px;
+
+  &:hover .eventDelete,
+  .eventDelete:focus-visible {
+    opacity: 0.8;
+  }
+}
+
+.eventDelete {
+  background: transparent;
+  border: none;
+  padding: 4px;
+  margin: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .eventLeft {
