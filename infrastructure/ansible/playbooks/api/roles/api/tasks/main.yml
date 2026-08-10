@@ -1,7 +1,7 @@
 ---
-- name: Generate random container suffix
+- name: Set container name from image tag
   set_fact:
-    container_name: "api-{{ lookup('community.general.random_string', length=8, special=false, upper=false) }}"
+    container_name: "api-{{ (docker_image.split(':') | last)[:12] }}"
 
 - name: Copy .env file
   copy:
@@ -50,10 +50,14 @@
         state: absent
 
     - name: Rename new api docker container
-      shell: docker rename "{{ container_name }}" api
+      command: docker rename {{ container_name }} api
 
     - name: Cleanup old docker images
-      shell: docker image prune -a --filter "until=48h" -f
+      community.docker.docker_prune:
+        images: true
+        images_filters:
+          dangling: false
+          until: 48h
 
   rescue:
     - name: Save unhealthy api docker container logs

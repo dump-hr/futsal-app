@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { CheckBlack, HistoryBlack, PlusBlack } from '@assets/index';
 import { Button } from '@components/index';
+import { MATCH_DURATION_SECONDS } from '@constants/timer';
 import c from './MatchTimerPage.module.scss';
 
 type TimerViewProps = {
@@ -16,6 +17,13 @@ type TimerViewProps = {
 };
 
 const pad = (n: number) => String(n).padStart(2, '0');
+
+const renderDigits = (value: string) =>
+  value.split('').map((digit, index) => (
+    <span key={index} className={c.clockDigit}>
+      {digit}
+    </span>
+  ));
 const clamp = (n: number, max: number) => Math.max(0, Math.min(max, n));
 
 type EditingField = 'minutes' | 'seconds' | null;
@@ -50,10 +58,16 @@ export const TimerView: React.FC<TimerViewProps> = ({
     if (!editing) return;
     const parsed = Number(draft);
     if (Number.isFinite(parsed)) {
-      const safe = clamp(Math.floor(parsed), editing === 'minutes' ? 999 : 59);
+      const maxMinutes = MATCH_DURATION_SECONDS / 60;
+      const safe = clamp(
+        Math.floor(parsed),
+        editing === 'minutes' ? maxMinutes : 59,
+      );
       const newMinutes = editing === 'minutes' ? safe : minutes;
       const newSeconds = editing === 'seconds' ? safe : seconds;
-      onElapsedChange(newMinutes * 60 + newSeconds);
+      onElapsedChange(
+        Math.min(newMinutes * 60 + newSeconds, MATCH_DURATION_SECONDS),
+      );
     }
     setEditing(null);
     setDraft('');
@@ -80,7 +94,7 @@ export const TimerView: React.FC<TimerViewProps> = ({
             value={draft}
             autoFocus
             onChange={(e) =>
-              setDraft(e.target.value.replace(/\D/g, '').slice(0, 3))
+              setDraft(e.target.value.replace(/\D/g, '').slice(0, 2))
             }
             onBlur={commit}
             onKeyDown={handleKeyDown}
@@ -89,7 +103,7 @@ export const TimerView: React.FC<TimerViewProps> = ({
           <span
             className={clsx(c.clockDigits, !isRunning && c.clickable)}
             onClick={() => startEdit('minutes', minutes)}>
-            {pad(minutes)}
+            {renderDigits(pad(minutes))}
           </span>
         )}
         <span className={c.clockColon}>:</span>
@@ -108,7 +122,7 @@ export const TimerView: React.FC<TimerViewProps> = ({
           <span
             className={clsx(c.clockDigits, !isRunning && c.clickable)}
             onClick={() => startEdit('seconds', seconds)}>
-            {pad(seconds)}
+            {renderDigits(pad(seconds))}
           </span>
         )}
       </div>

@@ -68,9 +68,6 @@ export const getElapsedMs = (timer: MatchTimerStateDto): number => {
   return timer.accumulatedMs + liveMs;
 };
 
-export const getElapsedMinutes = (timer: MatchTimerStateDto): number =>
-  Math.floor(getElapsedMs(timer) / 60_000);
-
 export const formatMatchDayHeader = (value: string | Date): string => {
   const date = toDate(value);
   return `${date.getDate()}. ${CROATIAN_MONTHS_GENITIVE[date.getMonth()]}`;

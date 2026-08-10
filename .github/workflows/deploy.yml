@@ -6,11 +6,22 @@ on:
       - main
 
   workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Existing ghcr.io image tag to redeploy (commit SHA). Leave empty to build and deploy HEAD.'
+        required: false
+        default: ''
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
 
 jobs:
   docker_image_build:
     name: Docker image build
     runs-on: ubuntu-latest
+
+    if: inputs.image_tag == ''
 
     permissions:
       contents: read
@@ -71,6 +82,8 @@ jobs:
     needs:
       - docker_image_build
 
+    if: ${{ !cancelled() && (needs.docker_image_build.result == 'success' || needs.docker_image_build.result == 'skipped') }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -101,4 +114,5 @@ jobs:
       - name: Run Ansible playbook
         run: |
           eval $(ssh-agent)
-          ./infrastructure/scripts/ansible-playbook.sh ${{ github.ref_name == 'main' && 'production' || github.ref_name }} api
+          ./infrastructure/scripts/ansible-playbook.sh ${{ github.ref_name == 'main' && 'production' || github.ref_name }} api \
+            -e "docker_image=ghcr.io/${{ github.repository }}:${{ inputs.image_tag != '' && inputs.image_tag || github.sha }}"

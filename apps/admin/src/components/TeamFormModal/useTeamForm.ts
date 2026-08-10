@@ -17,12 +17,19 @@ import { useTournamentContext } from '@hooks/index';
 
 type UseTeamFormArgs = {
   teamId?: number;
+  initialGroupId?: number;
   onClose: () => void;
 };
 
-export const useTeamForm = ({ teamId, onClose }: UseTeamFormArgs) => {
+export const useTeamForm = ({
+  teamId,
+  initialGroupId,
+  onClose,
+}: UseTeamFormArgs) => {
   const [teamName, setTeamName] = useState('');
-  const [group, setGroup] = useState<GroupOption>('none');
+  const [group, setGroup] = useState<GroupOption>(
+    initialGroupId ? String(initialGroupId) : 'none',
+  );
   const [players, setPlayers] = useState<PlayerEntry[]>([]);
   const [pendingDeleteIndex, setPendingDeleteIndex] = useState<number | null>(
     null,

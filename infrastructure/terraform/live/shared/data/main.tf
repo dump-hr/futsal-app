@@ -58,7 +58,7 @@ module "uploads" {
   website_domain     = "futsal-app-uploads.dump.hr"
   cloudflare_zone_id = data.cloudflare_zone.dump_hr.id
   cors_allowed_origins = [
-    "https://malonogometni.dump.hr",
+    "https://turnir.dump.hr",
     "http://localhost:5174",
     "http://localhost:5173",
   ]

@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { TournamentModifyDto, TournamentDto } from '@futsal-app/types';
 import { prisma } from '../../lib/prisma';
 
@@ -32,36 +28,6 @@ export class TournamentService {
       const [bm, by] = b.date.split('/').map(Number);
       return by - ay || bm - am;
     });
-  }
-
-  async getById(id: number): Promise<TournamentDto> {
-    const tournament = await prisma.tournament.findFirst({
-      where: { id, isDeleted: false },
-      include: { groups: { include: { teams: true } }, teams: true },
-    });
-
-    if (!tournament) {
-      throw new NotFoundException('Turnir nije pronađen');
-    }
-
-    return tournament;
-  }
-
-  async update(id: number, dto: TournamentModifyDto): Promise<TournamentDto> {
-    const existing = await prisma.tournament.findFirst({
-      where: { name: dto.name, isDeleted: false, NOT: { id } },
-    });
-
-    if (existing) {
-      throw new ConflictException(`Turnir s imenom "${dto.name}" već postoji.`);
-    }
-
-    const updatedTournament = await prisma.tournament.update({
-      where: { id },
-      data: { ...dto },
-    });
-
-    return updatedTournament;
   }
 
   async delete(id: number): Promise<TournamentDto> {

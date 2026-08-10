@@ -7,10 +7,13 @@ import {
   MatchEventDto,
 } from '@futsal-app/types';
 import { isGoalEvent, getScoreChange } from './match-event.helpers';
+import { MatchEventStreamService } from './match-event-stream.service';
 
 @Injectable()
 export class MatchEventService {
   private readonly logger = new Logger(MatchEventService.name);
+
+  constructor(private readonly stream: MatchEventStreamService) {}
 
   async create(dto: MatchEventCreateDto): Promise<MatchEventDto> {
     const event = prisma.matchEvent.create({
@@ -24,7 +27,9 @@ export class MatchEventService {
     });
 
     if (!isGoalEvent(dto.eventType)) {
-      return event;
+      const created = await event;
+      this.stream.emit(dto.matchId);
+      return created;
     }
 
     const delta = getScoreChange(dto.eventType, dto.isForHomeTeam);
@@ -40,6 +45,7 @@ export class MatchEventService {
         }),
       ]);
 
+      this.stream.emit(dto.matchId);
       return created;
     } catch (error) {
       this.logger.error(
@@ -80,7 +86,9 @@ export class MatchEventService {
     });
 
     if (!eventTypeChanged) {
-      return await updateOp;
+      const updated = await updateOp;
+      this.stream.emit(existing.matchId);
+      return updated;
     }
 
     const operations: Prisma.PrismaPromise<unknown>[] = [updateOp];
@@ -117,6 +125,7 @@ export class MatchEventService {
     try {
       const [updated] = await prisma.$transaction(operations);
 
+      this.stream.emit(existing.matchId);
       return updated as MatchEventDto;
     } catch (error) {
       this.logger.error(
@@ -139,13 +148,12 @@ export class MatchEventService {
     const deleteOp = prisma.matchEvent.delete({ where: { id } });
 
     if (!isGoalEvent(existing.eventType)) {
-      return await deleteOp;
+      const deleted = await deleteOp;
+      this.stream.emit(existing.matchId);
+      return deleted;
     }
 
     const delta = getScoreChange(existing.eventType, existing.isForHomeTeam);
-    const match = await prisma.match.findUnique({
-      where: { id: existing.matchId },
-    });
 
     try {
       const [deleted] = await prisma.$transaction([
@@ -153,12 +161,13 @@ export class MatchEventService {
         prisma.match.update({
           where: { id: existing.matchId },
           data: {
-            homeGoals: Math.max(0, (match?.homeGoals ?? 0) - delta.homeGoals),
-            awayGoals: Math.max(0, (match?.awayGoals ?? 0) - delta.awayGoals),
+            homeGoals: { decrement: delta.homeGoals },
+            awayGoals: { decrement: delta.awayGoals },
           },
         }),
       ]);
 
+      this.stream.emit(existing.matchId);
       return deleted;
     } catch (error) {
       this.logger.error(

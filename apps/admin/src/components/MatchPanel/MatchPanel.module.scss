@@ -24,12 +24,6 @@
   width: 100%;
 }
 
-.headerTopLeft {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-
 .matchTypeBadge {
   display: flex;
   align-items: center;
@@ -98,6 +92,26 @@
   color: $white;
   text-align: center;
   margin-top: -4px;
+}
+
+.bracketOrderEditor {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  width: calc(100% - 48px);
+  margin: 20px 24px 0;
+  padding: 16px;
+  border: 1px solid $gray-dark;
+  border-radius: 12px;
+
+  > div:first-child {
+    flex: 1;
+  }
+
+  input {
+    max-width: none;
+    width: 100%;
+  }
 }
 
 .sectionLabel {

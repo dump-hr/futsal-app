@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   ParseIntPipe,
@@ -11,12 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { GroupService } from './group.service';
-import {
-  GroupCreateDto,
-  GroupUpdateDto,
-  GroupDto,
-  GroupAddTeamDto,
-} from '@futsal-app/types';
+import { GroupCreateDto, GroupDto, GroupAddTeamDto } from '@futsal-app/types';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('group')
@@ -39,15 +33,6 @@ export class GroupController {
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<GroupDto> {
     return this.groupService.findOne(id);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Patch(':id')
-  async update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: GroupUpdateDto,
-  ): Promise<GroupDto> {
-    return this.groupService.update(id, dto);
   }
 
   @UseGuards(JwtAuthGuard)

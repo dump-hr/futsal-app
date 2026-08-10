@@ -1,4 +1,5 @@
 .page {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 54px;
@@ -6,6 +7,39 @@
   padding: 36px 60px;
   height: calc(100vh - 80px);
   overflow: hidden;
+}
+
+.panelOverlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  animation: slideIn 0.25s ease-out;
+}
+
+.closing {
+  animation: slideOut 0.25s ease-in forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
 }
 
 .header {

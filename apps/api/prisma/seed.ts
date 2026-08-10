@@ -179,6 +179,7 @@ async function main() {
         homeGoals,
         awayGoals,
         matchType: MatchType.group,
+        isFinished: true,
       },
     });
 
@@ -231,6 +232,7 @@ async function main() {
       homeGoals: 3,
       awayGoals: 1,
       matchType: MatchType.semiFinal,
+      isFinished: true,
     },
   });
 
@@ -305,6 +307,7 @@ async function main() {
       homeGoals: 2,
       awayGoals: 2,
       matchType: MatchType.final,
+      isFinished: true,
     },
   });
 
@@ -319,9 +322,7 @@ async function main() {
       data: {
         minute: goal.minute,
         matchId: drawFinal.id,
-        playerId: randomPlayer(
-          (goal.isHome ? teams[0] : teams[4]).id,
-        ).id,
+        playerId: randomPlayer((goal.isHome ? teams[0] : teams[4]).id).id,
         eventType: EventType.goal,
         isForHomeTeam: goal.isHome,
       },
@@ -362,6 +363,7 @@ async function main() {
       homeGoals: 3,
       awayGoals: 1,
       matchType: MatchType.semiFinal,
+      isFinished: true,
     },
   });
 
@@ -400,6 +402,46 @@ async function main() {
       },
     });
   }
+
+  // Third place match: losers of the two semi-finals (teams[2] vs teams[5])
+  const thirdPlace = await prisma.match.create({
+    data: {
+      timeOfMatch: new Date('2026-03-19T18:00:00'),
+      homeTeamId: teams[2].id,
+      awayTeamId: teams[5].id,
+      homeGoals: 2,
+      awayGoals: 1,
+      matchType: MatchType.thirdPlace,
+      isFinished: true,
+    },
+  });
+
+  const thirdPlaceGoals: Array<{ minute: number; isHome: boolean }> = [
+    { minute: 9, isHome: true },
+    { minute: 21, isHome: false },
+    { minute: 34, isHome: true },
+  ];
+  for (const goal of thirdPlaceGoals) {
+    await prisma.matchEvent.create({
+      data: {
+        minute: goal.minute,
+        matchId: thirdPlace.id,
+        playerId: randomPlayer((goal.isHome ? teams[2] : teams[5]).id).id,
+        eventType: EventType.goal,
+        isForHomeTeam: goal.isHome,
+      },
+    });
+  }
+
+  await prisma.matchEvent.create({
+    data: {
+      minute: 16,
+      matchId: thirdPlace.id,
+      playerId: randomPlayer(teams[5].id).id,
+      eventType: EventType.yellowCard,
+      isForHomeTeam: false,
+    },
+  });
 
   // Quarter-finals: 4 upcoming matches to populate the bracket cleanly
   await prisma.match.create({
@@ -446,159 +488,103 @@ async function main() {
     },
   });
 
-  // Second, past tournament so the tournament selector has something to switch to
-  const tournament2 = await prisma.tournament.create({
-    data: { name: 'DUMP Futsal 2025', date: '11/2025' },
-  });
-
-  const groups2 = await Promise.all(
-    ['A', 'B'].map((name) =>
-      prisma.group.create({
-        data: { name, tournamentId: tournament2.id },
-      }),
-    ),
-  );
-
-  const teams2Data = [
-    { name: 'Splitski Val', groupId: groups2[0].id },
-    { name: 'Riva Boys', groupId: groups2[0].id },
-    { name: 'Marjan Runners', groupId: groups2[1].id },
-    { name: 'Adriatic FC', groupId: groups2[1].id },
+  // Stress-test: beef up teams 0 and 1 with extra players, then a LIVE
+  // group match packed with events so every tab has lots of content.
+  const extraPlayerNames: Array<[string, string]> = [
+    ['Ivo', 'Jovanović'],
+    ['Kristian', 'Ivanović'],
+    ['Mario', 'Šimunović'],
+    ['Dario', 'Antunović'],
+    ['Zoran', 'Marinović'],
+    ['Igor', 'Belić'],
+    ['Slaven', 'Puljić'],
+    ['Duje', 'Vlašić'],
+    ['Ivor', 'Đurić'],
+    ['Bojan', 'Đikić'],
+    ['Alen', 'Marković'],
+    ['Boris', 'Cvitković'],
+    ['Rene', 'Jelić'],
+    ['Ratko', 'Milić'],
+    ['Krešimir', 'Ćorić'],
+    ['Dražen', 'Kelava'],
+    ['Josef', 'Renić'],
+    ['Mateo', 'Nogalo'],
+    ['Toma', 'Delić'],
+    ['Šime', 'Bogdan'],
   ];
 
-  const teams2 = await Promise.all(
-    teams2Data.map((t) =>
-      prisma.team.create({
-        data: {
-          name: t.name,
-          groupId: t.groupId,
-          tournamentId: tournament2.id,
-        },
-      }),
-    ),
-  );
-
-  const player2Names = [
-    ['Šime', 'Bulat'],
-    ['Ivano', 'Delić'],
-    ['Mislav', 'Buljan'],
-    ['Duje', 'Skoko'],
-    ['Frane', 'Vukas'],
-    ['Nino', 'Kaleb'],
-    ['Ivor', 'Maras'],
-    ['Bože', 'Runje'],
-    ['Zoran', 'Šola'],
-    ['Vinko', 'Ćaleta'],
-    ['Ranko', 'Despot'],
-    ['Ljubo', 'Miloš'],
-    ['Srećko', 'Jelavić'],
-    ['Krešo', 'Banić'],
-    ['Ante', 'Modrić'],
-    ['Ivica', 'Šuker'],
-    ['Slaven', 'Bilić'],
-    ['Zvone', 'Boban'],
-    ['Robert', 'Prosinečki'],
-    ['Davor', 'Šola'],
-  ];
-
-  const players2: Array<{ id: number; teamId: number }> = [];
-
-  for (let i = 0; i < teams2.length; i++) {
-    for (let j = 0; j < 5; j++) {
-      const nameIndex = i * 5 + j;
+  const stressTeams = [teams[0], teams[1]];
+  for (let t = 0; t < stressTeams.length; t++) {
+    for (let j = 0; j < 10; j++) {
+      const name = extraPlayerNames[t * 10 + j];
       const player = await prisma.player.create({
         data: {
-          firstName: player2Names[nameIndex][0],
-          lastName: player2Names[nameIndex][1],
+          firstName: name[0],
+          lastName: name[1],
           dateOfBirth: new Date(
             1998 + Math.floor(Math.random() * 6),
             Math.floor(Math.random() * 12),
             1 + Math.floor(Math.random() * 28),
           ),
-          teamId: teams2[i].id,
+          teamId: stressTeams[t].id,
         },
       });
-      players2.push({ id: player.id, teamId: teams2[i].id });
+      players.push({ id: player.id, teamId: stressTeams[t].id });
     }
   }
 
-  const randomPlayer2 = (teamId: number) => {
-    const teamPlayers = players2.filter((p) => p.teamId === teamId);
-    return teamPlayers[Math.floor(Math.random() * teamPlayers.length)];
-  };
-
-  const tournament2Matches: Array<{
-    homeIdx: number;
-    awayIdx: number;
-    homeGoals: number;
-    awayGoals: number;
-    matchType: MatchType;
-    time: string;
-  }> = [
-    {
-      homeIdx: 0,
-      awayIdx: 1,
-      homeGoals: 2,
-      awayGoals: 1,
-      matchType: MatchType.group,
-      time: '2025-11-08T18:00:00',
-    },
-    {
-      homeIdx: 2,
-      awayIdx: 3,
-      homeGoals: 0,
+  const liveMatch = await prisma.match.create({
+    data: {
+      timeOfMatch: new Date(),
+      homeTeamId: teams[0].id,
+      awayTeamId: teams[1].id,
+      homeGoals: 5,
       awayGoals: 3,
       matchType: MatchType.group,
-      time: '2025-11-08T20:00:00',
+      isActive: true,
+      isFinished: false,
+      timerIsRunning: true,
+      timerStartedAt: new Date(),
+      timerAccumulatedMs: 25 * 60 * 1000,
+      timerLastSyncedAt: new Date(),
     },
-    {
-      homeIdx: 0,
-      awayIdx: 3,
-      homeGoals: 1,
-      awayGoals: 2,
-      matchType: MatchType.final,
-      time: '2025-11-09T20:00:00',
-    },
+  });
+
+  const liveEvents: Array<{
+    minute: number;
+    type: EventType;
+    isHome: boolean;
+  }> = [
+    { minute: 3, type: EventType.goal, isHome: true },
+    { minute: 5, type: EventType.yellowCard, isHome: false },
+    { minute: 8, type: EventType.goal, isHome: false },
+    { minute: 12, type: EventType.penaltyGoal, isHome: true },
+    { minute: 14, type: EventType.injury, isHome: true },
+    { minute: 15, type: EventType.goal, isHome: true },
+    { minute: 17, type: EventType.yellowCard, isHome: true },
+    { minute: 19, type: EventType.goal, isHome: false },
+    { minute: 21, type: EventType.penaltyMiss, isHome: false },
+    { minute: 24, type: EventType.goal, isHome: true },
+    { minute: 26, type: EventType.redCard, isHome: false },
+    { minute: 28, type: EventType.goal, isHome: false },
+    { minute: 30, type: EventType.yellowCard, isHome: true },
+    { minute: 32, type: EventType.goal, isHome: true },
+    { minute: 34, type: EventType.injury, isHome: false },
+    { minute: 36, type: EventType.yellowCard, isHome: false },
+    { minute: 38, type: EventType.penaltyGoal, isHome: true },
+    { minute: 40, type: EventType.injury, isHome: true },
   ];
 
-  for (const m of tournament2Matches) {
-    const homeTeam = teams2[m.homeIdx];
-    const awayTeam = teams2[m.awayIdx];
-
-    const match = await prisma.match.create({
+  for (const e of liveEvents) {
+    await prisma.matchEvent.create({
       data: {
-        timeOfMatch: new Date(m.time),
-        homeTeamId: homeTeam.id,
-        awayTeamId: awayTeam.id,
-        homeGoals: m.homeGoals,
-        awayGoals: m.awayGoals,
-        matchType: m.matchType,
+        minute: e.minute,
+        matchId: liveMatch.id,
+        playerId: randomPlayer((e.isHome ? teams[0] : teams[1]).id).id,
+        eventType: e.type,
+        isForHomeTeam: e.isHome,
       },
     });
-
-    for (let g = 0; g < m.homeGoals; g++) {
-      await prisma.matchEvent.create({
-        data: {
-          minute: 1 + Math.floor(Math.random() * 40),
-          matchId: match.id,
-          playerId: randomPlayer2(homeTeam.id).id,
-          eventType: EventType.goal,
-          isForHomeTeam: true,
-        },
-      });
-    }
-
-    for (let g = 0; g < m.awayGoals; g++) {
-      await prisma.matchEvent.create({
-        data: {
-          minute: 1 + Math.floor(Math.random() * 40),
-          matchId: match.id,
-          playerId: randomPlayer2(awayTeam.id).id,
-          eventType: EventType.goal,
-          isForHomeTeam: false,
-        },
-      });
-    }
   }
 
   console.log('Seed complete!');
@@ -606,12 +592,9 @@ async function main() {
   console.log(`  Teams: ${teams.length}`);
   console.log(`  Players: ${players.length}`);
   console.log(`  Groups: ${groups.length}`);
-  console.log(`  Matches: 4 group + 4 QF + 2 SF + 1 F = 11`);
-  console.log(`  Tournament: ${tournament2.name}`);
-  console.log(`  Teams: ${teams2.length}`);
-  console.log(`  Players: ${players2.length}`);
-  console.log(`  Groups: ${groups2.length}`);
-  console.log(`  Matches: 2 group + 1 F = 3`);
+  console.log(
+    `  Matches: 4 group + 1 LIVE group + 4 QF + 2 SF + 1 3rd + 1 F = 13 (live = match #${liveMatch.id})`,
+  );
 }
 
 main().catch((e) => {

@@ -1,6 +1,5 @@
 import { useId, useRef } from 'react';
 import c from './Input.module.scss';
-import { useCloseComponent } from '@hooks/index';
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
@@ -16,11 +15,13 @@ export const Input: React.FC<InputProps> = ({
   const inputRef = useRef<HTMLInputElement | null>(null);
   const inputId = useId();
 
-  const removeFocus = () => {
-    inputRef.current?.blur();
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    props.onKeyDown?.(e);
+    if (e.key === 'Escape') {
+      inputRef.current?.blur();
+      e.stopPropagation();
+    }
   };
-
-  useCloseComponent({ onClose: removeFocus });
 
   return (
     <div className={c.inputContainer}>
@@ -36,6 +37,7 @@ export const Input: React.FC<InputProps> = ({
         className={error ? `${c.input} ${c.error}` : c.input}
         autoComplete={autoComplete}
         {...props}
+        onKeyDown={handleKeyDown}
       />
     </div>
   );

@@ -7,6 +7,7 @@ import { MatchEventCardDisplay } from './MatchEventCardDisplay';
 type MatchEventCardProps = {
   minute?: number;
   playerName?: string;
+  playerId?: number | null;
   eventType?: `${EventType}`;
   side: 'left' | 'right';
   players: PlayerDto[];
@@ -20,6 +21,7 @@ type MatchEventCardProps = {
 export const MatchEventCard: React.FC<MatchEventCardProps> = ({
   minute,
   playerName,
+  playerId,
   eventType,
   side,
   players,
@@ -36,6 +38,7 @@ export const MatchEventCard: React.FC<MatchEventCardProps> = ({
       <MatchEventCardEdit
         minute={minute}
         playerName={playerName}
+        playerId={playerId}
         eventType={eventType}
         side={side}
         players={players}

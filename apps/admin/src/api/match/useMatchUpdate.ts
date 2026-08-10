@@ -4,18 +4,18 @@ import { api } from '../base';
 import { MatchDto, MatchUpdateDto } from '@futsal-app/types';
 import { GENERIC_ERROR_MESSAGE } from '@constants/messages';
 
-const matchUpdate = ({ id, dto }: { id: number; dto: MatchUpdateDto }) => {
-  return api.patch<MatchUpdateDto, MatchDto>(`/match/${id}`, dto);
+const updateMatch = (matchId: number, dto: MatchUpdateDto) => {
+  return api.patch<MatchUpdateDto, MatchDto>(`/match/${matchId}`, dto);
 };
 
-export const useMatchUpdate = () => {
+export const useMatchUpdate = (matchId: number) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: matchUpdate,
-    onSuccess: (_, { id }) => {
+    mutationFn: (dto: MatchUpdateDto) => updateMatch(matchId, dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['match', matchId] });
       queryClient.invalidateQueries({ queryKey: ['matches'] });
-      queryClient.invalidateQueries({ queryKey: ['match', id] });
       toast.success('Utakmica uspješno ažurirana');
     },
     onError: (error) => {

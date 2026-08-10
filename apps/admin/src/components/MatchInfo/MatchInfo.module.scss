@@ -140,5 +140,17 @@
     height: 20px;
     background: $red;
     border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.7);
   }
 }

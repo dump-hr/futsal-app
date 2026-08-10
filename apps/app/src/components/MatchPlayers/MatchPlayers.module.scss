@@ -1,0 +1,79 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: min(576px, 100%);
+  margin: 0 auto;
+  padding-bottom: 24px;
+}
+
+.teamToggle {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: $white;
+  @include body-normal;
+}
+
+.headerRow {
+  opacity: 0.5;
+}
+
+.playerName {
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+}
+
+.statIcon {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.stat {
+  flex: 0 0 24px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.message {
+  margin: 0;
+  padding: 24px 0;
+  color: $white-transparent;
+  text-align: center;
+  @include body-normal;
+}
+
+@media (min-width: 1024px) {
+  .table {
+    gap: 24px;
+  }
+
+  .row {
+    @include title-3;
+  }
+
+  .statIcon {
+    flex-basis: 32px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .stat {
+    flex-basis: 32px;
+  }
+}

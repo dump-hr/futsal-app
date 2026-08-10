@@ -9,7 +9,7 @@ const groupGet = (id: number) => {
 export const useGroupGet = (id: number) => {
   return useQuery({
     queryFn: () => groupGet(id),
-    queryKey: ['groups', id],
+    queryKey: ['group', id],
     enabled: !!id,
   });
 };

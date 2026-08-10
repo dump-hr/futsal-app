@@ -58,6 +58,8 @@ export const useSuggestions = <T>({
         } else {
           handleSelect(null);
         }
+      } else if (e.key === 'Escape') {
+        setShowSuggestions(false);
       }
     },
   };

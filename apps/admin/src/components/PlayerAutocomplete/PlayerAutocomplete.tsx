@@ -45,7 +45,11 @@ export const PlayerAutocomplete: React.FC<PlayerAutocompleteProps> = ({
     onSelect,
   });
 
-  useCloseComponent({ onClose: closeSuggestions, containerRef: wrapperRef });
+  useCloseComponent({
+    onClose: closeSuggestions,
+    containerRef: wrapperRef,
+    enabled: showSuggestions,
+  });
 
   const isRight = align === 'right';
 

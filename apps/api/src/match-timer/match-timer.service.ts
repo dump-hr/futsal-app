@@ -43,6 +43,16 @@ export class MatchTimerService {
     return stream;
   }
 
+  emitReset(matchId: number): void {
+    this.streams.get(matchId)?.next({
+      matchId,
+      isRunning: false,
+      accumulatedMs: 0,
+      startedAt: null,
+      lastSyncedAt: null,
+    });
+  }
+
   async getState(id: number): Promise<MatchTimerStateDto> {
     const match = await prisma.match.findUnique({
       where: { id },

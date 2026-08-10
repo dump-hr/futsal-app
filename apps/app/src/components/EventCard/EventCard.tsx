@@ -5,7 +5,7 @@ import { EVENT_CONFIG, EventCardType } from './eventConfig';
 type EventCardProps = {
   playerName: string;
   eventType: EventCardType;
-  minute: number;
+  minute?: number;
   side?: 'left' | 'right';
 };
 
@@ -24,7 +24,7 @@ export const EventCard: React.FC<EventCardProps> = ({
       <p className={c.label}>{label}</p>
       <div className={c.info}>
         <span>{playerName}</span>
-        <span>{minute}'</span>
+        {minute != null && <span>{minute}'</span>}
       </div>
     </div>
   );

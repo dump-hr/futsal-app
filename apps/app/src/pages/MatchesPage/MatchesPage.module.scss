@@ -29,10 +29,26 @@
   gap: 12px;
 }
 
+.matchLink {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
 .message {
   margin: 0;
   color: $white-transparent;
   @include body-normal;
+}
+
+.skeletonCard {
+  height: 80px;
+
+  @media (min-width: 1100px) {
+    height: 96px;
+    border-radius: 20px;
+  }
 }
 
 @media (min-width: 1100px) {

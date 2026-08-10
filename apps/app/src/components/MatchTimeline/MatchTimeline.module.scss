@@ -1,0 +1,63 @@
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: min(576px, 100%);
+  margin: 0 auto;
+  padding: 8px 0 24px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    transform: translateX(-50%);
+    background-color: $white;
+  }
+}
+
+.event {
+  position: relative;
+  display: flex;
+  width: calc(50% + 32px);
+}
+
+.eventHome {
+  align-self: flex-start;
+  justify-content: flex-end;
+}
+
+.eventAway {
+  align-self: flex-end;
+  justify-content: flex-start;
+}
+
+.notStarted {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  padding: 24px 0;
+}
+
+.message {
+  margin: 0;
+  padding: 24px 0;
+  color: $white-transparent;
+  text-align: center;
+  @include body-normal;
+}
+
+.shootoutHeading {
+  width: min(576px, 100%);
+  margin: 0 auto;
+  color: $white;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  @include title-3;
+}

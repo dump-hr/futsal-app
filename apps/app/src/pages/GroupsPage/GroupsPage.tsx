@@ -1,4 +1,4 @@
-import { Group } from '@components/index';
+import { Group, Skeleton } from '@components/index';
 import { useGroupsGetByTournamentId } from '@api/index';
 import { useTournamentContext } from '@hooks/index';
 import { PageLayout } from '@layouts/index';
@@ -14,7 +14,12 @@ export const GroupsPage = () => {
   } = useGroupsGetByTournamentId(tournamentId);
 
   const renderContent = () => {
-    if (isLoading) return <p className={c.message}>Učitavanje…</p>;
+    if (isLoading)
+      return (
+        <div className={c.groups}>
+          <Skeleton count={4} className={c.skeletonGroup} />
+        </div>
+      );
     if (isError)
       return <p className={c.message}>Greška pri učitavanju skupina</p>;
     if (groups?.length === 0) return <p className={c.message}>Nema skupina</p>;

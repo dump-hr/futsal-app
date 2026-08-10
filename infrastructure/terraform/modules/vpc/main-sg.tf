@@ -55,7 +55,7 @@ resource "aws_security_group_rule" "public_in_node_exporter" {
   from_port         = 9100
   to_port           = 9100
   protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
+  cidr_blocks       = ["${data.aws_instance.monitoring.public_ip}/32"]
   security_group_id = aws_security_group.public.id
 }
 

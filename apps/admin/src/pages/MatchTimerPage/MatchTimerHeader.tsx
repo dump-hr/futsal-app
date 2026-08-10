@@ -1,5 +1,7 @@
+import type { CSSProperties } from 'react';
 import type { TeamDto } from '@futsal-app/types';
 import { TeamLogo } from '@components/index';
+import { useDominantLogoColor } from '@hooks/index';
 import c from './MatchTimerPage.module.scss';
 
 type MatchTimerHeaderProps = {
@@ -22,8 +24,15 @@ export const MatchTimerHeader: React.FC<MatchTimerHeaderProps> = ({
   homeTeam,
   awayTeam,
 }) => {
+  const homeColor = useDominantLogoColor(homeTeam?.logoUrl);
+  const awayColor = useDominantLogoColor(awayTeam?.logoUrl);
+  const teamColors = {
+    '--home-color': homeColor,
+    '--away-color': awayColor,
+  } as CSSProperties;
+
   return (
-    <div className={c.gradientBand}>
+    <div className={c.gradientBand} style={teamColors}>
       <TeamSlot team={homeTeam} />
       <span className={c.headerSeparator}>-</span>
       <TeamSlot team={awayTeam} />

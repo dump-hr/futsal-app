@@ -24,7 +24,9 @@ export const GroupsPage = () => {
   const [deleteGroupId, setDeleteGroupId] = useState<number | null>(null);
   const [addChoiceGroupId, setAddChoiceGroupId] = useState<number | null>(null);
   const [addTeamGroupId, setAddTeamGroupId] = useState<number | null>(null);
-  const [showCreateTeamModal, setShowCreateTeamModal] = useState(false);
+  const [createTeamGroupId, setCreateTeamGroupId] = useState<number | null>(
+    null,
+  );
 
   const tournamentId = useTournamentContext();
   const { data: groups = [] } = useGroupsGetByTournamentId(tournamentId);
@@ -122,7 +124,7 @@ export const GroupsPage = () => {
           primaryLabel='Dodaj novu ekipu'
           secondaryLabel='Dodaj postojeću ekipu'
           onPrimary={() => {
-            setShowCreateTeamModal(true);
+            setCreateTeamGroupId(addChoiceGroupId);
             setAddChoiceGroupId(null);
           }}
           onSecondary={() => {
@@ -152,8 +154,11 @@ export const GroupsPage = () => {
         />
       )}
 
-      {showCreateTeamModal && (
-        <TeamFormModal onClose={() => setShowCreateTeamModal(false)} />
+      {createTeamGroupId !== null && (
+        <TeamFormModal
+          initialGroupId={createTeamGroupId}
+          onClose={() => setCreateTeamGroupId(null)}
+        />
       )}
     </div>
   );

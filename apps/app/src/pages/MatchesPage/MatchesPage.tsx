@@ -1,10 +1,17 @@
 import { useState } from 'react';
-import { Filter, MatchCard, type FilterOption } from '@components/index';
+import { Link } from 'wouter';
+import {
+  Filter,
+  MatchCard,
+  Skeleton,
+  type FilterOption,
+} from '@components/index';
 import { useMatchGetAll, useMatchTimerLive } from '@api/index';
 import { groupMatchesByDay } from '@helpers/index';
 import { useTournamentContext } from '@hooks/index';
 import { MATCH_STATUS, type MatchStatus } from '@constants/index';
 import { PageLayout } from '@layouts/index';
+import { routes } from '@routes/index';
 import c from './MatchesPage.module.scss';
 
 const statusOptions: FilterOption<MatchStatus>[] = [
@@ -50,7 +57,17 @@ export const MatchesPage = () => {
   });
 
   const renderContent = () => {
-    if (isLoading) return <p className={c.message}>Učitavanje…</p>;
+    if (isLoading)
+      return (
+        <div className={c.groups}>
+          <section className={c.group}>
+            <Skeleton width={160} height={24} />
+            <div className={c.groupList}>
+              <Skeleton count={5} className={c.skeletonCard} />
+            </div>
+          </section>
+        </div>
+      );
     if (isError)
       return <p className={c.message}>Greška pri učitavanju utakmica</p>;
     if (dayGroups.length === 0)
@@ -63,15 +80,19 @@ export const MatchesPage = () => {
             <h2 className={c.groupHeader}>{day.dateLabel}</h2>
             <div className={c.groupList}>
               {day.matches.map((match) => (
-                <MatchCard
+                <Link
                   key={match.id}
-                  match={match}
-                  elapsedMinutes={
-                    match.id === activeMatch?.id
-                      ? liveElapsedMinutes
-                      : undefined
-                  }
-                />
+                  href={`${routes.MATCHES}/${match.id}`}
+                  className={c.matchLink}>
+                  <MatchCard
+                    match={match}
+                    elapsedMinutes={
+                      match.id === activeMatch?.id
+                        ? liveElapsedMinutes
+                        : undefined
+                    }
+                  />
+                </Link>
               ))}
             </div>
           </section>

@@ -2,7 +2,7 @@
   width: 600px;
   padding: 32px 40px;
   border-radius: 20px;
-  background-color: $background-black;
+  background-color: rgba($background-black, 0.75);
 }
 
 .name {
@@ -36,6 +36,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-radius: 6px;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
 
   &:not(:last-child) {
     margin-bottom: 24px;
