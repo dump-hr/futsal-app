@@ -1,4 +1,4 @@
-import { MatchDto, MatchType } from '@futsal-app/types';
+import { MatchDto, MatchType, TeamDto } from '@futsal-app/types';
 import { MATCH_STATUS, MATCH_STAGE } from '@components/MatchInfo/constants';
 import type { MatchStage, MatchStatus } from '@components/MatchInfo/types';
 import { validateTime } from './formatMatchDate';
@@ -46,16 +46,27 @@ const formatMatchDayHeader = (date: Date): string => {
   return `${day}, ${date.getDate()}/${date.getMonth() + 1}`;
 };
 
+const isValidMatchCreation = (homeTeam: TeamDto, awayTeam: TeamDto) => {
+  return (
+    homeTeam.groupId != null &&
+    awayTeam.groupId != null &&
+    homeTeam.groupId === awayTeam.groupId
+  );
+};
+
 type MatchFormInput = {
   date: string;
   time: string;
   matchType: string;
   homeTeamId: string;
   awayTeamId: string;
+  homeTeam?: TeamDto;
+  awayTeam?: TeamDto;
 };
 
 export const validateMatchForm = (input: MatchFormInput): string | null => {
-  const { date, time, matchType, homeTeamId, awayTeamId } = input;
+  const { date, time, matchType, homeTeamId, awayTeamId, homeTeam, awayTeam } =
+    input;
 
   if (!date || !time || !matchType) return 'Molimo ispunite sva polja';
 
@@ -64,6 +75,12 @@ export const validateMatchForm = (input: MatchFormInput): string | null => {
 
   if (!homeTeamId || !awayTeamId) return 'Molimo odaberite ekipe';
   if (homeTeamId === awayTeamId) return 'Ekipe moraju biti različite';
+
+  if (matchType === MatchType.group && homeTeam && awayTeam) {
+    if (!isValidMatchCreation(homeTeam, awayTeam)) {
+      return 'Utakmica grupne faze mora biti između ekipa iz iste skupine';
+    }
+  }
 
   return null;
 };
@@ -120,4 +137,3 @@ export const groupMatchesByDay = (
 
   return Array.from(groups.values());
 };
-

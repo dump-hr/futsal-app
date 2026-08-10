@@ -1,10 +1,6 @@
 import clsx from 'clsx';
 import { EventType, MatchDto, MatchEventDto } from '@futsal-app/types';
-import {
-  EventCard,
-  NoEventsCard,
-  type EventCardType,
-} from '@components/index';
+import { EventCard, NoEventsCard, type EventCardType } from '@components/index';
 import { MATCH_STATUS } from '@constants/index';
 import { getMatchStatus } from '@helpers/index';
 import c from './MatchTimeline.module.scss';
@@ -39,7 +35,7 @@ const renderEvent = (event: MatchEventDto, showMinute: boolean) => (
       playerName={
         event.player
           ? `${event.player.firstName} ${event.player.lastName}`
-          : ''
+          : 'Nepoznat netko'
       }
       eventType={event.eventType as EventCardType}
       minute={showMinute ? event.minute : undefined}

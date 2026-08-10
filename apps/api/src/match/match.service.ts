@@ -144,6 +144,10 @@ export class MatchService {
       dto.matchType,
     );
 
+    if ((dto.matchType as MatchType) === MatchType.group) {
+      await this.assertSameGroup(dto.homeTeamId, dto.awayTeamId);
+    }
+
     return prisma.match.create({
       data: {
         timeOfMatch: dto.timeOfMatch,
@@ -172,6 +176,16 @@ export class MatchService {
       dto.bracketOrder === undefined ? match.bracketOrder : dto.bracketOrder,
     );
 
+    if ((dto.matchType as MatchType) === MatchType.group) {
+      if (match.homeTeamId === null || match.awayTeamId === null) {
+        throw new BadRequestException(
+          'Utakmica grupne faze mora imati obje ekipe',
+        );
+      }
+
+      await this.assertSameGroup(match.homeTeamId, match.awayTeamId);
+    }
+
     return prisma.match.update({
       where: { id },
       data: {
@@ -185,8 +199,41 @@ export class MatchService {
     });
   }
 
+  private async assertSameGroup(
+    homeTeamId: number,
+    awayTeamId: number,
+  ): Promise<void> {
+    const teams = await prisma.team.findMany({
+      where: { id: { in: [homeTeamId, awayTeamId] } },
+      select: { id: true, groupId: true },
+    });
+
+    const homeTeam = teams.find((t) => t.id === homeTeamId);
+    const awayTeam = teams.find((t) => t.id === awayTeamId);
+
+    if (!homeTeam || !awayTeam) {
+      throw new NotFoundException('Ekipa nije pronađena');
+    }
+
+    if (
+      homeTeam.groupId === null ||
+      awayTeam.groupId === null ||
+      homeTeam.groupId !== awayTeam.groupId
+    ) {
+      throw new BadRequestException(
+        'Utakmica grupne faze mora biti između ekipa iz iste skupine',
+      );
+    }
+  }
+
   async setActive(id: number): Promise<void> {
-    const match = await prisma.match.findUnique({ where: { id } });
+    const match = await prisma.match.findUnique({
+      where: { id },
+      include: {
+        homeTeam: { select: { tournamentId: true } },
+        awayTeam: { select: { tournamentId: true } },
+      },
+    });
 
     if (!match) {
       throw new NotFoundException('Utakmica nije pronađena');
@@ -194,7 +241,20 @@ export class MatchService {
 
     if (match.isActive) return;
 
-    const active = await prisma.match.findFirst({ where: { isActive: true } });
+    const tournamentId =
+      match.homeTeam?.tournamentId ?? match.awayTeam?.tournamentId;
+
+    if (!tournamentId) {
+      throw new BadRequestException('Utakmica nije povezana s turnirom');
+    }
+
+    const active = await prisma.match.findFirst({
+      where: {
+        isActive: true,
+        OR: [{ homeTeam: { tournamentId } }, { awayTeam: { tournamentId } }],
+      },
+    });
+
     if (active) {
       throw new ConflictException(
         'Druga utakmica je već aktivna, najprije ju deaktivirajte',

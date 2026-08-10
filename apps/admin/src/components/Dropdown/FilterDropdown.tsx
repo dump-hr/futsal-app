@@ -14,6 +14,7 @@ type FilterDropdownProps<T extends string> = {
   options: FilterOption<T>[];
   onChange: (value: T) => void;
   variant?: 'filter' | 'default';
+  placement?: 'bottom' | 'top';
   placeholder?: string;
   className?: string;
 };
@@ -23,6 +24,7 @@ export const FilterDropdown = <T extends string>({
   options,
   onChange,
   variant = 'filter',
+  placement = 'bottom',
   placeholder,
   className,
 }: FilterDropdownProps<T>) => {
@@ -66,7 +68,11 @@ export const FilterDropdown = <T extends string>({
         />
       </button>
       {isOpen && (
-        <div className={c.dropdown}>
+        <div
+          className={clsx(
+            c.dropdown,
+            placement === 'top' && c.dropdownTop,
+          )}>
           {options.map((option) => (
             <button
               key={option.value}

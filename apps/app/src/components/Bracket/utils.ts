@@ -1,9 +1,6 @@
 import { MatchDto, MatchType } from '@futsal-app/types';
 
-export type KnockoutRound = Exclude<
-  `${MatchType}`,
-  `${MatchType.group}` | `${MatchType.thirdPlace}`
->;
+export type KnockoutRound = Exclude<`${MatchType}`, `${MatchType.group}`>;
 
 export type BracketRound = {
   value: KnockoutRound;
@@ -15,6 +12,7 @@ const ROUND_DEFS: { value: KnockoutRound; label: string }[] = [
   { value: MatchType.quarterFinal, label: '1/4' },
   { value: MatchType.semiFinal, label: 'Polufinale' },
   { value: MatchType.final, label: 'Finale' },
+  { value: MatchType.thirdPlace, label: 'Za 3. mjesto' },
 ];
 
 const sortMatchesByBracketOrder = (matches: MatchDto[]): MatchDto[] =>

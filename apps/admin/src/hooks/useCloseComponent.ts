@@ -38,7 +38,7 @@ export const useCloseComponent = ({
   }, [enabled]);
 
   useEffect(() => {
-    if (!containerRef?.current) return;
+    if (!containerRef) return;
 
     const handleClickOutside = (e: MouseEvent) => {
       if (

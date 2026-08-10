@@ -1,12 +1,13 @@
-import { useState, useRef } from 'react';
+import { useCallback, useState, useRef } from 'react';
 import toast from 'react-hot-toast';
 import {
   Button,
   ButtonSmall,
   DateTimePicker,
   FilterDropdown,
+  ModalConfirmation,
 } from '@components/index';
-import { XGray, CheckBlack, XWhite } from '@assets/index';
+import { XGray, CheckBlack, XWhite, ExitBlack } from '@assets/index';
 import { useMatchCreate, useTeamsGet } from '@api/index';
 import { useCloseComponent, useTournamentContext } from '@hooks/index';
 import { MatchType } from '@futsal-app/types';
@@ -25,14 +26,28 @@ export const MatchFormModal: React.FC<MatchFormModalProps> = ({ onClose }) => {
   const [matchType, setMatchType] = useState('');
   const [homeTeamId, setHomeTeamId] = useState('');
   const [awayTeamId, setAwayTeamId] = useState('');
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
 
   const { mutate: createMatch, isPending: isCreating } = useMatchCreate();
 
   const tournamentId = useTournamentContext();
   const { data: teams } = useTeamsGet(tournamentId);
 
+  const isDirty = !!(date || time || matchType || homeTeamId || awayTeamId);
+
+  const requestClose = useCallback(() => {
+    if (isDirty) {
+      setShowCancelConfirm(true);
+    } else {
+      onClose();
+    }
+  }, [isDirty, onClose]);
+
   const modalRef = useRef<HTMLDivElement>(null);
-  const { overlayRef } = useCloseComponent({ onClose, containerRef: modalRef });
+  const { overlayRef } = useCloseComponent({
+    onClose: requestClose,
+    containerRef: modalRef,
+  });
 
   const teamOptions: { label: string; value: string }[] = (teams ?? []).map(
     (t) => ({ label: t.name, value: String(t.id) }),
@@ -48,6 +63,8 @@ export const MatchFormModal: React.FC<MatchFormModalProps> = ({ onClose }) => {
       matchType,
       homeTeamId,
       awayTeamId,
+      homeTeam,
+      awayTeam,
     });
 
     if (error) {
@@ -55,9 +72,12 @@ export const MatchFormModal: React.FC<MatchFormModalProps> = ({ onClose }) => {
       return;
     }
 
+    const [h, m] = time.split(':');
+    const normalizedTime = `${h.padStart(2, '0')}:${m.padStart(2, '0')}`;
+
     createMatch(
       {
-        timeOfMatch: new Date(`${date}T${time}`),
+        timeOfMatch: new Date(`${date}T${normalizedTime}`),
         homeTeamId: Number(homeTeamId),
         awayTeamId: Number(awayTeamId),
         matchType: matchType as `${MatchType}`,
@@ -77,7 +97,7 @@ export const MatchFormModal: React.FC<MatchFormModalProps> = ({ onClose }) => {
             </p>
           </div>
           <div className={c.closeButton}>
-            <ButtonSmall iconSrc={XGray} hasBorder onClick={onClose} />
+            <ButtonSmall iconSrc={XGray} hasBorder onClick={requestClose} />
           </div>
         </div>
 
@@ -126,7 +146,7 @@ export const MatchFormModal: React.FC<MatchFormModalProps> = ({ onClose }) => {
         </div>
 
         <div className={common.footer}>
-          <Button icon={XWhite} variant='secondary' onClick={onClose}>
+          <Button icon={XWhite} variant='secondary' onClick={requestClose}>
             Odustani
           </Button>
           <Button
@@ -138,6 +158,17 @@ export const MatchFormModal: React.FC<MatchFormModalProps> = ({ onClose }) => {
           </Button>
         </div>
       </div>
+
+      {showCancelConfirm && (
+        <ModalConfirmation
+          description='Ovim postupkom izgubit ćete unesene podatke o utakmici'
+          boldText='Nova utakmica'
+          icon={ExitBlack}
+          circleVariant='gray'
+          onCancel={() => setShowCancelConfirm(false)}
+          onConfirm={onClose}
+        />
+      )}
     </div>
   );
 };

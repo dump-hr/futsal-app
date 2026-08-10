@@ -1,6 +1,8 @@
 import clsx from 'clsx';
+import { Link } from 'wouter';
 import { TeamDto } from '@futsal-app/types';
 import { TeamLogo } from '@components/TeamLogo';
+import { routes } from '@routes/index';
 import c from './Group.module.scss';
 
 type TeamRowProps = {
@@ -10,7 +12,7 @@ type TeamRowProps = {
 
 export const TeamRow: React.FC<TeamRowProps> = ({ team, position }) => {
   return (
-    <div className={c.teamRow}>
+    <Link href={`${routes.TEAMS}/${team.id}`} className={c.teamRow}>
       <div className={c.teamRowLeft}>
         <div className={clsx(c.text, c.indexCell)}>{position}</div>
         <TeamLogo name={team.name} logoUrl={team.logoUrl} className={c.logo} />
@@ -23,6 +25,6 @@ export const TeamRow: React.FC<TeamRowProps> = ({ team, position }) => {
         <div className={clsx(c.text, c.statCell)}>{team.goalDifference}</div>
         <div className={clsx(c.text, c.statCell)}>{team.teamScore}</div>
       </div>
-    </div>
+    </Link>
   );
 };

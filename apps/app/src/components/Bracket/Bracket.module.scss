@@ -16,6 +16,7 @@
 }
 
 .column {
+  position: relative;
   flex: 1 1 0;
   display: flex;
   flex-direction: column;
@@ -89,6 +90,23 @@
   bottom: 0;
 }
 
+.thirdPlace {
+  position: absolute;
+  top: calc(50% + 120px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--match-w);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.thirdPlaceTitle {
+  @include body-normal-bold;
+  color: $white;
+  text-transform: uppercase;
+}
+
 @media (max-width: 768px) {
   .bracket {
     --match-w: 220px;
@@ -97,6 +115,16 @@
 
   .column {
     min-width: calc(var(--match-w) + 40px);
+  }
+
+  .thirdPlace {
+    top: calc(50% + 110px);
+    gap: 12px;
+  }
+
+  .thirdPlaceTitle {
+    @include mobile-body-medium-bold;
+    font-size: 14px;
   }
 }
 
