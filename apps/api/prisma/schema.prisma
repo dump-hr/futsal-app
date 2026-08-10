@@ -78,6 +78,7 @@ model Match {
   awayTeam           Team?        @relation("AwayTeamMatches", fields: [awayTeamId], references: [id])
   events             MatchEvent[]
   matchType          MatchType
+  bracketOrder       Int?
   isActive           Boolean      @default(false)
   isFinished         Boolean      @default(false)
   timerIsRunning     Boolean      @default(false)

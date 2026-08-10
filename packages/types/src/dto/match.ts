@@ -39,6 +39,10 @@ export class MatchDto {
   @IsNotEmpty()
   isFinished: boolean;
 
+  @IsInt()
+  @IsOptional()
+  bracketOrder?: number | null;
+
   @IsOptional()
   homeTeam: TeamDto | null;
 
@@ -74,4 +78,8 @@ export class MatchUpdateDto {
   @IsEnum(MatchType)
   @IsOptional()
   matchType?: `${MatchType}`;
+
+  @IsInt()
+  @IsOptional()
+  bracketOrder?: number | null;
 }

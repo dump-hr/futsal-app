@@ -30,9 +30,66 @@ const teamSelect = {
   group: { select: { id: true, name: true, tournamentId: true } },
 };
 
+const GROUP_MATCH_TYPE: `${MatchType}` = MatchType.group;
+
 @Injectable()
 export class MatchService {
   constructor(private readonly matchTimerService: MatchTimerService) {}
+
+  private normalizeBracketOrder(
+    matchType: `${MatchType}`,
+    bracketOrder: number | null | undefined,
+  ): number | null {
+    if (matchType === GROUP_MATCH_TYPE) return null;
+
+    if (typeof bracketOrder !== 'number' || !Number.isInteger(bracketOrder)) {
+      throw new BadRequestException(
+        'Pozicija u ždrijebu je obavezna za utakmice nokaut faze',
+      );
+    }
+
+    if (bracketOrder < 1) {
+      throw new BadRequestException('Pozicija u ždrijebu mora biti veća od 0');
+    }
+
+    return bracketOrder;
+  }
+
+  private async getNextBracketOrder(
+    tournamentId: number,
+    matchType: `${MatchType}`,
+  ): Promise<number | null> {
+    if (matchType === GROUP_MATCH_TYPE) return null;
+
+    const latestMatch = await prisma.match.findFirst({
+      where: {
+        matchType,
+        bracketOrder: { not: null },
+        homeTeam: { tournamentId },
+      },
+      orderBy: { bracketOrder: 'desc' },
+      select: { bracketOrder: true },
+    });
+
+    const nextOrder = (latestMatch?.bracketOrder ?? 0) + 1;
+
+    return this.normalizeBracketOrder(matchType, nextOrder);
+  }
+
+  private async getTournamentIdForHomeTeam(
+    homeTeamId: number,
+  ): Promise<number> {
+    const team = await prisma.team.findUnique({
+      where: { id: homeTeamId },
+      select: { tournamentId: true },
+    });
+
+    if (!team) {
+      throw new BadRequestException('Domaća ekipa nije pronađena');
+    }
+
+    return team.tournamentId;
+  }
 
   async getById(id: number): Promise<MatchDto> {
     const match = await prisma.match.findUnique({
@@ -81,6 +138,12 @@ export class MatchService {
   }
 
   async create(dto: MatchCreateDto): Promise<MatchDto> {
+    const tournamentId = await this.getTournamentIdForHomeTeam(dto.homeTeamId);
+    const bracketOrder = await this.getNextBracketOrder(
+      tournamentId,
+      dto.matchType,
+    );
+
     if ((dto.matchType as MatchType) === MatchType.group) {
       await this.assertSameGroup(dto.homeTeamId, dto.awayTeamId);
     }
@@ -91,6 +154,7 @@ export class MatchService {
         homeTeamId: dto.homeTeamId,
         awayTeamId: dto.awayTeamId,
         matchType: dto.matchType,
+        bracketOrder,
       },
       include: {
         homeTeam: { select: teamSelect },
@@ -106,6 +170,12 @@ export class MatchService {
       throw new NotFoundException('Utakmica nije pronađena');
     }
 
+    const matchType = dto.matchType ?? match.matchType;
+    const bracketOrder = this.normalizeBracketOrder(
+      matchType,
+      dto.bracketOrder === undefined ? match.bracketOrder : dto.bracketOrder,
+    );
+
     if ((dto.matchType as MatchType) === MatchType.group) {
       if (match.homeTeamId === null || match.awayTeamId === null) {
         throw new BadRequestException(
@@ -118,7 +188,10 @@ export class MatchService {
 
     return prisma.match.update({
       where: { id },
-      data: dto,
+      data: {
+        ...dto,
+        bracketOrder,
+      },
       include: {
         homeTeam: { select: teamSelect },
         awayTeam: { select: teamSelect },

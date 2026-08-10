@@ -1,14 +1,15 @@
-import { useCallback, useRef, useState } from 'react';
+import { useEffect, useCallback, useRef, useState } from 'react';
 import { EventType, MatchType } from '@futsal-app/types';
 import {
   useMatchGet,
+  useMatchUpdate,
   useMatchEventsGet,
   useMatchEventCreate,
   useMatchEventDelete,
   useMatchEventUpdate,
 } from '@api/index';
-import { ButtonSmall, ModalConfirmation } from '@components/index';
-import { ExitBlack, PlusBlack } from '@assets/index';
+import { Button, ButtonSmall, Input, ModalConfirmation } from '@components/index';
+import { ExitBlack, CheckBlack, PlusBlack } from '@assets/index';
 import { useCloseComponent } from '@hooks/index';
 import { BackgroundColor, MatchEventSaveData } from '@types';
 import { MatchHeader } from './MatchHeader';
@@ -30,6 +31,8 @@ const SHOOTOUT_EVENTS: `${EventType}`[] = [
   EventType.shootoutMiss,
 ];
 
+const GROUP_MATCH_TYPE: `${MatchType}` = MatchType.group;
+
 const isShootoutEvent = (eventType: `${EventType}`): boolean => {
   return SHOOTOUT_EVENTS.includes(eventType);
 };
@@ -39,6 +42,7 @@ export const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
   const { data: events = [] } = useMatchEventsGet(matchId);
   const [pendingKind, setPendingKind] = useState<PendingKind | null>(null);
   const [newEventSide, setNewEventSide] = useState<NewEventSide | null>(null);
+  const [bracketOrder, setBracketOrder] = useState('');
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
 
   const hasPendingEvent = pendingKind !== null || newEventSide !== null;
@@ -54,16 +58,21 @@ export const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
   const panelRef = useRef<HTMLDivElement>(null);
   useCloseComponent({ onClose: requestClose, containerRef: panelRef });
 
+  const updateMatch = useMatchUpdate(matchId);
   const createEvent = useMatchEventCreate(matchId, {
     onSuccess: () => setNewEventSide(null),
   });
   const updateEvent = useMatchEventUpdate(matchId);
   const deleteEvent = useMatchEventDelete(matchId);
 
+  useEffect(() => {
+    setBracketOrder(match?.bracketOrder ? String(match.bracketOrder) : '');
+  }, [match?.bracketOrder]);
+
   if (isLoading) return <p>Loading...</p>;
   if (!match) return <p>No match found</p>;
 
-  const isPlayoff = match.matchType !== MatchType.group;
+  const isPlayoff = match.matchType !== GROUP_MATCH_TYPE;
   const isDraw = match.homeGoals === match.awayGoals;
   const regularEvents = events.filter((e) => !isShootoutEvent(e.eventType));
   const penaltyEvents = events.filter((e) => isShootoutEvent(e.eventType));
@@ -108,6 +117,10 @@ export const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
     deleteEvent.mutate(eventId);
   };
 
+  const handleBracketOrderSave = () => {
+    updateMatch.mutate({ bracketOrder: Number(bracketOrder) });
+  };
+
   const homePlayers = match.homeTeam?.players ?? [];
   const awayPlayers = match.awayTeam?.players ?? [];
 
@@ -142,6 +155,25 @@ export const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
         penaltyAwayGoals={showPenaltySection ? penaltyAwayGoals : undefined}
         onClose={requestClose}
       />
+
+      {isPlayoff && (
+        <div className={c.bracketOrderEditor}>
+          <Input
+            label='Pozicija u ždrijebu'
+            type='number'
+            min={1}
+            value={bracketOrder}
+            onChange={(e) => setBracketOrder(e.target.value)}
+          />
+          <Button
+            icon={CheckBlack}
+            variant='primary'
+            onClick={handleBracketOrderSave}
+            disabled={!bracketOrder || updateMatch.isPending}>
+            Spremi
+          </Button>
+        </div>
+      )}
 
       {showPenaltySection && (
         <div className={c.sectionLabel}>
