@@ -35,6 +35,7 @@ export const TeamPicker: React.FC<TeamPickerProps> = ({
           options={options}
           onChange={onChange}
           variant='default'
+          placement='top'
           placeholder='Odaberi ekipu'
         />
       </div>
