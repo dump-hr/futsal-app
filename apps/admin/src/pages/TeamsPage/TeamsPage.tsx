@@ -39,7 +39,7 @@ export const TeamsPage = () => {
   const groupFilterOptions: { label: string; value: GroupFilter }[] = [
     { label: 'Skupina', value: 'all' },
     ...(groups?.map((g) => ({
-      label: `Skupina ${g.name}`,
+      label: g.name,
       value: String(g.id),
     })) ?? []),
   ];
