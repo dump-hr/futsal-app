@@ -37,7 +37,9 @@ export const TeamsPage = () => {
   const { mutate: deleteTeam } = useTeamDelete();
 
   const groupFilterOptions: { label: string; value: GroupFilter }[] = [
-    { label: 'Skupina', value: 'all' },
+    ...(groupFilter !== 'all'
+      ? [{ label: 'Ukloni filter', value: 'all' as GroupFilter }]
+      : []),
     ...(groups?.map((g) => ({
       label: `Skupina ${g.name}`,
       value: String(g.id),
@@ -81,6 +83,7 @@ export const TeamsPage = () => {
             value={groupFilter}
             options={groupFilterOptions}
             onChange={setGroupFilter}
+            placeholder='Skupina'
           />
         </div>
       </div>

@@ -53,8 +53,17 @@ export const MatchesPage = () => {
   const { mutate: setMatchActive } = useMatchSetActive();
 
   const teamOptions: { label: string; value: TeamFilter }[] = [
-    { label: 'Ekipa', value: 'all' },
+    ...(teamFilter !== 'all'
+      ? [{ label: 'Ukloni filter', value: 'all' as TeamFilter }]
+      : []),
     ...(teams ?? []).map((t) => ({ label: t.name, value: String(t.id) })),
+  ];
+
+  const matchTypeOptions: { label: string; value: MatchTypeFilter }[] = [
+    ...(matchTypeFilter !== 'all'
+      ? [{ label: 'Ukloni filter', value: 'all' as MatchTypeFilter }]
+      : []),
+    ...MATCH_TYPE_OPTIONS,
   ];
 
   const matchGroups = groupMatchesByDay(matches, {
@@ -81,8 +90,9 @@ export const MatchesPage = () => {
           <div className={c.filterDropdowns}>
             <FilterDropdown
               value={matchTypeFilter}
-              options={MATCH_TYPE_OPTIONS}
+              options={matchTypeOptions}
               onChange={setMatchTypeFilter}
+              placeholder='Tip utakmice'
             />
             <FilterDropdown
               value={dateSort}
@@ -93,6 +103,7 @@ export const MatchesPage = () => {
               value={teamFilter}
               options={teamOptions}
               onChange={setTeamFilter}
+              placeholder='Ekipa'
             />
           </div>
         </div>
