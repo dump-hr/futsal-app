@@ -47,7 +47,12 @@ export const Filter = <T extends string>({
     : label;
 
   const handleSelect = (optionValue: T) => {
-    onChange(optionValue === value ? null : optionValue);
+    onChange(optionValue);
+    setIsOpen(false);
+  };
+
+  const handleClear = () => {
+    onChange(null);
     setIsOpen(false);
   };
 
@@ -69,6 +74,14 @@ export const Filter = <T extends string>({
         <div
           ref={dropdownRef}
           className={clsx(c.dropdown, alignRight && c.dropdownRight)}>
+          {isActive && (
+            <button
+              type='button'
+              className={c.option}
+              onClick={handleClear}>
+              Ukloni filter
+            </button>
+          )}
           {options.map((option) => (
             <button
               key={option.value}

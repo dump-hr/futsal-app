@@ -10,6 +10,5 @@ export const DATE_SORT_OPTIONS: { label: string; value: DateSort }[] = [
 ];
 
 export const MATCH_TYPE_OPTIONS: { label: string; value: MatchTypeFilter }[] = [
-  { label: 'Tip utakmice', value: 'all' },
   ...MATCH_TYPE_BASE_OPTIONS,
 ];
