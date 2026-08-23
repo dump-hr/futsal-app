@@ -12,6 +12,7 @@ const STAGE_COLOR_CLASS: Record<MatchStage, string> = {
   [MATCH_STAGE.QUARTER_FINALS]: c.stageQuarter,
   [MATCH_STAGE.SEMI_FINALS]: c.stageSemi,
   [MATCH_STAGE.FINAL]: c.stageFinal,
+  [MATCH_STAGE.THIRD_PLACE]: c.stageThirdPlace,
 };
 
 export const StageBadge: React.FC<StageBadgeProps> = ({ matchStage }) => {

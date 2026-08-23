@@ -26,7 +26,7 @@ export const MATCH_TYPE_TO_STAGE: Record<string, MatchStage> = {
   quarterFinal: MATCH_STAGE.QUARTER_FINALS,
   semiFinal: MATCH_STAGE.SEMI_FINALS,
   final: MATCH_STAGE.FINAL,
-  thirdPlace: MATCH_STAGE.FINAL,
+  thirdPlace: MATCH_STAGE.THIRD_PLACE,
 };
 
 export const getMatchStatus = (match: MatchDto): MatchStatus => {
