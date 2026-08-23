@@ -25,10 +25,10 @@ export class MatchController {
     return await this.matchService.getAll(tournamentId);
   }
 
-  @Patch('deactivate')
+  @Patch(':id/deactivate')
   @UseGuards(JwtAuthGuard)
-  async deactivate(): Promise<void> {
-    return await this.matchService.deactivate();
+  async deactivate(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return await this.matchService.deactivate(id);
   }
 
   @Get('team/:teamId')
