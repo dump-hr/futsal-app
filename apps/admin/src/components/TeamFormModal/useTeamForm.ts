@@ -67,7 +67,7 @@ export const useTeamForm = ({
   const groupOptions: { label: string; value: GroupOption }[] = [
     { label: 'Bez skupine', value: 'none' },
     ...(groups ?? []).map((g) => ({
-      label: `Skupina ${g.name}`,
+      label: g.name,
       value: String(g.id),
     })),
   ];
