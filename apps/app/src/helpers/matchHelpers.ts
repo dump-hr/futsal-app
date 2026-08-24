@@ -45,6 +45,12 @@ export const sortMatchesByTime = (matches: MatchDto[]): MatchDto[] =>
     (a, b) => toDate(a.timeOfMatch).getTime() - toDate(b.timeOfMatch).getTime(),
   );
 
+export const sortMatchesLiveFirst = (matches: MatchDto[]): MatchDto[] =>
+  [...matches].sort((a, b) => {
+    if (a.isActive !== b.isActive) return a.isActive ? -1 : 1;
+    return toDate(a.timeOfMatch).getTime() - toDate(b.timeOfMatch).getTime();
+  });
+
 export const formatMatchDateLong = (value: string | Date): string => {
   const date = toDate(value);
   return `${date.getDate()}. ${CROATIAN_MONTHS_GENITIVE[date.getMonth()]}, ${formatMatchTime(date)}`;
@@ -88,11 +94,21 @@ type MatchFilters = {
   teamId: number | null;
 };
 
+const matchPassesStatus = (
+  match: MatchDto,
+  status: MatchStatus | null,
+): boolean => {
+  if (!status) return true;
+  if (status === MATCH_STATUS.UPCOMING)
+    return getMatchStatus(match) !== MATCH_STATUS.FINISHED;
+  return getMatchStatus(match) === status;
+};
+
 const matchPassesFilters = (
   match: MatchDto,
   { status, group, teamId }: MatchFilters,
 ): boolean => {
-  if (status && getMatchStatus(match) !== status) return false;
+  if (!matchPassesStatus(match, status)) return false;
   if (
     group &&
     match.homeTeam?.group?.name !== group &&
@@ -108,9 +124,13 @@ const matchPassesFilters = (
   return true;
 };
 
+const hasLiveMatch = (day: MatchDayGroup): boolean =>
+  day.matches.some((match) => getMatchStatus(match) === MATCH_STATUS.LIVE);
+
 export const groupMatchesByDay = (
   matches: MatchDto[] | undefined,
   filters: MatchFilters,
+  dayOrder: 'asc' | 'desc' = 'asc',
 ): MatchDayGroup[] => {
   if (!matches) return [];
 
@@ -134,7 +154,17 @@ export const groupMatchesByDay = (
     groups.get(key)!.matches.push(match);
   }
 
-  return Array.from(groups.values());
+  const dayGroups = Array.from(groups.values()).map((day) => ({
+    ...day,
+    matches: sortMatchesLiveFirst(day.matches),
+  }));
+
+  const ordered = dayOrder === 'desc' ? dayGroups.reverse() : dayGroups;
+
+  return [
+    ...ordered.filter(hasLiveMatch),
+    ...ordered.filter((day) => !hasLiveMatch(day)),
+  ];
 };
 
 export const getTodayMatches = (
@@ -144,12 +174,11 @@ export const getTodayMatches = (
 
   const todayKey = getDateKey(new Date());
 
-  return matches
-    .filter((match) => getDateKey(toDate(match.timeOfMatch)) === todayKey)
-    .sort((a, b) => {
-      if (a.isActive !== b.isActive) return a.isActive ? -1 : 1;
-      return toDate(a.timeOfMatch).getTime() - toDate(b.timeOfMatch).getTime();
-    });
+  return sortMatchesLiveFirst(
+    matches.filter(
+      (match) => getDateKey(toDate(match.timeOfMatch)) === todayKey,
+    ),
+  );
 };
 
 export const getUpcomingAndLiveMatches = (
