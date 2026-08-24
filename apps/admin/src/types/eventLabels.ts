@@ -8,6 +8,6 @@ export const EVENT_LABELS: Record<EventType, string> = {
   [EventType.yellowCard]: 'Žuti karton',
   [EventType.redCard]: 'Crveni karton',
   [EventType.injury]: 'Ozljeda',
-  [EventType.shootoutGoal]: 'Gol (penali)',
-  [EventType.shootoutMiss]: 'Promašaj (penali)',
+  [EventType.shootoutGoal]: 'Pogodak',
+  [EventType.shootoutMiss]: 'Promašaj',
 };
