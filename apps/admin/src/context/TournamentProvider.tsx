@@ -12,11 +12,12 @@ export const TournamentProvider: FC<PropsWithChildren> = ({ children }) => {
     return stored ? Number(stored) : null;
   });
 
-  const tournamentId = useMemo(() => {
+  const tournament = useMemo(() => {
     if (!data?.length) return null;
-    const exists = selectedId != null && data.some((t) => t.id === selectedId);
-    return exists ? selectedId : data[0].id;
+    return data.find((t) => t.id === selectedId) ?? data[0];
   }, [data, selectedId]);
+
+  const tournamentId = tournament?.id ?? null;
 
   const selectTournament = (id: number) => {
     setSelectedId(id);
@@ -25,7 +26,7 @@ export const TournamentProvider: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <TournamentContext.Provider
-      value={{ tournamentId, isLoading, selectTournament }}>
+      value={{ tournament, tournamentId, isLoading, selectTournament }}>
       {children}
     </TournamentContext.Provider>
   );

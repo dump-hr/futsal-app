@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Link, useLocation } from 'wouter';
 import { routes } from '@routes/index';
 import { ExitBlack, Logo } from '@assets/index';
-import { ButtonSmall } from '@components/index';
+import { ButtonSmall, TournamentBadge } from '@components/index';
 import { BackgroundColor } from '@types';
 import c from './Navbar.module.scss';
 
@@ -47,11 +47,15 @@ export const Navbar = () => {
         </ul>
       </div>
 
-      <ButtonSmall
-        iconSrc={ExitBlack}
-        backgroundColor={BackgroundColor.White}
-        onClick={handleLogout}
-      />
+      <div className={c.actions}>
+        <TournamentBadge />
+
+        <ButtonSmall
+          iconSrc={ExitBlack}
+          backgroundColor={BackgroundColor.White}
+          onClick={handleLogout}
+        />
+      </div>
     </nav>
   );
 };

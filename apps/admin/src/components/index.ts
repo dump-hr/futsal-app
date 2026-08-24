@@ -34,3 +34,4 @@ export * from './TeamFormModal';
 export * from './TeamInfo';
 export * from './TeamLogo';
 export * from './TeamsTable';
+export * from './TournamentBadge';
