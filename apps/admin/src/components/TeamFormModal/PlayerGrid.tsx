@@ -92,6 +92,7 @@ export const PlayerGrid: React.FC<PlayerGridProps> = ({
             aria-label='Dodaj igrača'
           />
         </div>
+        <span className={c.playerHint}>Igrač se dodaje tek klikom na +</span>
       </div>
     </div>
   );
