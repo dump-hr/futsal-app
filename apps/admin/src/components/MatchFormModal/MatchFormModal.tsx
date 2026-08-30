@@ -55,6 +55,7 @@ export const MatchFormModal: React.FC<MatchFormModalProps> = ({ onClose }) => {
 
   const homeTeam = teams?.find((t) => String(t.id) === homeTeamId);
   const awayTeam = teams?.find((t) => String(t.id) === awayTeamId);
+  const isKnockoutMatch = !!matchType && matchType !== MatchType.group;
 
   const handleSubmit = () => {
     const error = validateMatchForm({
@@ -119,6 +120,11 @@ export const MatchFormModal: React.FC<MatchFormModalProps> = ({ onClose }) => {
                 placeholder='Odaberi tip'
               />
             </div>
+            {isKnockoutMatch && (
+              <p className={c.matchTypeHint}>
+                Poziciju u ždrijebu moći ćete urediti nakon stvaranja utakmice.
+              </p>
+            )}
           </div>
         </div>
 
