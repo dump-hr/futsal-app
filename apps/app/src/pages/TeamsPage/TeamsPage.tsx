@@ -1,13 +1,13 @@
 import { Link } from 'wouter';
 import { Skeleton, Team } from '@components/index';
 import { useTeamsGet } from '@api/index';
-import { useTournamentContext } from '@hooks/index';
+import { useTournamentId } from '@hooks/index';
 import { PageLayout } from '@layouts/index';
 import { routes } from '@routes/index';
 import c from './TeamsPage.module.scss';
 
 export const TeamsPage = () => {
-  const tournamentId = useTournamentContext();
+  const tournamentId = useTournamentId();
   const { data: teams, isLoading, isError } = useTeamsGet(tournamentId);
 
   const renderContent = () => {

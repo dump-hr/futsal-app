@@ -9,9 +9,16 @@ export const useTournamentContext = () => {
       'useTournamentContext mora biti korišten unutar TournamentProvider-a',
     );
   }
-  if (context.tournamentId == null) {
+
+  return context;
+};
+
+export const useTournamentId = () => {
+  const { tournamentId } = useTournamentContext();
+
+  if (tournamentId == null) {
     throw new Error('Nema aktivnog turnira');
   }
 
-  return context.tournamentId;
+  return tournamentId;
 };

@@ -8,8 +8,8 @@ export const TournamentProvider: FC<PropsWithChildren> = ({ children }) => {
   const { data, isLoading } = useTournamentsGet();
 
   const [selectedId, setSelectedId] = useState<number | null>(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? Number(stored) : null;
+    const parsed = Number(localStorage.getItem(STORAGE_KEY));
+    return Number.isInteger(parsed) && parsed > 0 ? parsed : null;
   });
 
   const tournamentId = useMemo(() => {

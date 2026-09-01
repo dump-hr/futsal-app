@@ -1,15 +1,9 @@
-import {
-  useCallback,
-  useContext,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { ArrowDownWhite } from '@assets/index';
-import { useCloseComponent } from '@hooks/index';
+import { useCloseComponent, useTournamentContext } from '@hooks/index';
 import { useTournamentsGet } from '@api/index';
-import { TournamentContext } from '@context/index';
+import d from '@components/Dropdown/Dropdown.module.scss';
 import c from './TournamentSelect.module.scss';
 
 type TournamentSelectProps = {
@@ -17,10 +11,7 @@ type TournamentSelectProps = {
 };
 
 export const TournamentSelect = ({ className }: TournamentSelectProps) => {
-  const { tournamentId, selectTournament } = useContext(TournamentContext) ?? {
-    tournamentId: null,
-    selectTournament: () => {},
-  };
+  const { tournamentId, selectTournament } = useTournamentContext();
 
   const { data: tournaments = [] } = useTournamentsGet();
 
@@ -56,7 +47,7 @@ export const TournamentSelect = ({ className }: TournamentSelectProps) => {
   };
 
   return (
-    <div className={clsx(c.wrapper, className)} ref={wrapperRef}>
+    <div className={clsx(d.wrapper, c.wrapper, className)} ref={wrapperRef}>
       <button
         type='button'
         className={clsx(c.trigger, isOpen && c.open)}
@@ -78,9 +69,9 @@ export const TournamentSelect = ({ className }: TournamentSelectProps) => {
           ref={dropdownRef}
           role='listbox'
           className={clsx(
-            c.dropdown,
-            alignRight && c.dropdownRight,
-            alignUp && c.dropdownUp,
+            d.dropdown,
+            alignRight && d.dropdownRight,
+            alignUp && d.dropdownUp,
           )}>
           {tournaments.map((tournament) => (
             <button
@@ -89,8 +80,8 @@ export const TournamentSelect = ({ className }: TournamentSelectProps) => {
               role='option'
               aria-selected={tournament.id === tournamentId}
               className={clsx(
-                c.option,
-                tournament.id === tournamentId && c.selected,
+                d.option,
+                tournament.id === tournamentId && d.selected,
               )}
               onClick={() => handleSelect(tournament.id)}>
               {tournament.name}
