@@ -248,16 +248,16 @@ export class MatchService {
       throw new BadRequestException('Utakmica nije povezana s turnirom');
     }
 
-    const active = await prisma.match.findFirst({
+    const activeCount = await prisma.match.count({
       where: {
         isActive: true,
         OR: [{ homeTeam: { tournamentId } }, { awayTeam: { tournamentId } }],
       },
     });
 
-    if (active) {
+    if (activeCount >= 2) {
       throw new ConflictException(
-        'Druga utakmica je već aktivna, najprije ju deaktivirajte',
+        'Već su aktivne dvije utakmice, najprije jednu deaktivirajte',
       );
     }
 
@@ -276,15 +276,19 @@ export class MatchService {
     this.matchTimerService.emitReset(id);
   }
 
-  async deactivate(): Promise<void> {
-    const active = await prisma.match.findFirst({ where: { isActive: true } });
+  async deactivate(id: number): Promise<void> {
+    const match = await prisma.match.findUnique({ where: { id } });
 
-    if (!active) {
-      throw new BadRequestException('Nema aktivne utakmice za deaktiviranje');
+    if (!match) {
+      throw new NotFoundException('Utakmica nije pronađena');
+    }
+
+    if (!match.isActive) {
+      throw new BadRequestException('Utakmica nije aktivna');
     }
 
     await prisma.match.update({
-      where: { id: active.id },
+      where: { id },
       data: {
         isActive: false,
         isFinished: true,
@@ -295,7 +299,7 @@ export class MatchService {
       },
     });
 
-    this.matchTimerService.emitReset(active.id);
+    this.matchTimerService.emitReset(id);
   }
 
   async delete(id: number): Promise<void> {

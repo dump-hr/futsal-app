@@ -28,9 +28,20 @@ export const MatchesPage = () => {
 
   const { data: matches, isLoading, isError } = useMatchGetAll(tournamentId);
 
-  const activeMatch = matches?.find((match) => match.isActive);
-  const { elapsedSeconds } = useMatchTimerLive(activeMatch?.id ?? 0);
-  const liveElapsedMinutes = Math.floor(elapsedSeconds / 60);
+  const activeMatches = matches?.filter((match) => match.isActive) ?? [];
+  const activeMatch1 = activeMatches[0];
+  const activeMatch2 = activeMatches[1];
+  const { elapsedSeconds: elapsedSeconds1 } = useMatchTimerLive(
+    activeMatch1?.id ?? 0,
+  );
+  const { elapsedSeconds: elapsedSeconds2 } = useMatchTimerLive(
+    activeMatch2?.id ?? 0,
+  );
+  const elapsedFor = (id: number) => {
+    if (id === activeMatch1?.id) return Math.floor(elapsedSeconds1 / 60);
+    if (id === activeMatch2?.id) return Math.floor(elapsedSeconds2 / 60);
+    return undefined;
+  };
 
   const names = new Set<string>();
   matches?.forEach((match) => {
@@ -101,11 +112,7 @@ export const MatchesPage = () => {
                   className={c.matchLink}>
                   <MatchCard
                     match={match}
-                    elapsedMinutes={
-                      match.id === activeMatch?.id
-                        ? liveElapsedMinutes
-                        : undefined
-                    }
+                    elapsedMinutes={elapsedFor(match.id)}
                   />
                 </Link>
               ))}
