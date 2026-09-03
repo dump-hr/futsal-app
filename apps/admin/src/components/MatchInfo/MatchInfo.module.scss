@@ -109,11 +109,20 @@
   background-color: $gray-dark;
   width: 90px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   border-radius: 29px;
   padding-top: 4px;
   padding-bottom: 4px;
+  line-height: 1;
+  height: 44px;
+}
+
+.shootoutScore {
+  font-size: 10px;
+  line-height: 1;
+  margin-top: 2px;
 }
 
 .matchTime {

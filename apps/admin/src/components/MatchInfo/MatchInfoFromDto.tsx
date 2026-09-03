@@ -30,6 +30,8 @@ export const MatchInfoFromDto: React.FC<MatchInfoFromDtoProps> = ({
       }}
       teamAScore={match.homeGoals}
       teamBScore={match.awayGoals}
+      teamAShootoutScore={match.homeShootoutGoals}
+      teamBShootoutScore={match.awayShootoutGoals}
       matchTime={new Date(match.timeOfMatch).toLocaleTimeString('hr', {
         hour: '2-digit',
         minute: '2-digit',
