@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 import { MatchType } from '@futsal-app/types';
 import { useMatchGetAll } from '@api/index';
-import { useTournamentContext } from '@hooks/index';
+import { useTournamentId } from '@hooks/index';
 import { Bracket, buildBracketRounds } from '@components/index';
 import c from './MatchDraw.module.scss';
 
 export const MatchDraw = () => {
-  const tournamentId = useTournamentContext();
+  const tournamentId = useTournamentId();
   const { data: matches, isLoading, isError } = useMatchGetAll(tournamentId);
 
   const rounds = useMemo(

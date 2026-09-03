@@ -2,14 +2,14 @@ import { Link, useLocation } from 'wouter';
 import { Button, MatchCard, MatchCardLarge, Skeleton } from '@components/index';
 import { useMatchGetAll, useMatchTimerLive } from '@api/index';
 import { getTodayMatches, getUpcomingAndLiveMatches } from '@helpers/index';
-import { useTournamentContext, useDragScroll } from '@hooks/index';
+import { useTournamentId, useDragScroll } from '@hooks/index';
 import { PageLayout } from '@layouts/index';
 import { routes } from '@routes/index';
 import c from './HomePage.module.scss';
 
 export const HomePage = () => {
   const [, navigate] = useLocation();
-  const tournamentId = useTournamentContext();
+  const tournamentId = useTournamentId();
 
   const { data: matches, isLoading, isError } = useMatchGetAll(tournamentId);
 
