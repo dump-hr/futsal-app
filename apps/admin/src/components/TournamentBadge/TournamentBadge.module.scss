@@ -1,0 +1,35 @@
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 100px;
+  background-color: $gray-dark;
+  color: $white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  @include body-normal;
+}
+
+.badge:hover {
+  background-color: $background-gray;
+}
+
+.badge:focus-visible {
+  outline: 2px solid $lime;
+  outline-offset: 2px;
+}
+
+.name {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chevron {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
