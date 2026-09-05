@@ -24,6 +24,7 @@ export const MatchCard: React.FC<MatchCardProps> = ({
     homeLogo,
     awayLogo,
     score,
+    shootoutScore,
     metaLabel,
     dateLabel,
     startTime,
@@ -36,7 +37,18 @@ export const MatchCard: React.FC<MatchCardProps> = ({
         <span className={clsx(c.summaryLabel, isLive && c.summaryLabelLive)}>
           {isLive ? liveLabel : metaLabel}
         </span>
-        <span className={c.summaryValue}>{isUpcoming ? startTime : score}</span>
+        <span className={c.summaryValue}>
+          {isUpcoming ? (
+            startTime
+          ) : (
+            <>
+              <span>{score}</span>
+              {shootoutScore && (
+                <span className={c.shootoutScore}>{shootoutScore}</span>
+              )}
+            </>
+          )}
+        </span>
       </div>
 
       <span className={c.divider} />
@@ -46,7 +58,12 @@ export const MatchCard: React.FC<MatchCardProps> = ({
           <TeamLogo name={homeName} logoUrl={homeLogo} className={c.logo} />
           <span className={c.teamName}>{homeName}</span>
         </div>
-        <span className={c.badge}>{score ?? 'VS'}</span>
+        <span className={c.badge}>
+          {score ?? 'VS'}
+          {shootoutScore && (
+            <span className={c.shootoutScore}>{shootoutScore}</span>
+          )}
+        </span>
         <div className={c.team}>
           <TeamLogo name={awayName} logoUrl={awayLogo} className={c.logo} />
           <span className={c.teamName}>{awayName}</span>
