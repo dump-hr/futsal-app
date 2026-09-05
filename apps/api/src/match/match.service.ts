@@ -32,9 +32,10 @@ const teamSelect = {
 };
 
 const GROUP_MATCH_TYPE: `${MatchType}` = MatchType.group;
+const SHOOTOUT_GOAL_EVENT_TYPE: `${EventType}` = EventType.shootoutGoal;
 
 type ShootoutEvent = {
-  eventType: string;
+  eventType: `${EventType}`;
   isForHomeTeam: boolean;
 };
 
@@ -50,7 +51,7 @@ export class MatchService {
     const { events = [], ...rest } = match;
     const shootoutGoals = events.reduce(
       (acc, event) => {
-        if (event.eventType !== EventType.shootoutGoal) return acc;
+        if (event.eventType !== SHOOTOUT_GOAL_EVENT_TYPE) return acc;
 
         if (event.isForHomeTeam) acc.homeShootoutGoals += 1;
         else acc.awayShootoutGoals += 1;
