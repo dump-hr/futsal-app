@@ -24,6 +24,16 @@ const getMatchView = (match: MatchDto, elapsedMinutes?: number) => {
   };
 };
 
+const getShootoutScore = (match: MatchDto, isUpcoming: boolean) => {
+  const homeShootoutGoals = match.homeShootoutGoals ?? 0;
+  const awayShootoutGoals = match.awayShootoutGoals ?? 0;
+  const hasShootoutScore = homeShootoutGoals > 0 || awayShootoutGoals > 0;
+
+  return !isUpcoming && hasShootoutScore
+    ? `(${homeShootoutGoals} - ${awayShootoutGoals})`
+    : null;
+};
+
 export const getMatchCardLargeView = (
   match: MatchDto,
   elapsedMinutes?: number,
@@ -33,21 +43,16 @@ export const getMatchCardLargeView = (
   return {
     ...view,
     score: view.isUpcoming ? '-' : `${match.homeGoals} - ${match.awayGoals}`,
+    shootoutScore: getShootoutScore(match, view.isUpcoming),
   };
 };
 
 export const getMatchCardView = (match: MatchDto, elapsedMinutes?: number) => {
   const view = getMatchView(match, elapsedMinutes);
-  const homeShootoutGoals = match.homeShootoutGoals ?? 0;
-  const awayShootoutGoals = match.awayShootoutGoals ?? 0;
-  const hasShootoutScore = homeShootoutGoals > 0 || awayShootoutGoals > 0;
 
   return {
     ...view,
     score: view.isUpcoming ? null : `${match.homeGoals} - ${match.awayGoals}`,
-    shootoutScore:
-      !view.isUpcoming && hasShootoutScore
-        ? `(${homeShootoutGoals} - ${awayShootoutGoals})`
-        : null,
+    shootoutScore: getShootoutScore(match, view.isUpcoming),
   };
 };
