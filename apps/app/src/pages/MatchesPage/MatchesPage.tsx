@@ -6,7 +6,7 @@ import {
   Skeleton,
   type FilterOption,
 } from '@components/index';
-import { useMatchGetAll, useMatchTimerLive } from '@api/index';
+import { useMatchGetAll } from '@api/index';
 import { getMatchStatus, groupMatchesByDay } from '@helpers/index';
 import { useTournamentId } from '@hooks/index';
 import { MATCH_STATUS, type MatchStatus } from '@constants/index';
@@ -27,10 +27,6 @@ export const MatchesPage = () => {
   const tournamentId = useTournamentId();
 
   const { data: matches, isLoading, isError } = useMatchGetAll(tournamentId);
-
-  const activeMatch = matches?.find((match) => match.isActive);
-  const { elapsedSeconds } = useMatchTimerLive(activeMatch?.id ?? 0);
-  const liveElapsedMinutes = Math.floor(elapsedSeconds / 60);
 
   const names = new Set<string>();
   matches?.forEach((match) => {
@@ -99,14 +95,7 @@ export const MatchesPage = () => {
                   key={match.id}
                   href={`${routes.MATCHES}/${match.id}`}
                   className={c.matchLink}>
-                  <MatchCard
-                    match={match}
-                    elapsedMinutes={
-                      match.id === activeMatch?.id
-                        ? liveElapsedMinutes
-                        : undefined
-                    }
-                  />
+                  <MatchCard match={match} />
                 </Link>
               ))}
             </div>

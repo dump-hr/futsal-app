@@ -3,8 +3,8 @@ import toast from 'react-hot-toast';
 import { api } from '../base';
 import { GENERIC_ERROR_MESSAGE } from '@constants/messages';
 
-const matchDeactivate = () => {
-  return api.patch<never, void>('/match/deactivate');
+const matchDeactivate = (id: number) => {
+  return api.patch<never, void>(`/match/${id}/deactivate`);
 };
 
 export const useMatchDeactivate = () => {

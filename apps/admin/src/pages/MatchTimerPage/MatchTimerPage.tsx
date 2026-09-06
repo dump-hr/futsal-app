@@ -108,7 +108,7 @@ export const MatchTimerPage = () => {
   }
 
   const handleEndMatch = () => {
-    deactivate(undefined, {
+    deactivate(matchId, {
       onSuccess: () => {
         clearTimer();
         navigate(routes.MATCHES);
