@@ -31,6 +31,7 @@ const teamSelect = {
 };
 
 const GROUP_MATCH_TYPE: `${MatchType}` = MatchType.group;
+const MAX_ACTIVE_MATCHES = 2;
 
 @Injectable()
 export class MatchService {
@@ -255,7 +256,7 @@ export class MatchService {
       },
     });
 
-    if (activeCount >= 2) {
+    if (activeCount >= MAX_ACTIVE_MATCHES) {
       throw new ConflictException(
         'Već su aktivne dvije utakmice, najprije jednu deaktivirajte',
       );

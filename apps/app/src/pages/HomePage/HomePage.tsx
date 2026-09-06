@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'wouter';
 import { Button, MatchCard, MatchCardLarge, Skeleton } from '@components/index';
-import { useMatchGetAll, useMatchTimerLive } from '@api/index';
+import { useMatchGetAll } from '@api/index';
 import { getTodayMatches, getUpcomingAndLiveMatches } from '@helpers/index';
 import { useTournamentContext, useDragScroll } from '@hooks/index';
 import { PageLayout } from '@layouts/index';
@@ -12,21 +12,6 @@ export const HomePage = () => {
   const tournamentId = useTournamentContext();
 
   const { data: matches, isLoading, isError } = useMatchGetAll(tournamentId);
-
-  const activeMatches = matches?.filter((match) => match.isActive) ?? [];
-  const activeMatch1 = activeMatches[0];
-  const activeMatch2 = activeMatches[1];
-  const { elapsedSeconds: elapsedSeconds1 } = useMatchTimerLive(
-    activeMatch1?.id ?? 0,
-  );
-  const { elapsedSeconds: elapsedSeconds2 } = useMatchTimerLive(
-    activeMatch2?.id ?? 0,
-  );
-  const elapsedFor = (id: number) => {
-    if (id === activeMatch1?.id) return Math.floor(elapsedSeconds1 / 60);
-    if (id === activeMatch2?.id) return Math.floor(elapsedSeconds2 / 60);
-    return undefined;
-  };
 
   const todayRowRef = useDragScroll<HTMLDivElement>();
 
@@ -59,10 +44,7 @@ export const HomePage = () => {
             key={match.id}
             href={`${routes.MATCHES}/${match.id}`}
             className={c.matchLink}>
-            <MatchCardLarge
-              match={match}
-              elapsedMinutes={elapsedFor(match.id)}
-            />
+            <MatchCardLarge match={match} />
           </Link>
         ))}
       </div>
@@ -88,7 +70,7 @@ export const HomePage = () => {
             key={match.id}
             href={`${routes.MATCHES}/${match.id}`}
             className={c.matchLink}>
-            <MatchCard match={match} elapsedMinutes={elapsedFor(match.id)} />
+            <MatchCard match={match} />
           </Link>
         ))}
       </div>
