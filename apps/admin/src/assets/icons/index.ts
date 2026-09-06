@@ -21,6 +21,7 @@ export { default as UploadGray } from './upload-gray.svg';
 export { default as Logo } from './logo.svg';
 
 export { default as GoalLime } from './goal-lime.svg';
+export { default as GoalRed } from './goal-red.svg';
 export { default as CardRed } from './card-red.svg';
 export { default as CardYellow } from './card-yellow.svg';
 export { default as XRed } from './x-red.svg';

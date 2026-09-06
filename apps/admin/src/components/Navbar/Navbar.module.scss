@@ -10,6 +10,12 @@
   z-index: 1000;
 }
 
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .imageWrapper {
   display: flex;
   align-items: center;

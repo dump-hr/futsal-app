@@ -9,6 +9,7 @@ export const MATCH_STAGE = {
   QUARTER_FINALS: 'QUARTER_FINALS',
   SEMI_FINALS: 'SEMI_FINALS',
   FINAL: 'FINAL',
+  THIRD_PLACE: 'THIRD_PLACE',
 } as const;
 
 export type MatchStatus = (typeof MATCH_STATUS)[keyof typeof MATCH_STATUS];
@@ -19,4 +20,5 @@ export const MATCH_STAGE_LABEL: Record<MatchStage, string> = {
   [MATCH_STAGE.QUARTER_FINALS]: 'Četvrtfinale',
   [MATCH_STAGE.SEMI_FINALS]: 'Polufinale',
   [MATCH_STAGE.FINAL]: 'Finale',
+  [MATCH_STAGE.THIRD_PLACE]: '3. mjesto',
 };

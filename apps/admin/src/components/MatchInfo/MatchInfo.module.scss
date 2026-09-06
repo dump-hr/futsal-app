@@ -18,6 +18,7 @@
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   text-transform: uppercase;
+  white-space: nowrap;
   display: flex;
   justify-content: center;
   align-self: center;
@@ -43,6 +44,11 @@
 .stageFinal {
   background-color: $red;
   color: $white;
+}
+
+.stageThirdPlace {
+  background-color: $yellow;
+  color: $black;
 }
 
 .content {

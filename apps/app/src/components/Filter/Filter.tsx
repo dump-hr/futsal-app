@@ -2,6 +2,7 @@ import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { ArrowDownBlack, ArrowDownWhite } from '@assets/index';
 import { useCloseComponent } from '@hooks/index';
+import d from '@components/Dropdown/Dropdown.module.scss';
 import c from './Filter.module.scss';
 
 export type FilterOption<T extends string> = {
@@ -57,7 +58,7 @@ export const Filter = <T extends string>({
   };
 
   return (
-    <div className={clsx(c.wrapper, className)} ref={wrapperRef}>
+    <div className={clsx(d.wrapper, className)} ref={wrapperRef}>
       <button
         type='button'
         className={clsx(c.trigger, isActive ? c.active : c.default)}
@@ -73,12 +74,9 @@ export const Filter = <T extends string>({
       {isOpen && (
         <div
           ref={dropdownRef}
-          className={clsx(c.dropdown, alignRight && c.dropdownRight)}>
+          className={clsx(d.dropdown, alignRight && d.dropdownRight)}>
           {isActive && (
-            <button
-              type='button'
-              className={c.option}
-              onClick={handleClear}>
+            <button type='button' className={d.option} onClick={handleClear}>
               Ukloni filter
             </button>
           )}
@@ -86,7 +84,7 @@ export const Filter = <T extends string>({
             <button
               key={option.value}
               type='button'
-              className={clsx(c.option, option.value === value && c.selected)}
+              className={clsx(d.option, option.value === value && d.selected)}
               onClick={() => handleSelect(option.value)}>
               {option.label}
             </button>

@@ -4,6 +4,7 @@ import {
   CardYellow,
   CrossGray,
   GoalLime,
+  GoalRed,
   TickLime,
   XRed,
 } from '@assets/index';
@@ -38,7 +39,7 @@ export const SHOOTOUT_EVENTS: EventType[] = [
 
 export const EVENT_ICON: Partial<Record<EventType, string>> = {
   [EventType.goal]: GoalLime,
-  [EventType.ownGoal]: GoalLime,
+  [EventType.ownGoal]: GoalRed,
   [EventType.penaltyGoal]: GoalLime,
   [EventType.penaltyMiss]: XRed,
   [EventType.yellowCard]: CardYellow,

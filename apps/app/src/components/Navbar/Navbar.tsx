@@ -3,6 +3,7 @@ import { Link, useLocation } from 'wouter';
 import clsx from 'clsx';
 import { routes } from '@routes/index';
 import { Logo, MenuWhite, XWhite } from '@assets/index';
+import { TournamentSelect } from '@components/index';
 import c from './Navbar.module.scss';
 
 const navLinks = [
@@ -46,6 +47,10 @@ export const Navbar = () => {
         ))}
       </ul>
 
+      <div className={c.selectDesktop}>
+        <TournamentSelect />
+      </div>
+
       <button
         type='button'
         className={c.menuButton}
@@ -83,6 +88,10 @@ export const Navbar = () => {
             </li>
           ))}
         </ul>
+
+        <div className={c.selectDrawer}>
+          <TournamentSelect />
+        </div>
       </aside>
     </nav>
   );

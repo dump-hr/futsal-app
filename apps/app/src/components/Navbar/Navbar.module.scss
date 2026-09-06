@@ -70,6 +70,14 @@
   }
 }
 
+.selectDesktop {
+  margin-left: auto;
+}
+
+.selectDrawer {
+  display: none;
+}
+
 .menuButton {
   display: none;
   margin-left: auto;
@@ -145,7 +153,7 @@
 
 .drawerList {
   list-style: none;
-  margin: 64px 0 0;
+  margin: 32px 0 0;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -183,6 +191,16 @@
 
   .menuButton {
     display: flex;
+  }
+
+  .selectDesktop {
+    display: none;
+  }
+
+  .selectDrawer {
+    display: block;
+    margin-top: auto;
+    padding-top: 24px;
   }
 
   .logoWrapper {

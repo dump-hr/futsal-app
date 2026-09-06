@@ -120,6 +120,11 @@
   color: $white;
 }
 
+.playerHint {
+  @include body-small;
+  color: $white-transparent;
+}
+
 .footer {
   margin-top: auto;
   padding-top: 20px;

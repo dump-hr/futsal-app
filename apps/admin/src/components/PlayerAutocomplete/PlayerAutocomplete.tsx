@@ -38,8 +38,7 @@ export const PlayerAutocomplete: React.FC<PlayerAutocompleteProps> = ({
     items: players,
     initialQuery,
     filterFn: (p, q) =>
-      p.firstName.toLowerCase().includes(q) ||
-      p.lastName.toLowerCase().includes(q),
+      `${p.firstName} ${p.lastName}`.toLowerCase().includes(q),
     getLabel: (p) =>
       p ? `${p.firstName} ${p.lastName}` : 'Nepoznat netko',
     onSelect,

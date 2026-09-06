@@ -9,7 +9,7 @@ import {
   useMatchEventUpdate,
 } from '@api/index';
 import { Button, ButtonSmall, Input, ModalConfirmation } from '@components/index';
-import { ExitBlack, CheckBlack, PlusBlack } from '@assets/index';
+import { ExitBlack, CheckBlack, PlusBlack, TrashCanBlack } from '@assets/index';
 import { useCloseComponent } from '@hooks/index';
 import { BackgroundColor, MatchEventSaveData } from '@types';
 import { MatchHeader } from './MatchHeader';
@@ -44,6 +44,7 @@ export const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
   const [newEventSide, setNewEventSide] = useState<NewEventSide | null>(null);
   const [bracketOrder, setBracketOrder] = useState('');
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+  const [eventIdToDelete, setEventIdToDelete] = useState<number | null>(null);
 
   const hasPendingEvent = pendingKind !== null || newEventSide !== null;
 
@@ -114,7 +115,7 @@ export const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
   };
 
   const handleDelete = (eventId: number) => {
-    deleteEvent.mutate(eventId);
+    setEventIdToDelete(eventId);
   };
 
   const handleBracketOrderSave = () => {
@@ -240,6 +241,20 @@ export const MatchPanel: React.FC<MatchPanelProps> = ({ matchId, onClose }) => {
           circleVariant='gray'
           onCancel={() => setShowCancelConfirm(false)}
           onConfirm={onClose}
+        />
+      )}
+
+      {eventIdToDelete !== null && (
+        <ModalConfirmation
+          description='Želite li obrisati ovaj događaj?'
+          boldText='Ova akcija je nepovratna.'
+          icon={TrashCanBlack}
+          circleVariant='gray'
+          onCancel={() => setEventIdToDelete(null)}
+          onConfirm={() => {
+            deleteEvent.mutate(eventIdToDelete);
+            setEventIdToDelete(null);
+          }}
         />
       )}
     </div>

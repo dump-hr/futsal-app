@@ -15,11 +15,14 @@ import {
   ArrowLeftGray,
   PlusBlack,
   PencilGray,
+  PlayBlack,
   TrashCanBlack,
 } from '@assets/index';
 import {
   useTeamGet,
   useMatchGetByTeam,
+  useMatchDelete,
+  useMatchSetActive,
   usePlayerCreate,
   usePlayerUpdate,
   usePlayerDelete,
@@ -39,6 +42,8 @@ export const TeamDetailPage = () => {
   const [showTeamEdit, setShowTeamEdit] = useState(false);
   const [panelMatchId, setPanelMatchId] = useState<number | undefined>();
   const [panelClosing, setPanelClosing] = useState(false);
+  const [matchToDelete, setMatchToDelete] = useState<number | undefined>();
+  const [matchToActivate, setMatchToActivate] = useState<number | undefined>();
   const [, navigate] = useLocation();
 
   const params = useParams<{ teamId: string }>();
@@ -50,6 +55,8 @@ export const TeamDetailPage = () => {
   const { mutate: createPlayer } = usePlayerCreate();
   const { mutate: updatePlayer } = usePlayerUpdate();
   const { mutate: deletePlayer } = usePlayerDelete();
+  const { mutate: deleteMatch } = useMatchDelete();
+  const { mutate: setMatchActive } = useMatchSetActive();
 
   if (!teamId) return null;
 
@@ -123,7 +130,17 @@ export const TeamDetailPage = () => {
         <section className={c.matchesSection}>
           <span className={c.sectionTitle}>Utakmice</span>
           <div className={c.matchList}>
-            <MatchList matches={matches ?? []} onEdit={setPanelMatchId} />
+            <MatchList
+              matches={matches ?? []}
+              onEdit={setPanelMatchId}
+              onDelete={setMatchToDelete}
+              onActivate={setMatchToActivate}
+              onTimer={(matchId) =>
+                navigate(
+                  routes.MATCH_TIMER.replace(':matchId', String(matchId)),
+                )
+              }
+            />
           </div>
         </section>
       </div>
@@ -157,6 +174,34 @@ export const TeamDetailPage = () => {
 
       {showTeamEdit && (
         <TeamFormModal teamId={teamId} onClose={() => setShowTeamEdit(false)} />
+      )}
+
+      {matchToDelete !== undefined && (
+        <ModalConfirmation
+          description='Jeste li sigurni da želite obrisati utakmicu?'
+          boldText='Ova radnja se ne može poništiti.'
+          icon={TrashCanBlack}
+          circleVariant='gray'
+          onCancel={() => setMatchToDelete(undefined)}
+          onConfirm={() => {
+            deleteMatch(matchToDelete);
+            setMatchToDelete(undefined);
+          }}
+        />
+      )}
+
+      {matchToActivate !== undefined && (
+        <ModalConfirmation
+          description='Želite li aktivirati utakmicu?'
+          boldText='Utakmica će postati aktivna.'
+          icon={PlayBlack}
+          circleVariant='green'
+          onCancel={() => setMatchToActivate(undefined)}
+          onConfirm={() => {
+            setMatchActive(matchToActivate);
+            setMatchToActivate(undefined);
+          }}
+        />
       )}
 
       {panelMatchId !== undefined && (

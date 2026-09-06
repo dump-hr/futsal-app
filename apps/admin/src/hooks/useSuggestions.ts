@@ -18,15 +18,18 @@ export const useSuggestions = <T>({
   const [query, setQuery] = useState(initialQuery);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
+  const [hasTyped, setHasTyped] = useState(false);
 
   const suggestions = useMemo(() => {
+    if (!hasTyped) return items;
     const q = query.toLowerCase();
     if (!q) return items;
     return items.filter((item) => filterFn(item, q));
-  }, [items, query, filterFn]);
+  }, [items, query, filterFn, hasTyped]);
 
   const handleSelect = (item: T | null) => {
     setQuery(getLabel(item));
+    setHasTyped(false);
     onSelect(item);
     setShowSuggestions(false);
   };
@@ -35,6 +38,7 @@ export const useSuggestions = <T>({
     value: query,
     onChange: (e: ChangeEvent<HTMLInputElement>) => {
       setQuery(e.target.value);
+      setHasTyped(true);
       setShowSuggestions(true);
       setHighlightedIndex(0);
     },
@@ -64,7 +68,10 @@ export const useSuggestions = <T>({
     },
   };
 
-  const closeSuggestions = () => setShowSuggestions(false);
+  const closeSuggestions = () => {
+    setShowSuggestions(false);
+    setHasTyped(false);
+  };
 
   return {
     query,
