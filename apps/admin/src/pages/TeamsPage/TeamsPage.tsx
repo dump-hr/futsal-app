@@ -16,6 +16,7 @@ import {
 import c from './TeamsPage.module.scss';
 import { SortOrder, GroupFilter, SORT_OPTIONS } from './options';
 import { useTournamentContext } from '@hooks/index';
+import { formatGroupName } from '@helpers/groupHelpers';
 
 export const TeamsPage = () => {
   const [sortOrder, setSortOrder] = useState<SortOrder>('az');
@@ -41,7 +42,7 @@ export const TeamsPage = () => {
       ? [{ label: 'Ukloni filter', value: 'all' as GroupFilter }]
       : []),
     ...(groups?.map((g) => ({
-      label: g.name,
+      label: formatGroupName(g.name),
       value: String(g.id),
     })) ?? []),
   ];

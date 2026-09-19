@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
 import {
   Filter,
@@ -7,7 +7,12 @@ import {
   type FilterOption,
 } from '@components/index';
 import { useMatchGetAll } from '@api/index';
-import { getMatchStatus, groupMatchesByDay } from '@helpers/index';
+import {
+  formatGroupName,
+  getMatchStatus,
+  groupMatchesByDay,
+  isGroupStageMatch,
+} from '@helpers/index';
 import { useTournamentId } from '@hooks/index';
 import { MATCH_STATUS, type MatchStatus } from '@constants/index';
 import { PageLayout } from '@layouts/index';
@@ -28,14 +33,21 @@ export const MatchesPage = () => {
 
   const { data: matches, isLoading, isError } = useMatchGetAll(tournamentId);
 
+  useEffect(() => {
+    setStatus(undefined);
+    setGroup(null);
+    setTeamId(null);
+  }, [tournamentId]);
+
   const names = new Set<string>();
   matches?.forEach((match) => {
+    if (!isGroupStageMatch(match)) return;
     if (match.homeTeam?.group?.name) names.add(match.homeTeam.group.name);
     if (match.awayTeam?.group?.name) names.add(match.awayTeam.group.name);
   });
   const groupOptions: FilterOption<string>[] = [...names]
     .sort()
-    .map((name) => ({ label: `${name}`, value: name }));
+    .map((name) => ({ label: formatGroupName(name), value: name }));
 
   const namesById = new Map<number, string>();
   matches?.forEach((match) => {

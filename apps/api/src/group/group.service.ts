@@ -9,6 +9,7 @@ import {
   buildTeamDtoWithStats,
   teamWithStatsInclude,
 } from '../team/team.helpers';
+import { normalizeGroupName } from './group.helpers';
 
 @Injectable()
 export class GroupService {
@@ -27,8 +28,14 @@ export class GroupService {
       );
     }
 
+    const name = normalizeGroupName(dto.name);
+
+    if (!name) {
+      throw new BadRequestException('Naziv skupine nije ispravan');
+    }
+
     return prisma.group.create({
-      data: dto,
+      data: { ...dto, name },
       include: { teams: true },
     });
   }

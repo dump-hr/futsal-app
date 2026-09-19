@@ -1,8 +1,13 @@
-import { useCallback, useState, useRef, useEffect } from 'react';
+import { useCallback, useMemo, useState, useRef, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { Button, Input, Modal, ModalConfirmation } from '@components/index';
 import { XWhite, CheckBlack, ExitBlack } from '@assets/index';
 import { useGroupCreate } from '@api/index';
+import {
+  formatGroupName,
+  getNextGroupName,
+  normalizeGroupName,
+} from '@helpers/groupHelpers';
 import c from './ModalNewGroup.module.scss';
 
 type ModalNewGroupProps = {
@@ -16,8 +21,14 @@ export const ModalNewGroup: React.FC<ModalNewGroupProps> = ({
   existingGroupNames,
   onClose,
 }) => {
-  const [name, setName] = useState('');
+  const suggestedName = useMemo(
+    () => getNextGroupName(existingGroupNames),
+    [existingGroupNames],
+  );
+
+  const [name, setName] = useState(suggestedName);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+  const normalizedName = normalizeGroupName(name);
   const { mutate: createGroup, isPending } = useGroupCreate();
 
   const inputWrapperRef = useRef<HTMLDivElement>(null);
@@ -26,7 +37,7 @@ export const ModalNewGroup: React.FC<ModalNewGroupProps> = ({
     inputWrapperRef.current?.querySelector('input')?.focus();
   }, []);
 
-  const isDirty = !!name.trim();
+  const isDirty = normalizedName !== suggestedName;
 
   const requestClose = useCallback(() => {
     if (isDirty) {
@@ -37,24 +48,20 @@ export const ModalNewGroup: React.FC<ModalNewGroupProps> = ({
   }, [isDirty, onClose]);
 
   const handleSave = () => {
-    const trimmed = name.trim();
-    if (!trimmed || !tournamentId) {
+    if (!normalizedName || !tournamentId) {
       toast.error('Unesite ime skupine i odaberite turnir');
       return;
     }
 
     const doesGroupExist = existingGroupNames.some(
-      (n) => n.toLowerCase() === trimmed.toLowerCase(),
+      (n) => normalizeGroupName(n) === normalizedName,
     );
     if (doesGroupExist) {
       toast.error('Skupina s tim imenom već postoji');
       return;
     }
 
-    createGroup(
-      { name: trimmed, tournamentId },
-      { onSuccess: onClose },
-    );
+    createGroup({ name: normalizedName, tournamentId }, { onSuccess: onClose });
   };
 
   return (
@@ -66,9 +73,10 @@ export const ModalNewGroup: React.FC<ModalNewGroupProps> = ({
         <div className={c.wideInput} ref={inputWrapperRef}>
           <Input
             label='Ime skupine'
-            placeholder='Skupina A'
+            prefixLabel='Skupina'
+            placeholder='A'
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value.toUpperCase())}
             onKeyDown={(e) => e.key === 'Enter' && handleSave()}
           />
         </div>
@@ -82,7 +90,7 @@ export const ModalNewGroup: React.FC<ModalNewGroupProps> = ({
             icon={CheckBlack}
             variant='primary'
             onClick={handleSave}
-            disabled={isPending || !name.trim()}>
+            disabled={isPending || !normalizedName}>
             Spremi
           </Button>
         </div>
@@ -91,7 +99,9 @@ export const ModalNewGroup: React.FC<ModalNewGroupProps> = ({
       {showCancelConfirm && (
         <ModalConfirmation
           description='Ovim postupkom izgubit ćete unesene podatke o skupini'
-          boldText='Nova skupina'
+          boldText={
+            normalizedName ? formatGroupName(normalizedName) : 'Nova skupina'
+          }
           icon={ExitBlack}
           circleVariant='gray'
           onCancel={() => setShowCancelConfirm(false)}
