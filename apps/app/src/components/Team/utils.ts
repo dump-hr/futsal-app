@@ -102,3 +102,74 @@ export const getDominantLogoColor = (image: HTMLImageElement) => {
 
   return dominantColor;
 };
+
+const COLOR_CACHE_STORAGE_KEY = 'team-logo-colors';
+const COLOR_CACHE_LIMIT = 200;
+
+const readStoredColors = (): [string, string][] => {
+  try {
+    const stored = localStorage.getItem(COLOR_CACHE_STORAGE_KEY);
+
+    if (!stored) {
+      return [];
+    }
+
+    const parsed: unknown = JSON.parse(stored);
+
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+      return [];
+    }
+
+    return Object.entries(parsed).filter(
+      (entry): entry is [string, string] => typeof entry[1] === 'string',
+    );
+  } catch {
+    return [];
+  }
+};
+
+const colorCache = new Map<string, string>(
+  readStoredColors().slice(-COLOR_CACHE_LIMIT),
+);
+
+const persistColors = () => {
+  try {
+    localStorage.setItem(
+      COLOR_CACHE_STORAGE_KEY,
+      JSON.stringify(Object.fromEntries(colorCache)),
+    );
+  } catch (error) {
+    console.warn('Unable to persist logo colors', error);
+  }
+};
+
+export const getCachedLogoColor = (logoUrl?: string) =>
+  logoUrl ? colorCache.get(logoUrl) : undefined;
+
+export const resolveLogoColor = (logoUrl: string, image: HTMLImageElement) => {
+  const cached = colorCache.get(logoUrl);
+
+  if (cached) {
+    return cached;
+  }
+
+  const color = getDominantLogoColor(image);
+
+  if (!color) {
+    return PLACEHOLDER_DOMINANT_COLOR;
+  }
+
+  colorCache.set(logoUrl, color);
+
+  if (colorCache.size > COLOR_CACHE_LIMIT) {
+    const oldest = colorCache.keys().next().value;
+
+    if (oldest) {
+      colorCache.delete(oldest);
+    }
+  }
+
+  persistColors();
+
+  return color;
+};
