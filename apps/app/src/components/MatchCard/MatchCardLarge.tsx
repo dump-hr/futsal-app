@@ -26,6 +26,7 @@ export const MatchCardLarge: React.FC<MatchCardLargeProps> = ({
     homeLogo,
     awayLogo,
     score,
+    shootoutScore,
     metaLabel,
     dateLabel,
     startTime,
@@ -52,7 +53,12 @@ export const MatchCardLarge: React.FC<MatchCardLargeProps> = ({
           <span className={c.teamName}>{homeName}</span>
         </div>
 
-        <span className={c.score}>{score}</span>
+        <span className={c.score}>
+          <span>{score}</span>
+          {shootoutScore && (
+            <span className={c.shootoutScore}>{shootoutScore}</span>
+          )}
+        </span>
 
         <div className={c.team}>
           <TeamLogo name={awayName} logoUrl={awayLogo} className={c.logo} />

@@ -27,6 +27,14 @@ export class MatchDto {
   @IsNotEmpty()
   awayGoals: number;
 
+  @IsInt()
+  @IsOptional()
+  homeShootoutGoals?: number;
+
+  @IsInt()
+  @IsOptional()
+  awayShootoutGoals?: number;
+
   @IsEnum(MatchType)
   @IsNotEmpty()
   matchType: `${MatchType}`;

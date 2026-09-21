@@ -12,6 +12,8 @@ type MatchInfoProps = {
   teamB: TeamInfo;
   teamAScore?: number;
   teamBScore?: number;
+  teamAShootoutScore?: number;
+  teamBShootoutScore?: number;
   matchTime: string;
   matchStage: MatchStage;
   matchStatus: MatchStatus;
@@ -26,6 +28,8 @@ export const MatchInfo: React.FC<MatchInfoProps> = ({
   teamB,
   teamAScore,
   teamBScore,
+  teamAShootoutScore,
+  teamBShootoutScore,
   matchTime,
   matchStage,
   matchStatus,
@@ -42,6 +46,8 @@ export const MatchInfo: React.FC<MatchInfoProps> = ({
         <ScorePill
           teamAScore={teamAScore}
           teamBScore={teamBScore}
+          teamAShootoutScore={teamAShootoutScore}
+          teamBShootoutScore={teamBShootoutScore}
           isUpcoming={matchStatus === MATCH_STATUS.UPCOMING}
         />
         <TeamSummary team={teamB} align='right' />

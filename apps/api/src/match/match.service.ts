@@ -10,6 +10,7 @@ import {
   MatchCreateDto,
   MatchUpdateDto,
   MatchType,
+  EventType,
 } from '@futsal-app/types';
 import { MatchTimerService } from '../match-timer/match-timer.service';
 
@@ -31,11 +32,41 @@ const teamSelect = {
 };
 
 const GROUP_MATCH_TYPE: `${MatchType}` = MatchType.group;
+const SHOOTOUT_GOAL_EVENT_TYPE: `${EventType}` = EventType.shootoutGoal;
+
+type ShootoutEvent = {
+  eventType: `${EventType}`;
+  isForHomeTeam: boolean;
+};
+
+type MatchWithShootoutEvents = MatchDto & {
+  events?: ShootoutEvent[];
+};
 const MAX_ACTIVE_MATCHES = 2;
 
 @Injectable()
 export class MatchService {
   constructor(private readonly matchTimerService: MatchTimerService) {}
+
+  private withShootoutGoals(match: MatchWithShootoutEvents): MatchDto {
+    const { events = [], ...rest } = match;
+    const shootoutGoals = events.reduce(
+      (acc, event) => {
+        if (event.eventType !== SHOOTOUT_GOAL_EVENT_TYPE) return acc;
+
+        if (event.isForHomeTeam) acc.homeShootoutGoals += 1;
+        else acc.awayShootoutGoals += 1;
+
+        return acc;
+      },
+      { homeShootoutGoals: 0, awayShootoutGoals: 0 },
+    );
+
+    return {
+      ...rest,
+      ...shootoutGoals,
+    };
+  }
 
   private normalizeBracketOrder(
     matchType: `${MatchType}`,
@@ -98,6 +129,7 @@ export class MatchService {
       include: {
         homeTeam: { select: teamWithPlayersSelect },
         awayTeam: { select: teamWithPlayersSelect },
+        events: { select: { eventType: true, isForHomeTeam: true } },
       },
     });
 
@@ -105,7 +137,7 @@ export class MatchService {
       throw new NotFoundException('Utakmica nije pronađena');
     }
 
-    return match;
+    return this.withShootoutGoals(match);
   }
 
   async getAll(tournamentId: number): Promise<MatchDto[]> {
@@ -117,10 +149,11 @@ export class MatchService {
       include: {
         homeTeam: { select: teamSelect },
         awayTeam: { select: teamSelect },
+        events: { select: { eventType: true, isForHomeTeam: true } },
       },
     });
 
-    return matches;
+    return matches.map((match) => this.withShootoutGoals(match));
   }
 
   async getByTeamId(teamId: number): Promise<MatchDto[]> {
@@ -132,10 +165,11 @@ export class MatchService {
       include: {
         homeTeam: { select: teamSelect },
         awayTeam: { select: teamSelect },
+        events: { select: { eventType: true, isForHomeTeam: true } },
       },
     });
 
-    return matches;
+    return matches.map((match) => this.withShootoutGoals(match));
   }
 
   async create(dto: MatchCreateDto): Promise<MatchDto> {
