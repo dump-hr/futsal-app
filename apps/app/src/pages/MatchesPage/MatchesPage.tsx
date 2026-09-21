@@ -8,7 +8,7 @@ import {
 } from '@components/index';
 import { useMatchGetAll, useMatchTimerLive } from '@api/index';
 import { getMatchStatus, groupMatchesByDay } from '@helpers/index';
-import { useTournamentContext } from '@hooks/index';
+import { useTournamentId } from '@hooks/index';
 import { MATCH_STATUS, type MatchStatus } from '@constants/index';
 import { PageLayout } from '@layouts/index';
 import { routes } from '@routes/index';
@@ -24,7 +24,7 @@ export const MatchesPage = () => {
   const [status, setStatus] = useState<MatchStatus | null | undefined>();
   const [group, setGroup] = useState<string | null>(null);
   const [teamId, setTeamId] = useState<string | null>(null);
-  const tournamentId = useTournamentContext();
+  const tournamentId = useTournamentId();
 
   const { data: matches, isLoading, isError } = useMatchGetAll(tournamentId);
 

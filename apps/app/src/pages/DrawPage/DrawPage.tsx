@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { MatchType } from '@futsal-app/types';
 import { useMatchGetAll } from '@api/index';
-import { useTournamentContext } from '@hooks/index';
+import { useTournamentId } from '@hooks/index';
 import {
   Bracket,
   buildBracketRounds,
@@ -20,7 +20,7 @@ const scrollColumnIntoCenter = (container: HTMLElement, node: HTMLElement) => {
 
 export const DrawPage = () => {
   const [activeRound, setActiveRound] = useState<KnockoutRound | null>(null);
-  const tournamentId = useTournamentContext();
+  const tournamentId = useTournamentId();
   const bracketRef = useRef<HTMLDivElement | null>(null);
   const columnRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const { data: matches, isLoading, isError } = useMatchGetAll(tournamentId);

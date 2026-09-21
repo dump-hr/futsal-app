@@ -1,11 +1,11 @@
 import { Group, Skeleton } from '@components/index';
 import { useGroupsGetByTournamentId } from '@api/index';
-import { useTournamentContext } from '@hooks/index';
+import { useTournamentId } from '@hooks/index';
 import { PageLayout } from '@layouts/index';
 import c from './GroupsPage.module.scss';
 
 export const GroupsPage = () => {
-  const tournamentId = useTournamentContext();
+  const tournamentId = useTournamentId();
 
   const {
     data: groups,
