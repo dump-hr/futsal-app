@@ -17,6 +17,7 @@ import {
   useTeamsGet,
 } from '@api/index';
 import { useTournamentContext } from '@hooks/index';
+import { formatGroupName } from '@helpers/groupHelpers';
 import c from './GroupsPage.module.scss';
 
 export const GroupsPage = () => {
@@ -45,8 +46,10 @@ export const GroupsPage = () => {
     });
   };
 
-  const deleteGroupName =
-    groups.find((g) => g.id === deleteGroupId)?.name ?? '';
+  const groupToDelete = groups.find((g) => g.id === deleteGroupId);
+  const deleteGroupName = groupToDelete
+    ? formatGroupName(groupToDelete.name)
+    : '';
 
   return (
     <div className={c.page}>
@@ -92,7 +95,7 @@ export const GroupsPage = () => {
             {groups.map((group) => (
               <Group
                 key={group.id}
-                groupTitle={group.name}
+                groupTitle={formatGroupName(group.name)}
                 teams={(group.teams ?? []).map((t) => ({
                   id: t.id,
                   name: t.name,

@@ -1,9 +1,10 @@
-import { MatchDto, MatchTimerStateDto } from '@futsal-app/types';
+import { MatchDto, MatchTimerStateDto, MatchType } from '@futsal-app/types';
 import {
   MATCH_STATUS,
   MATCH_TYPE_LABELS,
   type MatchStatus,
 } from '@constants/index';
+import { formatGroupName } from './groupHelpers';
 
 const CROATIAN_MONTHS_GENITIVE = [
   'siječnja',
@@ -56,12 +57,15 @@ export const formatMatchDateLong = (value: string | Date): string => {
   return `${date.getDate()}. ${CROATIAN_MONTHS_GENITIVE[date.getMonth()]}, ${formatMatchTime(date)}`;
 };
 
+export const isGroupStageMatch = (match: MatchDto): boolean =>
+  match.matchType === MatchType.group;
+
 export const getMatchMetaLabel = (match: MatchDto): string => {
   const stage = MATCH_TYPE_LABELS[match.matchType];
-  if (match.matchType === 'group') {
+  if (isGroupStageMatch(match)) {
     const groupName =
       match.homeTeam?.group?.name ?? match.awayTeam?.group?.name;
-    return groupName ? `${stage} ${groupName}` : stage;
+    return groupName ? formatGroupName(groupName) : stage;
   }
   return stage;
 };
@@ -109,12 +113,14 @@ const matchPassesFilters = (
   { status, group, teamId }: MatchFilters,
 ): boolean => {
   if (!matchPassesStatus(match, status)) return false;
-  if (
-    group &&
-    match.homeTeam?.group?.name !== group &&
-    match.awayTeam?.group?.name !== group
-  )
-    return false;
+  if (group) {
+    if (!isGroupStageMatch(match)) return false;
+    if (
+      match.homeTeam?.group?.name !== group &&
+      match.awayTeam?.group?.name !== group
+    )
+      return false;
+  }
   if (
     teamId != null &&
     match.homeTeam?.id !== teamId &&

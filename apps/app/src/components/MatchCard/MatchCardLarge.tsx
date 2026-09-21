@@ -1,20 +1,24 @@
 import clsx from 'clsx';
 import { MatchDto } from '@futsal-app/types';
 import { TeamLogo } from '@components/TeamLogo';
+import { useMatchTimerLive } from '@api/index';
 import { getMatchCardLargeView } from './utils';
 import c from './MatchCardLarge.module.scss';
 
 type MatchCardLargeProps = {
   match: MatchDto;
-  elapsedMinutes?: number;
   className?: string;
 };
 
 export const MatchCardLarge: React.FC<MatchCardLargeProps> = ({
   match,
-  elapsedMinutes,
   className,
 }) => {
+  const { elapsedSeconds } = useMatchTimerLive(match.isActive ? match.id : 0);
+  const elapsedMinutes = match.isActive
+    ? Math.floor(elapsedSeconds / 60)
+    : undefined;
+
   const {
     isLive,
     homeName,

@@ -12,6 +12,7 @@ import {
 } from '@api/index';
 import { GroupOption } from '@constants/groupOptions';
 import { getPlayerNameValidationError } from '@helpers/validatePlayerName';
+import { formatGroupName } from '@helpers/groupHelpers';
 import type { PlayerEntry } from './PlayerGrid';
 import { useTournamentContext } from '@hooks/index';
 
@@ -67,7 +68,7 @@ export const useTeamForm = ({
   const groupOptions: { label: string; value: GroupOption }[] = [
     { label: 'Bez skupine', value: 'none' },
     ...(groups ?? []).map((g) => ({
-      label: g.name,
+      label: formatGroupName(g.name),
       value: String(g.id),
     })),
   ];

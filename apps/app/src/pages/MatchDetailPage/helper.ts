@@ -4,7 +4,7 @@ import {
   MATCH_TYPE_LABELS,
   type MatchStatus,
 } from '@constants/index';
-import { formatMatchDateLong } from '@helpers/index';
+import { formatGroupName, formatMatchDateLong } from '@helpers/index';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
@@ -17,7 +17,7 @@ export const getStageLabel = (
     ? ''
     : isGroupMatch
       ? groupName
-        ? `SKUPINA ${groupName}`
+        ? formatGroupName(groupName)
         : ''
       : MATCH_TYPE_LABELS[match.matchType];
 };

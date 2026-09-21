@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import c from './Group.module.scss';
 import { GroupDto } from '@futsal-app/types';
 import { TeamRow } from './TeamRow';
+import { formatGroupName } from '@helpers/index';
 
 type GroupProps = {
   group: GroupDto;
@@ -20,7 +21,7 @@ export const Group: React.FC<GroupProps> = ({ group }) => {
 
   return (
     <div className={c.container}>
-      <div className={c.name}>{group.name}</div>
+      <div className={c.name}>{formatGroupName(group.name)}</div>
       <div>
         <div className={c.labelsContainer}>
           <div className={c.labelsLeft}>
