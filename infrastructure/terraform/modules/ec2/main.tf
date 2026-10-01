@@ -14,7 +14,14 @@ resource "aws_instance" "instance" {
   key_name               = aws_key_pair.ssh.key_name
   vpc_security_group_ids = var.security_groups
   subnet_id              = random_shuffle.subnets.result[count.index]
+  iam_instance_profile   = var.iam_instance_profile
   count                  = var.instance_count
+
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 2
+  }
 
   root_block_device {
     volume_type           = "gp3"

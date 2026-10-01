@@ -62,6 +62,7 @@ module "web" {
   subnets                   = data.aws_subnets.public_subnets.ids
   security_groups           = data.aws_security_groups.public_sg.ids
   ssh_public_key            = file("../../../../ssh-keys/production.pub")
+  iam_instance_profile      = "futsal-app-api"
   website_domain            = "turnir.dump.hr"
   cloudflare_zone_id        = data.cloudflare_zone.dump_hr.id
 

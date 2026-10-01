@@ -37,6 +37,12 @@ variable "ssh_public_key" {
   description = "EC2 instance ssh public key"
 }
 
+variable "iam_instance_profile" {
+  type        = string
+  description = "IAM instance profile name to attach to the instances"
+  default     = null
+}
+
 variable "create_elastic_ip" {
   type        = bool
   description = "create an EIP for the ec2 instances"

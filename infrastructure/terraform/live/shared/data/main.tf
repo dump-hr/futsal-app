@@ -73,3 +73,25 @@ module "uploads" {
     aws.us-east-1 = aws.us-east-1
   }
 }
+
+module "uploads_dev" {
+  source = "../../../modules/static-website"
+
+  bucket_name        = "futsal-app-uploads-dev"
+  website_domain     = "futsal-app-uploads-dev.dump.hr"
+  cloudflare_zone_id = data.cloudflare_zone.dump_hr.id
+  cors_allowed_origins = [
+    "http://localhost:5174",
+    "http://localhost:5173",
+  ]
+
+  tags = {
+    Project     = "futsal-app"
+    Role        = "uploads"
+    Environment = "dev"
+  }
+
+  providers = {
+    aws.us-east-1 = aws.us-east-1
+  }
+}
