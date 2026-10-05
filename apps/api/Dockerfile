@@ -1,4 +1,4 @@
-FROM node:22.12-alpine AS base
+FROM node:24-alpine AS base
 LABEL org.opencontainers.image.source=https://github.com/dump-hr/futsal-app
 
 FROM base AS builder
