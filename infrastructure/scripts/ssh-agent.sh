@@ -12,10 +12,26 @@ cd -P -- "$(dirname -- "$0")" || exit 1
 
 case "$ACTION" in
 load)
-  sops -d "../ssh-keys/$ENV.enc" | ssh-add - 2>&1 | grep -v "^Identity added"
+  if [ ! -f "../ssh-keys/$ENV.enc" ]; then
+    echo "SSH key '../ssh-keys/$ENV.enc' does not exist" >&2
+    exit 1
+  fi
+
+  key=$(sops -d "../ssh-keys/$ENV.enc") || {
+    echo "Failed to decrypt SSH key '../ssh-keys/$ENV.enc'" >&2
+    exit 1
+  }
+
+  output=$(printf '%s\n' "$key" | ssh-add - 2>&1) || {
+    echo "Failed to add SSH key for '$ENV' to ssh-agent: $output" >&2
+    exit 1
+  }
   ;;
 unload)
-  ssh-add -d "../ssh-keys/$ENV.pub" 2>&1 | grep -v "^Identity removed"
+  output=$(ssh-add -d "../ssh-keys/$ENV.pub" 2>&1) || {
+    echo "Failed to remove SSH key for '$ENV' from ssh-agent: $output" >&2
+    exit 1
+  }
   ;;
 *)
   echo "Usage: $0 <env> <load|unload>"

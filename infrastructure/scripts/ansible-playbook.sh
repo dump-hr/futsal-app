@@ -21,7 +21,7 @@ if [ ! -d "../ansible/playbooks/$ANSIBLE_COMPONENT" ]; then
   exit 1
 fi
 
-./ssh-agent.sh "$ANSIBLE_ENV" load
+./ssh-agent.sh "$ANSIBLE_ENV" load || exit 1
 
 cd ../ansible || exit 1
 
