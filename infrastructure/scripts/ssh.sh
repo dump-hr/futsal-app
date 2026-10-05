@@ -15,7 +15,7 @@ if [ ! -f "../ansible/inventories/$ANSIBLE_ENV.aws_ec2.yml" ]; then
   exit 1
 fi
 
-./ssh-agent.sh "$ANSIBLE_ENV" load
+./ssh-agent.sh "$ANSIBLE_ENV" load || exit 1
 
 hosts=$(
   ansible-inventory -i "../ansible/inventories/$ANSIBLE_ENV.aws_ec2.yml" --list \
