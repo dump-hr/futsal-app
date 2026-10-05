@@ -13,5 +13,5 @@ filters:
   tag:Environment: production
 
 keyed_groups:
-  - key: tags.Role
+  - key: ec2_tags.Role
 leading_separator: false
