@@ -1,10 +1,16 @@
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { extension } from 'mime-types';
 import { nanoid } from 'nanoid';
 
 @Injectable()
 export class BlobService {
+  private readonly logger = new Logger(BlobService.name);
+
   private bucket = process.env.AWS_S3_BUCKET;
   private url = process.env.AWS_S3_URL;
 
@@ -29,7 +35,7 @@ export class BlobService {
 
       return `${this.url}/${key}`;
     } catch (error) {
-      console.error(error);
+      this.logger.error(`Failed to upload ${key}`, (error as Error).stack);
       throw new InternalServerErrorException('Greška pri učitavanju datoteke');
     }
   }
