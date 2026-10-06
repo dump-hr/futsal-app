@@ -1,0 +1,30 @@
+---
+- name: Create swap file
+  shell: |
+    set -e
+    fallocate -l {{ swap_size }} /swap.img.tmp
+    chmod 600 /swap.img.tmp
+    mkswap /swap.img.tmp
+    mv /swap.img.tmp /swap.img
+  args:
+    creates: /swap.img
+
+- name: Read active swap
+  command: cat /proc/swaps
+  register: active_swap
+  changed_when: false
+
+- name: Enable swap file
+  command: swapon /swap.img
+  when: "'/swap.img' not in active_swap.stdout"
+
+- name: Add swap file to fstab
+  lineinfile:
+    path: /etc/fstab
+    line: /swap.img none swap sw 0 0
+
+- name: Set swappiness
+  ansible.posix.sysctl:
+    name: vm.swappiness
+    value: '10'
+    sysctl_file: /etc/sysctl.d/99-swap.conf

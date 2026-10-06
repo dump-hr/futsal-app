@@ -17,6 +17,8 @@
         cache_valid_time: 3600
 
   roles:
+    - role: swap
+      become: true
     - role: geerlingguy.docker
       become: true
       vars:
