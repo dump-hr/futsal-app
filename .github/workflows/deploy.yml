@@ -103,7 +103,17 @@ jobs:
         run: |
           pip install -r ./infrastructure/ansible/requirements.txt
 
+      - name: Cache Ansible collections and roles
+        id: galaxy-cache
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/.ansible/collections
+            ~/.ansible/roles
+          key: ansible-galaxy-${{ hashFiles('infrastructure/ansible/requirements.yml') }}
+
       - name: Install Ansible dependencies
+        if: steps.galaxy-cache.outputs.cache-hit != 'true'
         run: |
           ansible-galaxy install -r ./infrastructure/ansible/requirements.yml
 
