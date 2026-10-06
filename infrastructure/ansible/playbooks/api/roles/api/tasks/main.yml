@@ -17,6 +17,7 @@
     image: '{{ docker_image }}'
     pull: true
     restart_policy: unless-stopped
+    init: true
     env_file: '/home/{{ ansible_user }}/{{ env_file }}.env'
     networks:
       - name: traefiknet
