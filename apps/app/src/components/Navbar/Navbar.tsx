@@ -12,6 +12,7 @@ const navLinks = [
   { to: routes.DRAW, label: 'Ždrijeb' },
   { to: routes.MATCHES, label: 'Utakmice' },
   { to: routes.TEAMS, label: 'Ekipe' },
+  { to: routes.STATS, label: 'Statistika' },
 ];
 
 export const Navbar = () => {
@@ -56,7 +57,8 @@ export const Navbar = () => {
         className={c.menuButton}
         aria-label='Otvori izbornik'
         aria-expanded={isOpen}
-        onClick={() => setIsOpen(true)}>
+        onClick={() => setIsOpen(true)}
+      >
         <img src={MenuWhite} alt='' />
       </button>
 
@@ -70,12 +72,14 @@ export const Navbar = () => {
         className={clsx(c.drawer, { [c.drawerOpen]: isOpen })}
         role='dialog'
         aria-modal='true'
-        aria-hidden={!isOpen}>
+        aria-hidden={!isOpen}
+      >
         <button
           type='button'
           className={c.closeButton}
           aria-label='Zatvori izbornik'
-          onClick={() => setIsOpen(false)}>
+          onClick={() => setIsOpen(false)}
+        >
           <img src={XWhite} alt='' />
         </button>
 

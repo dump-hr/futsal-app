@@ -1,0 +1,116 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  color: $white;
+  @include body-large;
+
+  caption {
+    padding-bottom: 16px;
+    text-align: left;
+    @include title-3;
+  }
+
+  th,
+  td {
+    padding: 8px 0;
+    text-align: left;
+    overflow-wrap: anywhere;
+  }
+
+  th {
+    color: $white-transparent;
+    font-weight: normal;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
+
+  .rank,
+  .goals,
+  th:first-child,
+  th:last-child {
+    text-align: center;
+  }
+}
+
+.rankColumn {
+  width: 10%;
+}
+
+.nameColumn {
+  width: 60%;
+}
+
+.teamColumn {
+  width: 24%;
+}
+
+.goalsColumn {
+  width: 6%;
+}
+
+.message {
+  margin: 0;
+  color: $white-transparent;
+  @include body-extra-small;
+}
+
+.skeletonRow {
+  width: 100%;
+  height: 32px;
+  border-radius: 8px;
+}
+
+@media (max-width: 767px) {
+  .table {
+    @include body-extra-small;
+
+    caption {
+      @include title-4;
+    }
+
+    th,
+    td {
+      padding: 4px 0;
+    }
+
+    th:nth-child(2),
+    td:nth-child(2),
+    th:nth-child(3),
+    td:nth-child(3) {
+      padding-right: 8px;
+    }
+  }
+
+  .rankColumn {
+    width: 10%;
+  }
+
+  .nameColumn {
+    width: 40%;
+  }
+
+  .teamColumn {
+    width: 38%;
+  }
+
+  .goalsColumn {
+    width: 12%;
+  }
+}
