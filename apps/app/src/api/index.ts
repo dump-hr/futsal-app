@@ -5,3 +5,4 @@ export * from './matchEvent';
 export * from './group';
 export * from './matchTimer';
 export * from './team';
+export * from './player';
