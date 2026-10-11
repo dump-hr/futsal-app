@@ -9,6 +9,7 @@ import {
   TeamsPage,
   TeamDetailPage,
   GroupsPage,
+  StatsPage,
   NotFoundPage,
 } from '@pages/index';
 import { NavbarLayout } from '@layouts/index';
@@ -26,6 +27,7 @@ export const Router = () => {
             <Route path={routes.TEAM_DETAIL} component={TeamDetailPage} />
             <Route path={routes.TEAMS} component={TeamsPage} />
             <Route path={routes.GROUPS} component={GroupsPage} />
+            <Route path={routes.STATS} component={StatsPage} />
             <Route component={NotFoundPage} />
           </Switch>
         </NavbarLayout>

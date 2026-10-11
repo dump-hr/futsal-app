@@ -1,4 +1,4 @@
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   IsDate,
   IsDateString,
@@ -10,6 +10,7 @@ import {
   Length,
   Min,
 } from 'class-validator';
+import type { TeamDto } from './team';
 
 export class PlayerCreateDto {
   @IsNotEmpty()
@@ -85,4 +86,19 @@ export class PlayerDto {
   @IsOptional()
   @Min(0)
   goals?: number;
+
+  @IsOptional()
+  team?: TeamDto | null;
+}
+
+export class TopScorersQueryDto {
+  @Type(() => Number)
+  @IsInt()
+  @IsPositive()
+  tournamentId: number;
+
+  @Type(() => Number)
+  @IsInt()
+  @IsPositive()
+  limit: number;
 }

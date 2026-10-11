@@ -2,19 +2,36 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { PlayerService } from './player.service';
-import { PlayerCreateDto, PlayerUpdateDto, PlayerDto } from '@futsal-app/types';
+import {
+  PlayerCreateDto,
+  PlayerUpdateDto,
+  PlayerDto,
+  TopScorersQueryDto,
+} from '@futsal-app/types';
 
 @Controller('player')
 export class PlayerController {
   constructor(private readonly playerService: PlayerService) {}
+
+  @Get('top-scorers')
+  async getTopScorers(
+    @Query() query: TopScorersQueryDto,
+  ): Promise<PlayerDto[]> {
+    return await this.playerService.getTopScorers(
+      query.tournamentId,
+      query.limit,
+    );
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post()

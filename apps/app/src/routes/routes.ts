@@ -9,5 +9,6 @@ export const routes: RouteType = {
   MATCHES: '/matches',
   MATCH_DETAIL: '/matches/:matchId',
   TEAMS: '/teams',
+  STATS: '/stats',
   TEAM_DETAIL: '/teams/:teamId',
 };
