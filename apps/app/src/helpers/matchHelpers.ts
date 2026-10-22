@@ -133,10 +133,31 @@ const matchPassesFilters = (
 const hasLiveMatch = (day: MatchDayGroup): boolean =>
   day.matches.some((match) => getMatchStatus(match) === MATCH_STATUS.LIVE);
 
+const isDayFinished = (day: MatchDayGroup): boolean =>
+  day.matches.every(
+    (match) => getMatchStatus(match) === MATCH_STATUS.FINISHED,
+  );
+
+const STATUS_ORDER: Record<MatchStatus, number> = {
+  [MATCH_STATUS.LIVE]: 0,
+  [MATCH_STATUS.UPCOMING]: 1,
+  [MATCH_STATUS.FINISHED]: 2,
+};
+
+const sortDayMatches = (matches: MatchDto[]): MatchDto[] =>
+  [...matches].sort((a, b) => {
+    const statusA = getMatchStatus(a);
+    const statusB = getMatchStatus(b);
+    if (statusA !== statusB)
+      return STATUS_ORDER[statusA] - STATUS_ORDER[statusB];
+    const diff =
+      toDate(a.timeOfMatch).getTime() - toDate(b.timeOfMatch).getTime();
+    return statusA === MATCH_STATUS.FINISHED ? -diff : diff;
+  });
+
 export const groupMatchesByDay = (
   matches: MatchDto[] | undefined,
   filters: MatchFilters,
-  dayOrder: 'asc' | 'desc' = 'asc',
 ): MatchDayGroup[] => {
   if (!matches) return [];
 
@@ -162,14 +183,16 @@ export const groupMatchesByDay = (
 
   const dayGroups = Array.from(groups.values()).map((day) => ({
     ...day,
-    matches: sortMatchesLiveFirst(day.matches),
+    matches: sortDayMatches(day.matches),
   }));
 
-  const ordered = dayOrder === 'desc' ? dayGroups.reverse() : dayGroups;
+  const activeDays = dayGroups.filter((day) => !isDayFinished(day));
+  const finishedDays = dayGroups.filter(isDayFinished).reverse();
 
   return [
-    ...ordered.filter(hasLiveMatch),
-    ...ordered.filter((day) => !hasLiveMatch(day)),
+    ...activeDays.filter(hasLiveMatch),
+    ...activeDays.filter((day) => !hasLiveMatch(day)),
+    ...finishedDays,
   ];
 };
 

@@ -9,7 +9,6 @@ import {
 import { useMatchGetAll } from '@api/index';
 import {
   formatGroupName,
-  getMatchStatus,
   groupMatchesByDay,
   isGroupStageMatch,
 } from '@helpers/index';
@@ -26,7 +25,7 @@ const statusOptions: FilterOption<MatchStatus>[] = [
 ];
 
 export const MatchesPage = () => {
-  const [status, setStatus] = useState<MatchStatus | null | undefined>();
+  const [status, setStatus] = useState<MatchStatus | null>(null);
   const [group, setGroup] = useState<string | null>(null);
   const [teamId, setTeamId] = useState<string | null>(null);
   const tournamentId = useTournamentId();
@@ -34,7 +33,7 @@ export const MatchesPage = () => {
   const { data: matches, isLoading, isError } = useMatchGetAll(tournamentId);
 
   useEffect(() => {
-    setStatus(undefined);
+    setStatus(null);
     setGroup(null);
     setTeamId(null);
   }, [tournamentId]);
@@ -58,26 +57,11 @@ export const MatchesPage = () => {
     .sort((a, b) => a[1].localeCompare(b[1]))
     .map(([id, name]) => ({ label: name, value: String(id) }));
 
-  const hasUnfinished =
-    matches?.some((match) => getMatchStatus(match) !== MATCH_STATUS.FINISHED) ??
-    false;
-
-  const effectiveStatus =
-    status === undefined
-      ? hasUnfinished
-        ? MATCH_STATUS.UPCOMING
-        : null
-      : status;
-
-  const dayGroups = groupMatchesByDay(
-    matches,
-    {
-      status: effectiveStatus,
-      group,
-      teamId: teamId ? Number(teamId) : null,
-    },
-    hasUnfinished ? 'asc' : 'desc',
-  );
+  const dayGroups = groupMatchesByDay(matches, {
+    status,
+    group,
+    teamId: teamId ? Number(teamId) : null,
+  });
 
   const renderContent = () => {
     if (isLoading)
@@ -122,7 +106,7 @@ export const MatchesPage = () => {
       <div className={c.filters}>
         <Filter
           label='Status'
-          value={effectiveStatus}
+          value={status}
           options={statusOptions}
           onChange={setStatus}
         />
