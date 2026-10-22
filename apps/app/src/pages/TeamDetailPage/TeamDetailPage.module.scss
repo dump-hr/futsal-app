@@ -178,21 +178,26 @@
   }
 
   .content {
+    flex: 1;
+    min-height: 0;
     flex-direction: row;
-    align-items: flex-start;
     gap: 48px;
   }
 
   .playersSection {
     flex: 1;
-    max-height: 692px;
     overflow-y: auto;
     padding-right: 12px;
-    @include custom-scrollbar($width: 8px);
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .matchesSection {
     flex: 0 0 480px;
+    min-height: 0;
   }
 
   .matchCompact {
@@ -204,8 +209,8 @@
   }
 
   .matchList {
+    min-height: 0;
     gap: 24px;
-    max-height: 632px;
     overflow-y: auto;
     padding-right: 12px;
     @include custom-scrollbar($width: 10px);

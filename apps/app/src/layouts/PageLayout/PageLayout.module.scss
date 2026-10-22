@@ -51,15 +51,9 @@
 
 @media (min-width: 1100px) {
   .page {
-    overflow-y: auto;
     gap: 40px;
     padding: 60px;
     padding-bottom: 0px;
-    @include custom-scrollbar(
-      $width: 8px,
-      $track-color: transparent,
-      $thumb-color: $gray-dark
-    );
   }
 
   .title {
@@ -68,9 +62,6 @@
   }
 
   .panel {
-    flex: 1 0 auto;
-    min-height: auto;
-    overflow: visible;
     gap: 48px;
     padding: 40px;
     border-radius: 24px;
@@ -78,5 +69,16 @@
       url('../../assets/images/panel-gradient-desktop.svg') center / 100% 100%
         no-repeat fixed,
       $background-black;
+    scrollbar-width: auto;
+
+    &::-webkit-scrollbar {
+      display: block;
+    }
+
+    @include custom-scrollbar($width: 8px);
+
+    &::-webkit-scrollbar-track {
+      margin-block: 24px;
+    }
   }
 }
