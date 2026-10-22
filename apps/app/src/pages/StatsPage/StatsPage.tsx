@@ -43,7 +43,7 @@ export const StatsPage = () => {
         <tbody>
           {players.map((player, index) => (
             <tr key={player.id}>
-              <td className={c.rank}>{index + 1}</td>
+              <td>{index + 1}</td>
               <td>
                 {player.firstName} {player.lastName}
               </td>
