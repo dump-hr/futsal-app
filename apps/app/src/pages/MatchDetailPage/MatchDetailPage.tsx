@@ -17,6 +17,7 @@ import {
   Skeleton,
 } from '@components/index';
 import {
+  FALLBACK_LOGO_COLOR,
   getDominantLogoColor,
   PLACEHOLDER_DOMINANT_COLOR,
   toHex,
@@ -48,13 +49,16 @@ const darkenHexColor = (hex: string) => {
   return `#${toHex(Math.round(red * scale))}${toHex(Math.round(green * scale))}${toHex(Math.round(blue * scale))}`;
 };
 
+const DARK_FALLBACK_COLOR = darkenHexColor(FALLBACK_LOGO_COLOR);
+const FALLBACK_GRADIENT_END_COLOR = '#5E8C1E';
+
 const loadDominantColor = (url: string) =>
   new Promise<string>((resolve) => {
     const image = new Image();
     image.crossOrigin = 'anonymous';
     image.onload = () =>
-      resolve(getDominantLogoColor(image) ?? PLACEHOLDER_DOMINANT_COLOR);
-    image.onerror = () => resolve(PLACEHOLDER_DOMINANT_COLOR);
+      resolve(getDominantLogoColor(image) ?? FALLBACK_LOGO_COLOR);
+    image.onerror = () => resolve(FALLBACK_LOGO_COLOR);
     image.src = url;
   });
 
@@ -91,10 +95,10 @@ export const MatchDetailPage = () => {
     Promise.all([
       homeLogoUrl
         ? loadDominantColor(homeLogoUrl)
-        : Promise.resolve(PLACEHOLDER_DOMINANT_COLOR),
+        : Promise.resolve(FALLBACK_LOGO_COLOR),
       awayLogoUrl
         ? loadDominantColor(awayLogoUrl)
-        : Promise.resolve(PLACEHOLDER_DOMINANT_COLOR),
+        : Promise.resolve(FALLBACK_LOGO_COLOR),
     ]).then(([home, away]) => {
       if (cancelled) return;
       setHomeColor(darkenHexColor(home));
@@ -185,7 +189,11 @@ export const MatchDetailPage = () => {
       <div
         className={c.page}
         style={{
-          background: `linear-gradient(90deg, ${homeColor} 0%, ${awayColor} 100%)`,
+          background:
+            homeColor === DARK_FALLBACK_COLOR &&
+            awayColor === DARK_FALLBACK_COLOR
+              ? `linear-gradient(180deg, #000000 0%, ${FALLBACK_GRADIENT_END_COLOR} 100%)`
+              : `linear-gradient(90deg, ${homeColor} 0%, ${awayColor} 100%)`,
         }}>
         <MatchDetailHeader
           match={match}

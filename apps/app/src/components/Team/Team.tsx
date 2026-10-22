@@ -1,6 +1,7 @@
 import { useState, type CSSProperties } from 'react';
 import c from './Team.module.scss';
 import {
+  FALLBACK_LOGO_COLOR,
   getCachedLogoColor,
   hexToRgba,
   PLACEHOLDER_DOMINANT_COLOR,
@@ -17,7 +18,9 @@ type TeamProps = {
 };
 
 const getInitialColor = (logoUrl?: string) =>
-  getCachedLogoColor(logoUrl) ?? PLACEHOLDER_DOMINANT_COLOR;
+  logoUrl
+    ? (getCachedLogoColor(logoUrl) ?? PLACEHOLDER_DOMINANT_COLOR)
+    : FALLBACK_LOGO_COLOR;
 
 export const Team: React.FC<TeamProps> = ({ team }) => {
   const [dominantColorState, setDominantColorState] = useState(() => ({
@@ -44,7 +47,7 @@ export const Team: React.FC<TeamProps> = ({ team }) => {
   const handleLogoError = () => {
     setDominantColorState({
       logoUrl: team.logoUrl,
-      color: PLACEHOLDER_DOMINANT_COLOR,
+      color: FALLBACK_LOGO_COLOR,
     });
   };
 

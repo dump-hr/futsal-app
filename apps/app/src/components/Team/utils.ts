@@ -1,4 +1,5 @@
 export const PLACEHOLDER_DOMINANT_COLOR = '#8C8A8A';
+export const FALLBACK_LOGO_COLOR = '#4D6030';
 export const COLOR_BUCKET_SIZE = 8;
 
 export const toHex = (value: number) => value.toString(16).padStart(2, '0');
@@ -156,7 +157,7 @@ export const resolveLogoColor = (logoUrl: string, image: HTMLImageElement) => {
   const color = getDominantLogoColor(image);
 
   if (!color) {
-    return PLACEHOLDER_DOMINANT_COLOR;
+    return FALLBACK_LOGO_COLOR;
   }
 
   colorCache.set(logoUrl, color);
